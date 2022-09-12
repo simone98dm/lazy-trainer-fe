@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useStore } from "../../store";
+import { useStore } from "../../store/main";
 import { IActivity } from "../../models/Activity";
 import { ref, watch } from "vue";
 

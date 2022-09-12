@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { useStore } from "../../store";
-import ActivityForm from "../ActivityForm/ActivityForm.vue";
+import { useStore } from "../../stores/main";
 import List from "../List/List.vue";
 const store = useStore();
 </script>
 
 <template>
-  <h1>Your</h1>
+  <section class="p-5">
+    <div class="space-y-2">
+      <List :list="store.getActivities" />
+    </div>
+  </section>
 </template>

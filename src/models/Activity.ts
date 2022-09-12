@@ -1,7 +1,7 @@
 export interface IActivity {
-    id: string;
-    name: string;
-    description: string;
-    time: number;
-    videoUrl: string;
+  id: string;
+  description: string;
+  name: string;
+  time: number;
+  videoUrl: string;
 }
