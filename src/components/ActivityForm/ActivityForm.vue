@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { IActivity } from "../../models/Activity";
-import { ref, watch } from "vue";
-import { useStore } from "../../stores/main";
+import {IActivity} from "../../models/Activity";
+import {ref} from "vue";
+import {useStore} from "../../stores/main";
+import Button from "../Button/Button.vue";
+
 const props = defineProps(["id", "dayOfWeek", "name", "description", "time"]);
 const store = useStore();
 let name = ref(props.name || "");
@@ -25,49 +27,49 @@ function save() {
 <template>
   <div class="flex justify-center my-2 mx-4 md:mx-0">
     <form
-      class="w-full max-w-xl bg-white rounded-lg shadow-md p-6"
-      @submit.prevent
+        class="w-full max-w-xl bg-white rounded-lg shadow-md p-6"
+        @submit.prevent
     >
       <div class="flex flex-wrap -mx-3 mb-6">
         <div class="w-full md:w-full px-3 mb-6">
           <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="activityName"
-            >Name:</label
-          >
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="activityName">
+            Name:
+          </label>
           <input
-            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-            type="text"
-            name="activityName"
-            v-model="name"
+              v-model="name"
+              class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+              name="activityName"
+              type="text"
           />
         </div>
 
         <div class="w-full md:w-full px-3 mb-6">
           <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="activityDescription"
-            >Desc.:</label
-          >
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="activityDescription">
+            Desc.:
+          </label>
           <input
-            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-            type="text"
-            name="activityDescription"
-            v-model="description"
+              v-model="description"
+              class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+              name="activityDescription"
+              type="text"
           />
         </div>
 
         <div class="w-full md:w-full px-3 mb-6">
           <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="activityTime"
-            >Time:</label
-          >
+              class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="activityTime">
+            Time:
+          </label>
           <input
-            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-            type="text"
-            name="activityTime"
-            v-model="time"
+              v-model="time"
+              class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+              name="activityTime"
+              type="text"
           />
         </div>
         <!-- <label for="activityUrl">
@@ -75,13 +77,7 @@ function save() {
           <input type="text" name="activityVideoUrl" v-model="videoUrl" />
         </label> -->
         <div class="w-full md:w-full px-3 mb-6">
-          <button
-            type="button"
-            @click="save"
-            class="appearance-none block w-full bg-blue-600 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight hover:bg-blue-500 focus:outline-none focus:bg-white focus:border-gray-500"
-          >
-            Save
-          </button>
+          <Button @click="save" label="Save"></Button>
         </div>
       </div>
     </form>
