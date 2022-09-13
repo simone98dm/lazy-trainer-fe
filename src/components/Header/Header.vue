@@ -29,7 +29,9 @@ const name = import.meta.env.VITE_PROJECT_NAME;
           ></path>
         </svg>
       </div>
-      <h1 class="ext-center text-3xl font-semibold">Trainer</h1>
+      <h1 class="ext-center text-3xl font-semibold">
+        <router-link to="/">Trainer</router-link>
+      </h1>
       <div
         class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
       >

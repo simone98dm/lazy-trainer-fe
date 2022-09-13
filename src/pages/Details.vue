@@ -1,2 +1,35 @@
-<script setup lang="ts"></script>
-<template>Details</template>
+<script setup lang="ts">
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "../stores/main";
+import Item from "../components/Item/Item.vue";
+const route = useRoute();
+const router = useRouter();
+const store = useStore();
+const queryParam = route.params.id;
+const activities = store.getActivities(Number(queryParam));
+function showDetails(id: string) {
+  router.push({
+    name: "activity",
+    params: {
+      dayOfWeek: queryParam,
+      id: id,
+    },
+  });
+}
+</script>
+<template>
+  <section class="p-5">
+    <div class="space-y-2">
+      <div v-for="activity in activities">
+        <Item
+          :name="activity.name"
+          :description="activity.description"
+          :time="activity.time"
+          :id="activity.id"
+          @click="showDetails"
+          :key="activity.id"
+        />
+      </div>
+    </div>
+  </section>
+</template>

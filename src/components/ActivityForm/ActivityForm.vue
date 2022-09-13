@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useStore } from "../../store/main";
 import { IActivity } from "../../models/Activity";
 import { ref, watch } from "vue";
-
+import { useStore } from "../../stores/main";
+const props = defineProps(["id", "dayOfWeek", "name", "description", "time"]);
 const store = useStore();
-let name = ref("");
-let id = ref("");
-let description = ref("");
-let time = ref(0);
+let name = ref(props.name || "");
+let id = ref(props.id || "");
+let description = ref(props.description || "");
+let time = ref(props.time || 0);
 let videoUrl = ref("");
 
 function save() {
@@ -18,28 +18,72 @@ function save() {
     time: time.value,
     videoUrl: videoUrl.value,
   };
-  store.addActivity(activity);
+  store.addActivity(props.dayOfWeek, activity);
 }
 </script>
 
 <template>
-  <form @submit.prevent>
-    <label for="activityName">
-      Name:
-      <input type="text" name="activityName" v-model="name" />
-    </label>
-    <label for="activityDescriptions">
-      Desc.:
-      <input type="text" name="activityDescription" v-model="description" />
-    </label>
-    <label for="activityTime">
-      Time:
-      <input type="text" name="activityTime" v-model="time" />
-    </label>
-    <label for="activityUrl">
-      Video:
-      <input type="text" name="activityVideoUrl" v-model="videoUrl" />
-    </label>
-    <button type="button" @click="save">Save</button>
-  </form>
+  <div class="flex justify-center my-2 mx-4 md:mx-0">
+    <form
+      class="w-full max-w-xl bg-white rounded-lg shadow-md p-6"
+      @submit.prevent
+    >
+      <div class="flex flex-wrap -mx-3 mb-6">
+        <div class="w-full md:w-full px-3 mb-6">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            for="activityName"
+            >Name:</label
+          >
+          <input
+            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+            type="text"
+            name="activityName"
+            v-model="name"
+          />
+        </div>
+
+        <div class="w-full md:w-full px-3 mb-6">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            for="activityDescription"
+            >Desc.:</label
+          >
+          <input
+            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+            type="text"
+            name="activityDescription"
+            v-model="description"
+          />
+        </div>
+
+        <div class="w-full md:w-full px-3 mb-6">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            for="activityTime"
+            >Time:</label
+          >
+          <input
+            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+            type="text"
+            name="activityTime"
+            v-model="time"
+          />
+        </div>
+        <!-- <label for="activityUrl">
+          Video:
+          <input type="text" name="activityVideoUrl" v-model="videoUrl" />
+        </label> -->
+        <div class="w-full md:w-full px-3 mb-6">
+          <button
+            type="button"
+            @click="save"
+            class="appearance-none block w-full bg-blue-600 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight hover:bg-blue-500 focus:outline-none focus:bg-white focus:border-gray-500"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 </template>
