@@ -15,24 +15,17 @@ function millisToMinutesAndSeconds(millis: number) {
 
 <template>
   <div
+    class="flex flex-col justify-evenly rounded-xl bg-white p-3 shadow-sm mb-2"
     @click="emits('click', props.id)"
-    class="flex space-x-4 rounded-xl bg-white p-3 shadow-sm"
   >
-    <img
-      class="aspect-square w-16 rounded-lg bg-center object-cover"
-      :src="image"
-      alt=""
-    />
-    <div class="flex flex-col justify-evenly">
-      <h4 class="font-semibold text-gray-600">
-        {{ props.name }}
-      </h4>
-      <p class="text-sm text-slate-500">
-        {{ props.description }}
-      </p>
-      <span class="text-sm text-slate-400" v-if="props.time">
-        {{ millisToMinutesAndSeconds(props.time) }}
-      </span>
-    </div>
+    <h4 class="font-semibold text-gray-600">
+      {{ props.name }}
+    </h4>
+    <p class="text-sm text-slate-500">
+      {{ props.description }}
+    </p>
+    <span class="text-sm text-slate-400" v-if="props.time">
+      {{ millisToMinutesAndSeconds(props.time) }}
+    </span>
   </div>
 </template>

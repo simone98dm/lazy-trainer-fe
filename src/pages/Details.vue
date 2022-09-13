@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {useRoute, useRouter} from "vue-router";
-import {useStore} from "../stores/main";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "../stores/main";
 import Item from "../components/Item/Item.vue";
 import Button from "../components/Button/Button.vue";
 
@@ -20,26 +20,23 @@ function showDetails(id: string) {
   });
 }
 
-function runTimer() {
-}
+function runTimer() {}
 </script>
 <template>
-  <section class="p-5">
-    <div class="space-y-2">
-      <div class="w-full md:w-full px-3 mb-6">
-        <Button @click="runTimer" label="Start"></Button>
-      </div>
+  <section>
+    <div class="w-full md:w-full px-3 mb-6">
+      <Button @click="runTimer" label="Start"></Button>
+    </div>
 
-      <div v-for="activity in activities">
-        <Item
-            :name="activity.name"
-            :description="activity.description"
-            :time="activity.time"
-            :id="activity.id"
-            @click="showDetails"
-            :key="activity.id"
-        />
-      </div>
+    <div v-for="activity in activities">
+      <Item
+        :name="activity.name"
+        :description="activity.description"
+        :time="activity.time"
+        :id="activity.id"
+        @click="showDetails"
+        :key="activity.id"
+      />
     </div>
   </section>
 </template>

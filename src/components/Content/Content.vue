@@ -37,17 +37,15 @@ function showDetails(dayOfWeek: number) {
 </script>
 
 <template>
-  <section class="p-5">
-    <div class="space-y-2">
-      <div v-for="activity in store.getWeek">
-        <Item
-          :name="getDayOfTheWeek(activity.dayOfWeek)"
-          :description="formatDescription(activity.activities.length)"
-          :id="activity.dayOfWeek"
-          @click="showDetails"
-          :key="activity.dayOfWeek"
-        />
-      </div>
+  <section>
+    <div v-for="activity in store.getWeek">
+      <Item
+        :name="getDayOfTheWeek(activity.dayOfWeek)"
+        :description="formatDescription(activity.activities.length)"
+        :id="activity.dayOfWeek"
+        @click="showDetails"
+        :key="activity.dayOfWeek"
+      />
     </div>
   </section>
 </template>
