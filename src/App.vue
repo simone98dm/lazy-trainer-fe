@@ -4,10 +4,10 @@ import Footer from "./components/Footer/Footer.vue";
 </script>
 
 <template>
-  <div class="mx-auto">
-    <div class="h-screen bg-gray-50">
+  <div class="mx-auto bg-gray-50">
+    <div class="flex flex-col h-screen">
       <Header></Header>
-      <div class="h-full">
+      <div class="mb-auto">
         <router-view></router-view>
       </div>
       <Footer></Footer>
