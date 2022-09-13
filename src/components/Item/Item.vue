@@ -2,6 +2,7 @@
 import image from "../../assets/exercise.png";
 const props = defineProps(["id", "name", "description", "time"]);
 const emits = defineEmits(["click"]);
+
 function millisToMinutesAndSeconds(millis: number) {
   const minutes: number = Math.floor(millis / 60000);
   const seconds: number = Number(((millis % 60000) / 1000).toFixed(0));
@@ -22,24 +23,16 @@ function millisToMinutesAndSeconds(millis: number) {
       :src="image"
       alt=""
     />
-    <div>
+    <div class="flex flex-col justify-evenly">
       <h4 class="font-semibold text-gray-600">
         {{ props.name }}
       </h4>
-      <p class="text-sm text-slate-400">
+      <p class="text-sm text-slate-500">
         {{ props.description }}
       </p>
-      <span class="text-sm text-slate-200" v-if="props.time">
+      <span class="text-sm text-slate-400" v-if="props.time">
         {{ millisToMinutesAndSeconds(props.time) }}
       </span>
-    </div>
-    <div>
-      <button
-        type="button"
-        class="rounded bg-slate-50 px-2 text-xl text-slate-500 hover:bg-slate-100"
-      >
-        &times;
-      </button>
     </div>
   </div>
 </template>
