@@ -38,6 +38,20 @@
                     "name": "Plank",
                     "time": 60000,
                     "videoUrl": ""
+                },
+                {
+                    "id": "2be8a00f-cc5d-43be-b322-995d6a24d5e2",
+                    "description": "Ullamco aute ipsum sunt pariatur nisi nostrud laborum laborum duis qui.",
+                    "name": "Rest",
+                    "time": 15000,
+                    "videoUrl": ""
+                },
+                {
+                    "id": "03b45861-899f-4461-8fc5-be38d2885f5f",
+                    "description": "Ipsum aliquip magna sunt non dolor dolore sunt et.",
+                    "name": "Plank",
+                    "time": 30000,
+                    "videoUrl": ""
                 }
             ]
         },
