@@ -1,4 +1,4 @@
-import { IPlan } from './../models/Plan';
+import { IPlan } from "./../models/Plan";
 import { defineStore } from "pinia";
 import { IActivity } from "../models/Activity";
 
@@ -9,14 +9,30 @@ export const useStore = defineStore("main", {
     plan: fakeData as IPlan,
   }),
   getters: {
-    getActivities(state) {
+    getActivities: (state) => (dayOfWeek: number) => {
+      return state.plan.data.find((session) => session.dayOfWeek === dayOfWeek)
+        ?.activities;
+    },
+    getWeek(state) {
       return state.plan.data;
     },
   },
   actions: {
-    addActivity(activity: IActivity) {
+    addActivity(dayOfWeek: number, activity: IActivity) {
+      if (!this.plan.data[dayOfWeek]) {
+        this.plan.data[dayOfWeek] = {
+          dayOfWeek,
+          activities: [],
+        };
+      }
+      this.plan.data[dayOfWeek].activities.push(activity);
     },
-    removeActivity(a: IActivity) {
+    removeActivity(dayOfWeek: number, activity: IActivity) {
+      if (this.plan.data[dayOfWeek]) {
+        this.plan.data[dayOfWeek].activities = this.plan.data[
+          dayOfWeek
+        ].activities.filter((act) => act.id === activity.id);
+      }
     },
   },
 });

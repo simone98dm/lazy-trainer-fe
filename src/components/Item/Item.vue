@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import image from "../../assets/exercise.png";
-const props = defineProps(["item"]);
+const props = defineProps(["id", "name", "description", "time"]);
+const emits = defineEmits(["click"]);
 function millisToMinutesAndSeconds(millis: number) {
   const minutes: number = Math.floor(millis / 60000);
   const seconds: number = Number(((millis % 60000) / 1000).toFixed(0));
@@ -12,7 +13,10 @@ function millisToMinutesAndSeconds(millis: number) {
 </script>
 
 <template>
-  <div class="flex space-x-4 rounded-xl bg-white p-3 shadow-sm">
+  <div
+    @click="emits('click', props.id)"
+    class="flex space-x-4 rounded-xl bg-white p-3 shadow-sm"
+  >
     <img
       class="aspect-square w-16 rounded-lg bg-center object-cover"
       :src="image"
@@ -20,13 +24,13 @@ function millisToMinutesAndSeconds(millis: number) {
     />
     <div>
       <h4 class="font-semibold text-gray-600">
-        {{ props.item.name }}
+        {{ props.name }}
       </h4>
       <p class="text-sm text-slate-400">
-        {{ props.item.description }}
+        {{ props.description }}
       </p>
-      <span class="text-sm text-slate-200">
-        {{ millisToMinutesAndSeconds(props.item.time) }}
+      <span class="text-sm text-slate-200" v-if="props.time">
+        {{ millisToMinutesAndSeconds(props.time) }}
       </span>
     </div>
     <div>

@@ -5,6 +5,11 @@ const props = defineProps(["list"]);
 
 <template>
   <div v-for="activity in props.list">
-    <Item :item="activity" :key="activity.id" />
+    <Item
+      :name="activity.name"
+      :description="activity.description"
+      :time="activity.time"
+      :key="activity.id"
+    />
   </div>
 </template>

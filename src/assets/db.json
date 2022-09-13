@@ -2,7 +2,7 @@
     "name": "Prima scheda",
     "data": [
         {
-            "dayOfWeek": 0,
+            "dayOfWeek": 2,
             "activities": [
                 {
                     "id": "704f84cd-4a48-4301-b88b-f4fd034081ae",
@@ -37,6 +37,32 @@
                     "description": "Ipsum aliquip magna sunt non dolor dolore sunt et.",
                     "name": "Plank",
                     "time": 60000,
+                    "videoUrl": ""
+                }
+            ]
+        },
+        {
+            "dayOfWeek": 1,
+            "activities": [
+                {
+                    "id": "704f84cd-4a48-4301-b88b-f4fd034081ae",
+                    "description": "Tempor in elit ipsum sunt id fugiat pariatur culpa aute.",
+                    "name": "Skip",
+                    "time": 45000,
+                    "videoUrl": ""
+                },
+                {
+                    "id": "b858485d-e8fb-4d1f-a57c-0c7274e1c0aa",
+                    "description": "Ex nulla duis aliqua ad esse Lorem cupidatat commodo ipsum cupidatat tempor.",
+                    "name": "Rest",
+                    "time": 15000,
+                    "videoUrl": ""
+                },
+                {
+                    "id": "7922aa3b-27e8-4f12-a9f8-b8a748d83a7e",
+                    "description": "Culpa eiusmod aliquip reprehenderit qui reprehenderit.",
+                    "name": "MC",
+                    "time": 30000,
                     "videoUrl": ""
                 }
             ]
