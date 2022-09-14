@@ -14,7 +14,7 @@ const routes = [
     component: Activity,
   },
   { name: "setting", path: "/setting", component: Setting },
-  { name: "timer", path: "/timer/:id", component: Timer },
+  { name: "timer", path: "/timer/:sessionId/:activityId?", component: Timer },
 ];
 
 const router = createRouter({
