@@ -3,16 +3,16 @@ import { IActivity } from "../models/Activity";
 
 import fakeData from "../assets/db.json";
 
-export const useStore = defineStore("main", {
+export const useActivityStore = defineStore("activity", {
   state: () => ({
     plan: fakeData,
   }),
   getters: {
-    getActivities: (state) => (id: string) => {
-      return state.plan.sessions.find((session) => session.id === id)?.activities;
+    getSessionActivities: (state) => (sessionId: string) => {
+      return state.plan.sessions.find((session) => session.id === sessionId)?.activities;
     },
-    getSession: (state) => (id: string) => {
-      return state.plan.sessions.find((session) => session.id === id);
+    getSession: (state) => (sessionId: string) => {
+      return state.plan.sessions.find((session) => session.id === sessionId);
     },
     getWeek(state) {
       return state.plan.sessions;
