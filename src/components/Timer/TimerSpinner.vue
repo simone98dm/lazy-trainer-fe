@@ -23,13 +23,12 @@ const COLOR_CODES = {
 };
 
 const activity = timerStore.getCurrentActivity;
-
 const TIME_LIMIT = activity.time / 1000;
 let timePassed = 0;
 let timeLeft = TIME_LIMIT;
 let timerInterval: any = null;
 let remainingPathColor = ref(COLOR_CODES.info.color);
-
+let strokeDasharray = ref(`283`);
 let baseTimerLabel = ref(formatTime(timeLeft));
 
 startTimer();
@@ -74,7 +73,7 @@ function calculateTimeFraction() {
   const raw = rawTimeFraction - (1 / TIME_LIMIT) * (1 - rawTimeFraction);
   return raw;
 }
-let strokeDasharray = ref(`283`);
+
 function setCircleDasharray() {
   const circleDasharray = `${(
     calculateTimeFraction() * FULL_DASH_ARRAY
@@ -84,34 +83,41 @@ function setCircleDasharray() {
 </script>
 
 <template>
-  <div class="base-timer">
-    <svg
-      class="base-timer__svg"
-      viewBox="0 0 100 100"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <g class="base-timer__circle">
-        <circle
-          class="base-timer__path-elapsed"
-          cx="50"
-          cy="50"
-          r="45"
-        ></circle>
-        <path
-          id="base-timer-path-remaining"
-          :stroke-dasharray="strokeDasharray"
-          :class="`base-timer__path-remaining ${remainingPathColor}`"
-          d="M 50, 50 m -45, 0 a 45,45 0 1,0 90,0 a 45,45 0 1,0 -90,0"
-        ></path>
-      </g>
-    </svg>
-    <span id="base-timer-label" class="base-timer__label">{{
-      baseTimerLabel
-    }}</span>
+  <div class="box">
+    <div class="base-timer">
+      <svg
+        class="base-timer__svg"
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g class="base-timer__circle">
+          <circle
+            class="base-timer__path-elapsed"
+            cx="50"
+            cy="50"
+            r="45"
+          ></circle>
+          <path
+            id="base-timer-path-remaining"
+            :stroke-dasharray="strokeDasharray"
+            :class="`base-timer__path-remaining ${remainingPathColor}`"
+            d="M 50, 50 m -45, 0 a 45,45 0 1,0 90,0 a 45,45 0 1,0 -90,0"
+          ></path>
+        </g>
+      </svg>
+      <span id="base-timer-label" class="base-timer__label">
+        {{ baseTimerLabel }}
+      </span>
+    </div>
   </div>
 </template>
 
 <style>
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .base-timer {
   position: relative;
   width: 300px;

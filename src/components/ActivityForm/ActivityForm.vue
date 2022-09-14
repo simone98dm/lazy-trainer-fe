@@ -34,7 +34,8 @@ function save() {
         <div class="w-full md:w-full px-3 mb-6">
           <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="activityName">
+              for="activityName"
+          >
             Name:
           </label>
           <input
@@ -48,7 +49,8 @@ function save() {
         <div class="w-full md:w-full px-3 mb-6">
           <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="activityDescription">
+              for="activityDescription"
+          >
             Desc.:
           </label>
           <input
@@ -62,7 +64,8 @@ function save() {
         <div class="w-full md:w-full px-3 mb-6">
           <label
               class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="activityTime">
+              for="activityTime"
+          >
             Time:
           </label>
           <input
@@ -77,7 +80,7 @@ function save() {
           <input type="text" name="activityVideoUrl" v-model="videoUrl" />
         </label> -->
         <div class="w-full md:w-full px-3 mb-6">
-          <Button @click="save" label="Save"></Button>
+          <Button @click="save"> Save</Button>
         </div>
       </div>
     </form>

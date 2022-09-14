@@ -1,6 +1,5 @@
 <template>
   <svg
-    class="h-6 w-6"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -10,13 +9,7 @@
       stroke-linecap="round"
       stroke-linejoin="round"
       stroke-width="2"
-      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-    ></path>
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"
+      d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
     ></path>
   </svg>
 </template>
