@@ -26,11 +26,11 @@ function formatDescription(len: number) {
   }
   return `${len} ${len > 1 ? "activities" : "activity"}`;
 }
-function showDetails(dayOfWeek: number) {
+function showDetails(id: string) {
   router.push({
     name: "details",
     params: {
-      id: dayOfWeek,
+      id: id,
     },
   });
 }
@@ -42,7 +42,7 @@ function showDetails(dayOfWeek: number) {
       <Item
         :name="getDayOfTheWeek(activity.dayOfWeek)"
         :description="formatDescription(activity.activities.length)"
-        :id="activity.dayOfWeek"
+        :id="activity.id"
         @click="showDetails"
         :key="activity.dayOfWeek"
       />

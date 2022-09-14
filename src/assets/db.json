@@ -1,8 +1,9 @@
 {
     "name": "Scheda #1",
-    "data": [
+    "sessions": [
         {
             "dayOfWeek": 1,
+            "id": "e9506af1-3a9b-47f4-8a87-d3256becefd7",
             "activities": [
                 {
                     "id": "704f84cd-4a48-4301-b88b-f4fd034081ae",
@@ -29,6 +30,7 @@
         },
         {
             "dayOfWeek": 2,
+            "id": "4efd4d28-ee08-4713-838c-d527b518ab55",
             "activities": [
                 {
                     "id": "704f84cd-4a48-4301-b88b-f4fd034081ae",

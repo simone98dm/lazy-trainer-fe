@@ -3,12 +3,18 @@ import Details from "../pages/Details.vue";
 import Activity from "../pages/Activity.vue";
 import Setting from "../pages/Setting.vue";
 import { createRouter, createWebHistory } from "vue-router";
+import Timer from "../pages/Timer.vue";
 
 const routes = [
   { name: "home", path: "/", component: Home },
   { name: "details", path: "/details/:id", component: Details },
-  { name: "activity", path: "/activity/:dayOfWeek/:id", component: Activity },
+  {
+    name: "activity",
+    path: "/activity/:sessionId/:activityId",
+    component: Activity,
+  },
   { name: "setting", path: "/setting", component: Setting },
+  { name: "timer", path: "/timer/:id", component: Timer },
 ];
 
 const router = createRouter({

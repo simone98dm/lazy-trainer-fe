@@ -8,19 +8,26 @@ const route = useRoute();
 const router = useRouter();
 const store = useStore();
 const queryParam = route.params.id;
-const activities = store.getActivities(Number(queryParam));
+const activities = store.getActivities(queryParam as string);
 
 function showDetails(id: string) {
   router.push({
     name: "activity",
     params: {
-      dayOfWeek: queryParam,
-      id: id,
+      sessionId: queryParam,
+      activityId: id,
     },
   });
 }
 
-function runTimer() {}
+function runTimer() {
+  router.push({
+    name: "timer",
+    params: {
+      id: queryParam,
+    },
+  });
+}
 </script>
 <template>
   <section>
