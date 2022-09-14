@@ -1,13 +1,9 @@
 <template>
   <svg
-      version="1.1"
       viewBox="0 0 32 32"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
   >
     <defs></defs>
     <g
-        id="Page-1"
         fill="none"
         fill-rule="evenodd"
         sketch:type="MSPage"

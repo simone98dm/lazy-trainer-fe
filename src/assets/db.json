@@ -36,14 +36,14 @@
                     "id": "704f84cd-4a48-4301-b88b-f4fd034081ae",
                     "description": "Tempor in elit ipsum sunt id fugiat pariatur culpa aute.",
                     "name": "Skip",
-                    "time": 30000,
+                    "time": 5000,
                     "videoUrl": ""
                 },
                 {
                     "id": "b858485d-e8fb-4d1f-a57c-0c7274e1c0aa",
                     "description": "Ex nulla duis aliqua ad esse Lorem cupidatat commodo ipsum cupidatat tempor.",
                     "name": "Rest",
-                    "time": 15000,
+                    "time": 6000,
                     "videoUrl": ""
                 },
                 {
