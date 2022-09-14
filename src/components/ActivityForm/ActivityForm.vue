@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {IActivity} from "../../models/Activity";
 import {ref} from "vue";
-import {useStore} from "../../stores/main";
+import {useActivityStore} from "../../stores/activity";
 import Button from "../Button/Button.vue";
 
 const props = defineProps(["id", "dayOfWeek", "name", "description", "time"]);
-const store = useStore();
+const store = useActivityStore();
 let name = ref(props.name || "");
 let id = ref(props.id || "");
 let description = ref(props.description || "");

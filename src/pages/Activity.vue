@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import { useStore } from "../stores/main";
+import { useActivityStore } from "../stores/activity";
 import ActivityForm from "../components/ActivityForm/ActivityForm.vue";
 const route = useRoute();
-const store = useStore();
+const store = useActivityStore();
 const { sessionId, activityId } = route.params;
 const session = store.getSession(sessionId as string);
 const activities = session?.activities.find((act) => act.id === activityId);

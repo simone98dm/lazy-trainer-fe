@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { useStore } from "../stores/main";
+import { useActivityStore } from "../stores/activity";
 import Item from "../components/Item/Item.vue";
 import Button from "../components/Button/Button.vue";
 
 const route = useRoute();
 const router = useRouter();
-const store = useStore();
+const store = useActivityStore();
 const queryParam = route.params.id;
-const activities = store.getActivities(queryParam as string);
+const activities = store.getSessionActivities(queryParam as string);
 
 function showDetails(id: string) {
   router.push({
@@ -24,7 +24,7 @@ function runTimer() {
   router.push({
     name: "timer",
     params: {
-      id: queryParam,
+      sessionId: queryParam,
     },
   });
 }
