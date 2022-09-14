@@ -1,32 +1,34 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import { useActivityStore } from "../stores/activity";
 import Item from "../components/Item/Item.vue";
 import Button from "../components/Button/Button.vue";
 import AddIcon from "../components/Icons/AddIcon.vue";
-import { ButtonSize, IconSize } from "../utils/enum";
+import { ButtonSize, IconSize, LinkType } from "../utils/enum";
 import PlayIcon from "../components/Icons/PlayIcon.vue";
 import Icon from "../components/Icons/Icon.vue";
+import Link from "../components/Link/Link.vue";
 
 const route = useRoute();
 const store = useActivityStore();
 const queryParam = route.params.id;
 const activities = store.getSessionActivities(queryParam as string);
-
 </script>
 <template>
-  <section>
-    <div class="w-full md:w-full px-3 mb-6">
-      <router-link :to="{ name: 'timer', params: { sessionId: queryParam } }">
-        <Button full="true" :size="ButtonSize.MEDIUM" @click="">
-          <Icon :component="PlayIcon" :size="IconSize.MEDIUM"></Icon>
-        </Button>
-      </router-link>
+  <section class="flex flex-col justify-center">
+    <div class="w-full px-3 mb-5">
+      <Link
+        :type="LinkType.BUTTON"
+        :size="ButtonSize.MEDIUM"
+        :to="{ name: 'timer', params: { sessionId: queryParam } }"
+      >
+        <Icon :component="PlayIcon" :size="IconSize.MEDIUM"></Icon>
+      </Link>
     </div>
 
     <div v-for="activity in activities">
-      <router-link
-        :to="{
+      <Link
+        :to="{  
           name: 'activity',
           params: { sessionId: queryParam, activityId: activity.id },
         }"
@@ -38,17 +40,17 @@ const activities = store.getSessionActivities(queryParam as string);
           :id="activity.id"
           :key="activity.id"
         />
-      </router-link>
+      </Link>
     </div>
 
-    <div class="w-full md:w-full px-3 mb-6">
-      <router-link
+    <div class="w-full px-3 mb-5">
+      <Link
+        :type="LinkType.BUTTON"
         :to="{ name: 'activity', params: { sessionId: queryParam } }"
+        :size="ButtonSize.MEDIUM"
       >
-        <Button :size="ButtonSize.MEDIUM" full="true">
-          <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
-        </Button>
-      </router-link>
+        <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
+      </Link>
     </div>
   </section>
 </template>
