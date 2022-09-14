@@ -4,6 +4,10 @@ export enum ButtonSize {
   SMALL,
 }
 
+export enum LinkType {
+  BUTTON
+}
+
 export enum IconSize {
   LARGE = "icn__large",
   MEDIUM = "icn__medium",

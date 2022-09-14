@@ -7,6 +7,7 @@ const emit = defineEmits(["click"]);
   <button
     :class="[
       { 'w-full': props.full ?? false },
+      { 'w-full sm:w-1/2' : !props.full ?? false},
       'appearance-none block bg-indigo-600 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight hover:bg-indigo-500 flex justify-center align-middle',
     ]"
     type="button"
