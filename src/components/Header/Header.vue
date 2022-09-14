@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import MenuIcon from "../Icon/MenuIcon.vue";
-import ShareIcon from "../Icon/ShareIcon.vue";
+import MenuIcon from "../Icons/MenuIcon.vue";
+import ShareIcon from "../Icons/ShareIcon.vue";
+import Icon from "../Icons/Icon.vue";
+import { IconSize } from "../../utils/enum";
 </script>
 
 <template>
@@ -9,15 +11,13 @@ import ShareIcon from "../Icon/ShareIcon.vue";
       <div
         class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
       >
-        <share-icon></share-icon>
+        <Icon :component="ShareIcon" :size="IconSize.SMALL"></Icon>
       </div>
-      <h1 class="text-center text-3xl font-semibold">
-        Trainer
-      </h1>
+      <h1 class="text-center text-3xl font-semibold">Trainer</h1>
       <div
         class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
       >
-        <menu-icon></menu-icon>
+        <Icon :component="MenuIcon" :size="IconSize.SMALL"></Icon>
       </div>
     </div>
   </div>

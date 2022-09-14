@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import image from "../../assets/exercise.png";
+import Bench from "../Icons/Bench.vue";
+import Icon from "../Icons/Icon.vue";
+import { IconSize } from "../../utils/enum";
+
 const props = defineProps(["id", "name", "description", "time"]);
-const emits = defineEmits(["click"]);
 
 function millisToMinutesAndSeconds(millis: number) {
   const minutes: number = Math.floor(millis / 60000);
@@ -15,17 +17,25 @@ function millisToMinutesAndSeconds(millis: number) {
 
 <template>
   <div
-    class="flex flex-col justify-evenly rounded-xl bg-white p-3 shadow-sm mb-2"
-    @click="emits('click', props.id)"
+    class="flex flex-row items-center justify-between rounded-xl bg-white p-3 shadow-sm mb-2"
   >
-    <h4 class="font-semibold text-gray-600">
-      {{ props.name }}
-    </h4>
-    <p class="text-sm text-slate-500">
-      {{ props.description }}
-    </p>
-    <span class="text-sm text-slate-400" v-if="props.time">
-      {{ millisToMinutesAndSeconds(props.time) }}
-    </span>
+    <div class="flex">
+      <div class="p-2 hidden sm:block">
+        <Icon :class="IconSize.LARGE" :component="Bench"></Icon>
+      </div>
+      <div class="sm:ml-4">
+        <h4 class="font-semibold text-2xl text-gray-600">
+          {{ props.name }}
+        </h4>
+        <p class="text-sm text-slate-500">
+          {{ props.description }}
+        </p>
+      </div>
+    </div>
+    <div>
+      <h4 v-if="props.time" class="font-bold text-6xl sm:text-4xl text-slate-500">
+        {{ millisToMinutesAndSeconds(props.time) }}
+      </h4>
+    </div>
   </div>
 </template>

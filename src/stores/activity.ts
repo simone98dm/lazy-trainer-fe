@@ -9,7 +9,8 @@ export const useActivityStore = defineStore("activity", {
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
-      return state.plan.sessions.find((session) => session.id === sessionId)?.activities;
+      return state.plan.sessions.find((session) => session.id === sessionId)
+        ?.activities;
     },
     getSession: (state) => (sessionId: string) => {
       return state.plan.sessions.find((session) => session.id === sessionId);
@@ -19,10 +20,21 @@ export const useActivityStore = defineStore("activity", {
     },
   },
   actions: {
-    addActivity(id: string, activity: IActivity) {
-      const index = this.plan.sessions.findIndex((obj) => obj.id === id);
+    addActivity(sessionId: string, activity: IActivity) {
+      const index = this.plan.sessions.findIndex((obj) => obj.id === sessionId);
       if (index >= 0) {
-        this.plan.sessions[index].activities.push(activity);
+        if (activity.id) {
+          const existingActivity = this.plan.sessions[
+            index
+          ].activities.findIndex((act) => act.id === activity.id);
+          if (existingActivity >= 0) {
+            this.plan.sessions[index].activities[existingActivity] = activity;
+          } else {
+            this.plan.sessions[index].activities.push(activity);
+          }
+        } else {
+          this.plan.sessions[index].activities.push(activity);
+        }
       }
     },
     removeActivity(dayOfWeek: number, activity: IActivity) {

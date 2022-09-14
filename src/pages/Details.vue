@@ -3,6 +3,10 @@ import { useRoute, useRouter } from "vue-router";
 import { useActivityStore } from "../stores/activity";
 import Item from "../components/Item/Item.vue";
 import Button from "../components/Button/Button.vue";
+import AddIcon from "../components/Icons/AddIcon.vue";
+import { ButtonSize, IconSize } from "../utils/enum";
+import PlayIcon from "../components/Icons/PlayIcon.vue";
+import Icon from "../components/Icons/Icon.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -19,20 +23,15 @@ function showDetails(id: string) {
     },
   });
 }
-
-function runTimer() {
-  router.push({
-    name: "timer",
-    params: {
-      sessionId: queryParam,
-    },
-  });
-}
 </script>
 <template>
   <section>
     <div class="w-full md:w-full px-3 mb-6">
-      <Button @click="runTimer" label="Start"></Button>
+      <router-link :to="{ name: 'timer', params: { sessionId: queryParam } }">
+        <Button full="true" :size="ButtonSize.MEDIUM" @click="">
+          <Icon :component="PlayIcon" :size="IconSize.MEDIUM"></Icon>
+        </Button>
+      </router-link>
     </div>
 
     <div v-for="activity in activities">
@@ -44,6 +43,16 @@ function runTimer() {
         @click="showDetails"
         :key="activity.id"
       />
+    </div>
+
+    <div class="w-full md:w-full px-3 mb-6">
+      <router-link
+        :to="{ name: 'activity', params: { sessionId: queryParam } }"
+      >
+        <Button :size="ButtonSize.MEDIUM" full="true">
+          <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
+        </Button>
+      </router-link>
     </div>
   </section>
 </template>

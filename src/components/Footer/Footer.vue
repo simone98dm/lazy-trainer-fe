@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import HouseIcon from "../Icon/HouseIcon.vue";
-import AnalyticsIcon from "../Icon/AnalyticsIcon.vue";
-import SettingIcon from "../Icon/SettingIcon.vue";
-import ZapIcon from "../Icon/ZapIcon.vue";
+import HouseIcon from "../Icons/HouseIcon.vue";
+import SettingIcon from "../Icons/SettingIcon.vue";
+import Icon from "../Icons/Icon.vue";
+import { IconSize } from "../../utils/enum";
 const name = "Footer";
 </script>
 
@@ -12,7 +12,7 @@ const name = "Footer";
   >
     <nav class="flex justify-around text-gray-900">
       <router-link to="/" class="py-3 rounded-full p-3">
-        <house-icon></house-icon>
+        <Icon :component="HouseIcon" :size="IconSize.MEDIUM"></Icon>
       </router-link>
       <!-- <router-link to="/analytics" class="py-3 rounded-full p-3">
         <analytics-icon></analytics-icon>
@@ -21,7 +21,7 @@ const name = "Footer";
         <zap-icon></zap-icon>
       </router-link> -->
       <router-link to="/setting" class="py-3 rounded-full p-3">
-        <setting-icon></setting-icon>
+        <Icon :component="SettingIcon" :size="IconSize.MEDIUM"></Icon>
       </router-link>
     </nav>
   </div>

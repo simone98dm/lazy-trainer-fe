@@ -10,7 +10,7 @@ const routes = [
   { name: "details", path: "/details/:id", component: Details },
   {
     name: "activity",
-    path: "/activity/:sessionId/:activityId",
+    path: "/activity/:sessionId/:activityId?",
     component: Activity,
   },
   { name: "setting", path: "/setting", component: Setting },
