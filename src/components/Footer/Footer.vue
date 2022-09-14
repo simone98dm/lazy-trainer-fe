@@ -3,11 +3,15 @@ import HouseIcon from "../Icons/HouseIcon.vue";
 import SettingIcon from "../Icons/SettingIcon.vue";
 import Icon from "../Icons/Icon.vue";
 import { IconSize } from "../../utils/enum";
-const name = "Footer";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const { showFooter } = route.meta;
 </script>
 
 <template>
   <div
+    v-if="showFooter"
     class="fixed left-0 bottom-0 w-full rounded-t-xl bg-white px-5 py-2 shadow-sm shadow-gray-300"
   >
     <nav class="flex justify-around text-gray-900">

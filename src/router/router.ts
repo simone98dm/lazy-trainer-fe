@@ -6,15 +6,46 @@ import { createRouter, createWebHistory } from "vue-router";
 import Timer from "../pages/Timer.vue";
 
 const routes = [
-  { name: "home", path: "/", component: Home },
-  { name: "details", path: "/details/:id", component: Details },
+  {
+    name: "home",
+    path: "/",
+    component: Home,
+    meta: {
+      showFooter: true,
+    },
+  },
+  {
+    name: "details",
+    path: "/details/:id",
+    component: Details,
+    meta: {
+      showFooter: true,
+    },
+  },
   {
     name: "activity",
     path: "/activity/:sessionId/:activityId?",
     component: Activity,
+    meta: {
+      showFooter: true,
+    },
   },
-  { name: "setting", path: "/setting", component: Setting },
-  { name: "timer", path: "/timer/:sessionId/:activityId?", component: Timer },
+  {
+    name: "setting",
+    path: "/setting",
+    component: Setting,
+    meta: {
+      showFooter: true,
+    },
+  },
+  {
+    name: "timer",
+    path: "/timer/:sessionId/:activityId?",
+    component: Timer,
+    meta: {
+      showFooter: false,
+    },
+  },
 ];
 
 const router = createRouter({
