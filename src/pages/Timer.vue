@@ -4,6 +4,10 @@ import TimerSpinner from "../components/Timer/TimerSpinner.vue";
 import { useActivityStore } from "../stores/activity";
 import { useTimerStore } from "../stores/timer";
 import Button from "../components/Button/Button.vue";
+import PlayIcon from "../components/Icon/PlayIcon.vue";
+import StopIcon from "../components/Icon/StopIcon.vue";
+import { ButtonSize } from "../utils/enum";
+
 const route = useRoute();
 const router = useRouter();
 const { sessionId, activityId } = route.params;
@@ -27,9 +31,9 @@ if (!activities || activities.length <= 0) {
 <template>
   <div>
     <timer-spinner></timer-spinner>
-    <Button
-      @click="timerStore.toggle"
-      :label="timerStore.isRunning ? 'Stop' : 'Start'"
-    ></Button>
+    <Button @click="timerStore.toggle" full="true" :size="ButtonSize.MEDIUM">
+      <stop-icon v-if="timerStore.isRunning"></stop-icon>
+      <play-icon v-else></play-icon>
+    </Button>
   </div>
 </template>
