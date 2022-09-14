@@ -73,7 +73,6 @@ function setupTimer(sessionId: string, activityId: string) {
 
 function onTimesUp() {
   clearInterval(timerInterval);
-  console.log("🚀 clearInterval");
   
   timePassed = 0;
   timeLeft.value = TIME_LIMIT.value;
@@ -97,10 +96,6 @@ function onTimesUp() {
 function startTimer() {
   timerInterval = setInterval(() => {
     if (timerStore.isRunning) {
-      console.log(
-        "🚀 ~ file: Timer.vue ~ line 98 ~ timerInterval=setInterval ~ timePassed",
-        timePassed
-      );
       timePassed = timePassed += 1;
       timeLeft.value = TIME_LIMIT.value - timePassed;
       baseTimerLabel.value = formatTime(timeLeft.value);
