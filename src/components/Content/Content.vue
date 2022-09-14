@@ -1,25 +1,11 @@
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import { useStore } from "../../stores/main";
+import { useActivityStore } from "../../stores/activity";
+import { getDayOfTheWeek } from "../../utils/dates";
 import Item from "../Item/Item.vue";
-const store = useStore();
+const store = useActivityStore();
 const router = useRouter();
-function getDayOfTheWeek(day: number) {
-  var days = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
-  if (day > days.length) {
-    return null;
-  }
-  var dayName = days[day];
-  return dayName;
-}
+
 function formatDescription(len: number) {
   if (len === 0) {
     return "No activity found";
