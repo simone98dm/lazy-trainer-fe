@@ -147,11 +147,21 @@ function setCircleDasharray() {
   ).toFixed(0)} 283`;
   strokeDasharray.value = circleDasharray;
 }
+
+function redirectToActivity() {
+  timerStore.reset();
+  router.push({
+    name: "details",
+    params: {
+      id: sessionId,
+    },
+  });
+}
 </script>
 
 <template>
   <div>
-    <BackButton @click="timerStore.reset()"></BackButton>
+    <BackButton @click="redirectToActivity"></BackButton>
     <div v-if="timerStore.getCurrentActivity" class="text-center mb-6">
       Current activity:
       <h1 class="text-4xl font-bold">
@@ -188,7 +198,7 @@ function setCircleDasharray() {
       </div>
     </div>
     <div class="mb-6 flex justify-center">
-      <Button @click="timerStore.toggle" :size="ButtonSize.MEDIUM">
+      <Button @click="timerStore.toggle" full="true" :size="ButtonSize.LARGE">
         <Icon
           v-if="timerStore.isRunning"
           :component="StopIcon"

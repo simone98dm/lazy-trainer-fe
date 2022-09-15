@@ -51,7 +51,7 @@ function removeActivity(activityId: string) {
 }
 </script>
 <template>
-  <BackButton></BackButton>
+  <BackButton @click="router.back()"></BackButton>
   <ActivityForm
     :name="activity?.name"
     :id="activity?.id"

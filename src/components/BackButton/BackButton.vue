@@ -8,10 +8,10 @@ const router = useRouter();
 const emits = defineEmits(["click"]);
 
 function onClickHandle() {
-  router.back();
   emits("click");
 }
-</script>s
+</script>
+s
 
 <template>
   <button @click="onClickHandle" class="back__button">
