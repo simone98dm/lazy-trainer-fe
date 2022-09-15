@@ -1,6 +1,7 @@
 <template>
   <svg
     viewBox="0 0 438.529 438.529"
+    fill="white"
     style="enable-background: new 0 0 438.529 438.529"
   >
     <g>

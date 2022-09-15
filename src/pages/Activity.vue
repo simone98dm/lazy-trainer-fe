@@ -30,8 +30,23 @@ if (activityId) {
   }
 }
 
-function saveActivity(sessionId: string) {
-  store.addActivity(sessionId, activity);
+function redirectToList() {
+  router.push({
+    name: "details",
+    params: {
+      id: sessionId,
+    },
+  });
+}
+
+function saveActivity(activity: IActivity) {
+  store.addActivity(sessionId as string, activity);
+  redirectToList();
+}
+
+function removeActivity(activityId: string) {
+  store.removeActivity(sessionId as string, activityId);
+  redirectToList();
 }
 </script>
 <template>
@@ -39,10 +54,12 @@ function saveActivity(sessionId: string) {
     <div class="space-y-2">
       <ActivityForm
         :name="activity?.name"
+        :id="activity?.id"
         :description="activity?.description"
         :time="activity?.time"
         :day-of-week="session?.dayOfWeek"
         @save="saveActivity"
+        @remove="removeActivity"
       ></ActivityForm>
     </div>
   </section>
