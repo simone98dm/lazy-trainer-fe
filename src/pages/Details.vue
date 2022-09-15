@@ -8,6 +8,7 @@ import { ButtonSize, IconSize, LinkType } from "../utils/enum";
 import PlayIcon from "../components/Icons/PlayIcon.vue";
 import Icon from "../components/Icons/Icon.vue";
 import Link from "../components/Link/Link.vue";
+import BackButton from "../components/BackButton/BackButton.vue";
 
 const route = useRoute();
 const store = useActivityStore();
@@ -18,6 +19,7 @@ const activities = store.getSessionActivities(queryParam as string);
   <section class="flex flex-col justify-center">
     <div class="w-full px-3 mb-5">
       <Link
+        label="Run session"
         :type="LinkType.BUTTON"
         :size="ButtonSize.MEDIUM"
         :to="{ name: 'timer', params: { sessionId: queryParam } }"
@@ -25,7 +27,6 @@ const activities = store.getSessionActivities(queryParam as string);
         <Icon :component="PlayIcon" :size="IconSize.MEDIUM"></Icon>
       </Link>
     </div>
-
     <h1 class="mb-3 text-2xl font-bold">List of activities:</h1>
     <div v-for="activity in activities">
       <Link
@@ -46,6 +47,7 @@ const activities = store.getSessionActivities(queryParam as string);
 
     <div class="w-full px-3 mb-5">
       <Link
+        label="Add activity"
         :type="LinkType.BUTTON"
         :to="{ name: 'activity', params: { sessionId: queryParam } }"
         :size="ButtonSize.MEDIUM"

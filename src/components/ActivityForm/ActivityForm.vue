@@ -16,7 +16,7 @@ const uuid = uuidv4();
 let name = ref(props.name || "");
 let id = ref(props.id || uuid);
 let description = ref(props.description || "");
-let time = ref(props.time || 0);
+let time = ref(props.time / 1000 || 0);
 let videoUrl = ref("");
 
 function save() {
@@ -24,7 +24,7 @@ function save() {
     id: id.value,
     name: name.value,
     description: description.value,
-    time: (time.value * 1000),
+    time: time.value * 1000,
     videoUrl: videoUrl.value,
   };
   emits("save", activity);
@@ -70,8 +70,9 @@ function remove() {
           >
             Description:
           </label>
-          <input
+          <textarea
             v-model="description"
+            rows="5"
             class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
             name="activityDescription"
             type="text"
@@ -89,18 +90,18 @@ function remove() {
             v-model="time"
             class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
             name="activityTime"
-            type="text"
+            type="number"
           />
         </div>
         <!-- <label for="activityUrl">
           Video:
           <input type="text" name="activityVideoUrl" v-model="videoUrl" />
         </label> -->
-        <div class="w-full md:w-full px-3">
-          <Button @click="save">
+        <div class="w-full flex sm:flex-row sm:w-full px-3">
+          <Button @click="save" label="Add">
             <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
           </Button>
-          <Button @click="remove">
+          <Button @click="remove" v-if="!isNew()" label="Remove">
             <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
           </Button>
         </div>

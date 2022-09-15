@@ -33,10 +33,10 @@ function formatDescription(len: number) {
       </router-link>
     </div>
     <Link
+      label="Add day activities"
       :to="{ name: 'session' }"
       :size="ButtonSize.MEDIUM"
       :type="LinkType.BUTTON"
-      full="true"
     >
       <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
     </Link>
