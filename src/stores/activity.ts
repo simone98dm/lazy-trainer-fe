@@ -1,12 +1,14 @@
+import { IPlan } from "./../models/Plan";
 import { ISession } from "./../models/Session";
 import { defineStore } from "pinia";
 import { IActivity } from "../models/Activity";
 
 import fakeData from "../assets/db.json";
+import { retrieve, save } from "./localStoragePlugin";
 
 export const useActivityStore = defineStore("activity", {
   state: () => ({
-    plan: fakeData,
+    plan: {} as IPlan,
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
@@ -22,9 +24,9 @@ export const useActivityStore = defineStore("activity", {
   },
   actions: {
     restoreSession() {
-      const existingSession = localStorage.getItem("_plan");
-      if (existingSession) {
-        this.plan = JSON.parse(existingSession);
+      retrieve();
+      if (this.plan.name === undefined) {
+        this.plan = fakeData;
       }
     },
     addActivity(sessionId: string, activity: IActivity) {
@@ -43,7 +45,7 @@ export const useActivityStore = defineStore("activity", {
           this.plan.sessions[index].activities.push(activity);
         }
       }
-      localStorage.setItem("_plan", JSON.stringify(this.plan));
+      save(this.plan);
     },
     removeActivity(sessionId: string, activityId: string) {
       const index = this.plan.sessions.findIndex((obj) => obj.id === sessionId);
@@ -56,14 +58,15 @@ export const useActivityStore = defineStore("activity", {
           this.plan.sessions[index].activities = newActivity;
         }
       }
-      localStorage.setItem("_plan", JSON.stringify(this.plan));
+      save(this.plan);
     },
     addSession(session: ISession) {
       this.plan.sessions.push(session);
-      localStorage.setItem("_plan", JSON.stringify(this.plan));
+      save(this.plan);
     },
     deleteSession(sessionId: string) {
       this.plan.sessions = this.plan.sessions.filter((x) => x.id !== sessionId);
+      save(this.plan);
     },
   },
 });
