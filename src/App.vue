@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import Header from "./components/Header/Header.vue";
+import { useActivityStore } from "./stores/activity";
+const store = useActivityStore();
+store.restoreSession();
 </script>
 
 <template>
