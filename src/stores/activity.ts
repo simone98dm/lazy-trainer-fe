@@ -19,14 +19,17 @@ export const useActivityStore = defineStore("activity", {
       return state.plan.sessions.find((session) => session.id === sessionId);
     },
     getWeek(state) {
-      return state.plan.sessions;
+      return state.plan.sessions.sort((x, y) =>
+        x.dayOfWeek < y.dayOfWeek ? -1 : 1
+      );
     },
   },
   actions: {
     restoreSession() {
-      retrieve();
-      if (this.plan.name === undefined) {
-        this.plan = fakeData;
+      this.plan = fakeData;
+      const existingData = retrieve();
+      if (existingData) {
+        this.plan = existingData;
       }
     },
     addActivity(sessionId: string, activity: IActivity) {
@@ -61,8 +64,13 @@ export const useActivityStore = defineStore("activity", {
       save(this.plan);
     },
     addSession(session: ISession) {
-      this.plan.sessions.push(session);
-      save(this.plan);
+      const existingIndex = this.plan.sessions.findIndex(
+        (x) => x.dayOfWeek === session.dayOfWeek
+      );
+      if (existingIndex < 0) {
+        this.plan.sessions.push(session);
+        save(this.plan);
+      }
     },
     deleteSession(sessionId: string) {
       this.plan.sessions = this.plan.sessions.filter((x) => x.id !== sessionId);

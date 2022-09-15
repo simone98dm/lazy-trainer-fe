@@ -43,22 +43,30 @@ function selectDay(dayIndex: number) {
 </script>
 
 <template>
-  <div class="mb-6 flex flex-wrap gap-3">
-    <button
-      v-for="(dayName, i) in days"
-      :key="i"
-      class="w-full bg-gray-200 focus:bg-indigo-600 focus:text-slate-50 duration-200 rounded-full px-4 py-2 font-light"
-      @click="() => selectDay(i)"
+  <div class="flex justify-center my-2 md:mx-0">
+    <form
+      class="w-full sm:max-w-xl bg-white rounded-lg shadow-md p-6"
+      @submit.prevent
     >
-      {{ dayName }}
-    </button>
-  </div>
-  <div class="w-full md:w-full px-3">
-    <Button @click="remove" v-if="!isNew()" label="Delete">
-      <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
-    </Button>
-    <Button @click="save" v-else label="Add">
-      <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
-    </Button>
+      <div class="mb-6 flex flex-wrap gap-3">
+        <h1 class="mb-3 text-2xl font-bold">Create a new day session:</h1>
+        <button
+          v-for="(dayName, i) in days"
+          :key="i"
+          class="w-full bg-gray-200 focus:bg-indigo-600 focus:text-slate-50 duration-200 rounded-full px-4 py-2 font-light"
+          @click="() => selectDay(i)"
+        >
+          {{ dayName }}
+        </button>
+      </div>
+      <div class="w-full md:w-full px-3">
+        <Button @click="remove" v-if="!isNew()" label="Delete">
+          <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
+        </Button>
+        <Button @click="save" v-else label="Add">
+          <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
+        </Button>
+      </div>
+    </form>
   </div>
 </template>

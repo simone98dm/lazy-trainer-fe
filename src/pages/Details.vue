@@ -25,8 +25,9 @@ function deleteSession() {
 </script>
 <template>
   <section class="flex flex-col justify-center">
-    <div class="w-full flex flex-col sm:flex-row px-3 mb-5" v-if="count > 0">
+    <div class="w-full flex flex-col sm:flex-row px-3 mb-5">
       <Link
+        v-if="count > 0"
         label="Run session"
         :type="LinkType.BUTTON"
         :size="ButtonSize.MEDIUM"
