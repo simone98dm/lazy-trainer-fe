@@ -97,10 +97,10 @@ function remove() {
           <input type="text" name="activityVideoUrl" v-model="videoUrl" />
         </label> -->
         <div class="w-full md:w-full px-3">
-          <Button @click="remove" v-if="!isNew()">
+          <Button @click="remove">
             <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
           </Button>
-          <Button @click="save" v-else>
+          <Button @click="save">
             <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
           </Button>
         </div>
