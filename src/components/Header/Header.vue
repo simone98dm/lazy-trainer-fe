@@ -3,6 +3,11 @@ import MenuIcon from "../Icons/MenuIcon.vue";
 import ShareIcon from "../Icons/ShareIcon.vue";
 import Icon from "../Icons/Icon.vue";
 import { IconSize } from "../../utils/enum";
+
+function resetAll() {
+  localStorage.clear();
+  location.href = "/"
+}
 </script>
 
 <template>
@@ -18,6 +23,7 @@ import { IconSize } from "../../utils/enum";
       </router-link>
       <div
         class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
+        @click="resetAll"
       >
         <Icon :component="MenuIcon" :size="IconSize.SMALL"></Icon>
       </div>
