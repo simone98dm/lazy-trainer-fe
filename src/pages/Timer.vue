@@ -11,17 +11,15 @@ import { IActivity } from "../models/Activity";
 import { COLOR_CODES, FULL_DASH_ARRAY } from "../utils/constants";
 import { ref } from "vue";
 import BackButton from "../components/BackButton/BackButton.vue";
+import { Act } from "../utils/types";
+import { getActivity } from "../utils";
 
 const route = useRoute();
 const router = useRouter();
+
 const timerStore = useTimerStore();
 const activityStore = useActivityStore();
-type Act =
-  | {
-      firstActivity: IActivity | undefined;
-      secondActivity: IActivity | undefined;
-    }
-  | undefined;
+
 const { sessionId, activityId } = route.params;
 
 let TIME_LIMIT = ref(0);
@@ -33,30 +31,6 @@ let remainingPathColor = ref(COLOR_CODES.info.color);
 let strokeDasharray = ref(`283`);
 let baseTimerLabel = ref(formatTime(timeLeft.value));
 startTimer();
-
-function getActivity(activities: IActivity[], activityId: string): Act {
-  let obj: Act;
-  if (!activityId && activities.length > 0) {
-    obj = { firstActivity: activities[0], secondActivity: undefined };
-    if (activities.length > 1) {
-      obj = { ...obj, secondActivity: activities[1] };
-    }
-    return obj;
-  }
-
-  const firstActivityIndex =
-    activities?.findIndex((act) => act.id === activityId) ?? undefined;
-  const secondActivityIndex = firstActivityIndex + 1;
-
-  const firstActivity = activities[firstActivityIndex];
-  obj = { firstActivity, secondActivity: undefined };
-  if (secondActivityIndex < activities.length) {
-    obj = { ...obj, secondActivity: activities[secondActivityIndex] };
-    return obj;
-  }
-
-  return obj;
-}
 
 function setupTimer(sessionId: string, activityId: string) {
   const activities = activityStore.getSessionActivities(sessionId);
@@ -98,7 +72,7 @@ function onTimesUp() {
     router.push({
       name: "details",
       params: {
-        id: sessionId,
+        sessionId,
       },
     });
   }
@@ -153,7 +127,7 @@ function redirectToActivity() {
   router.push({
     name: "details",
     params: {
-      id: sessionId,
+      sessionId,
     },
   });
 }
