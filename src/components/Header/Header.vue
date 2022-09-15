@@ -13,9 +13,9 @@ import { IconSize } from "../../utils/enum";
       >
         <Icon :component="ShareIcon" :size="IconSize.SMALL"></Icon>
       </div>
-      <a href="/">
+      <router-link to="/">
         <h1 class="text-center text-3xl font-semibold">Trainer</h1>
-      </a>
+      </router-link>
       <div
         class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
       >

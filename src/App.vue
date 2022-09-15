@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Header from "./components/Header/Header.vue";
-import Footer from "./components/Footer/Footer.vue";
 </script>
 
 <template>
@@ -10,7 +9,7 @@ import Footer from "./components/Footer/Footer.vue";
       <div class="flex-1 overflow-y-auto p-5">
         <router-view></router-view>
       </div>
-      <Footer></Footer>
+      <!-- <Footer></Footer> -->
     </div>
   </div>
 </template>

@@ -60,7 +60,8 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  linkExactActiveClass: "bg-slate-100 text-indigo-600",
+  // linkExactActiveClass: "bg-slate-100 text-indigo-600",
+  linkExactActiveClass: "",
 });
 
 export default router;
