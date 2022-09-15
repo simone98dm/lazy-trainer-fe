@@ -25,7 +25,7 @@ function deleteSession() {
 </script>
 <template>
   <section class="flex flex-col justify-center">
-    <div class="w-full flex flex-col sm:flex-row px-3 mb-5">
+    <div class="flex flex-col sm:flex-row mb-6">
       <Link
         v-if="count > 0"
         label="Run session"
@@ -45,29 +45,31 @@ function deleteSession() {
         <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
       </Button>
     </div>
-    <div v-if="count > 0">
-      <h1 class="mb-3 text-2xl font-bold">List of activities:</h1>
-      <div v-for="activity in activities">
-        <Link
-          :to="{
-            name: 'activity',
-            params: { sessionId: queryParam, activityId: activity.id },
-          }"
-        >
-          <Item
-            :name="activity.name"
-            :description="activity.description"
-            :time="activity.time"
-            :id="activity.id"
-            :key="activity.id"
-          />
-        </Link>
+    <div class="mb-6">
+      <div v-if="count > 0">
+        <h1 class="mb-3 text-2xl font-bold">List of activities:</h1>
+        <div v-for="activity in activities">
+          <Link
+            :to="{
+              name: 'activity',
+              params: { sessionId: queryParam, activityId: activity.id },
+            }"
+          >
+            <Item
+              :name="activity.name"
+              :description="activity.description"
+              :time="activity.time"
+              :id="activity.id"
+              :key="activity.id"
+            />
+          </Link>
+        </div>
+      </div>
+      <div v-else>
+        <h1 class="mb-3 text-2xl font-bold">No activity found</h1>
       </div>
     </div>
-    <div v-else>
-      <h1 class="mb-3 text-2xl font-bold">No activity found</h1>
-    </div>
-    <div class="w-full px-3 mb-5">
+    <div class="mb-6">
       <Link
         label="Add activity"
         :type="LinkType.BUTTON"

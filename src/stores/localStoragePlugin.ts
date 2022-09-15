@@ -5,7 +5,10 @@ export function save(data: any) {
   localStorage.setItem("_plan", s);
 }
 
-export function retrieve(): IPlan {
+export function retrieve(): IPlan | null {
   const data = localStorage.getItem("_plan");
-  return JSON.parse(data || "");
+  if (!data) {
+    return null;
+  }
+  return JSON.parse(data);
 }

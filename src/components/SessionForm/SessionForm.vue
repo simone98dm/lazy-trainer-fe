@@ -43,13 +43,10 @@ function selectDay(dayIndex: number) {
 </script>
 
 <template>
-  <div class="flex justify-center my-2 md:mx-0">
-    <form
-      class="w-full sm:max-w-xl bg-white rounded-lg shadow-md p-6"
-      @submit.prevent
-    >
-      <div class="mb-6 flex flex-wrap gap-3">
-        <h1 class="mb-3 text-2xl font-bold">Create a new day session:</h1>
+  <div class="flex justify-center w-full">
+    <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
+      <h1 class="mb-3 text-2xl font-bold mb-6">Create a new day session:</h1>
+      <div class="flex flex-wrap justify-center gap-3 mb-6">
         <button
           v-for="(dayName, i) in days"
           :key="i"
@@ -59,12 +56,12 @@ function selectDay(dayIndex: number) {
           {{ dayName }}
         </button>
       </div>
-      <div class="w-full md:w-full px-3">
-        <Button @click="remove" v-if="!isNew()" label="Delete">
-          <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
-        </Button>
-        <Button @click="save" v-else label="Add">
+      <div>
+        <Button label="Create" @click="save" v-if="isNew()">
           <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
+        </Button>
+        <Button label="Delete" @click="remove" v-else>
+          <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
         </Button>
       </div>
     </form>

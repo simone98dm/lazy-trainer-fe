@@ -16,7 +16,9 @@ function addSession(session: ISession) {
 }
 </script>
 <template>
-  <BackButton @click="router.back()"></BackButton>
+  <div class="mb-6">
+    <BackButton @click="router.back()"></BackButton>
+  </div>
   <div class="flex flex-wrap justify-center">
     <SessionForm @save="addSession"></SessionForm>
   </div>

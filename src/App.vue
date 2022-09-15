@@ -9,7 +9,7 @@ store.restoreSession();
   <div class="mx-auto bg-gray-50">
     <div class="flex flex-col h-screen">
       <Header></Header>
-      <div class="flex-1 overflow-y-auto p-5">
+      <div class="p-5 w-full sm:w-4/5 md:w-2/3 mx-auto">
         <router-view></router-view>
       </div>
       <!-- <Footer></Footer> -->

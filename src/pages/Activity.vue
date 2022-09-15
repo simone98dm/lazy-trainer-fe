@@ -51,14 +51,18 @@ function removeActivity(activityId: string) {
 }
 </script>
 <template>
-  <BackButton @click="router.back()"></BackButton>
-  <ActivityForm
-    :name="activity?.name"
-    :id="activity?.id"
-    :description="activity?.description"
-    :time="activity?.time"
-    :day-of-week="session?.dayOfWeek"
-    @save="saveActivity"
-    @remove="removeActivity"
-  ></ActivityForm>
+  <div class="mb-6">
+    <BackButton @click="router.back()" />
+  </div>
+  <div class="mb-6">
+    <ActivityForm
+      :name="activity?.name"
+      :id="activity?.id"
+      :description="activity?.description"
+      :time="activity?.time"
+      :day-of-week="session?.dayOfWeek"
+      @save="saveActivity"
+      @remove="removeActivity"
+    />
+  </div>
 </template>

@@ -42,16 +42,13 @@ function remove() {
 </script>
 
 <template>
-  <div class="flex justify-center my-2 md:mx-0">
-    <form
-      class="w-full sm:max-w-xl bg-white rounded-lg shadow-md p-6"
-      @submit.prevent
-    >
+  <div class="flex justify-center">
+    <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
       <h1 class="mb-3 text-2xl font-bold">
         {{ isNew() ? "Add new activity:" : "Edit activity:" }}
       </h1>
       <div class="flex flex-wrap -mx-3">
-        <div class="w-full md:w-full px-3 mb-6">
+        <div class="w-full px-3 mb-6">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="activityName"
@@ -66,7 +63,7 @@ function remove() {
           />
         </div>
 
-        <div class="w-full md:w-full px-3 mb-6">
+        <div class="w-full px-3 mb-6">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="activityDescription"
@@ -99,9 +96,7 @@ function remove() {
           Video:
           <input type="text" name="activityVideoUrl" v-model="videoUrl" />
         </label> -->
-        <div
-          class="w-full md:w-full flex flex-col sm:flex-row justify-center px-3"
-        >
+        <div class="w-full flex flex-col sm:flex-row justify-center px-3">
           <Button
             @click="save"
             full="true"
