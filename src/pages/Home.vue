@@ -1,7 +1,43 @@
 <script setup lang="ts">
-import Content from "../components/Content/Content.vue";
+import { useRouter } from "vue-router";
+import { useActivityStore } from "../stores/activity";
+import { getDayOfTheWeek } from "../utils/dates";
+import { ButtonSize, IconSize, LinkType } from "../utils/enum";
+import AddIcon from "../components/Icons/AddIcon.vue";
+import Item from "../components/Item/Item.vue";
+import Link from "../components/Link/Link.vue";
+import Icon from "../components/Icons/Icon.vue";
+
+const store = useActivityStore();
+const router = useRouter();
+
+function formatDescription(len: number) {
+  if (len === 0) {
+    return "No activity found";
+  }
+  return `${len} ${len > 1 ? "activities" : "activity"}`;
+}
 </script>
 
 <template>
-  <Content />
+  <section>
+    <div v-for="activity in store.getWeek">
+      <router-link :to="{ name: 'details', params: { id: activity.id } }">
+        <Item
+          :name="getDayOfTheWeek(activity.dayOfWeek)"
+          :description="formatDescription(activity.activities.length)"
+          :id="activity.id"
+          :key="activity.dayOfWeek"
+        />
+      </router-link>
+    </div>
+    <Link
+      :to="{ name: 'session' }"
+      :size="ButtonSize.MEDIUM"
+      :type="LinkType.BUTTON"
+      full="true"
+    >
+      <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
+    </Link>
+  </section>
 </template>

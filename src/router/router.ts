@@ -4,6 +4,7 @@ import Activity from "../pages/Activity.vue";
 import Setting from "../pages/Setting.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import Timer from "../pages/Timer.vue";
+import Session from "../pages/Session.vue";
 
 const routes = [
   {
@@ -42,6 +43,14 @@ const routes = [
     name: "timer",
     path: "/timer/:sessionId/:activityId?",
     component: Timer,
+    meta: {
+      showFooter: false,
+    },
+  },
+  {
+    name: "session",
+    path: "/session",
+    component: Session,
     meta: {
       showFooter: false,
     },
