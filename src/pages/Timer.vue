@@ -73,24 +73,34 @@ function setupTimer(sessionId: string, activityId: string) {
 
 function onTimesUp() {
   clearInterval(timerInterval);
-  
+
   timePassed = 0;
   timeLeft.value = TIME_LIMIT.value;
   remainingPathColor.value = COLOR_CODES.info.color;
   strokeDasharray.value = `283`;
   baseTimerLabel.value = formatTime(timeLeft.value);
 
-  const activityId = timerStore.getNextActivity.id;
-  router.push({
-    name: "timer",
-    params: {
-      sessionId,
-      activityId,
-    },
-  });
+  if (timerStore.getNextActivity) {
+    const activityId = timerStore.getNextActivity.id;
+    router.push({
+      name: "timer",
+      params: {
+        sessionId,
+        activityId,
+      },
+    });
 
-  setupTimer(sessionId as string, activityId);
-  startTimer();
+    setupTimer(sessionId as string, activityId);
+    startTimer();
+  } else {
+    timerStore.reset();
+    router.push({
+      name: "details",
+      params: {
+        id: sessionId,
+      },
+    });
+  }
 }
 
 function startTimer() {
@@ -140,7 +150,7 @@ function setCircleDasharray() {
 
 <template>
   <div>
-    <div class="text-center mb-6">
+    <div v-if="timerStore.getCurrentActivity" class="text-center mb-6">
       Current activity:
       <h1 class="text-4xl font-bolde">
         {{ timerStore.getCurrentActivity.name }}
@@ -188,9 +198,10 @@ function setCircleDasharray() {
     <hr class="mb-6" />
     <div class="text-center text-slate-500 mb-6">
       Next activty:
-      <h1 class="text-4xl font-bolder">
+      <h1 v-if="timerStore.getNextActivity" class="text-4xl font-bolder">
         {{ timerStore.getNextActivity.name }}
       </h1>
+      <h1 v-else class="text-4xl font-bolder">End of session</h1>
     </div>
   </div>
 </template>

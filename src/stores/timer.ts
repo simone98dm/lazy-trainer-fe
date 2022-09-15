@@ -3,8 +3,8 @@ import { IActivity } from "../models/Activity";
 
 export const useTimerStore = defineStore("timer", {
   state: () => ({
-    currentActivity: {} as IActivity,
-    nextActivity: {} as IActivity,
+    currentActivity: {} as IActivity | undefined,
+    nextActivity: {} as IActivity | undefined,
     running: false,
     runningTimer: 0,
   }),
@@ -24,15 +24,11 @@ export const useTimerStore = defineStore("timer", {
   },
   actions: {
     setCurrentActivity(activity: IActivity | undefined) {
-      if (activity) {
-        this.currentActivity = activity;
-        this.runningTimer = activity.time;
-      }
+      this.currentActivity = activity;
+      this.runningTimer = activity?.time ?? -1;
     },
     setNextActivity(activity: IActivity | undefined) {
-      if (activity) {
-        this.nextActivity = activity;
-      }
+      this.nextActivity = activity;
     },
     stop() {
       this.running = false;
@@ -43,5 +39,11 @@ export const useTimerStore = defineStore("timer", {
     toggle() {
       this.running = !this.running;
     },
+    reset() {
+      this.running = false;
+      this.runningTimer = 0;
+      this.currentActivity = undefined;
+      this.nextActivity = undefined;
+    }
   },
 });
