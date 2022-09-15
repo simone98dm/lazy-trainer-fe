@@ -63,6 +63,8 @@ function removeActivity(activityId: string) {
       :description="activity?.description"
       :time="activity?.time"
       :day-of-week="session?.dayOfWeek"
+      :warmup="activity?.warmup"
+      :order="activity?.order"
       @save="saveActivity"
       @remove="removeActivity"
     />

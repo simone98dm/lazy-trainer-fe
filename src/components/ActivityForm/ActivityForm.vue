@@ -8,7 +8,7 @@ import TrashIcon from "../Icons/TrashIcon.vue";
 import AddIcon from "../Icons/AddIcon.vue";
 import { IconSize, ButtonColor } from "../../utils/enum";
 
-const props = defineProps(["id", "dayOfWeek", "name", "description", "time"]);
+const props = defineProps(["id", "dayOfWeek", "name", "description", "time", "warmup", "order"]);
 const emits = defineEmits(["save", "remove"]);
 
 const uuid = uuidv4();
@@ -17,6 +17,8 @@ let name = ref(props.name || "");
 let id = ref(props.id || uuid);
 let description = ref(props.description || "");
 let time = ref(props.time || 0);
+let warmup = ref(props.warmup || false);
+let order = ref(props.order || 0);
 let videoUrl = ref("");
 
 function save() {
@@ -25,6 +27,8 @@ function save() {
     name: name.value,
     description: description.value,
     time: time.value * 1000,
+    order: order.value,
+    warmup: warmup.value,
     videoUrl: videoUrl.value,
   };
   emits("save", activity);
