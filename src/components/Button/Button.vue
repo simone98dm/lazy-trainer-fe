@@ -10,7 +10,7 @@ const emit = defineEmits(["click"]);
       'justify-center',
       'item-center',
       { 'w-full': props.full ?? false },
-      { 'w-full sm:w-1/2': !props.full },
+      { 'w-full sm:w-fit': !props.full },
       'appearance-none',
       'block',
       'bg-indigo-600',

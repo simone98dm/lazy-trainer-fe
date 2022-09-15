@@ -154,7 +154,7 @@ function setCircleDasharray() {
     <BackButton @click="timerStore.reset()"></BackButton>
     <div v-if="timerStore.getCurrentActivity" class="text-center mb-6">
       Current activity:
-      <h1 class="text-4xl font-bolde">
+      <h1 class="text-4xl font-bold">
         {{ timerStore.getCurrentActivity.name }}
       </h1>
     </div>
@@ -187,7 +187,7 @@ function setCircleDasharray() {
         </div>
       </div>
     </div>
-    <div class="mb-6">
+    <div class="mb-6 flex justify-center">
       <Button @click="timerStore.toggle" :size="ButtonSize.MEDIUM">
         <Icon
           v-if="timerStore.isRunning"
