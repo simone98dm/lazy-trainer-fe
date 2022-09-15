@@ -5,25 +5,16 @@ import Icon from "../Icons/Icon.vue";
 import { IconSize } from "../../utils/enum";
 import { useRoute } from "vue-router";
 
-const route = useRoute();
-const { showFooter } = route.meta;
 </script>
 
 <template>
   <div
-    v-if="showFooter"
     class="fixed left-0 bottom-0 w-full rounded-t-xl bg-white px-5 py-2 shadow-sm shadow-gray-300"
   >
     <nav class="flex justify-around text-gray-900">
       <router-link to="/" class="py-3 rounded-full p-3">
         <Icon :component="HouseIcon" :size="IconSize.MEDIUM"></Icon>
       </router-link>
-      <!-- <router-link to="/analytics" class="py-3 rounded-full p-3">
-        <analytics-icon></analytics-icon>
-      </router-link>
-      <router-link to="/zap" class="py-3 rounded-full p-3">
-        <zap-icon></zap-icon>
-      </router-link> -->
       <router-link to="/setting" class="py-3 rounded-full p-3">
         <Icon :component="SettingIcon" :size="IconSize.MEDIUM"></Icon>
       </router-link>

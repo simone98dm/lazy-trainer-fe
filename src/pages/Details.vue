@@ -28,7 +28,7 @@ const activities = store.getSessionActivities(queryParam as string);
 
     <div v-for="activity in activities">
       <Link
-        :to="{  
+        :to="{
           name: 'activity',
           params: { sessionId: queryParam, activityId: activity.id },
         }"

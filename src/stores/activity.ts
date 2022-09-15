@@ -1,3 +1,4 @@
+import { ISession } from "./../models/Session";
 import { defineStore } from "pinia";
 import { IActivity } from "../models/Activity";
 
@@ -48,6 +49,9 @@ export const useActivityStore = defineStore("activity", {
           this.plan.sessions[index].activities = newActivity;
         }
       }
+    },
+    addSession(session: ISession) {
+      this.plan.sessions.push(session);
     },
   },
 });

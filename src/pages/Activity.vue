@@ -50,17 +50,14 @@ function removeActivity(activityId: string) {
 }
 </script>
 <template>
-  <section class="p-5">
-    <div class="space-y-2">
-      <ActivityForm
-        :name="activity?.name"
-        :id="activity?.id"
-        :description="activity?.description"
-        :time="activity?.time"
-        :day-of-week="session?.dayOfWeek"
-        @save="saveActivity"
-        @remove="removeActivity"
-      ></ActivityForm>
-    </div>
-  </section>
+  <h1 class="text-2xl">Edit session:</h1>
+  <ActivityForm
+    :name="activity?.name"
+    :id="activity?.id"
+    :description="activity?.description"
+    :time="activity?.time"
+    :day-of-week="session?.dayOfWeek"
+    @save="saveActivity"
+    @remove="removeActivity"
+  ></ActivityForm>
 </template>
