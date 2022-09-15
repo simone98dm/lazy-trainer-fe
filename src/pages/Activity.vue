@@ -50,7 +50,8 @@ function removeActivity(activityId: string) {
 }
 </script>
 <template>
-  <h1 class="text-2xl">Edit session:</h1>
+  <h1 class="mb-3 text-2xl font-bold" v-if="Boolean(!activityId)">Add new activity:</h1>
+  <h1 class="mb-3 text-2xl font-bold" v-else>Edit activity:</h1>
   <ActivityForm
     :name="activity?.name"
     :id="activity?.id"

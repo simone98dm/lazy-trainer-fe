@@ -24,7 +24,7 @@ function save() {
     id: id.value,
     name: name.value,
     description: description.value,
-    time: time.value,
+    time: (time.value * 1000),
     videoUrl: videoUrl.value,
   };
   emits("save", activity);
@@ -68,7 +68,7 @@ function remove() {
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="activityDescription"
           >
-            Desc.:
+            Description:
           </label>
           <input
             v-model="description"
@@ -83,7 +83,7 @@ function remove() {
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="activityTime"
           >
-            Time:
+            Time in seconds:
           </label>
           <input
             v-model="time"
@@ -97,11 +97,11 @@ function remove() {
           <input type="text" name="activityVideoUrl" v-model="videoUrl" />
         </label> -->
         <div class="w-full md:w-full px-3">
-          <Button @click="remove">
-            <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
-          </Button>
           <Button @click="save">
             <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
+          </Button>
+          <Button @click="remove">
+            <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
           </Button>
         </div>
       </div>

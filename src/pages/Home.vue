@@ -20,6 +20,7 @@ function formatDescription(len: number) {
 </script>
 
 <template>
+  <h1 class="mb-3 text-2xl font-bold">Your week session:</h1>
   <section>
     <div v-for="activity in store.getWeek">
       <router-link :to="{ name: 'details', params: { id: activity.id } }">

@@ -26,6 +26,7 @@ const activities = store.getSessionActivities(queryParam as string);
       </Link>
     </div>
 
+    <h1 class="mb-3 text-2xl font-bold">List of activities:</h1>
     <div v-for="activity in activities">
       <Link
         :to="{

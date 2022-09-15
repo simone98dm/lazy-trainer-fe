@@ -15,7 +15,7 @@ function addSession(session: ISession) {
 }
 </script>
 <template>
-  <h1 class="text-2xl">Edit plan:</h1>
+  <h1 class="mb-3 text-2xl font-bold">Create a new day session:</h1>
   <div class="flex flex-wrap justify-center">
     <SessionForm @save="addSession"></SessionForm>
   </div>
