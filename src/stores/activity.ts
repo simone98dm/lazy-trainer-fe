@@ -39,10 +39,8 @@ export const useActivityStore = defineStore("activity", {
     },
     removeActivity(sessionId: string, activityId: string) {
       const index = this.plan.sessions.findIndex((obj) => obj.id === sessionId);
-      console.log("🚀 ~ file: activity.ts ~ line 42 ~ removeActivity ~ index", index)
       if (index >= 0) {
         if (activityId) {
-          console.log("🚀 ~ file: activity.ts ~ line 45 ~ removeActivity ~ activityId", activityId)
           const newActivity = this.plan.sessions[index].activities.filter(
             (act) => act.id !== activityId
           );
