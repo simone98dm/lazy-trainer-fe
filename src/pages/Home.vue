@@ -11,6 +11,8 @@ import Icon from "../components/Icons/Icon.vue";
 const store = useActivityStore();
 const router = useRouter();
 
+const sessions = store.getWeek;
+
 function formatDescription(len: number) {
   if (len === 0) {
     return "No activity found";
@@ -20,17 +22,22 @@ function formatDescription(len: number) {
 </script>
 
 <template>
-  <h1 class="mb-3 text-2xl font-bold">Your week session:</h1>
   <section>
-    <div v-for="activity in store.getWeek">
-      <router-link :to="{ name: 'details', params: { id: activity.id } }">
-        <Item
-          :name="getDayOfTheWeek(activity.dayOfWeek)"
-          :description="formatDescription(activity.activities.length)"
-          :id="activity.id"
-          :key="activity.dayOfWeek"
-        />
-      </router-link>
+    <div v-if="sessions.length > 0">
+      <h1 class="mb-3 text-2xl font-bold">Your week session:</h1>
+      <div v-for="activity in sessions">
+        <router-link :to="{ name: 'details', params: { id: activity.id } }">
+          <Item
+            :name="getDayOfTheWeek(activity.dayOfWeek)"
+            :description="formatDescription(activity.activities.length)"
+            :id="activity.id"
+            :key="activity.dayOfWeek"
+          />
+        </router-link>
+      </div>
+    </div>
+    <div v-else>
+      <h1 class="mb-3 text-2xl font-bold">No activity found</h1>
     </div>
     <Link
       label="Add day activities"

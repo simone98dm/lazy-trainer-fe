@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { LinkType } from "../../utils/enum";
-const props = defineProps(["to", "full", "type", "label"]);
+import { LinkType, ButtonColor } from "../../utils/enum";
+const props = defineProps(["to", "full", "type", "label", "color"]);
 const emit = defineEmits(["click"]);
 
 const css =
@@ -14,7 +14,19 @@ const css =
         { "w-full sm:w-fit": !props.full },
         "appearance-none",
         "block",
-        "bg-indigo-600",
+        {
+          "bg-indigo-600 hover:bg-indigo-500":
+            !props.color || props.color === ButtonColor.PRIMARY,
+        },
+        { "bg-red-600 hover:bg-red-500": props.color === ButtonColor.DANGER },
+        {
+          "bg-green-600 hover:bg-green-500":
+            props.color === ButtonColor.SUCCESS,
+        },
+        {
+          "bg-orange-600 hover:bg-orange-500":
+            props.color === ButtonColor.WARNING,
+        },
         "text-gray-100",
         "font-bold",
         "border",
@@ -22,7 +34,6 @@ const css =
         "rounded-lg",
         "py-3",
         "px-3",
-        "hover:bg-indigo-500",
       ]
     : "";
 </script>

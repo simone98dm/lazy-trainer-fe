@@ -62,5 +62,8 @@ export const useActivityStore = defineStore("activity", {
       this.plan.sessions.push(session);
       localStorage.setItem("_plan", JSON.stringify(this.plan));
     },
+    deleteSession(sessionId: string) {
+      this.plan.sessions = this.plan.sessions.filter((x) => x.id !== sessionId);
+    },
   },
 });

@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const props = defineProps(["full", "size", "label"]);
+import { ButtonColor } from "../../utils/enum";
+
+const props = defineProps(["full", "size", "label", "color"]);
 const emit = defineEmits(["click"]);
 </script>
 
@@ -13,7 +15,18 @@ const emit = defineEmits(["click"]);
       { 'w-full sm:w-fit': !props.full },
       'appearance-none',
       'block',
-      'bg-indigo-600',
+      {
+        'bg-indigo-600 hover:bg-indigo-500':
+          !props.color || props.color === ButtonColor.PRIMARY,
+      },
+      { 'bg-red-600 hover:bg-red-500': props.color === ButtonColor.DANGER },
+      {
+        'bg-green-600 hover:bg-green-500': props.color === ButtonColor.SUCCESS,
+      },
+      {
+        'bg-orange-600 hover:bg-orange-500':
+          props.color === ButtonColor.WARNING,
+      },
       'text-gray-100',
       'font-bold',
       'border',

@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import Icon from "../Icons/Icon.vue";
 import TrashIcon from "../Icons/TrashIcon.vue";
 import AddIcon from "../Icons/AddIcon.vue";
-import { IconSize } from "../../utils/enum";
+import { IconSize, ButtonColor } from "../../utils/enum";
 
 const props = defineProps(["id", "dayOfWeek", "name", "description", "time"]);
 const emits = defineEmits(["save", "remove"]);
@@ -99,11 +99,23 @@ function remove() {
           Video:
           <input type="text" name="activityVideoUrl" v-model="videoUrl" />
         </label> -->
-        <div class="w-full md:w-full flex flex-col sm:flex-row justify-center px-3">
-          <Button @click="save" full="true" label="Add">
+        <div
+          class="w-full md:w-full flex flex-col sm:flex-row justify-center px-3"
+        >
+          <Button
+            @click="save"
+            full="true"
+            label="Add"
+            :color="ButtonColor.SUCCESS"
+          >
             <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
           </Button>
-          <Button @click="remove" full="true" label="Remove">
+          <Button
+            @click="remove"
+            full="true"
+            label="Remove"
+            :color="ButtonColor.DANGER"
+          >
             <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
           </Button>
         </div>
