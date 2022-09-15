@@ -3,6 +3,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useActivityStore } from "../stores/activity";
 import ActivityForm from "../components/ActivityForm/ActivityForm.vue";
 import { IActivity } from "../models/Activity";
+import BackButton from "../components/BackButton/BackButton.vue";
 const route = useRoute();
 const router = useRouter();
 const store = useActivityStore();
@@ -52,6 +53,7 @@ function removeActivity(activityId: string) {
 <template>
   <h1 class="mb-3 text-2xl font-bold" v-if="Boolean(!activityId)">Add new activity:</h1>
   <h1 class="mb-3 text-2xl font-bold" v-else>Edit activity:</h1>
+  <BackButton></BackButton>
   <ActivityForm
     :name="activity?.name"
     :id="activity?.id"

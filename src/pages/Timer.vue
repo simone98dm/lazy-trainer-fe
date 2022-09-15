@@ -10,6 +10,7 @@ import Icon from "../components/Icons/Icon.vue";
 import { IActivity } from "../models/Activity";
 import { COLOR_CODES, FULL_DASH_ARRAY } from "../utils/constants";
 import { ref } from "vue";
+import BackButton from "../components/BackButton/BackButton.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -150,6 +151,7 @@ function setCircleDasharray() {
 
 <template>
   <div>
+    <BackButton @click="timerStore.reset()"></BackButton>
     <div v-if="timerStore.getCurrentActivity" class="text-center mb-6">
       Current activity:
       <h1 class="text-4xl font-bolde">
@@ -186,7 +188,7 @@ function setCircleDasharray() {
       </div>
     </div>
     <div class="mb-6">
-      <Button @click="timerStore.toggle" full="true" :size="ButtonSize.MEDIUM">
+      <Button @click="timerStore.toggle" :size="ButtonSize.MEDIUM">
         <Icon
           v-if="timerStore.isRunning"
           :component="StopIcon"

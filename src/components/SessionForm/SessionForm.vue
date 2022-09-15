@@ -54,10 +54,10 @@ function selectDay(dayIndex: number) {
     </button>
   </div>
   <div class="w-full md:w-full px-3">
-    <Button full="true" @click="remove" v-if="!isNew()">
+    <Button @click="remove" v-if="!isNew()" label="Delete">
       <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
     </Button>
-    <Button full="true" @click="save" v-else>
+    <Button @click="save" v-else label="Add">
       <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
     </Button>
   </div>
