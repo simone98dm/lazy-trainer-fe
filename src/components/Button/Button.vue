@@ -37,8 +37,6 @@ const emit = defineEmits(["click"]);
       },
       'text-gray-100',
       'font-bold',
-      'border',
-      'border-gray-200',
       'rounded-lg',
       'py-3',
       'px-3',

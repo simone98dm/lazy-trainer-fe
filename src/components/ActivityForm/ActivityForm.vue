@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import Icon from "../Icons/Icon.vue";
 import TrashIcon from "../Icons/TrashIcon.vue";
 import AddIcon from "../Icons/AddIcon.vue";
+import SaveIcon from "../Icons/SaveIcon.vue";
 import { IconSize, ButtonColor } from "../../utils/enum";
 
 const props = defineProps([
@@ -127,10 +128,10 @@ function remove() {
           <Button
             @click="save"
             full="true"
-            label="Add"
+            :label="isNew() ? 'Create' : 'Save'"
             :color="ButtonColor.SUCCESS"
           >
-            <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
+            <Icon :component="isNew() ? AddIcon : SaveIcon" :size="IconSize.MEDIUM"></Icon>
           </Button>
           <Button
             @click="remove"
