@@ -8,9 +8,10 @@
                 {
                     "id": "704f84cd-4a48-4301-b88b-f4fd034081ae",
                     "description": "Tempor in elit ipsum sunt id fugiat pariatur culpa aute.",
-                    "name": "Skip",
-                    "time": 2000,
+                    "name": "Crunch",
+                    "time": 0,
                     "videoUrl": "",
+                    "reps": 30,
                     "order": 1,
                     "warmup": false
                 },
@@ -20,6 +21,7 @@
                     "name": "Rest",
                     "time": 3000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 2,
                     "warmup": false
                 },
@@ -29,6 +31,7 @@
                     "name": "MC",
                     "time": 2000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 3,
                     "warmup": false
                 }
@@ -44,6 +47,7 @@
                     "name": "Skip",
                     "time": 5000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 1,
                     "warmup": true
                 },
@@ -53,6 +57,7 @@
                     "name": "Rest",
                     "time": 15000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 4,
                     "warmup": true
                 },
@@ -62,6 +67,7 @@
                     "name": "Plank",
                     "time": 60000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 5,
                     "warmup": false
                 },
@@ -71,6 +77,7 @@
                     "name": "Rest",
                     "time": 15000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 6,
                     "warmup": false
                 },
@@ -80,6 +87,7 @@
                     "name": "Rest",
                     "time": 6000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 2,
                     "warmup": true
                 },
@@ -89,6 +97,7 @@
                     "name": "MC",
                     "time": 30000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 3,
                     "warmup": true
                 },
@@ -98,6 +107,7 @@
                     "name": "Plank",
                     "time": 30000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 7,
                     "warmup": false
                 },
@@ -107,6 +117,7 @@
                     "name": "Rest",
                     "time": 30000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 8,
                     "warmup": false
                 },
@@ -116,6 +127,7 @@
                     "name": "Plank",
                     "time": 60000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 9,
                     "warmup": false
                 },
@@ -125,6 +137,7 @@
                     "name": "Rest",
                     "time": 30000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 10,
                     "warmup": false
                 },
@@ -134,6 +147,7 @@
                     "name": "Plank",
                     "time": 30000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 11,
                     "warmup": false
                 },
@@ -143,6 +157,7 @@
                     "name": "Spiderman",
                     "time": 30000,
                     "videoUrl": "",
+                    "reps": 0,
                     "order": 12,
                     "warmup": false
                 }

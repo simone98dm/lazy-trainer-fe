@@ -2,8 +2,8 @@
 import AddIcon from "@/components/Icons/AddIcon.vue";
 import Item from "@/components/Item/Item.vue";
 import Link from "@/components/Link/Link.vue";
-import {useActivityStore} from "../stores/activity";
-import {ButtonSize, getDayOfTheWeek, LinkType} from "../utils";
+import { useActivityStore } from "../stores/activity";
+import { ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
 
 const store = useActivityStore();
 
@@ -36,11 +36,11 @@ function formatDescription(len: number) {
       <h1 class="mb-3 text-2xl font-bold">No activity found</h1>
     </div>
     <Link
-        :icon="AddIcon"
-        :size="ButtonSize.MEDIUM"
-        :to="{ name: 'session' }"
-        :type="LinkType.BUTTON"
-        label="Add day activities"
+      :icon="AddIcon"
+      :size="ButtonSize.MEDIUM"
+      :to="{ name: 'session' }"
+      :type="LinkType.BUTTON"
+      label="Add day activities"
     />
   </section>
 </template>

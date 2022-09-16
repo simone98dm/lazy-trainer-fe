@@ -1,12 +1,13 @@
+})
 <script setup lang="ts">
-import {IActivity} from "../../models/Activity";
-import {ref} from "vue";
+import { IActivity } from "../../models/Activity";
+import { ref, watch } from "vue";
 import Button from "@/components/Button/Button.vue";
-import {v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import TrashIcon from "@/components/Icons/TrashIcon.vue";
 import AddIcon from "@/components/Icons/AddIcon.vue";
 import SaveIcon from "@/components/Icons/SaveIcon.vue";
-import {ButtonColor} from "../../utils";
+import { ButtonColor } from "../../utils";
 
 const props = defineProps([
   "id",
@@ -16,6 +17,7 @@ const props = defineProps([
   "time",
   "warmup",
   "order",
+  "reps",
 ]);
 const emits = defineEmits(["save", "remove"]);
 
@@ -25,9 +27,13 @@ let name = ref(props.name || "");
 let id = ref(props.id || uuid);
 let description = ref(props.description || "");
 let time = ref(props.time / 1000 || 0);
+let reps = ref(props.reps || 0);
 let warmup = ref(props.warmup || false);
 let order = ref(props.order || 0);
 let videoUrl = ref("");
+let isTimeBasedActivity = ref(
+  (Boolean(props.time !== 0) && Boolean(props.reps === 0)) ?? false
+);
 
 function save() {
   const activity: IActivity = {
@@ -38,7 +44,13 @@ function save() {
     order: order.value,
     warmup: warmup.value,
     videoUrl: videoUrl.value,
+    reps: reps.value,
   };
+  if (isTimeBasedActivity.value) {
+    activity.reps = 0;
+  } else {
+    activity.time = 0;
+  }
   emits("save", activity);
 }
 
@@ -93,50 +105,74 @@ function remove() {
         <div class="w-full md:w-full px-3 mb-6">
           <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="activityTime"
+            for="activityType"
           >
-            Time in seconds:
+            Activity based type:
           </label>
+          <div class="flex justify-center">
+            <div
+              class="w-full sm:w-64 flex justify-between shadow rounded-full h-12 flex p-1 mb-3"
+            >
+              <button
+                :class="[
+                  'flex items-center w-fit rounded-full h-10 transition-all px-10 text-lg',
+                  {
+                    'bg-indigo-600 text-white shadow': isTimeBasedActivity,
+                  },
+                ]"
+                @click="() => (isTimeBasedActivity = true)"
+              >
+                Time
+              </button>
+              <button
+                :class="[
+                  'flex items-center w-fit rounded-full h-10 transition-all px-10 text-lg',
+                  {
+                    'bg-indigo-600 text-white shadow': !isTimeBasedActivity,
+                  },
+                ]"
+                @click="() => (isTimeBasedActivity = false)"
+              >
+                Reps
+              </button>
+            </div>
+          </div>
+
           <input
-              v-model="time"
-              class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-              name="activityTime"
-              type="text"
+            v-if="isTimeBasedActivity"
+            v-model="time"
+            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+            name="activityType"
+            type="number"
+          />
+          <input
+            v-else
+            v-model="reps"
+            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+            name="activityType"
+            type="number"
           />
         </div>
 
         <div class="w-full md:w-full flex flex-col px-3 mb-6">
-          <!-- <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="activityWarmup"
-          >
-            Is warm-up?
-          </label> -->
-          <!-- <input
-            v-model="warmup"
-            class="toggle"
-            name="activityWarmup py-3"
-            type="checkbox"
-          /> -->
-
           <label
-              class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              for="toggle"
+            class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            for="toggle"
           >
             Is warm-up?
           </label>
           <div
-              class="relative inline-block w-14 mr-2 align-middle select-none transition duration-200 ease-in"
+            class="relative inline-block w-14 mr-2 align-middle select-none transition duration-200 ease-in"
           >
             <input
-                id="toggle"
-                class="toggle-checkbox absolute block w-8 h-8 rounded-full bg-white border-2 appearance-none cursor-pointer"
-                name="toggle"
-                type="checkbox"
+              id="toggle"
+              class="toggle-checkbox absolute block w-8 h-8 rounded-full bg-white border-2 appearance-none cursor-pointer"
+              name="toggle"
+              type="checkbox"
             />
             <label
-                class="toggle-label block overflow-hidden h-8 rounded-full bg-gray-300 cursor-pointer"
-                for="toggle"
+              class="toggle-label block overflow-hidden h-8 rounded-full bg-gray-300 cursor-pointer"
+              for="toggle"
             ></label>
           </div>
         </div>
@@ -146,18 +182,18 @@ function remove() {
         </label> -->
         <div class="w-full flex flex-col sm:flex-row justify-center px-3">
           <Button
-              :color="ButtonColor.SUCCESS"
-              :icon="isNew() ? AddIcon : SaveIcon"
-              :label="isNew() ? 'Create' : 'Save'"
-              full="true"
-              @click="save"
+            :color="ButtonColor.SUCCESS"
+            :icon="isNew() ? AddIcon : SaveIcon"
+            :label="isNew() ? 'Create' : 'Save'"
+            full="true"
+            @click="save"
           />
           <Button
-              :color="ButtonColor.DANGER"
-              :icon="TrashIcon"
-              full="true"
-              label="Remove"
-              @click="remove"
+            :color="ButtonColor.DANGER"
+            :icon="TrashIcon"
+            full="true"
+            label="Remove"
+            @click="remove"
           />
         </div>
       </div>
@@ -167,14 +203,12 @@ function remove() {
 
 <style>
 .toggle-checkbox:checked {
-  @apply: right-0 border-indigo-600;
   right: 0;
   transition: all 0.2s ease;
   border-color: rgb(79 70 229 / var(--tw-bg-opacity));
 }
 
 .toggle-checkbox:checked + .toggle-label {
-  @apply: bg-indigo-600;
   background-color: rgb(79 70 229 / var(--tw-bg-opacity));
 }
 </style>
