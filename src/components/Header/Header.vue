@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import MenuIcon from "../Icons/MenuIcon.vue";
-import ShareIcon from "../Icons/ShareIcon.vue";
-import Icon from "../Icons/Icon.vue";
-import { IconSize } from "../../utils/enum";
+import MenuIcon from "@/components/Icons/MenuIcon.vue";
+import ShareIcon from "@/components/Icons/ShareIcon.vue";
+import Icon from "@/components/Icons/Icon.vue";
+import {IconSize} from "../../utils";
 
 function resetAll() {
   localStorage.clear();

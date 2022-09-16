@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import SessionForm from "../components/SessionForm/SessionForm.vue";
-import { ISession } from "../models/Session";
-import { useActivityStore } from "../stores/activity";
-import BackButton from "../components/BackButton/BackButton.vue";
+import {useRouter} from "vue-router";
+import SessionForm from "@/components/SessionForm/SessionForm.vue";
+import BackButton from "@/components/BackButton/BackButton.vue";
+import {ISession} from "../models/Session";
+import {useActivityStore} from "../stores/activity";
 
 const store = useActivityStore();
 const router = useRouter();

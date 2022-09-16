@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from "vue-router";
-import { useActivityStore } from "../stores/activity";
-import ActivityForm from "../components/ActivityForm/ActivityForm.vue";
-import { IActivity } from "../models/Activity";
-import BackButton from "../components/BackButton/BackButton.vue";
+import {useRoute, useRouter} from "vue-router";
+import ActivityForm from "@/components/ActivityForm/ActivityForm.vue";
+import BackButton from "@/components/BackButton/BackButton.vue";
+import {useActivityStore} from "../stores/activity";
+import {IActivity} from "../models/Activity";
+
 const route = useRoute();
 const router = useRouter();
 const store = useActivityStore();
-const { sessionId, activityId } = route.params;
+const {sessionId, activityId} = route.params;
 const session = store.getSession(sessionId as string);
 
 if (!session) {

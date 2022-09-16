@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { IActivity } from "../../models/Activity";
-import { ref } from "vue";
-import Button from "../Button/Button.vue";
-import { v4 as uuidv4 } from "uuid";
-import Icon from "../Icons/Icon.vue";
-import TrashIcon from "../Icons/TrashIcon.vue";
-import AddIcon from "../Icons/AddIcon.vue";
-import { IconSize } from "../../utils/enum";
-import { ISession } from "../../models/Session";
-import { days, getDayOfTheWeek } from "../../utils/dates";
+import {ref} from "vue";
+import Button from "@/components/Button/Button.vue";
+import {v4 as uuidv4} from "uuid";
+import TrashIcon from "@/components/Icons/TrashIcon.vue";
+import AddIcon from "@/components/Icons/AddIcon.vue";
+import {ISession} from "../../models/Session";
+import {days} from "../../utils";
 
 const props = defineProps(["id", "dayOfWeek"]);
 const emits = defineEmits(["save", "remove"]);
@@ -57,12 +54,8 @@ function selectDay(dayIndex: number) {
         </button>
       </div>
       <div>
-        <Button label="Create" @click="save" v-if="isNew()">
-          <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
-        </Button>
-        <Button label="Delete" @click="remove" v-else>
-          <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
-        </Button>
+        <Button v-if="isNew()" :icon="AddIcon" label="Create" @click="save"/>
+        <Button v-else :icon="TrashIcon" label="Delete" @click="remove"/>
       </div>
     </form>
   </div>

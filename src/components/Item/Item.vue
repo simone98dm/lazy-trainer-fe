@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Bench from "../Icons/Bench.vue";
-import Icon from "../Icons/Icon.vue";
-import { IconSize } from "../../utils/enum";
+import Bench from "@/components/Icons/Bench.vue";
+import Icon from "@/components/Icons/Icon.vue";
+import {IconSize} from "../../utils";
 
 const props = defineProps(["id", "name", "description", "time"]);
 
