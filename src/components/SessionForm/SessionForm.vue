@@ -45,7 +45,7 @@ function isDaySelected(dayIndex: number) {
 </script>
 
 <template>
-  <div class="flex justify-center w-full">
+  <div class="flex justify-center">
     <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
       <h1 class="mb-3 text-2xl font-bold mb-6">Create a new day session:</h1>
       <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6">
@@ -62,14 +62,16 @@ function isDaySelected(dayIndex: number) {
           {{ dayName }}
         </button>
       </div>
-      <div class="flex sm:flex-row flex-col w-full">
+      <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
         <Button
+          full="true"
           :icon="!isNew() ? SaveIcon : AddIcon"
           :label="!isNew() ? 'Edit' : 'Create'"
           :color="ButtonColor.SUCCESS"
           @click="save"
         />
         <Button
+          full="true"
           v-if="!isNew()"
           :icon="TrashIcon"
           :color="ButtonColor.DANGER"
