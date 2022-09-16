@@ -27,6 +27,14 @@ const css =
           "bg-orange-600 hover:bg-orange-500":
             props.color === ButtonColor.WARNING,
         },
+        {
+          "bg-slate-800 hover:bg-slate-500":
+            props.color === ButtonColor.DARK,
+        },
+        {
+          "bg-white hover:bg-slate-100 text-black":
+            props.color === ButtonColor.LIGHT,
+        },
         "text-gray-100",
         "font-bold",
         "border",
