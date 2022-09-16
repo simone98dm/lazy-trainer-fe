@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import {RouterLink} from "vue-router";
-import {ButtonColor, IconSize, LinkType} from "../../utils";
+import { RouterLink } from "vue-router";
+import { ButtonColor, IconSize, LinkType } from "../../utils";
 import Icon from "@/components/Icons/Icon.vue";
 
 const props = defineProps(["to", "full", "type", "label", "color", "icon"]);
 const emit = defineEmits(["click"]);
 
 const css =
-    props.type === LinkType.BUTTON
-        ? [
-          "flex",
-          "justify-center",
-          "item-center",
-          {"w-full": props.full ?? false},
-          {"w-full sm:w-fit": !props.full},
+  props.type === LinkType.BUTTON
+    ? [
+        "flex",
+        "justify-center",
+        "item-center",
+        { "w-full": props.full ?? false },
+        { "w-full sm:w-fit": !props.full },
         "appearance-none",
         "block",
         {
@@ -29,9 +29,9 @@ const css =
           "bg-orange-600 hover:bg-orange-500":
             props.color === ButtonColor.WARNING,
         },
-          {
-            "bg-slate-800 hover:bg-slate-500": props.color === ButtonColor.DARK,
-          },
+        {
+          "bg-slate-800 hover:bg-slate-500": props.color === ButtonColor.DARK,
+        },
         {
           "bg-white hover:bg-slate-100 text-black":
             props.color === ButtonColor.LIGHT,
@@ -49,9 +49,9 @@ const css =
 
 <template>
   <router-link :to="to" :class="css" @click="emit('click')">
-    <Icon v-if="props.icon" :component="props.icon" :size="IconSize.MEDIUM"/>
+    <Icon v-if="props.icon" :component="props.icon" :size="IconSize.MEDIUM" />
 
-    <slot/>
+    <slot />
     <span class="ml-2" v-if="props.label">{{ props.label }}</span>
   </router-link>
 </template>
