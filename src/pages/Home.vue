@@ -8,13 +8,6 @@ import { ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
 const store = useActivityStore();
 
 const sessions = store.getWeek;
-
-function formatDescription(len: number) {
-  if (len === 0) {
-    return "No activity found";
-  }
-  return `${len} ${len > 1 ? "activities" : "activity"}`;
-}
 </script>
 
 <template>
@@ -25,7 +18,9 @@ function formatDescription(len: number) {
         <Link :to="{ name: 'details', params: { sessionId: activity.id } }">
           <Item
             :name="getDayOfTheWeek(activity.dayOfWeek)"
-            :description="formatDescription(activity.activities.length)"
+            :description="`${activity.activities.length} ${
+              activity.activities.length > 1 ? 'activities' : 'activity'
+            }`"
             :id="activity.id"
             :key="activity.dayOfWeek"
           />
@@ -33,7 +28,7 @@ function formatDescription(len: number) {
       </div>
     </div>
     <div v-else>
-      <h1 class="mb-3 text-2xl font-bold">No activity found</h1>
+      <h1 class="mb-3 text-2xl font-bold">No sessions found</h1>
     </div>
     <Link
       :icon="AddIcon"

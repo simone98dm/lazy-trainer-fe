@@ -41,7 +41,7 @@ const routes = [
   },
   {
     name: "session",
-    path: "/session",
+    path: "/session/:sessionId?",
     component: Session,
     meta: {
       showFooter: false,

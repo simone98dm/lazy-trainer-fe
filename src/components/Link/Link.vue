@@ -38,11 +38,11 @@ const css =
         },
         "text-gray-100",
         "font-bold",
-        "border",
-        "border-gray-200",
         "rounded-lg",
         "py-3",
         "px-3",
+        "hover:bg-indigo-500",
+        "mb-2",
       ]
     : "";
 </script>

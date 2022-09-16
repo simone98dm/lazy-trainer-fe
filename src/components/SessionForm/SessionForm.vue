@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import { ref, watch } from "vue";
 import Button from "@/components/Button/Button.vue";
-import {v4 as uuidv4} from "uuid";
+import { v4 as uuidv4 } from "uuid";
 import TrashIcon from "@/components/Icons/TrashIcon.vue";
 import AddIcon from "@/components/Icons/AddIcon.vue";
-import {ISession} from "../../models/Session";
-import {days} from "../../utils";
+import { ISession } from "../../models/Session";
+import { days, ButtonColor } from "../../utils";
+import SaveIcon from "../Icons/SaveIcon.vue";
 
 const props = defineProps(["id", "dayOfWeek"]);
 const emits = defineEmits(["save", "remove"]);
@@ -37,25 +38,44 @@ function remove() {
 function selectDay(dayIndex: number) {
   dayOfWeek.value = dayIndex;
 }
+
+function isDaySelected(dayIndex: number) {
+  return dayIndex === dayOfWeek.value;
+}
 </script>
 
 <template>
   <div class="flex justify-center w-full">
     <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
       <h1 class="mb-3 text-2xl font-bold mb-6">Create a new day session:</h1>
-      <div class="flex flex-wrap justify-center gap-3 mb-6">
+      <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6">
         <button
           v-for="(dayName, i) in days"
           :key="i"
-          class="w-full bg-gray-200 focus:bg-indigo-600 focus:text-slate-50 duration-200 rounded-full px-4 py-2 font-light"
+          :class="[
+            { 'bg-indigo-600 text-slate-50': isDaySelected(i) },
+            { 'bg-gray-200 text-grey-50': !isDaySelected(i) },
+            'w-full duration-200 rounded-full px-4 py-2 ',
+          ]"
           @click="() => selectDay(i)"
         >
           {{ dayName }}
         </button>
       </div>
-      <div>
-        <Button v-if="isNew()" :icon="AddIcon" label="Create" @click="save"/>
-        <Button v-else :icon="TrashIcon" label="Delete" @click="remove"/>
+      <div class="flex sm:flex-row flex-col w-full">
+        <Button
+          :icon="!isNew() ? SaveIcon : AddIcon"
+          :label="!isNew() ? 'Edit' : 'Create'"
+          :color="ButtonColor.SUCCESS"
+          @click="save"
+        />
+        <Button
+          v-if="!isNew()"
+          :icon="TrashIcon"
+          :color="ButtonColor.DANGER"
+          label="Delete"
+          @click="remove"
+        />
       </div>
     </form>
   </div>

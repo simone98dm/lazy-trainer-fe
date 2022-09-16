@@ -42,7 +42,6 @@ const emit = defineEmits(["click"]);
       'px-3',
       'hover:bg-indigo-500',
       'mb-2',
-      'sm:mx-2',
     ]"
     type="button"
     @click="emit('click')"

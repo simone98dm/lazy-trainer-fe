@@ -75,11 +75,13 @@ export const useActivityStore = defineStore("activity", {
     },
     addSession(session: ISession) {
       const existingIndex = this.plan.sessions.findIndex(
-        (x) => x.dayOfWeek === session.dayOfWeek
+        (x) => x.id === session.id
       );
       if (existingIndex < 0) {
         this.plan.sessions.push(session);
         save(this.plan);
+      } else {
+        this.plan.sessions[existingIndex].dayOfWeek = session.dayOfWeek;
       }
     },
     deleteSession(sessionId: string) {
