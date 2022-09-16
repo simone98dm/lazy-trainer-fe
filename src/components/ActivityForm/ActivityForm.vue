@@ -180,7 +180,7 @@ function remove() {
           Video:
           <input type="text" name="activityVideoUrl" v-model="videoUrl" />
         </label> -->
-        <div class="w-full flex flex-col sm:flex-row justify-center px-3">
+        <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
           <Button
             :color="ButtonColor.SUCCESS"
             :icon="isNew() ? AddIcon : SaveIcon"

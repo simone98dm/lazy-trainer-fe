@@ -6,8 +6,9 @@ import AddIcon from "@/components/Icons/AddIcon.vue";
 import PlayIcon from "@/components/Icons/PlayIcon.vue";
 import Link from "@/components/Link/Link.vue";
 import TrashIcon from "@/components/Icons/TrashIcon.vue";
+import EditIcon from "@/components/Icons/EditIcon.vue";
 import Button from "@/components/Button/Button.vue";
-import { ButtonColor, ButtonSize, LinkType } from "../utils";
+import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
 import { useActivityStore } from "../stores/activity";
 import { useTimerStore } from "../stores/timer";
 
@@ -18,6 +19,7 @@ const { sessionId } = route.params;
 
 const warmUpActivities = store.getWarmUpActivities(sessionId as string);
 const activities = store.getSessionActivities(sessionId as string);
+const session = store.getSession(sessionId as string);
 
 const activitiesCount = activities?.length ?? 0;
 const warmupActivitiesCount = warmUpActivities?.length ?? 0;
@@ -41,7 +43,19 @@ function runActivities() {
 </script>
 <template>
   <section class="flex flex-col justify-center">
-    <div class="flex flex-col sm:flex-row mb-6">
+    <div class="w-full text-center">
+      <h1 class="mb-3 text-5xl font-bold text-gray-600">
+        {{ getDayOfTheWeek(session?.dayOfWeek) }}
+      </h1>
+    </div>
+    <div class="flex mb-6 gap-2">
+      <Link
+        :to="{ name: 'session', params: { sessionId } }"
+        label="Edit session"
+        :type="LinkType.BUTTON"
+        :icon="EditIcon"
+      >
+      </Link>
       <Button
         :color="ButtonColor.DANGER"
         :icon="TrashIcon"
@@ -95,7 +109,6 @@ function runActivities() {
       v-if="activitiesCount"
       class="bg-gradient-to-r from-pink-500 to-violet-500 rounded-xl p-3 mb-6"
     >
-      <!-- <h1 class="mb-3 text-2xl font-bold text-slate-50">Activities:</h1> -->
       <div class="mb-3">
         <Button
           v-if="activitiesCount"
