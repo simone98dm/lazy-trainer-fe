@@ -16,6 +16,8 @@ export enum IconSize {
 
 export enum ButtonColor {
   PRIMARY,
+  LIGHT,
+  DARK,
   DANGER,
   WARNING,
   SUCCESS,

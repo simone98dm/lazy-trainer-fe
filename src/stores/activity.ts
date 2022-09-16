@@ -12,8 +12,16 @@ export const useActivityStore = defineStore("activity", {
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
-      return state.plan.sessions.find((session) => session.id === sessionId)
-        ?.activities;
+      return state.plan.sessions
+        .find((session) => session.id === sessionId)
+        ?.activities.filter((item) => !item.warmup)
+        .sort((a, b) => a.order - b.order);
+    },
+    getWarmUpActivities: (state) => (sessionId: string) => {
+      return state.plan.sessions
+        .find((session) => session.id === sessionId)
+        ?.activities.filter((item) => item.warmup)
+        .sort((a, b) => a.order - b.order);
     },
     getSession: (state) => (sessionId: string) => {
       return state.plan.sessions.find((session) => session.id === sessionId);
@@ -42,9 +50,11 @@ export const useActivityStore = defineStore("activity", {
           if (existingActivity >= 0) {
             this.plan.sessions[index].activities[existingActivity] = activity;
           } else {
+            activity.order = this.plan.sessions[index].activities.length;
             this.plan.sessions[index].activities.push(activity);
           }
         } else {
+          activity.order = this.plan.sessions[index].activities.length;
           this.plan.sessions[index].activities.push(activity);
         }
       }

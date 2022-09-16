@@ -17,7 +17,7 @@ const routes = [
   },
   {
     name: "details",
-    path: "/details/:id",
+    path: "/details/:sessionId",
     component: Details,
     meta: {
       showFooter: true,
@@ -27,14 +27,6 @@ const routes = [
     name: "activity",
     path: "/activity/:sessionId/:activityId?",
     component: Activity,
-    meta: {
-      showFooter: true,
-    },
-  },
-  {
-    name: "setting",
-    path: "/setting",
-    component: Setting,
     meta: {
       showFooter: true,
     },

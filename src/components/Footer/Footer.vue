@@ -3,7 +3,6 @@ import HouseIcon from "../Icons/HouseIcon.vue";
 import SettingIcon from "../Icons/SettingIcon.vue";
 import Icon from "../Icons/Icon.vue";
 import { IconSize } from "../../utils/enum";
-import { useRoute } from "vue-router";
 
 </script>
 

@@ -4,4 +4,6 @@ export interface IActivity {
   name: string;
   time: number;
   videoUrl: string;
+  warmup: boolean;
+  order: number;
 }

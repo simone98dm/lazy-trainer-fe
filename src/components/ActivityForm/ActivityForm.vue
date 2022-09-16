@@ -1,14 +1,23 @@
 <script setup lang="ts">
 import { IActivity } from "../../models/Activity";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import Button from "../Button/Button.vue";
 import { v4 as uuidv4 } from "uuid";
 import Icon from "../Icons/Icon.vue";
 import TrashIcon from "../Icons/TrashIcon.vue";
 import AddIcon from "../Icons/AddIcon.vue";
+import SaveIcon from "../Icons/SaveIcon.vue";
 import { IconSize, ButtonColor } from "../../utils/enum";
 
-const props = defineProps(["id", "dayOfWeek", "name", "description", "time"]);
+const props = defineProps([
+  "id",
+  "dayOfWeek",
+  "name",
+  "description",
+  "time",
+  "warmup",
+  "order",
+]);
 const emits = defineEmits(["save", "remove"]);
 
 const uuid = uuidv4();
@@ -16,7 +25,9 @@ const uuid = uuidv4();
 let name = ref(props.name || "");
 let id = ref(props.id || uuid);
 let description = ref(props.description || "");
-let time = ref(props.time || 0);
+let time = ref(props.time / 1000 || 0);
+let warmup = ref(props.warmup || false);
+let order = ref(props.order || 0);
 let videoUrl = ref("");
 
 function save() {
@@ -25,6 +36,8 @@ function save() {
     name: name.value,
     description: description.value,
     time: time.value * 1000,
+    order: order.value,
+    warmup: warmup.value,
     videoUrl: videoUrl.value,
   };
   emits("save", activity);
@@ -92,6 +105,21 @@ function remove() {
             type="text"
           />
         </div>
+
+        <div class="w-full md:w-full px-3 mb-6">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+            for="activityWarmup"
+          >
+            Is warm-up?
+          </label>
+          <input
+            v-model="warmup"
+            class="toggle"
+            name="activityWarmup py-3"
+            type="checkbox"
+          />
+        </div>
         <!-- <label for="activityUrl">
           Video:
           <input type="text" name="activityVideoUrl" v-model="videoUrl" />
@@ -100,10 +128,10 @@ function remove() {
           <Button
             @click="save"
             full="true"
-            label="Add"
+            :label="isNew() ? 'Create' : 'Save'"
             :color="ButtonColor.SUCCESS"
           >
-            <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
+            <Icon :component="isNew() ? AddIcon : SaveIcon" :size="IconSize.MEDIUM"></Icon>
           </Button>
           <Button
             @click="remove"
@@ -118,3 +146,43 @@ function remove() {
     </form>
   </div>
 </template>
+
+<style>
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+input[type="checkbox"]:focus {
+  outline: 0;
+}
+
+.toggle {
+  height: 32px;
+  width: 60px;
+  border-radius: 16px;
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  border: 2px solid rgb(79 70 229 / var(--tw-bg-opacity));
+  background: linear-gradient(180deg, #ececec 0%, #ececec 100%);
+  transition: all 0.2s ease;
+}
+.toggle:after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgb(79 70 229 / var(--tw-bg-opacity));
+  box-shadow: 0 1px 2px rgb(79 70 229 / var(--tw-bg-opacity));
+  transition: all 0.2s cubic-bezier(0.5, 0.1, 0.75, 1.35);
+}
+.toggle:checked:after {
+  transform: translatex(28px);
+}
+</style>
