@@ -35,15 +35,7 @@ let isTimeBasedActivity = ref(
   (Boolean(props.time !== 0) && Boolean(props.reps === 0)) ?? false
 );
 
-watch(reps, (a, b) => {
-  console.log("🚀 ~ file: ActivityForm.vue ~ line 37 ~ watch ~ a", a);
-});
-
 function save() {
-  console.log(
-    "🚀 ~ file: ActivityForm.vue ~ line 50 ~ save ~ reps.value",
-    reps.value
-  );
   const activity: IActivity = {
     id: id.value,
     name: name.value,
@@ -59,10 +51,6 @@ function save() {
   } else {
     activity.time = 0;
   }
-  console.log(
-    "🚀 ~ file: ActivityForm.vue ~ line 51 ~ save ~ activity",
-    activity
-  );
   emits("save", activity);
 }
 
@@ -119,33 +107,33 @@ function remove() {
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="activityType"
           >
-            Activity type:
+            Activity based type:
           </label>
           <div class="flex justify-center">
             <div
-              class="w-fit flex justify-between shadow rounded-full h-10 flex p-1 mb-3"
+              class="w-full sm:w-64 flex justify-between shadow rounded-full h-12 flex p-1 mb-3"
             >
               <button
                 :class="[
-                  'flex items-center w-fit p-4 rounded-full h-8 transition-all',
+                  'flex items-center w-fit rounded-full h-10 transition-all px-10 text-lg',
                   {
                     'bg-indigo-600 text-white shadow': isTimeBasedActivity,
                   },
                 ]"
                 @click="() => (isTimeBasedActivity = true)"
               >
-                Time based
+                Time
               </button>
               <button
                 :class="[
-                  'flex items-center w-fit p-4 rounded-full h-8 transition-all',
+                  'flex items-center w-fit rounded-full h-10 transition-all px-10 text-lg',
                   {
                     'bg-indigo-600 text-white shadow': !isTimeBasedActivity,
                   },
                 ]"
                 @click="() => (isTimeBasedActivity = false)"
               >
-                Reps based
+                Reps
               </button>
             </div>
           </div>
@@ -215,14 +203,12 @@ function remove() {
 
 <style>
 .toggle-checkbox:checked {
-  @apply: right-0 border-indigo-600;
   right: 0;
   transition: all 0.2s ease;
   border-color: rgb(79 70 229 / var(--tw-bg-opacity));
 }
 
 .toggle-checkbox:checked + .toggle-label {
-  @apply: bg-indigo-600;
   background-color: rgb(79 70 229 / var(--tw-bg-opacity));
 }
 </style>

@@ -1,31 +1,40 @@
 <script setup lang="ts">
-import {ref} from "vue";
-import {useRoute, useRouter} from "vue-router";
+import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import Button from "@/components/Button/Button.vue";
 import StopIcon from "@/components/Icons/StopIcon.vue";
+import SkipIcon from "@/components/Icons/SkipIcon.vue";
 import PlayIcon from "@/components/Icons/PlayIcon.vue";
 import BackButton from "@/components/BackButton/BackButton.vue";
-import {type Act, ButtonSize, COLOR_CODES, FULL_DASH_ARRAY, getActivity,} from "../utils";
-import {useTimerStore} from "../stores/timer";
+import {
+  type Act,
+  ButtonSize,
+  COLOR_CODES,
+  FULL_DASH_ARRAY,
+  getActivity,
+} from "../utils";
+import { useTimerStore } from "../stores/timer";
+import TimerSpinner from "../components/TimerSpinner/TimerSpinner.vue";
 
 const route = useRoute();
 const router = useRouter();
 
-const timerStore = useTimerStore();
-
-const {sessionId, activityId} = route.params;
-
-let TIME_LIMIT = ref(0);
-setupTimer(sessionId as string, activityId as string);
 let timerInterval: any = null;
 let timePassed = 0;
+const timerStore = useTimerStore();
+let TIME_LIMIT = ref(0);
 let timeLeft = ref(TIME_LIMIT.value);
+
 let remainingPathColor = ref(COLOR_CODES.info.color);
 let strokeDasharray = ref(`283`);
 let baseTimerLabel = ref(formatTime(timeLeft.value));
+
+const { sessionId, activityId } = route.params;
+
+setupTimer(activityId as string);
 startTimer();
 
-function setupTimer(sessionId: string, activityId: string) {
+function setupTimer(activityId: string) {
   const activities = timerStore.getListActivities;
 
   if (!activities || activities.length <= 0) {
@@ -36,56 +45,10 @@ function setupTimer(sessionId: string, activityId: string) {
       timerStore.setCurrentActivity(acts.firstActivity);
       timerStore.setNextActivity(acts.secondActivity);
       TIME_LIMIT.value = timerStore.currentActivityTimer / 1000;
-    }
-  }
-}
-
-function onTimesUp() {
-  clearInterval(timerInterval);
-
-  timePassed = 0;
-  timeLeft.value = TIME_LIMIT.value;
-  remainingPathColor.value = COLOR_CODES.info.color;
-  strokeDasharray.value = `283`;
-  baseTimerLabel.value = formatTime(timeLeft.value);
-
-  if (timerStore.getNextActivity) {
-    const activityId = timerStore.getNextActivity.id;
-    router.push({
-      name: "timer",
-      params: {
-        sessionId,
-        activityId,
-      },
-    });
-
-    setupTimer(sessionId as string, activityId);
-    startTimer();
-  } else {
-    timerStore.reset();
-    router.push({
-      name: "details",
-      params: {
-        sessionId,
-      },
-    });
-  }
-}
-
-function startTimer() {
-  timerInterval = setInterval(() => {
-    if (timerStore.isRunning) {
-      timePassed = timePassed += 1;
-      timeLeft.value = TIME_LIMIT.value - timePassed;
+      timeLeft.value = TIME_LIMIT.value;
       baseTimerLabel.value = formatTime(timeLeft.value);
-      setCircleDasharray();
-      setRemainingPathColor(timeLeft.value);
-
-      if (timeLeft.value === 0) {
-        onTimesUp();
-      }
     }
-  }, 1000);
+  }
 }
 
 function formatTime(time: number) {
@@ -116,6 +79,62 @@ function setCircleDasharray() {
   strokeDasharray.value = circleDasharray;
 }
 
+function onTimesUp() {
+  clearInterval(timerInterval);
+
+  timePassed = 0;
+  timeLeft.value = TIME_LIMIT.value;
+  remainingPathColor.value = COLOR_CODES.info.color;
+  strokeDasharray.value = `283`;
+  baseTimerLabel.value = formatTime(timeLeft.value);
+
+  if (timerStore.getNextActivity) {
+    const activityId = timerStore.getNextActivity.id;
+    router.push({
+      name: "timer",
+      params: {
+        sessionId,
+        activityId,
+      },
+    });
+
+    setupTimer(activityId);
+    startTimer();
+  } else {
+    timerStore.reset();
+    router.push({
+      name: "details",
+      params: {
+        sessionId,
+      },
+    });
+  }
+}
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    if (timerStore.isRunning) {
+      timePassed = timePassed += 1;
+      timeLeft.value = TIME_LIMIT.value - timePassed;
+      baseTimerLabel.value = formatTime(timeLeft.value);
+      setCircleDasharray();
+      setRemainingPathColor(timeLeft.value);
+
+      if (timeLeft.value === 0) {
+        onTimesUp();
+      }
+    }
+  }, 1000);
+}
+
+function toggleTimer() {
+  if (timerStore.isTimerBasedActivity) {
+    timerStore.toggle();
+  } else {
+    onTimesUp();
+  }
+}
+
 function redirectToActivity() {
   timerStore.reset();
   router.push({
@@ -136,41 +155,42 @@ function redirectToActivity() {
         {{ timerStore.getCurrentActivity.name }}
       </h1>
     </div>
-    <div class="mb-6">
-      <div class="box">
-        <div class="base-timer">
-          <svg
-            class="base-timer__svg"
-            viewBox="0 0 100 100"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <g class="base-timer__circle">
-              <circle
-                class="base-timer__path-elapsed"
-                cx="50"
-                cy="50"
-                r="45"
-              ></circle>
-              <path
-                id="base-timer-path-remaining"
-                :stroke-dasharray="strokeDasharray"
-                :class="['base-timer__path-remaining', remainingPathColor]"
-                d="M 50, 50 m -45, 0 a 45,45 0 1,0 90,0 a 45,45 0 1,0 -90,0"
-              ></path>
-            </g>
-          </svg>
-          <span id="base-timer-label" class="base-timer__label">
-            {{ baseTimerLabel }}
-          </span>
-        </div>
-      </div>
+
+    <div v-if="timerStore.isTimerBasedActivity">
+      <timer-spinner
+        :stroke-dasharray="strokeDasharray"
+        :remaining-path-color="remainingPathColor"
+        :base-timer-label="baseTimerLabel"
+      ></timer-spinner>
     </div>
+    <div v-else>
+      <h1 class="flex flex-col text-center my-20 text-pink-600">
+        <span class="text-4xl">Total reps:</span>
+        <span class="text-9xl font-bold">{{
+          timerStore.getCurrentActivity?.reps
+        }}</span>
+      </h1>
+    </div>
+
     <div class="mb-6 flex justify-center">
       <Button
-          :icon="timerStore.isRunning ? StopIcon : PlayIcon"
-          :size="ButtonSize.LARGE"
-          full="true"
-          @click="timerStore.toggle"
+        :icon="
+          timerStore.isTimerBasedActivity
+            ? timerStore.isRunning
+              ? StopIcon
+              : PlayIcon
+            : SkipIcon
+        "
+        :label="
+          timerStore.isTimerBasedActivity
+            ? timerStore.isRunning
+              ? 'Stop'
+              : 'Play'
+            : 'Next'
+        "
+        :size="ButtonSize.LARGE"
+        full="true"
+        @click="toggleTimer"
       />
     </div>
     <hr class="mb-6" />
@@ -183,63 +203,3 @@ function redirectToActivity() {
     </div>
   </div>
 </template>
-
-<style>
-.box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.base-timer {
-  position: relative;
-  width: 300px;
-  height: 300px;
-}
-
-.base-timer__svg {
-  transform: scaleX(-1);
-}
-
-.base-timer__circle {
-  fill: none;
-  stroke: none;
-}
-
-.base-timer__path-elapsed {
-  stroke-width: 7px;
-  stroke: grey;
-}
-
-.base-timer__path-remaining {
-  stroke-width: 7px;
-  stroke-linecap: round;
-  transform: rotate(90deg);
-  transform-origin: center;
-  transition: 1s linear all;
-  fill-rule: nonzero;
-  stroke: currentColor;
-}
-
-.base-timer__path-remaining.green {
-  color: rgb(65, 184, 131);
-}
-
-.base-timer__path-remaining.orange {
-  color: orange;
-}
-
-.base-timer__path-remaining.red {
-  color: red;
-}
-
-.base-timer__label {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-}
-</style>

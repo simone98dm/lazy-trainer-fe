@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import Bench from "@/components/Icons/Bench.vue";
 import Icon from "@/components/Icons/Icon.vue";
-import {IconSize} from "../../utils";
+import { IconSize } from "../../utils";
 
-const props = defineProps(["id", "name", "description", "time"]);
+const props = defineProps(["id", "name", "description", "time", "reps"]);
 
 function millisToMinutesAndSeconds(millis: number) {
   const minutes: number = Math.floor(millis / 60000);
@@ -33,8 +33,17 @@ function millisToMinutesAndSeconds(millis: number) {
       </div>
     </div>
     <div>
-      <h4 v-if="props.time" class="font-bold text-6xl sm:text-4xl text-slate-500">
+      <h4
+        v-if="props.time"
+        class="font-bold text-6xl sm:text-4xl text-slate-500"
+      >
         {{ millisToMinutesAndSeconds(props.time) }}
+      </h4>
+      <h4
+        v-else-if="props.reps"
+        class="font-bold text-6xl sm:text-4xl text-slate-500"
+      >
+        {{ props.reps }}r
       </h4>
     </div>
   </div>

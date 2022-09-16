@@ -13,6 +13,12 @@ export const useTimerStore = defineStore("timer", {
     isRunning(state) {
       return state.running;
     },
+    isTimerBasedActivity(state) {
+      if (state.currentActivity) {
+        return state.currentActivity?.time > 0;
+      }
+      return false;
+    },
     getCurrentActivity(state) {
       return state.currentActivity;
     },
