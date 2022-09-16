@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import {useRoute, useRouter} from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import ActivityForm from "@/components/ActivityForm/ActivityForm.vue";
 import BackButton from "@/components/BackButton/BackButton.vue";
-import {useActivityStore} from "../stores/activity";
-import {IActivity} from "../models/Activity";
+import { useActivityStore } from "../stores/activity";
+import { IActivity } from "../models/Activity";
 
 const route = useRoute();
 const router = useRouter();
 const store = useActivityStore();
-const {sessionId, activityId} = route.params;
+const { sessionId, activityId } = route.params;
 const session = store.getSession(sessionId as string);
 
 if (!session) {
@@ -23,6 +23,7 @@ let activity: IActivity = {
   videoUrl: "",
   warmup: false,
   order: 0,
+  reps: 0,
 };
 
 if (activityId) {
@@ -66,6 +67,7 @@ function removeActivity(activityId: string) {
       :day-of-week="session?.dayOfWeek"
       :warmup="activity?.warmup"
       :order="activity?.order"
+      :reps="activity?.reps"
       @save="saveActivity"
       @remove="removeActivity"
     />
