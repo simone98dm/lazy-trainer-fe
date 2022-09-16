@@ -33,7 +33,8 @@ let baseTimerLabel = ref(formatTime(timeLeft.value));
 startTimer();
 
 function setupTimer(sessionId: string, activityId: string) {
-  const activities = activityStore.getSessionActivities(sessionId);
+  const activities = timerStore.getListActivities;
+
   if (!activities || activities.length <= 0) {
     router.back();
   } else {

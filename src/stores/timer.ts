@@ -5,6 +5,7 @@ export const useTimerStore = defineStore("timer", {
   state: () => ({
     currentActivity: {} as IActivity | undefined,
     nextActivity: {} as IActivity | undefined,
+    listActivities: [] as IActivity[],
     running: false,
     runningTimer: 0,
   }),
@@ -21,8 +22,16 @@ export const useTimerStore = defineStore("timer", {
     currentActivityTimer(state) {
       return state.runningTimer;
     },
+    getListActivities(state) {
+      return state.listActivities;
+    },
   },
   actions: {
+    setListActivities(activities: IActivity[] | undefined) {
+      if (activities) {
+        this.listActivities = activities;
+      }
+    },
     setCurrentActivity(activity: IActivity | undefined) {
       this.currentActivity = activity;
       this.runningTimer = activity?.time ?? -1;
@@ -44,6 +53,6 @@ export const useTimerStore = defineStore("timer", {
       this.runningTimer = 0;
       this.currentActivity = undefined;
       this.nextActivity = undefined;
-    }
+    },
   },
 });
