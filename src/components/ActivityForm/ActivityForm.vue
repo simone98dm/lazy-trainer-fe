@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { IActivity } from "../../models/Activity";
-import { ref, watch } from "vue";
-import Button from "../Button/Button.vue";
-import { v4 as uuidv4 } from "uuid";
-import Icon from "../Icons/Icon.vue";
-import TrashIcon from "../Icons/TrashIcon.vue";
-import AddIcon from "../Icons/AddIcon.vue";
-import SaveIcon from "../Icons/SaveIcon.vue";
-import { IconSize, ButtonColor } from "../../utils/enum";
+import {IActivity} from "../../models/Activity";
+import {ref} from "vue";
+import Button from "@/components/Button/Button.vue";
+import {v4 as uuidv4} from "uuid";
+import TrashIcon from "@/components/Icons/TrashIcon.vue";
+import AddIcon from "@/components/Icons/AddIcon.vue";
+import SaveIcon from "@/components/Icons/SaveIcon.vue";
+import {ButtonColor} from "../../utils";
 
 const props = defineProps([
   "id",
@@ -99,26 +98,47 @@ function remove() {
             Time in seconds:
           </label>
           <input
-            v-model="time"
-            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-            name="activityTime"
-            type="text"
+              v-model="time"
+              class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+              name="activityTime"
+              type="text"
           />
         </div>
 
-        <div class="w-full md:w-full px-3 mb-6">
-          <label
+        <div class="w-full md:w-full flex flex-col px-3 mb-6">
+          <!-- <label
             class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
             for="activityWarmup"
           >
             Is warm-up?
-          </label>
-          <input
+          </label> -->
+          <!-- <input
             v-model="warmup"
             class="toggle"
             name="activityWarmup py-3"
             type="checkbox"
-          />
+          /> -->
+
+          <label
+              class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="toggle"
+          >
+            Is warm-up?
+          </label>
+          <div
+              class="relative inline-block w-14 mr-2 align-middle select-none transition duration-200 ease-in"
+          >
+            <input
+                id="toggle"
+                class="toggle-checkbox absolute block w-8 h-8 rounded-full bg-white border-2 appearance-none cursor-pointer"
+                name="toggle"
+                type="checkbox"
+            />
+            <label
+                class="toggle-label block overflow-hidden h-8 rounded-full bg-gray-300 cursor-pointer"
+                for="toggle"
+            ></label>
+          </div>
         </div>
         <!-- <label for="activityUrl">
           Video:
@@ -126,21 +146,19 @@ function remove() {
         </label> -->
         <div class="w-full flex flex-col sm:flex-row justify-center px-3">
           <Button
-            @click="save"
-            full="true"
-            :label="isNew() ? 'Create' : 'Save'"
-            :color="ButtonColor.SUCCESS"
-          >
-            <Icon :component="isNew() ? AddIcon : SaveIcon" :size="IconSize.MEDIUM"></Icon>
-          </Button>
+              :color="ButtonColor.SUCCESS"
+              :icon="isNew() ? AddIcon : SaveIcon"
+              :label="isNew() ? 'Create' : 'Save'"
+              full="true"
+              @click="save"
+          />
           <Button
-            @click="remove"
-            full="true"
-            label="Remove"
-            :color="ButtonColor.DANGER"
-          >
-            <Icon :component="TrashIcon" :size="IconSize.MEDIUM"></Icon>
-          </Button>
+              :color="ButtonColor.DANGER"
+              :icon="TrashIcon"
+              full="true"
+              label="Remove"
+              @click="remove"
+          />
         </div>
       </div>
     </form>
@@ -148,41 +166,15 @@ function remove() {
 </template>
 
 <style>
-input[type="checkbox"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-}
-input[type="checkbox"]:focus {
-  outline: 0;
+.toggle-checkbox:checked {
+  @apply: right-0 border-indigo-600;
+  right: 0;
+  transition: all 0.2s ease;
+  border-color: rgb(79 70 229 / var(--tw-bg-opacity));
 }
 
-.toggle {
-  height: 32px;
-  width: 60px;
-  border-radius: 16px;
-  display: inline-block;
-  position: relative;
-  margin: 0;
-  border: 2px solid rgb(79 70 229 / var(--tw-bg-opacity));
-  background: linear-gradient(180deg, #ececec 0%, #ececec 100%);
-  transition: all 0.2s ease;
-}
-.toggle:after {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: rgb(79 70 229 / var(--tw-bg-opacity));
-  box-shadow: 0 1px 2px rgb(79 70 229 / var(--tw-bg-opacity));
-  transition: all 0.2s cubic-bezier(0.5, 0.1, 0.75, 1.35);
-}
-.toggle:checked:after {
-  transform: translatex(28px);
+.toggle-checkbox:checked + .toggle-label {
+  @apply: bg-indigo-600;
+  background-color: rgb(79 70 229 / var(--tw-bg-opacity));
 }
 </style>

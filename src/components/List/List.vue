@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import Item from "../Item/Item.vue";
+import Item from "@/components/Item/Item.vue";
+
 const props = defineProps(["list"]);
 </script>
 

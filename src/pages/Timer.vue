@@ -1,26 +1,19 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from "vue-router";
-import { useActivityStore } from "../stores/activity";
-import { useTimerStore } from "../stores/timer";
-import Button from "../components/Button/Button.vue";
-import StopIcon from "../components/Icons/StopIcon.vue";
-import PlayIcon from "../components/Icons/PlayIcon.vue";
-import { ButtonSize, IconSize } from "../utils/enum";
-import Icon from "../components/Icons/Icon.vue";
-import { IActivity } from "../models/Activity";
-import { COLOR_CODES, FULL_DASH_ARRAY } from "../utils/constants";
-import { ref } from "vue";
-import BackButton from "../components/BackButton/BackButton.vue";
-import { Act } from "../utils/types";
-import { getActivity } from "../utils";
+import {ref} from "vue";
+import {useRoute, useRouter} from "vue-router";
+import Button from "@/components/Button/Button.vue";
+import StopIcon from "@/components/Icons/StopIcon.vue";
+import PlayIcon from "@/components/Icons/PlayIcon.vue";
+import BackButton from "@/components/BackButton/BackButton.vue";
+import {type Act, ButtonSize, COLOR_CODES, FULL_DASH_ARRAY, getActivity,} from "../utils";
+import {useTimerStore} from "../stores/timer";
 
 const route = useRoute();
 const router = useRouter();
 
 const timerStore = useTimerStore();
-const activityStore = useActivityStore();
 
-const { sessionId, activityId } = route.params;
+const {sessionId, activityId} = route.params;
 
 let TIME_LIMIT = ref(0);
 setupTimer(sessionId as string, activityId as string);
@@ -173,14 +166,12 @@ function redirectToActivity() {
       </div>
     </div>
     <div class="mb-6 flex justify-center">
-      <Button @click="timerStore.toggle" full="true" :size="ButtonSize.LARGE">
-        <Icon
-          v-if="timerStore.isRunning"
-          :component="StopIcon"
-          :class="IconSize.MEDIUM"
-        ></Icon>
-        <Icon v-else :component="PlayIcon" :class="IconSize.MEDIUM"></Icon>
-      </Button>
+      <Button
+          :icon="timerStore.isRunning ? StopIcon : PlayIcon"
+          :size="ButtonSize.LARGE"
+          full="true"
+          @click="timerStore.toggle"
+      />
     </div>
     <hr class="mb-6" />
     <div class="text-center text-slate-500 mb-6">

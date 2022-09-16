@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ButtonColor } from "../../utils/enum";
+import {ButtonColor, IconSize} from "../../utils";
+import Icon from "@/components/Icons/Icon.vue";
 
-const props = defineProps(["full", "size", "label", "color"]);
+const props = defineProps(["full", "size", "label", "color", "icon"]);
 const emit = defineEmits(["click"]);
 </script>
 
@@ -28,8 +29,7 @@ const emit = defineEmits(["click"]);
           props.color === ButtonColor.WARNING,
       },
       {
-        'bg-slate-800 hover:bg-slate-500':
-          props.color === ButtonColor.DARK,
+        'bg-slate-800 hover:bg-slate-500': props.color === ButtonColor.DARK,
       },
       {
         'bg-white hover:bg-slate-100 text-black':
@@ -41,10 +41,13 @@ const emit = defineEmits(["click"]);
       'py-3',
       'px-3',
       'hover:bg-indigo-500',
+      'mb-2',
+      'sm:mx-2',
     ]"
     type="button"
     @click="emit('click')"
   >
+    <Icon v-if="props.icon" :component="props.icon" :size="IconSize.MEDIUM"/>
     <slot />
     <span class="ml-2" v-if="props.label">{{ props.label }}</span>
   </button>

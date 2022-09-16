@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import HouseIcon from "../Icons/HouseIcon.vue";
-import SettingIcon from "../Icons/SettingIcon.vue";
-import Icon from "../Icons/Icon.vue";
-import { IconSize } from "../../utils/enum";
-
-</script>
+import HouseIcon from "@/components/Icons/HouseIcon.vue";
+import SettingIcon from "@/components/Icons/SettingIcon.vue";
+import Icon from "@/components/Icons/Icon.vue";
+import {IconSize} from "../../utils";</script>
 
 <template>
   <div

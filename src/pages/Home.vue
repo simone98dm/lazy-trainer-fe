@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import { useActivityStore } from "../stores/activity";
-import { getDayOfTheWeek } from "../utils/dates";
-import { ButtonSize, IconSize, LinkType } from "../utils/enum";
-import AddIcon from "../components/Icons/AddIcon.vue";
-import Item from "../components/Item/Item.vue";
-import Icon from "../components/Icons/Icon.vue";
-import Link from "../components/Link/Link.vue";
+import AddIcon from "@/components/Icons/AddIcon.vue";
+import Item from "@/components/Item/Item.vue";
+import Link from "@/components/Link/Link.vue";
+import {useActivityStore} from "../stores/activity";
+import {ButtonSize, getDayOfTheWeek, LinkType} from "../utils";
 
 const store = useActivityStore();
 
@@ -39,12 +36,11 @@ function formatDescription(len: number) {
       <h1 class="mb-3 text-2xl font-bold">No activity found</h1>
     </div>
     <Link
-      label="Add day activities"
-      :to="{ name: 'session' }"
-      :size="ButtonSize.MEDIUM"
-      :type="LinkType.BUTTON"
-    >
-      <Icon :component="AddIcon" :size="IconSize.MEDIUM"></Icon>
-    </Link>
+        :icon="AddIcon"
+        :size="ButtonSize.MEDIUM"
+        :to="{ name: 'session' }"
+        :type="LinkType.BUTTON"
+        label="Add day activities"
+    />
   </section>
 </template>

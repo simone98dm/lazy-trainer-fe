@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useRouter } from "vue-router";
-import Icon from "../Icons/Icon.vue";
-import LeftIcon from "../Icons/LeftIcon.vue";
-import { IconSize } from "../../utils/enum";
+import {useRouter} from "vue-router";
+import Icon from "@/components/Icons/Icon.vue";
+import LeftIcon from "@/components/Icons/LeftIcon.vue";
+import {IconSize} from "../../utils";
 
 const router = useRouter();
 const emits = defineEmits(["click"]);
