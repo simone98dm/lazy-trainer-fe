@@ -11,7 +11,7 @@ import Button from "@/components/Button/Button.vue";
 import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
 import { useActivityStore } from "../stores/activity";
 import { useTimerStore } from "../stores/timer";
-import DotsIcon from "../components/Icons/DotsIcon.vue";
+import Dropdown from "@/components/Dropdown/Dropdown.vue";
 
 const route = useRoute();
 const activityStore = useActivityStore();
@@ -85,13 +85,20 @@ function duplicateWarmup() {
           label="Run warm-up"
           @click="runWarmUp"
         />
-        <Button
-          v-if="warmupActivitiesCount"
-          :color="ButtonColor.TRASPARENT"
-          :icon="DotsIcon"
-          :size="ButtonSize.MEDIUM"
-          @click="duplicateWarmup"
-        />
+
+        <Dropdown>
+          <div
+            class="mt-2 text-sm font-semibold bg-transparent rounded-lg"
+          >
+            <Button
+              v-if="warmupActivitiesCount"
+              :color="ButtonColor.TRASPARENT"
+              label="Duplicate"
+              :size="ButtonSize.MEDIUM"
+              @click="duplicateWarmup"
+            />
+          </div>
+        </Dropdown>
       </div>
       <div v-for="activity in warmUpActivities">
         <Link

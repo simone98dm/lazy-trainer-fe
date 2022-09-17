@@ -2,7 +2,7 @@
   <svg
     version="1.1"
     viewBox="0 0 32 32"
-	fill="currentColor"
+    fill="currentColor"
     style="enable-background: new 0 0 32 32"
   >
     <g>

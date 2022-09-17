@@ -17,29 +17,28 @@ const emit = defineEmits(["click"]);
       'appearance-none',
       'block',
       {
-        'bg-indigo-600 hover:bg-indigo-500':
+        'bg-indigo-600 hover:bg-indigo-500 text-gray-100':
           !props.color || props.color === ButtonColor.PRIMARY,
       },
-      { 'bg-red-600 hover:bg-red-500': props.color === ButtonColor.DANGER },
+      { 'bg-red-600 hover:bg-red-500 text-gray-100': props.color === ButtonColor.DANGER },
       {
-        'bg-green-600 hover:bg-green-500': props.color === ButtonColor.SUCCESS,
+        'bg-green-600 hover:bg-green-500 text-gray-100': props.color === ButtonColor.SUCCESS,
       },
       {
-        'bg-orange-600 hover:bg-orange-500':
+        'bg-orange-600 hover:bg-orange-500 text-gray-100':
           props.color === ButtonColor.WARNING,
       },
       {
-        'bg-slate-800 hover:bg-slate-500': props.color === ButtonColor.DARK,
+        'bg-slate-800 hover:bg-slate-500 text-gray-100': props.color === ButtonColor.DARK,
       },
       {
         'bg-white hover:bg-slate-100 text-black':
           props.color === ButtonColor.LIGHT,
       },
       {
-        'bg-trasparent hover:bg-slate-100':
+        'bg-trasparent hover:bg-slate-100 text-black':
           props.color === ButtonColor.TRASPARENT,
       },
-      'text-gray-100',
       'font-bold',
       'rounded-lg',
       'py-3',
