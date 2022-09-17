@@ -22,7 +22,14 @@ function addSession(session: ISession) {
 </script>
 <template>
   <div class="mb-6">
-    <BackButton @click="router.back()"></BackButton>
+    <BackButton
+      @click="
+        () => {
+          router.back();
+          store.duplicateWarmup = undefined;
+        }
+      "
+    ></BackButton>
   </div>
   <div class="flex flex-wrap justify-center">
     <SessionForm

@@ -6,15 +6,20 @@ import TrashIcon from "@/components/Icons/TrashIcon.vue";
 import AddIcon from "@/components/Icons/AddIcon.vue";
 import { ISession } from "../../models/Session";
 import { days, ButtonColor } from "../../utils";
-import SaveIcon from "../Icons/SaveIcon.vue";
+import SaveIcon from "@/components/Icons/SaveIcon.vue";
+import { useActivityStore } from "../../stores/activity";
+import Item from "@/components/Item/Item.vue";
 
 const props = defineProps(["id", "dayOfWeek"]);
 const emits = defineEmits(["save", "remove"]);
+const store = useActivityStore();
 
 const uuid = uuidv4();
 
 let dayOfWeek = ref(props.dayOfWeek || "");
 let id = ref(props.id || uuid);
+
+const duplicateWarmupActivities = store.duplicateWarmup;
 
 function save() {
   const activity: ISession = {
@@ -22,6 +27,13 @@ function save() {
     dayOfWeek: dayOfWeek.value,
     activities: [],
   };
+
+  if (duplicateWarmupActivities) {
+    store.duplicateWarmup = undefined;
+    activity.activities = [...duplicateWarmupActivities];
+    activity.id = uuidv4();
+  }
+
   emits("save", activity);
 }
 
@@ -45,7 +57,7 @@ function isDaySelected(dayIndex: number) {
 </script>
 
 <template>
-  <div class="flex justify-center">
+  <div class="flex justify-center w-full">
     <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
       <h1 class="mb-3 text-2xl font-bold mb-6">Create a new day session:</h1>
       <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6">
@@ -62,11 +74,23 @@ function isDaySelected(dayIndex: number) {
           {{ dayName }}
         </button>
       </div>
+      <div v-if="duplicateWarmupActivities" class="mb-6">
+        <h4>Warm-up: {{ duplicateWarmupActivities?.length }}</h4>
+        <p class="text-orange-500">
+          *This session will contains the warm-up activities from the other
+          session.
+        </p>
+        <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
+          <div v-for="warmup in duplicateWarmupActivities">
+            <Item :id="warmup.id" :key="warmup.id" :name="warmup.name"></Item>
+          </div>
+        </div>
+      </div>
       <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
         <Button
           full="true"
           :icon="!isNew() ? SaveIcon : AddIcon"
-          :label="!isNew() ? 'Edit' : 'Create'"
+          :label="!isNew() ? 'Save' : 'Create'"
           :color="ButtonColor.SUCCESS"
           @click="save"
         />

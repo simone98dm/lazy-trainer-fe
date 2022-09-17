@@ -35,6 +35,10 @@ const emit = defineEmits(["click"]);
         'bg-white hover:bg-slate-100 text-black':
           props.color === ButtonColor.LIGHT,
       },
+      {
+        'bg-trasparent hover:bg-slate-100':
+          props.color === ButtonColor.TRASPARENT,
+      },
       'text-gray-100',
       'font-bold',
       'rounded-lg',
