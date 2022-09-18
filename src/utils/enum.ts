@@ -8,6 +8,11 @@ export enum LinkType {
   BUTTON,
 }
 
+export enum Theme {
+  LIGHT,
+  DARK,
+}
+
 export enum IconSize {
   LARGE = "icn__large",
   MEDIUM = "icn__medium",

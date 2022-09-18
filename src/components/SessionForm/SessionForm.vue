@@ -29,7 +29,6 @@ function save() {
   };
 
   if (duplicateWarmupActivities) {
-    store.duplicateWarmup = undefined;
     activity.activities = [...duplicateWarmupActivities];
     activity.id = uuidv4();
   }
@@ -80,7 +79,7 @@ function isDaySelected(dayIndex: number) {
           *This session will contains the warm-up activities from the other
           session.
         </p>
-        <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
+        <div class="w-full flex flex-wrap justify-center px-3 gap-3">
           <div v-for="warmup in duplicateWarmupActivities">
             <Item :id="warmup.id" :key="warmup.id" :name="warmup.name"></Item>
           </div>

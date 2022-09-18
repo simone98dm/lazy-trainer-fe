@@ -13,8 +13,17 @@ const { sessionId } = route.params;
 
 const session = store.getSession(sessionId as string);
 
+function cleanDuplicateWarmup() {
+  store.duplicateWarmup = undefined;
+}
+function onBackPageHandler() {
+  cleanDuplicateWarmup();
+  router.back();
+}
+
 function addSession(session: ISession) {
   store.addSession(session);
+  cleanDuplicateWarmup();
   router.push({
     name: "home",
   });
@@ -23,12 +32,7 @@ function addSession(session: ISession) {
 <template>
   <div class="mb-6">
     <BackButton
-      @click="
-        () => {
-          router.back();
-          store.duplicateWarmup = undefined;
-        }
-      "
+      @click="onBackPageHandler"
     ></BackButton>
   </div>
   <div class="flex flex-wrap justify-center">

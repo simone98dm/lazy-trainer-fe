@@ -1,10 +1,5 @@
 <template>
-  <svg
-    version="1.1"
-    viewBox="0 0 32 32"
-    fill="currentColor"
-    style="enable-background: new 0 0 32 32"
-  >
+  <svg version="1.1" viewBox="0 0 32 32" fill="currentColor">
     <g>
       <path d="M16,10c1.7,0,3-1.3,3-3s-1.3-3-3-3s-3,1.3-3,3S14.3,10,16,10z" />
       <path d="M16,13c-1.7,0-3,1.3-3,3s1.3,3,3,3s3-1.3,3-3S17.7,13,16,13z" />

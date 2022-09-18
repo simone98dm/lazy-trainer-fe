@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import Button from "@/components/Button/Button.vue";
 import DotsIcon from "@/components/Icons/DotsIcon.vue";
-import { ButtonColor, ButtonSize } from "../../utils";
+import { ButtonColor, ButtonSize, Theme } from "../../utils";
 
 let showDropdown = ref(false);
 </script>
@@ -16,6 +16,7 @@ let showDropdown = ref(false);
         :icon="DotsIcon"
         :color="ButtonColor.TRASPARENT"
         :size="ButtonSize.MEDIUM"
+        :theme="Theme.DARK"
         @click="() => (showDropdown = !showDropdown)"
       ></Button>
     </div>
@@ -29,3 +30,4 @@ let showDropdown = ref(false);
     </div>
   </div>
 </template>
+  
