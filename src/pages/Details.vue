@@ -11,21 +11,22 @@ import Button from "@/components/Button/Button.vue";
 import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
 import { useActivityStore } from "../stores/activity";
 import { useTimerStore } from "../stores/timer";
+import Dropdown from "@/components/Dropdown/Dropdown.vue";
 
 const route = useRoute();
-const store = useActivityStore();
+const activityStore = useActivityStore();
 const timerStore = useTimerStore();
 const { sessionId } = route.params;
 
-const warmUpActivities = store.getWarmUpActivities(sessionId as string);
-const activities = store.getSessionActivities(sessionId as string);
-const session = store.getSession(sessionId as string);
+const warmUpActivities = activityStore.getWarmUpActivities(sessionId as string);
+const activities = activityStore.getSessionActivities(sessionId as string);
+const session = activityStore.getSession(sessionId as string);
 
 const activitiesCount = activities?.length ?? 0;
 const warmupActivitiesCount = warmUpActivities?.length ?? 0;
 
 function deleteSession() {
-  store.deleteSession(sessionId as string);
+  activityStore.deleteSession(sessionId as string);
   router.push({
     name: "home",
   });
@@ -39,6 +40,15 @@ function runWarmUp() {
 function runActivities() {
   timerStore.setListActivities(activities);
   router.push({ name: "timer", params: { sessionId } });
+}
+
+function duplicateWarmup() {
+  activityStore.setDuplicateWarmup(warmUpActivities);
+  router.push({
+    name: "session",
+    params: { sessionId },
+    query: { d: "duplicate" },
+  });
 }
 </script>
 <template>
@@ -69,9 +79,9 @@ function runActivities() {
       class="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl p-3 mb-6"
     >
       <!-- <h1 class="mb-3 text-2xl font-bold text-slate-50">Warm-up:</h1> -->
-      <div class="mb-3">
+      <div class="flex justify-between mb-3">
         <Button
-          v-if="activitiesCount"
+          v-if="warmupActivitiesCount"
           :color="ButtonColor.PRIMARY"
           :icon="PlayIcon"
           :size="ButtonSize.MEDIUM"
@@ -79,6 +89,18 @@ function runActivities() {
           label="Run warm-up"
           @click="runWarmUp"
         />
+
+        <Dropdown>
+          <div class="mt-2 text-sm font-semibold bg-transparent rounded-lg">
+            <Button
+              v-if="warmupActivitiesCount"
+              :color="ButtonColor.TRASPARENT"
+              label="Duplicate"
+              :size="ButtonSize.MEDIUM"
+              @click="duplicateWarmup"
+            />
+          </div>
+        </Dropdown>
       </div>
       <div v-for="activity in warmUpActivities">
         <Link

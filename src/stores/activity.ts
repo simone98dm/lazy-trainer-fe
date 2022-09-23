@@ -9,6 +9,7 @@ import { retrieve, save } from "./localStoragePlugin";
 export const useActivityStore = defineStore("activity", {
   state: () => ({
     plan: {} as IPlan,
+    duplicateWarmup: undefined as IActivity[] | undefined,
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
@@ -87,6 +88,11 @@ export const useActivityStore = defineStore("activity", {
     deleteSession(sessionId: string) {
       this.plan.sessions = this.plan.sessions.filter((x) => x.id !== sessionId);
       save(this.plan);
+    },
+    setDuplicateWarmup(warmUpActivities: IActivity[] | undefined) {
+      if (warmUpActivities) {
+        this.duplicateWarmup = warmUpActivities;
+      }
     },
   },
 });

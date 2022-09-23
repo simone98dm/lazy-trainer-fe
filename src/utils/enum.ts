@@ -5,7 +5,12 @@ export enum ButtonSize {
 }
 
 export enum LinkType {
-  BUTTON
+  BUTTON,
+}
+
+export enum Theme {
+  LIGHT,
+  DARK,
 }
 
 export enum IconSize {
@@ -21,4 +26,5 @@ export enum ButtonColor {
   DANGER,
   WARNING,
   SUCCESS,
+  TRASPARENT,
 }
