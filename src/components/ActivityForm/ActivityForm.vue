@@ -169,6 +169,7 @@ function remove() {
               class="toggle-checkbox absolute block w-8 h-8 rounded-full bg-white border-2 appearance-none cursor-pointer"
               name="toggle"
               type="checkbox"
+              v-model="warmup"
             />
             <label
               class="toggle-label block overflow-hidden h-8 rounded-full bg-gray-300 cursor-pointer"
