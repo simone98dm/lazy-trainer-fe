@@ -44,7 +44,11 @@ function runActivities() {
 
 function duplicateWarmup() {
   activityStore.setDuplicateWarmup(warmUpActivities);
-  router.push({ name: "session", params: { sessionId } });
+  router.push({
+    name: "session",
+    params: { sessionId },
+    query: { d: "duplicate" },
+  });
 }
 </script>
 <template>
@@ -87,9 +91,7 @@ function duplicateWarmup() {
         />
 
         <Dropdown>
-          <div
-            class="mt-2 text-sm font-semibold bg-transparent rounded-lg"
-          >
+          <div class="mt-2 text-sm font-semibold bg-transparent rounded-lg">
             <Button
               v-if="warmupActivitiesCount"
               :color="ButtonColor.TRASPARENT"

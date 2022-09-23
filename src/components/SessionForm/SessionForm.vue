@@ -10,7 +10,7 @@ import SaveIcon from "@/components/Icons/SaveIcon.vue";
 import { useActivityStore } from "../../stores/activity";
 import Item from "@/components/Item/Item.vue";
 
-const props = defineProps(["id", "dayOfWeek"]);
+const props = defineProps(["id", "dayOfWeek", "existingForm"]);
 const emits = defineEmits(["save", "remove"]);
 const store = useActivityStore();
 
@@ -19,7 +19,6 @@ const uuid = uuidv4();
 let dayOfWeek = ref(props.dayOfWeek || "");
 let id = ref(props.id || uuid);
 
-const duplicateWarmupActivities = store.duplicateWarmup;
 
 function save() {
   const activity: ISession = {
@@ -28,8 +27,9 @@ function save() {
     activities: [],
   };
 
-  if (duplicateWarmupActivities) {
-    activity.activities = [...duplicateWarmupActivities];
+  if (props.existingForm) {
+    store.duplicateWarmup = undefined;
+    activity.activities = [...props.existingForm];
     activity.id = uuidv4();
   }
 
@@ -73,14 +73,14 @@ function isDaySelected(dayIndex: number) {
           {{ dayName }}
         </button>
       </div>
-      <div v-if="duplicateWarmupActivities" class="mb-6">
-        <h4>Warm-up: {{ duplicateWarmupActivities?.length }}</h4>
+      <div v-if="props.existingForm" class="mb-6">
+        <h4>Warm-up: {{ props.existingForm?.length }}</h4>
         <p class="text-orange-500">
           *This session will contains the warm-up activities from the other
           session.
         </p>
-        <div class="w-full flex flex-wrap justify-center px-3 gap-3">
-          <div v-for="warmup in duplicateWarmupActivities">
+        <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
+          <div v-for="warmup in props.existingForm">
             <Item :id="warmup.id" :key="warmup.id" :name="warmup.name"></Item>
           </div>
         </div>
