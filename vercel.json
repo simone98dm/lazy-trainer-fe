@@ -8,10 +8,10 @@
             "use": "@vercel/node"
         }
     ],
-    "rewrites": [
+    "routes": [
         {
             "source": "/api/(.*)",
-            "dest": "/api"
+            "dest": "/api/server.ts"
         }
     ]
 }
