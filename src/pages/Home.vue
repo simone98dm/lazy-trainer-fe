@@ -31,7 +31,9 @@
 </script>
 
 <template>
-  <Loading v-if="isLoading"></Loading>
+  <div class="flex justify-center w-full" v-if="isLoading">
+    <Loading></Loading>
+  </div>
   <section v-else>
     <div v-if="sessions && sessions.length > 0" class="mb-6">
       <h1 class="mb-3 text-2xl font-bold">Your session:</h1>

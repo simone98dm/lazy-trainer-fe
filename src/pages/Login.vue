@@ -10,6 +10,7 @@
   const error = ref("");
   const userStore = useUserStore();
   const router = useRouter();
+  const isLoading = ref(false);
 
   if (userStore.isLogged) {
     router.push({ name: "home" });
@@ -24,7 +25,9 @@
   }
 
   function submit() {
+    isLoading.value = true;
     userStore.signIn(username.value, password.value).then((response) => {
+      isLoading.value = false;
       if (!response) {
         router.push({ name: "home" });
       } else {
@@ -65,7 +68,13 @@
       <div class="text-center mb-6">
         <span v-if="error" class="font-bold text-red-500">{{ error }}</span>
       </div>
-      <Button :color="ButtonColor.PRIMARY" label="Login" full="true" @click="submit" />
+      <Button
+        :loading="isLoading"
+        :color="ButtonColor.PRIMARY"
+        label="Login"
+        full="true"
+        @click="submit"
+      />
     </form>
   </div>
 </template>
