@@ -3,9 +3,9 @@
   import Icon from "@/components/Icons/Icon.vue";
   import { IconSize } from "../../utils";
   import HomeIcon from "../Icons/HomeIcon.vue";
-import { useActivityStore } from "../../stores/activity";
+  import { useActivityStore } from "../../stores/activity";
 
-  const activityStore = useActivityStore()
+  const activityStore = useActivityStore();
 
   function resetAll() {
     localStorage.clear();

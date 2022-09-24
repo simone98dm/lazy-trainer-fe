@@ -65,7 +65,7 @@
       <div class="text-center mb-6">
         <span v-if="error" class="font-bold text-red-500">{{ error }}</span>
       </div>
-      <Button :color="ButtonColor.SUCCESS" label="Login" full="true" @click="submit" />
+      <Button :color="ButtonColor.PRIMARY" label="Login" full="true" @click="submit" />
     </form>
   </div>
 </template>
