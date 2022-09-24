@@ -23,13 +23,9 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     if (!client) {
       throw new Error("mongoClient is null");
     }
-    console.log("🚀 ~ file: sign.ts ~ line 23 ~ client", client)
     const db = client.db("lazyTrainerDb");
-    console.log("🚀 ~ file: sign.ts ~ line 28 ~ db", db);
     const collection = db.collection("users");
-    console.log("🚀 ~ file: sign.ts ~ line 29 ~ collection", collection);
     const user = await collection.findOne({ name: body.username });
-    console.log("🚀 ~ file: sign.ts ~ line 31 ~ user", user);
     if (!user) {
       response.status(404).send({ error: "username or password not valid" });
       return;
