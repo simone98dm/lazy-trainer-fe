@@ -27,6 +27,5 @@ dist-ssr
 .env
 .vercel
 
-api/fake
 certs
 createCerts.sh

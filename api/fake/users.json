@@ -1,0 +1,16 @@
+{
+    "users": [
+        {
+            "id": "5c75f90b-4487-4c3e-82e8-2bef8ea00133",
+            "name": "simone",
+            "hashPassword": "$2b$12$oA6OhwkZLXMBbe790Z494efjwLxPk/dAoZAqU3F5V2yAKltUC4/My",
+            "role": "0"
+        },
+        {
+            "id": "d1ab27da-0a00-4be1-aae9-a1261aad1080",
+            "name": "birbo",
+            "hashPassword": "$2y$12$i1EtGAXqIBIJwG4fr9ZKbeV.XMpoxuhFKtSebDT9WdmWThBkbc2EO",
+            "role": "0"
+        }
+    ]
+}
