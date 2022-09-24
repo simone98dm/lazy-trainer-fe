@@ -1,8 +1,8 @@
 import { SECRET_KEY } from "./../const";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import jwt from "jsonwebtoken";
-import fakeUsers from "../fake/users.json";
 import bcrypt from "bcrypt";
+import { connectToDatabase } from "../utils";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   const body = JSON.parse(request.body);
@@ -19,7 +19,14 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     }
 
     //find user
-    const user = fakeUsers.users.find((element) => element.name === body.username)
+    const client = await connectToDatabase();
+    if (!client) {
+      throw new Error("mongoClient is null");
+    }
+
+    const db = client.db("lazyTrainerDb");
+    const collection = db.collection("users");
+    const user = await collection.findOne({ name: body.username });
     if (!user) {
       response.status(404).send({ error: "username or password not valid" });
       return;
@@ -40,7 +47,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       },
       SECRET_KEY,
       {
-        expiresIn: "2 days",
+        expiresIn: "1h",
       }
     );
 
