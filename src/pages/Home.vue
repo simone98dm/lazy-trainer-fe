@@ -8,13 +8,14 @@
   import { useActivityStore } from "../stores/activity";
   import { useUserStore } from "../stores/user";
   import { ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
+  import Loading from "../components/Loading/Loading.vue";
 
   const store = useActivityStore();
+  const isLoading = ref(true);
 
-  
   const user = useUserStore();
   store.setHeader(`Hello ${user.getUsername} 👋`);
-  
+
   const router = useRouter();
   const sessions = ref([] as ISession[] | undefined);
 
@@ -22,6 +23,7 @@
     .restoreSession()
     .then(() => {
       sessions.value = store.getWeek;
+      isLoading.value = false;
     })
     .catch(() => {
       router.push({ name: "login" });
@@ -29,7 +31,8 @@
 </script>
 
 <template>
-  <section>
+  <Loading v-if="isLoading"></Loading>
+  <section v-else>
     <div v-if="sessions && sessions.length > 0" class="mb-6">
       <h1 class="mb-3 text-2xl font-bold">Your session:</h1>
       <div v-for="activity in sessions">
