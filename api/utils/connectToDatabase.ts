@@ -6,7 +6,7 @@ const options = {};
 let mongoClient: MongoClient;
 
 if (!uri) {
-  throw new Error();
+  throw new Error("uri not setted");
 }
 
 export async function connectToDatabase() {
