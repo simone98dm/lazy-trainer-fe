@@ -36,6 +36,8 @@ export const useActivityStore = defineStore("activity", {
       const userStore = useUserStore();
       if (userStore.isLogged && !this.plan) {
         return userStore.getUserActivities().then((plan) => (this.plan = plan));
+      } else if (userStore.isLogged && this.plan) {
+        return Promise.resolve(this.plan);
       }
 
       return Promise.reject();

@@ -20,10 +20,11 @@ export const useUserStore = defineStore("user", {
       }).then((response) => response.json());
 
       if (response.data) {
-        const user = response as { data: { userId: string; token: string } };
+        const user = response as { data: { name: string; userId: string; token: string } };
         this.token = user.data.token;
         this.userId = user.data.userId;
-        this.username = username;
+        this.username = user.data.name;
+        localStorage.setItem("_token", this.token);
         return undefined;
       }
 
@@ -38,6 +39,24 @@ export const useUserStore = defineStore("user", {
       }).then((response) => response.json());
 
       return activities[0];
+    },
+    async verifyStorage() {
+      const token = localStorage.getItem("_token");
+      if (token) {
+        const response = await fetch("/api/auth/verify", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }).then((response) => response.json());
+        
+        if (response.data) {
+          const user = response as { data: { name: string; userId: string; token: string } };
+          this.token = user.data.token;
+          this.userId = user.data.userId;
+          this.username = user.data.name;
+          localStorage.setItem("_token", this.token);
+        }
+      }
     },
   },
 });

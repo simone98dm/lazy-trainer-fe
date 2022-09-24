@@ -15,6 +15,14 @@
     router.push({ name: "home" });
   }
 
+  if (!userStore.isLogged) {
+    userStore.verifyStorage().then(() => {
+      if (userStore.isLogged) {
+        router.push({ name: "home" });
+      }
+    });
+  }
+
   function submit() {
     userStore.signIn(username.value, password.value).then((response) => {
       if (!response) {
@@ -29,6 +37,7 @@
 <template>
   <div class="flex justify-center">
     <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
+      <h1 class="mb-3 text-2xl font-bold">Login</h1>
       <div class="flex flex-wrap -mx-3">
         <div class="w-full px-3 mb-6">
           <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
