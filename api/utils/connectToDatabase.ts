@@ -3,8 +3,7 @@ import { MongoClient } from "mongodb";
 const uri = process.env.MONGODB_URI || "";
 const options = {};
 
-let mongoClient: MongoClient | undefined;
-let mongoClientPromise: Promise<MongoClient | undefined>;
+let mongoClient: MongoClient;
 
 if (!uri) {
   throw new Error();
@@ -16,12 +15,11 @@ export async function connectToDatabase() {
       return mongoClient;
     }
 
-    mongoClient = new MongoClient(uri, options);
-    mongoClientPromise = mongoClient.connect();
+    mongoClient = await new MongoClient(uri, options).connect();
 
     console.log("🚀 connected");
 
-    return mongoClientPromise;
+    return mongoClient;
   } catch (error) {
     console.log("🚀 ~ file: connectToDatabase.ts ~ line 21 ~ connectToDatabase ~ error", error);
   }
