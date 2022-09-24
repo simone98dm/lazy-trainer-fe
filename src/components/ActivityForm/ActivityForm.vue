@@ -1,68 +1,68 @@
 })
 <script setup lang="ts">
-import { IActivity } from "../../models/Activity";
-import { ref, watch } from "vue";
-import Button from "@/components/Button/Button.vue";
-import { v4 as uuidv4 } from "uuid";
-import TrashIcon from "@/components/Icons/TrashIcon.vue";
-import AddIcon from "@/components/Icons/AddIcon.vue";
-import SaveIcon from "@/components/Icons/SaveIcon.vue";
-import { ButtonColor } from "../../utils";
+  import { IActivity } from "../../models/Activity";
+  import { ref, watch } from "vue";
+  import Button from "@/components/Button/Button.vue";
+  import { v4 as uuidv4 } from "uuid";
+  import TrashIcon from "@/components/Icons/TrashIcon.vue";
+  import AddIcon from "@/components/Icons/AddIcon.vue";
+  import SaveIcon from "@/components/Icons/SaveIcon.vue";
+  import { ButtonColor } from "../../utils";
 
-const props = defineProps([
-  "id",
-  "dayOfWeek",
-  "name",
-  "description",
-  "time",
-  "warmup",
-  "order",
-  "reps",
-]);
-const emits = defineEmits(["save", "remove"]);
+  const props = defineProps([
+    "id",
+    "dayOfWeek",
+    "name",
+    "description",
+    "time",
+    "warmup",
+    "order",
+    "reps",
+  ]);
+  const emits = defineEmits(["save", "remove"]);
 
-const uuid = uuidv4();
+  const uuid = uuidv4();
 
-let name = ref(props.name || "");
-let id = ref(props.id || uuid);
-let description = ref(props.description || "");
-let time = ref(props.time / 1000 || 0);
-let reps = ref(props.reps || 0);
-let warmup = ref(props.warmup || false);
-let order = ref(props.order || 0);
-let videoUrl = ref("");
-let isTimeBasedActivity = ref(
-  (Boolean(props.time !== 0) && Boolean(props.reps === 0)) ?? false
-);
+  let name = ref(props.name || "");
+  let id = ref(props.id || uuid);
+  let description = ref(props.description || "");
+  let time = ref(props.time / 1000 || 0);
+  let reps = ref(props.reps || 0);
+  let warmup = ref(props.warmup || false);
+  let order = ref(props.order || 0);
+  let videoUrl = ref("");
+  let isTimeBasedActivity = ref(
+    (Boolean(props.time !== 0) && Boolean(props.reps === 0)) ?? false
+  );
 
-function save() {
-  const activity: IActivity = {
-    id: id.value,
-    name: name.value,
-    description: description.value,
-    time: time.value * 1000,
-    order: order.value,
-    warmup: warmup.value,
-    videoUrl: videoUrl.value,
-    reps: reps.value,
-  };
-  if (isTimeBasedActivity.value) {
-    activity.reps = 0;
-  } else {
-    activity.time = 0;
+  function save() {
+    const activity: IActivity = {
+      id: id.value,
+      name: name.value,
+      description: description.value,
+      time: time.value * 1000,
+      order: order.value,
+      warmup: warmup.value,
+      videoUrl: videoUrl.value,
+      reps: reps.value,
+    };
+    if (isTimeBasedActivity.value) {
+      activity.reps = 0;
+    } else {
+      activity.time = 0;
+    }
+    emits("save", activity);
   }
-  emits("save", activity);
-}
 
-function isNew() {
-  return !Boolean(props.id);
-}
-
-function remove() {
-  if (!isNew()) {
-    emits("remove", props.id);
+  function isNew() {
+    return !Boolean(props.id);
   }
-}
+
+  function remove() {
+    if (!isNew()) {
+      emits("remove", props.id);
+    }
+  }
 </script>
 
 <template>
@@ -203,13 +203,13 @@ function remove() {
 </template>
 
 <style>
-.toggle-checkbox:checked {
-  right: 0;
-  transition: all 0.2s ease;
-  border-color: rgb(79 70 229 / var(--tw-bg-opacity));
-}
+  .toggle-checkbox:checked {
+    right: 0;
+    transition: all 0.2s ease;
+    border-color: rgb(79 70 229 / var(--tw-bg-opacity));
+  }
 
-.toggle-checkbox:checked + .toggle-label {
-  background-color: rgb(79 70 229 / var(--tw-bg-opacity));
-}
+  .toggle-checkbox:checked + .toggle-label {
+    background-color: rgb(79 70 229 / var(--tw-bg-opacity));
+  }
 </style>

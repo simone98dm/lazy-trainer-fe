@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import Bench from "@/components/Icons/Bench.vue";
-import Icon from "@/components/Icons/Icon.vue";
-import { IconSize } from "../../utils";
+  import Bench from "@/components/Icons/Bench.vue";
+  import Icon from "@/components/Icons/Icon.vue";
+  import { IconSize } from "../../utils";
 
-const props = defineProps(["id", "name", "description", "time", "reps"]);
+  const props = defineProps(["id", "name", "description", "time", "reps"]);
 
-function millisToMinutesAndSeconds(millis: number) {
-  const minutes: number = Math.floor(millis / 60000);
-  const seconds: number = Number(((millis % 60000) / 1000).toFixed(0));
-  if (minutes === 0) {
-    return `${(seconds < 10 ? "0" : "") + seconds}"`;
+  function millisToMinutesAndSeconds(millis: number) {
+    const minutes: number = Math.floor(millis / 60000);
+    const seconds: number = Number(((millis % 60000) / 1000).toFixed(0));
+    if (minutes === 0) {
+      return `${(seconds < 10 ? "0" : "") + seconds}"`;
+    }
+    return `${minutes}' ${(seconds < 10 ? "0" : "") + seconds}"`;
   }
-  return `${minutes}' ${(seconds < 10 ? "0" : "") + seconds}"`;
-}
 </script>
 
 <template>

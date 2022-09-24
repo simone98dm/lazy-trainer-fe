@@ -1,0 +1,9 @@
+**/.vercel
+**/certs
+**/.vscode
+**/dist
+**/public
+**/.git
+**/.svn
+**/.hg
+**/node_modules

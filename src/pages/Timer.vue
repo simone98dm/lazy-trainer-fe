@@ -1,109 +1,145 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import Button from "@/components/Button/Button.vue";
-import StopIcon from "@/components/Icons/StopIcon.vue";
-import SkipIcon from "@/components/Icons/SkipIcon.vue";
-import PlayIcon from "@/components/Icons/PlayIcon.vue";
-import BackButton from "@/components/BackButton/BackButton.vue";
-import {
-  type Act,
-  ButtonSize,
-  COLOR_CODES,
-  FULL_DASH_ARRAY,
-  getActivity,
-} from "../utils";
-import { useTimerStore } from "../stores/timer";
-import TimerSpinner from "../components/TimerSpinner/TimerSpinner.vue";
-import { useActivityStore } from "../stores/activity";
+  import { ref } from "vue";
+  import { useRoute, useRouter } from "vue-router";
+  import Button from "@/components/Button/Button.vue";
+  import StopIcon from "@/components/Icons/StopIcon.vue";
+  import SkipIcon from "@/components/Icons/SkipIcon.vue";
+  import PlayIcon from "@/components/Icons/PlayIcon.vue";
+  import BackButton from "@/components/BackButton/BackButton.vue";
+  import {
+    type Act,
+    ButtonSize,
+    COLOR_CODES,
+    FULL_DASH_ARRAY,
+    getActivity,
+  } from "../utils";
+  import { useTimerStore } from "../stores/timer";
+  import TimerSpinner from "../components/TimerSpinner/TimerSpinner.vue";
+  import { useActivityStore } from "../stores/activity";
 
-const route = useRoute();
-const router = useRouter();
+  const route = useRoute();
+  const router = useRouter();
 
-let timerInterval: any = null;
-let timePassed = 0;
-const activityStore = useActivityStore();
-activityStore.setHeader("Timer")
-const timerStore = useTimerStore();
-let TIME_LIMIT = ref(0);
-let timeLeft = ref(TIME_LIMIT.value);
+  let timerInterval: any = null;
+  let timePassed = 0;
+  const activityStore = useActivityStore();
+  activityStore.setHeader("Timer");
+  const timerStore = useTimerStore();
+  let TIME_LIMIT = ref(0);
+  let timeLeft = ref(TIME_LIMIT.value);
 
-let remainingPathColor = ref(COLOR_CODES.info.color);
-let strokeDasharray = ref(`283`);
-let baseTimerLabel = ref(formatTime(timeLeft.value));
+  let remainingPathColor = ref(COLOR_CODES.info.color);
+  let strokeDasharray = ref(`283`);
+  let baseTimerLabel = ref(formatTime(timeLeft.value));
 
-const { sessionId, activityId } = route.params;
+  const { sessionId, activityId } = route.params;
 
-setupTimer(activityId as string);
-startTimer();
+  setupTimer(activityId as string);
+  startTimer();
 
-function setupTimer(activityId: string) {
-  const activities = timerStore.getListActivities;
+  function setupTimer(activityId: string) {
+    const activities = timerStore.getListActivities;
 
-  if (!activities || activities.length <= 0) {
-    router.back();
-  } else {
-    const acts: Act = getActivity(activities, activityId);
-    if (acts) {
-      timerStore.setCurrentActivity(acts.firstActivity);
-      timerStore.setNextActivity(acts.secondActivity);
-      TIME_LIMIT.value = timerStore.currentActivityTimer / 1000;
-      timeLeft.value = TIME_LIMIT.value;
-      baseTimerLabel.value = formatTime(timeLeft.value);
+    if (!activities || activities.length <= 0) {
+      router.back();
+    } else {
+      const acts: Act = getActivity(activities, activityId);
+      if (acts) {
+        timerStore.setCurrentActivity(acts.firstActivity);
+        timerStore.setNextActivity(acts.secondActivity);
+        TIME_LIMIT.value = timerStore.currentActivityTimer / 1000;
+        timeLeft.value = TIME_LIMIT.value;
+        baseTimerLabel.value = formatTime(timeLeft.value);
+      }
     }
   }
-}
 
-function formatTime(time: number) {
-  const minutes = Math.floor(time / 60);
-  let seconds = time % 60;
-  return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
-}
-
-function setRemainingPathColor(timeLeft: number) {
-  const { alert, warning } = COLOR_CODES;
-  if (timeLeft <= alert.threshold) {
-    remainingPathColor.value = alert.color;
-  } else if (timeLeft <= warning.threshold) {
-    remainingPathColor.value = warning.color;
+  function formatTime(time: number) {
+    const minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
   }
-}
 
-function calculateTimeFraction() {
-  const rawTimeFraction = timeLeft.value / TIME_LIMIT.value;
-  const raw = rawTimeFraction - (1 / TIME_LIMIT.value) * (1 - rawTimeFraction);
-  return raw;
-}
+  function setRemainingPathColor(timeLeft: number) {
+    const { alert, warning } = COLOR_CODES;
+    if (timeLeft <= alert.threshold) {
+      remainingPathColor.value = alert.color;
+    } else if (timeLeft <= warning.threshold) {
+      remainingPathColor.value = warning.color;
+    }
+  }
 
-function setCircleDasharray() {
-  const circleDasharray = `${(
-    calculateTimeFraction() * FULL_DASH_ARRAY
-  ).toFixed(0)} 283`;
-  strokeDasharray.value = circleDasharray;
-}
+  function calculateTimeFraction() {
+    const rawTimeFraction = timeLeft.value / TIME_LIMIT.value;
+    const raw =
+      rawTimeFraction - (1 / TIME_LIMIT.value) * (1 - rawTimeFraction);
+    return raw;
+  }
 
-function onTimesUp() {
-  clearInterval(timerInterval);
+  function setCircleDasharray() {
+    const circleDasharray = `${(
+      calculateTimeFraction() * FULL_DASH_ARRAY
+    ).toFixed(0)} 283`;
+    strokeDasharray.value = circleDasharray;
+  }
 
-  timePassed = 0;
-  timeLeft.value = TIME_LIMIT.value;
-  remainingPathColor.value = COLOR_CODES.info.color;
-  strokeDasharray.value = `283`;
-  baseTimerLabel.value = formatTime(timeLeft.value);
+  function onTimesUp() {
+    clearInterval(timerInterval);
 
-  if (timerStore.getNextActivity) {
-    const activityId = timerStore.getNextActivity.id;
-    router.push({
-      name: "timer",
-      params: {
-        sessionId,
-        activityId,
-      },
-    });
+    timePassed = 0;
+    timeLeft.value = TIME_LIMIT.value;
+    remainingPathColor.value = COLOR_CODES.info.color;
+    strokeDasharray.value = `283`;
+    baseTimerLabel.value = formatTime(timeLeft.value);
 
-    setupTimer(activityId);
-    startTimer();
-  } else {
+    if (timerStore.getNextActivity) {
+      const activityId = timerStore.getNextActivity.id;
+      router.push({
+        name: "timer",
+        params: {
+          sessionId,
+          activityId,
+        },
+      });
+
+      setupTimer(activityId);
+      startTimer();
+    } else {
+      timerStore.reset();
+      router.push({
+        name: "details",
+        params: {
+          sessionId,
+        },
+      });
+    }
+  }
+
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      if (timerStore.isRunning) {
+        timePassed = timePassed += 1;
+        timeLeft.value = TIME_LIMIT.value - timePassed;
+        baseTimerLabel.value = formatTime(timeLeft.value);
+        setCircleDasharray();
+        setRemainingPathColor(timeLeft.value);
+
+        if (timeLeft.value === 0) {
+          onTimesUp();
+        }
+      }
+    }, 1000);
+  }
+
+  function toggleTimer() {
+    if (timerStore.isTimerBasedActivity) {
+      timerStore.toggle();
+    } else {
+      onTimesUp();
+    }
+  }
+
+  function redirectToActivity() {
     timerStore.reset();
     router.push({
       name: "details",
@@ -112,41 +148,6 @@ function onTimesUp() {
       },
     });
   }
-}
-
-function startTimer() {
-  timerInterval = setInterval(() => {
-    if (timerStore.isRunning) {
-      timePassed = timePassed += 1;
-      timeLeft.value = TIME_LIMIT.value - timePassed;
-      baseTimerLabel.value = formatTime(timeLeft.value);
-      setCircleDasharray();
-      setRemainingPathColor(timeLeft.value);
-
-      if (timeLeft.value === 0) {
-        onTimesUp();
-      }
-    }
-  }, 1000);
-}
-
-function toggleTimer() {
-  if (timerStore.isTimerBasedActivity) {
-    timerStore.toggle();
-  } else {
-    onTimesUp();
-  }
-}
-
-function redirectToActivity() {
-  timerStore.reset();
-  router.push({
-    name: "details",
-    params: {
-      sessionId,
-    },
-  });
-}
 </script>
 
 <template>

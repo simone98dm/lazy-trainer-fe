@@ -43,7 +43,9 @@
       <h1 class="mb-3 text-2xl font-bold">Login</h1>
       <div class="flex flex-wrap -mx-3">
         <div class="w-full px-3 mb-6">
-          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          >
             Username:
           </label>
           <input
@@ -55,7 +57,9 @@
       </div>
       <div class="flex flex-wrap -mx-3">
         <div class="w-full px-3 mb-6">
-          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+          <label
+            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          >
             Password:
           </label>
           <input

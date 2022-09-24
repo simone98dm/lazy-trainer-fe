@@ -17,12 +17,16 @@
   <div class="w-full rounded-b-xl bg-indigo-600 p-5 text-white">
     <div class="flex items-center justify-between">
       <router-link to="/">
-        <div class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500">
+        <div
+          class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
+        >
           <Icon :component="HomeIcon" :size="IconSize.SMALL"></Icon>
         </div>
       </router-link>
       <div class="text-center">
-        <h3 class="text-center text-3xl font-semibold">{{ activityStore.getHeaderText }}</h3>
+        <h3 class="text-center text-3xl font-semibold">
+          {{ activityStore.getHeaderText }}
+        </h3>
       </div>
       <div
         class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"

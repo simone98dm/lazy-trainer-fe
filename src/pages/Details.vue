@@ -1,58 +1,59 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import router from "../router/router";
-import Item from "@/components/Item/Item.vue";
-import AddIcon from "@/components/Icons/AddIcon.vue";
-import PlayIcon from "@/components/Icons/PlayIcon.vue";
-import Link from "@/components/Link/Link.vue";
-import TrashIcon from "@/components/Icons/TrashIcon.vue";
-import EditIcon from "@/components/Icons/EditIcon.vue";
-import Button from "@/components/Button/Button.vue";
-import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
-import { useActivityStore } from "../stores/activity";
-import { useTimerStore } from "../stores/timer";
-import Dropdown from "@/components/Dropdown/Dropdown.vue";
+  import { useRoute } from "vue-router";
+  import router from "../router/router";
+  import Item from "@/components/Item/Item.vue";
+  import AddIcon from "@/components/Icons/AddIcon.vue";
+  import PlayIcon from "@/components/Icons/PlayIcon.vue";
+  import Link from "@/components/Link/Link.vue";
+  import TrashIcon from "@/components/Icons/TrashIcon.vue";
+  import EditIcon from "@/components/Icons/EditIcon.vue";
+  import Button from "@/components/Button/Button.vue";
+  import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
+  import { useActivityStore } from "../stores/activity";
+  import { useTimerStore } from "../stores/timer";
+  import Dropdown from "@/components/Dropdown/Dropdown.vue";
 
-const route = useRoute();
-const activityStore = useActivityStore();
-const timerStore = useTimerStore();
-const { sessionId } = route.params;
+  const route = useRoute();
+  const activityStore = useActivityStore();
+  const timerStore = useTimerStore();
+  const { sessionId } = route.params;
 
+  const warmUpActivities = activityStore.getWarmUpActivities(
+    sessionId as string
+  );
+  const activities = activityStore.getSessionActivities(sessionId as string);
+  const session = activityStore.getSession(sessionId as string);
 
-const warmUpActivities = activityStore.getWarmUpActivities(sessionId as string);
-const activities = activityStore.getSessionActivities(sessionId as string);
-const session = activityStore.getSession(sessionId as string);
+  activityStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
 
-activityStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
+  const activitiesCount = activities?.length ?? 0;
+  const warmupActivitiesCount = warmUpActivities?.length ?? 0;
 
-const activitiesCount = activities?.length ?? 0;
-const warmupActivitiesCount = warmUpActivities?.length ?? 0;
+  function deleteSession() {
+    activityStore.deleteSession(sessionId as string);
+    router.push({
+      name: "home",
+    });
+  }
 
-function deleteSession() {
-  activityStore.deleteSession(sessionId as string);
-  router.push({
-    name: "home",
-  });
-}
+  function runWarmUp() {
+    timerStore.setListActivities(warmUpActivities);
+    router.push({ name: "timer", params: { sessionId } });
+  }
 
-function runWarmUp() {
-  timerStore.setListActivities(warmUpActivities);
-  router.push({ name: "timer", params: { sessionId } });
-}
+  function runActivities() {
+    timerStore.setListActivities(activities);
+    router.push({ name: "timer", params: { sessionId } });
+  }
 
-function runActivities() {
-  timerStore.setListActivities(activities);
-  router.push({ name: "timer", params: { sessionId } });
-}
-
-function duplicateWarmup() {
-  activityStore.setDuplicateWarmup(warmUpActivities);
-  router.push({
-    name: "session",
-    params: { sessionId },
-    query: { d: "duplicate" },
-  });
-}
+  function duplicateWarmup() {
+    activityStore.setDuplicateWarmup(warmUpActivities);
+    router.push({
+      name: "session",
+      params: { sessionId },
+      query: { d: "duplicate" },
+    });
+  }
 </script>
 <template>
   <section class="flex flex-col justify-center">

@@ -23,7 +23,9 @@ export const useUserStore = defineStore("user", {
       }).then((response) => response.json());
 
       if (response.data) {
-        const user = response as { data: { name: string; userId: string; token: string } };
+        const user = response as {
+          data: { name: string; userId: string; token: string };
+        };
         this.token = user.data.token;
         this.userId = user.data.userId;
         this.username = user.data.name;
@@ -53,7 +55,9 @@ export const useUserStore = defineStore("user", {
         }).then((response) => response.json());
 
         if (response.data) {
-          const user = response as { data: { name: string; userId: string; token: string } };
+          const user = response as {
+            data: { name: string; userId: string; token: string };
+          };
           this.token = user.data.token;
           this.userId = user.data.userId;
           this.username = user.data.name;

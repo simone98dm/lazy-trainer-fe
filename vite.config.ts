@@ -9,27 +9,27 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
-        cleanupOutdatedCaches: false
+        cleanupOutdatedCaches: false,
       },
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
       manifest: {
-        name: 'Lazy Trainer',
-        short_name: 'Trainer',
-        description: 'Lazy Trainer tracker',
-        theme_color: '#4f46e5',
+        name: "Lazy Trainer",
+        short_name: "Trainer",
+        description: "Lazy Trainer tracker",
+        theme_color: "#4f46e5",
         icons: [
           {
-            src: 'android-chrome-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
+            src: "android-chrome-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
           },
           {
-            src: 'android-chrome-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      }
+            src: "android-chrome-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+        ],
+      },
     }),
   ],
   resolve: {

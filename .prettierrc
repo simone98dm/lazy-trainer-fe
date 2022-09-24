@@ -4,5 +4,5 @@
   "arrowParens": "always",
   "vueIndentScriptAndStyle": true,
   "semi": true,
-  "printWidth": 100
+  "printWidth": 80
 }

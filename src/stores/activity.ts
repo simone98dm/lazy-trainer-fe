@@ -29,7 +29,9 @@ export const useActivityStore = defineStore("activity", {
       return state.plan?.sessions.find((session) => session.id === sessionId);
     },
     getWeek(state) {
-      return state.plan?.sessions.sort((x, y) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1));
+      return state.plan?.sessions.sort((x, y) =>
+        x.dayOfWeek < y.dayOfWeek ? -1 : 1
+      );
     },
     getHeaderText(state) {
       return state.headerText;
@@ -59,12 +61,14 @@ export const useActivityStore = defineStore("activity", {
     },
     addActivity(sessionId: string, activity: IActivity) {
       if (this.plan) {
-        const index = this.plan.sessions.findIndex((obj) => obj.id === sessionId) ?? -1;
+        const index =
+          this.plan.sessions.findIndex((obj) => obj.id === sessionId) ?? -1;
         if (index >= 0) {
           if (activity.id) {
             const existingActivity =
-              this.plan?.sessions[index].activities.findIndex((act) => act.id === activity.id) ??
-              -1;
+              this.plan?.sessions[index].activities.findIndex(
+                (act) => act.id === activity.id
+              ) ?? -1;
             if (existingActivity >= 0) {
               this.plan.sessions[index].activities[existingActivity] = activity;
             } else {
@@ -81,7 +85,9 @@ export const useActivityStore = defineStore("activity", {
     },
     removeActivity(sessionId: string, activityId: string) {
       if (this.plan) {
-        const index = this.plan.sessions.findIndex((obj) => obj.id === sessionId);
+        const index = this.plan.sessions.findIndex(
+          (obj) => obj.id === sessionId
+        );
         if (index >= 0) {
           if (activityId) {
             const newActivity = this.plan.sessions[index].activities.filter(
@@ -96,7 +102,9 @@ export const useActivityStore = defineStore("activity", {
     },
     addSession(session: ISession) {
       if (this.plan) {
-        const existingIndex = this.plan.sessions.findIndex((x) => x.id === session.id);
+        const existingIndex = this.plan.sessions.findIndex(
+          (x) => x.id === session.id
+        );
         if (existingIndex < 0) {
           this.plan.sessions.push(session);
           save(this.plan);
@@ -107,7 +115,9 @@ export const useActivityStore = defineStore("activity", {
     },
     deleteSession(sessionId: string) {
       if (this.plan) {
-        this.plan.sessions = this.plan.sessions.filter((x) => x.id !== sessionId);
+        this.plan.sessions = this.plan.sessions.filter(
+          (x) => x.id !== sessionId
+        );
       }
       save(this.plan);
     },

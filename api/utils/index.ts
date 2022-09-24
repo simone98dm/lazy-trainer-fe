@@ -1,1 +1,1 @@
-export * from "./connectToDatabase"
+export * from "./connectToDatabase";

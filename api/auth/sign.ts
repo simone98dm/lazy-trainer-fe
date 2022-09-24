@@ -32,7 +32,10 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     }
 
     //compare hash password
-    const founded = await bcrypt.compare(body.password, user?.hashPassword || "");
+    const founded = await bcrypt.compare(
+      body.password,
+      user?.hashPassword || ""
+    );
     if (!founded) {
       response.status(404).send({ error: "username or password not valid" });
       return;

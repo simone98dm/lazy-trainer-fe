@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps(["component", "size"]);
+  const props = defineProps(["component", "size"]);
 </script>
 
 <template>
@@ -7,16 +7,16 @@ const props = defineProps(["component", "size"]);
 </template>
 
 <style>
-.icn__small {
-  width: 16px;
-  height: 16px;
-}
-.icn__medium {
-  width: 24px;
-  height: 24px;
-}
-.icn__large {
-  width: 40px;
-  height: 40px;
-}
+  .icn__small {
+    width: 16px;
+    height: 16px;
+  }
+  .icn__medium {
+    width: 24px;
+    height: 24px;
+  }
+  .icn__large {
+    width: 40px;
+    height: 40px;
+  }
 </style>

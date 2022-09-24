@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const props = defineProps([
-  "strokeDasharray",
-  "remainingPathColor",
-  "baseTimerLabel",
-]);
+  const props = defineProps([
+    "strokeDasharray",
+    "remainingPathColor",
+    "baseTimerLabel",
+  ]);
 </script>
 
 <template>
@@ -39,61 +39,61 @@ const props = defineProps([
 </template>
 
 <style>
-.box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.base-timer {
-  position: relative;
-  width: 300px;
-  height: 300px;
-}
+  .box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .base-timer {
+    position: relative;
+    width: 300px;
+    height: 300px;
+  }
 
-.base-timer__svg {
-  transform: scaleX(-1);
-}
+  .base-timer__svg {
+    transform: scaleX(-1);
+  }
 
-.base-timer__circle {
-  fill: none;
-  stroke: none;
-}
+  .base-timer__circle {
+    fill: none;
+    stroke: none;
+  }
 
-.base-timer__path-elapsed {
-  stroke-width: 7px;
-  stroke: rgb(223, 223, 223);
-}
+  .base-timer__path-elapsed {
+    stroke-width: 7px;
+    stroke: rgb(223, 223, 223);
+  }
 
-.base-timer__path-remaining {
-  stroke-width: 7px;
-  stroke-linecap: round;
-  transform: rotate(90deg);
-  transform-origin: center;
-  transition: 1s linear all;
-  fill-rule: nonzero;
-  stroke: currentColor;
-}
+  .base-timer__path-remaining {
+    stroke-width: 7px;
+    stroke-linecap: round;
+    transform: rotate(90deg);
+    transform-origin: center;
+    transition: 1s linear all;
+    fill-rule: nonzero;
+    stroke: currentColor;
+  }
 
-.base-timer__path-remaining.green {
-  color: rgb(31, 184, 115);
-}
+  .base-timer__path-remaining.green {
+    color: rgb(31, 184, 115);
+  }
 
-.base-timer__path-remaining.orange {
-  color: rgb(192, 133, 25);
-}
+  .base-timer__path-remaining.orange {
+    color: rgb(192, 133, 25);
+  }
 
-.base-timer__path-remaining.red {
-  color: rgb(220, 57, 57);
-}
+  .base-timer__path-remaining.red {
+    color: rgb(220, 57, 57);
+  }
 
-.base-timer__label {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  top: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-}
+  .base-timer__label {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+  }
 </style>

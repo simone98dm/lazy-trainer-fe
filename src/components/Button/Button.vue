@@ -2,7 +2,15 @@
   import { ButtonColor, Theme, IconSize } from "../../utils";
   import Icon from "../Icons/Icon.vue";
   import Loading from "../Loading/Loading.vue";
-  const props = defineProps(["full", "size", "label", "color", "icon", "theme", "loading"]);
+  const props = defineProps([
+    "full",
+    "size",
+    "label",
+    "color",
+    "icon",
+    "theme",
+    "loading",
+  ]);
   const emit = defineEmits(["click"]);
 </script>
 
@@ -21,22 +29,28 @@
           !props.color || props.color === ButtonColor.PRIMARY,
       },
       {
-        'bg-red-600 hover:bg-red-500 text-gray-100': props.color === ButtonColor.DANGER,
+        'bg-red-600 hover:bg-red-500 text-gray-100':
+          props.color === ButtonColor.DANGER,
       },
       {
-        'bg-green-600 hover:bg-green-500 text-gray-100': props.color === ButtonColor.SUCCESS,
+        'bg-green-600 hover:bg-green-500 text-gray-100':
+          props.color === ButtonColor.SUCCESS,
       },
       {
-        'bg-orange-600 hover:bg-orange-500 text-gray-100': props.color === ButtonColor.WARNING,
+        'bg-orange-600 hover:bg-orange-500 text-gray-100':
+          props.color === ButtonColor.WARNING,
       },
       {
-        'bg-slate-800 hover:bg-slate-500 text-gray-100': props.color === ButtonColor.DARK,
+        'bg-slate-800 hover:bg-slate-500 text-gray-100':
+          props.color === ButtonColor.DARK,
       },
       {
-        'bg-white hover:bg-slate-100 text-black': props.color === ButtonColor.LIGHT,
+        'bg-white hover:bg-slate-100 text-black':
+          props.color === ButtonColor.LIGHT,
       },
       {
-        'bg-trasparent hover:bg-slate-100 text-black': props.color === ButtonColor.TRASPARENT,
+        'bg-trasparent hover:bg-slate-100 text-black':
+          props.color === ButtonColor.TRASPARENT,
       },
       {
         'text-black': props.theme === Theme.LIGHT,

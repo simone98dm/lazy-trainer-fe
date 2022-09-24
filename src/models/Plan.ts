@@ -4,5 +4,3 @@ export interface IPlan {
   name: string;
   sessions: ISession[];
 }
-
-

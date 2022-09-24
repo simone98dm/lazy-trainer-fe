@@ -1,58 +1,57 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import Button from "@/components/Button/Button.vue";
-import { v4 as uuidv4 } from "uuid";
-import TrashIcon from "@/components/Icons/TrashIcon.vue";
-import AddIcon from "@/components/Icons/AddIcon.vue";
-import { ISession } from "../../models/Session";
-import { days, ButtonColor } from "../../utils";
-import SaveIcon from "@/components/Icons/SaveIcon.vue";
-import { useActivityStore } from "../../stores/activity";
-import Item from "@/components/Item/Item.vue";
+  import { ref, watch } from "vue";
+  import Button from "@/components/Button/Button.vue";
+  import { v4 as uuidv4 } from "uuid";
+  import TrashIcon from "@/components/Icons/TrashIcon.vue";
+  import AddIcon from "@/components/Icons/AddIcon.vue";
+  import { ISession } from "../../models/Session";
+  import { days, ButtonColor } from "../../utils";
+  import SaveIcon from "@/components/Icons/SaveIcon.vue";
+  import { useActivityStore } from "../../stores/activity";
+  import Item from "@/components/Item/Item.vue";
 
-const props = defineProps(["id", "dayOfWeek", "existingForm"]);
-const emits = defineEmits(["save", "remove"]);
-const store = useActivityStore();
+  const props = defineProps(["id", "dayOfWeek", "existingForm"]);
+  const emits = defineEmits(["save", "remove"]);
+  const store = useActivityStore();
 
-const uuid = uuidv4();
+  const uuid = uuidv4();
 
-let dayOfWeek = ref(props.dayOfWeek || "");
-let id = ref(props.id || uuid);
+  let dayOfWeek = ref(props.dayOfWeek || "");
+  let id = ref(props.id || uuid);
 
+  function save() {
+    const activity: ISession = {
+      id: id.value,
+      dayOfWeek: dayOfWeek.value,
+      activities: [],
+    };
 
-function save() {
-  const activity: ISession = {
-    id: id.value,
-    dayOfWeek: dayOfWeek.value,
-    activities: [],
-  };
+    if (props.existingForm) {
+      store.duplicateWarmup = undefined;
+      activity.activities = [...props.existingForm];
+      activity.id = uuidv4();
+    }
 
-  if (props.existingForm) {
-    store.duplicateWarmup = undefined;
-    activity.activities = [...props.existingForm];
-    activity.id = uuidv4();
+    emits("save", activity);
   }
 
-  emits("save", activity);
-}
-
-function isNew() {
-  return !Boolean(props.id);
-}
-
-function remove() {
-  if (!isNew()) {
-    emits("remove", props.id);
+  function isNew() {
+    return !Boolean(props.id);
   }
-}
 
-function selectDay(dayIndex: number) {
-  dayOfWeek.value = dayIndex;
-}
+  function remove() {
+    if (!isNew()) {
+      emits("remove", props.id);
+    }
+  }
 
-function isDaySelected(dayIndex: number) {
-  return dayIndex === dayOfWeek.value;
-}
+  function selectDay(dayIndex: number) {
+    dayOfWeek.value = dayIndex;
+  }
+
+  function isDaySelected(dayIndex: number) {
+    return dayIndex === dayOfWeek.value;
+  }
 </script>
 
 <template>

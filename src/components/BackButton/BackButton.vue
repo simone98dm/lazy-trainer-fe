@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import {useRouter} from "vue-router";
-import Icon from "@/components/Icons/Icon.vue";
-import LeftIcon from "@/components/Icons/LeftIcon.vue";
-import {IconSize} from "../../utils";
+  import { useRouter } from "vue-router";
+  import Icon from "@/components/Icons/Icon.vue";
+  import LeftIcon from "@/components/Icons/LeftIcon.vue";
+  import { IconSize } from "../../utils";
 
-const router = useRouter();
-const emits = defineEmits(["click"]);
+  const router = useRouter();
+  const emits = defineEmits(["click"]);
 
-function onClickHandle() {
-  emits("click");
-}
+  function onClickHandle() {
+    emits("click");
+  }
 </script>
 s
 
@@ -21,10 +21,10 @@ s
 </template>
 
 <style>
-.back__button {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
+  .back__button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 </style>

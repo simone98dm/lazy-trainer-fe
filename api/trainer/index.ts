@@ -24,7 +24,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       const db = client.db("lazyTrainerDb");
       const collection = db.collection("plans");
       const result = await collection.find({ owner: id }).toArray();
-      
+
       response.status(200).send(result);
     } else {
       response.status(403).send({ error: "user not authorized" });
