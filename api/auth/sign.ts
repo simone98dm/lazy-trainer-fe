@@ -19,7 +19,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     }
 
     //find user
-    const user = fakeUsers.users.find((element) => element.name === body.username);
+    const user = fakeUsers.users.find((element) => element.name === body.username)
     if (!user) {
       response.status(404).send({ error: "username or password not valid" });
       return;

@@ -30,3 +30,4 @@ dist-ssr
 certs
 createCerts.sh
 vercel.json
+scripts
