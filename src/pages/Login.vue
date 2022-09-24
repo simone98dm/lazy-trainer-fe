@@ -5,8 +5,8 @@
   import Button from "../components/Button/Button.vue";
   import { ButtonColor } from "../utils";
 
-  const username = ref("simone");
-  const password = ref("qwerty123");
+  const username = ref("");
+  const password = ref("");
   const error = ref("");
   const userStore = useUserStore();
   const router = useRouter();
