@@ -13,25 +13,21 @@
 
   const user = useUserStore();
   const router = useRouter();
-  const sessions = ref([] as ISession[]);
+  const sessions = ref([] as ISession[] | undefined);
 
-  if (user.isLogged) {
-    store
-      .restoreSession()
-      .then(() => {
-        sessions.value = store.getWeek;
-      })
-      .catch(() => {
-        router.push({ name: "login" });
-      });
-  } else {
-    router.push({ name: "login" });
-  }
+  store
+    .restoreSession()
+    .then(() => {
+      sessions.value = store.getWeek;
+    })
+    .catch(() => {
+      router.push({ name: "login" });
+    });
 </script>
 
 <template>
   <section>
-    <div v-if="sessions.length > 0" class="mb-6">
+    <div v-if="sessions && sessions.length > 0" class="mb-6">
       <h1 class="mb-3 text-2xl font-bold">Your week session:</h1>
       <div v-for="activity in sessions">
         <Link :to="{ name: 'details', params: { sessionId: activity.id } }">
