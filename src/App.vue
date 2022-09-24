@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import Header from "./components/Header/Header.vue";
-import Footer from "./components/Footer/Footer.vue";
-import { useActivityStore } from "./stores/activity";
-const store = useActivityStore();
-store.restoreSession();
+  import Header from "./components/Header/Header.vue";
 </script>
 
 <template>
