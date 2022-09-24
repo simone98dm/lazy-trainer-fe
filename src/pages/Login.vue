@@ -11,6 +11,10 @@
   const userStore = useUserStore();
   const router = useRouter();
 
+  if (userStore.isLogged) {
+    router.push({ name: "home" });
+  }
+
   function submit() {
     userStore.signIn(username.value, password.value).then((response) => {
       if (!response) {
