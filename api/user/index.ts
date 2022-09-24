@@ -5,12 +5,7 @@ import { connectToDatabase } from "../utils/connectToDatabase";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
-    const bearer = request.headers.authorization?.split(" ")[1] ?? undefined;
-
-    if (!bearer) {
-      response.status(400).send({ error: "authorization header not found" });
-      return;
-    }
+    const bearer = request.headers.authorization?.split(" ")[1] ?? "";
 
     const decoded = jwt.verify(bearer, SECRET_KEY);
     if (decoded) {
@@ -20,16 +15,14 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       if (!client) {
         throw new Error("mongoClient is null");
       }
-
       const db = client.db("lazyTrainerDb");
-      const collection = db.collection("plans");
-      const result = await collection.find({ owner: id }).toArray();
-      
-      response.status(200).send(result);
-    } else {
-      response.status(403).send({ error: "user not authorized" });
+      const collection = db.collection("users");
+      const result = await collection.findOne({ id: id });
+
+      return response.status(200).json(result);
     }
+    return response.status(404).json({ error: "not found" });
   } catch (error) {
-    response.status(500).send({ error: "something went wrong" });
+    console.log("🚀 ~ file: index.ts ~ line 11 ~ error", error);
   }
 };
