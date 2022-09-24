@@ -1,13 +1,32 @@
 <script setup lang="ts">
-import AddIcon from "@/components/Icons/AddIcon.vue";
-import Item from "@/components/Item/Item.vue";
-import Link from "@/components/Link/Link.vue";
-import { useActivityStore } from "../stores/activity";
-import { ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
+  import AddIcon from "@/components/Icons/AddIcon.vue";
+  import Item from "@/components/Item/Item.vue";
+  import Link from "@/components/Link/Link.vue";
+  import { ref } from "vue";
+  import { useRouter } from "vue-router";
+  import { ISession } from "../models/Session";
+  import { useActivityStore } from "../stores/activity";
+  import { useUserStore } from "../stores/user";
+  import { ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
 
-const store = useActivityStore();
+  const store = useActivityStore();
 
-const sessions = store.getWeek;
+  const user = useUserStore();
+  const router = useRouter();
+  const sessions = ref([] as ISession[]);
+
+  if (user.isLogged) {
+    store
+      .restoreSession()
+      .then(() => {
+        sessions.value = store.getWeek;
+      })
+      .catch(() => {
+        router.push({ name: "login" });
+      });
+  } else {
+    router.push({ name: "login" });
+  }
 </script>
 
 <template>

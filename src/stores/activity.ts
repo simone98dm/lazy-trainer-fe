@@ -3,8 +3,8 @@ import { ISession } from "./../models/Session";
 import { defineStore } from "pinia";
 import { IActivity } from "../models/Activity";
 
-import fakeData from "../assets/db.json";
 import { retrieve, save } from "./localStoragePlugin";
+import { useUserStore } from "./user";
 
 export const useActivityStore = defineStore("activity", {
   state: () => ({
@@ -28,26 +28,25 @@ export const useActivityStore = defineStore("activity", {
       return state.plan.sessions.find((session) => session.id === sessionId);
     },
     getWeek(state) {
-      return state.plan.sessions.sort((x, y) =>
-        x.dayOfWeek < y.dayOfWeek ? -1 : 1
-      );
+      return state.plan.sessions.sort((x, y) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1));
     },
   },
   actions: {
     restoreSession() {
-      this.plan = fakeData;
-      const existingData = retrieve();
-      if (existingData) {
-        this.plan = existingData;
+      const userStore = useUserStore();
+      if (userStore.isLogged) {
+        return userStore.getUserActivities().then((plan) => (this.plan = plan));
       }
+
+      return Promise.reject();
     },
     addActivity(sessionId: string, activity: IActivity) {
       const index = this.plan.sessions.findIndex((obj) => obj.id === sessionId);
       if (index >= 0) {
         if (activity.id) {
-          const existingActivity = this.plan.sessions[
-            index
-          ].activities.findIndex((act) => act.id === activity.id);
+          const existingActivity = this.plan.sessions[index].activities.findIndex(
+            (act) => act.id === activity.id
+          );
           if (existingActivity >= 0) {
             this.plan.sessions[index].activities[existingActivity] = activity;
           } else {
@@ -75,9 +74,7 @@ export const useActivityStore = defineStore("activity", {
       save(this.plan);
     },
     addSession(session: ISession) {
-      const existingIndex = this.plan.sessions.findIndex(
-        (x) => x.id === session.id
-      );
+      const existingIndex = this.plan.sessions.findIndex((x) => x.id === session.id);
       if (existingIndex < 0) {
         this.plan.sessions.push(session);
         save(this.plan);
