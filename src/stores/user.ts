@@ -11,6 +11,9 @@ export const useUserStore = defineStore("user", {
     isLogged: (state) => {
       return state.token !== "";
     },
+    getUsername: (state) => {
+      return state.username;
+    },
   },
   actions: {
     async signIn(username: string, password: string) {
@@ -48,7 +51,7 @@ export const useUserStore = defineStore("user", {
             authorization: `Bearer ${token}`,
           },
         }).then((response) => response.json());
-        
+
         if (response.data) {
           const user = response as { data: { name: string; userId: string; token: string } };
           this.token = user.data.token;

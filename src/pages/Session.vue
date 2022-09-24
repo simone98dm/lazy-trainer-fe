@@ -7,6 +7,7 @@ import { useActivityStore } from "../stores/activity";
 import { IActivity } from "../models/Activity";
 
 const store = useActivityStore();
+store.setHeader("Session")
 const router = useRouter();
 const route = useRoute();
 

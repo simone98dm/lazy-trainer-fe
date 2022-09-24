@@ -15,12 +15,15 @@ import {
 } from "../utils";
 import { useTimerStore } from "../stores/timer";
 import TimerSpinner from "../components/TimerSpinner/TimerSpinner.vue";
+import { useActivityStore } from "../stores/activity";
 
 const route = useRoute();
 const router = useRouter();
 
 let timerInterval: any = null;
 let timePassed = 0;
+const activityStore = useActivityStore();
+activityStore.setHeader("Timer")
 const timerStore = useTimerStore();
 let TIME_LIMIT = ref(0);
 let timeLeft = ref(TIME_LIMIT.value);

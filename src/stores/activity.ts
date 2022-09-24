@@ -10,6 +10,7 @@ export const useActivityStore = defineStore("activity", {
   state: () => ({
     plan: undefined as IPlan | undefined,
     duplicateWarmup: undefined as IActivity[] | undefined,
+    headerText: "Trainer"
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
@@ -30,6 +31,9 @@ export const useActivityStore = defineStore("activity", {
     getWeek(state) {
       return state.plan?.sessions.sort((x, y) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1));
     },
+    getHeaderText(state) {
+      return state.headerText;
+    }
   },
   actions: {
     restoreSession() {
@@ -101,5 +105,8 @@ export const useActivityStore = defineStore("activity", {
         this.duplicateWarmup = warmUpActivities;
       }
     },
+    setHeader(str: string) {
+      this.headerText = str;
+    }
   },
 });

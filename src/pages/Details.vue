@@ -18,9 +18,12 @@ const activityStore = useActivityStore();
 const timerStore = useTimerStore();
 const { sessionId } = route.params;
 
+
 const warmUpActivities = activityStore.getWarmUpActivities(sessionId as string);
 const activities = activityStore.getSessionActivities(sessionId as string);
 const session = activityStore.getSession(sessionId as string);
+
+activityStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
 
 const activitiesCount = activities?.length ?? 0;
 const warmupActivitiesCount = warmUpActivities?.length ?? 0;
@@ -53,11 +56,6 @@ function duplicateWarmup() {
 </script>
 <template>
   <section class="flex flex-col justify-center">
-    <div class="w-full text-center">
-      <h1 class="mb-3 text-5xl font-bold text-gray-600">
-        {{ getDayOfTheWeek(session?.dayOfWeek) }}
-      </h1>
-    </div>
     <div class="flex mb-6 gap-2">
       <Link
         :to="{ name: 'session', params: { sessionId } }"

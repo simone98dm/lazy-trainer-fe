@@ -11,7 +11,10 @@
 
   const store = useActivityStore();
 
+  
   const user = useUserStore();
+  store.setHeader(`Hello ${user.getUsername} 👋`);
+  
   const router = useRouter();
   const sessions = ref([] as ISession[] | undefined);
 
@@ -28,7 +31,7 @@
 <template>
   <section>
     <div v-if="sessions && sessions.length > 0" class="mb-6">
-      <h1 class="mb-3 text-2xl font-bold">Your week session:</h1>
+      <h1 class="mb-3 text-2xl font-bold">Your session:</h1>
       <div v-for="activity in sessions">
         <Link :to="{ name: 'details', params: { sessionId: activity.id } }">
           <Item

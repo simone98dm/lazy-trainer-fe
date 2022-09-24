@@ -11,6 +11,8 @@ const store = useActivityStore();
 const { sessionId, activityId } = route.params;
 const session = store.getSession(sessionId as string);
 
+store.setHeader("Activity")
+
 if (!session) {
   router.back();
 }
