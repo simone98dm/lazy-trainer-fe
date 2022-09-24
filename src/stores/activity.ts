@@ -10,7 +10,7 @@ export const useActivityStore = defineStore("activity", {
   state: () => ({
     plan: undefined as IPlan | undefined,
     duplicateWarmup: undefined as IActivity[] | undefined,
-    headerText: "Trainer"
+    headerText: "Trainer",
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
@@ -33,15 +33,26 @@ export const useActivityStore = defineStore("activity", {
     },
     getHeaderText(state) {
       return state.headerText;
-    }
+    },
   },
   actions: {
     restoreSession() {
       const userStore = useUserStore();
-      if (userStore.isLogged && !this.plan) {
-        return userStore.getUserActivities().then((plan) => (this.plan = plan));
-      } else if (userStore.isLogged && this.plan) {
-        return Promise.resolve(this.plan);
+      if (userStore.isLogged) {
+        if (!this.plan) {
+          const storage = retrieve();
+          if (!storage) {
+            return userStore
+              .getUserActivities()
+              .then((plan) => (this.plan = plan))
+              .then(() => save(this.plan));
+          } else {
+            this.plan = storage;
+            return Promise.resolve(storage);
+          }
+        } else {
+          return Promise.resolve(this.plan);
+        }
       }
 
       return Promise.reject();
@@ -107,6 +118,6 @@ export const useActivityStore = defineStore("activity", {
     },
     setHeader(str: string) {
       this.headerText = str;
-    }
+    },
   },
 });
