@@ -16,7 +16,7 @@
 
   const uuid = uuidv4();
 
-  let dayOfWeek = ref(props.dayOfWeek || "");
+  let dayOfWeek = ref(props.dayOfWeek || 0);
   let id = ref(props.id || uuid);
 
   function save() {
