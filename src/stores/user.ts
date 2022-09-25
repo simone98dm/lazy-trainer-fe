@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { IUserResponse } from "../models/User";
 import { Role } from "../utils";
 
 export const useUserStore = defineStore("user", {

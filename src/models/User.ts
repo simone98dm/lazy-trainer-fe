@@ -1,8 +1,8 @@
-interface IUserResponse {
+export interface IUserResponse {
   data: IUser;
 }
 
-interface IUser {
+export interface IUser {
   role: number;
   name: string;
   id: string;
