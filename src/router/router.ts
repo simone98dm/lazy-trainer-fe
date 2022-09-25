@@ -1,12 +1,12 @@
-import { useUserStore } from "./../stores/user";
-import Home from "../pages/Home.vue";
-import Details from "../pages/Details.vue";
-import Activity from "../pages/Activity.vue";
-import Setting from "../pages/Setting.vue";
 import { createRouter, createWebHistory } from "vue-router";
-import Timer from "../pages/Timer.vue";
-import Session from "../pages/Session.vue";
-import Login from "../pages/Login.vue";
+import { useUserStore } from "./../stores/user";
+import Home from "../views/Home.vue";
+import Details from "../views/Details.vue";
+import Activity from "../views/Activity.vue";
+import Settings from "../views/Settings.vue";
+import Timer from "../views/Timer.vue";
+import Session from "../views/Session.vue";
+import Login from "../views/Login.vue";
 
 const routes = [
   {
@@ -63,13 +63,20 @@ const routes = [
       requireAuth: false,
     },
   },
+  {
+    name: "settings",
+    path: "/settings",
+    component: Settings,
+    meta: {
+      requireAuth: true,
+    },
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  // linkExactActiveClass: "bg-slate-100 text-indigo-600",
-  linkExactActiveClass: "",
+  linkExactActiveClass: "bg-slate-100 text-indigo-600",
 });
 
 router.beforeEach((to) => {

@@ -4,6 +4,7 @@
   import BackButton from "@/components/BackButton/BackButton.vue";
   import { useActivityStore } from "../stores/activity";
   import { IActivity } from "../models/Activity";
+  import { useSettingStore } from "../stores/settings";
 
   const route = useRoute();
   const router = useRouter();
@@ -11,7 +12,8 @@
   const { sessionId, activityId } = route.params;
   const session = store.getSession(sessionId as string);
 
-  store.setHeader("Activity");
+  const settings = useSettingStore();
+  settings.setHeader("Activity");
 
   if (!session) {
     router.back();

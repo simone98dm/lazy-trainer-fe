@@ -40,7 +40,9 @@
 <template>
   <div class="flex justify-center">
     <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
-      <h1 class="mb-3 text-2xl font-bold">Login</h1>
+      <div class="text-center">
+        <h1 class="mb-3 text-4xl font-bold">Login</h1>
+      </div>
       <div class="flex flex-wrap -mx-3">
         <div class="w-full px-3 mb-6">
           <label

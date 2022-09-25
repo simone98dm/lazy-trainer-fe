@@ -15,16 +15,17 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
     if (decoded) {
       const newToken = await jwt.sign(decoded, SECRET_KEY);
-      const { id, name } = decoded as {
+      const { id, name, role } = decoded as {
         id: string;
         name: string;
-        role: string;
+        role: number;
       };
 
       const userResponse = {
         data: {
-          name: name,
           id,
+          name,
+          role,
           token: newToken,
         },
       };

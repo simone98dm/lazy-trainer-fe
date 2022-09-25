@@ -12,6 +12,7 @@
   import { useActivityStore } from "../stores/activity";
   import { useTimerStore } from "../stores/timer";
   import Dropdown from "@/components/Dropdown/Dropdown.vue";
+  import { useSettingStore } from "../stores/settings";
 
   const route = useRoute();
   const activityStore = useActivityStore();
@@ -24,7 +25,8 @@
   const activities = activityStore.getSessionActivities(sessionId as string);
   const session = activityStore.getSession(sessionId as string);
 
-  activityStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
+  const settings = useSettingStore();
+  settings.setHeader(getDayOfTheWeek(session?.dayOfWeek));
 
   const activitiesCount = activities?.length ?? 0;
   const warmupActivitiesCount = warmUpActivities?.length ?? 0;

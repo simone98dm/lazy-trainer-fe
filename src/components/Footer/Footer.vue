@@ -13,7 +13,7 @@
       <router-link to="/" class="py-3 rounded-full p-3">
         <Icon :component="HouseIcon" :size="IconSize.MEDIUM"></Icon>
       </router-link>
-      <router-link to="/setting" class="py-3 rounded-full p-3">
+      <router-link to="/settings" class="py-3 rounded-full p-3">
         <Icon :component="SettingIcon" :size="IconSize.MEDIUM"></Icon>
       </router-link>
     </nav>

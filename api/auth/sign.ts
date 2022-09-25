@@ -45,7 +45,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       {
         id: user.id,
         name: user.name,
-        role: user.role,
+        role: Number(user.role),
       },
       SECRET_KEY,
       {
@@ -57,6 +57,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       data: {
         name: user.name,
         id: user.id,
+        role: Number(user.role),
         token,
       },
     };

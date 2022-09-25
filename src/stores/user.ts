@@ -1,11 +1,12 @@
-import { IPlan } from "./../models/Plan";
 import { defineStore } from "pinia";
+import { Role } from "../utils";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
     userId: "",
     username: "",
     token: "",
+    role: 0,
   }),
   getters: {
     isLogged: (state) => {
@@ -13,6 +14,9 @@ export const useUserStore = defineStore("user", {
     },
     getUsername: (state) => {
       return state.username;
+    },
+    isTrainer: (state) => {
+      return state.role === Role.TRAINER;
     },
   },
   actions: {
@@ -23,27 +27,19 @@ export const useUserStore = defineStore("user", {
       }).then((response) => response.json());
 
       if (response.data) {
-        const user = response as {
-          data: { name: string; userId: string; token: string };
-        };
-        this.token = user.data.token;
-        this.userId = user.data.userId;
-        this.username = user.data.name;
+        const { data } = response as IUserResponse;
+        const { token, id, name, role } = data;
+
+        this.token = token;
+        this.userId = id;
+        this.username = name;
+        this.role = role as Role;
+
         localStorage.setItem("_token", this.token);
         return undefined;
       }
 
       return response.error;
-    },
-    async getUserActivities(): Promise<IPlan> {
-      const activities = await fetch("/api/trainer", {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${this.token}`,
-        },
-      }).then((response) => response.json());
-
-      return activities[0];
     },
     async verifyStorage() {
       const token = localStorage.getItem("_token");
@@ -55,15 +51,21 @@ export const useUserStore = defineStore("user", {
         }).then((response) => response.json());
 
         if (response.data) {
-          const user = response as {
-            data: { name: string; userId: string; token: string };
-          };
-          this.token = user.data.token;
-          this.userId = user.data.userId;
-          this.username = user.data.name;
+          const { data } = response as IUserResponse;
+          const { token, id, name, role } = data;
+
+          this.token = token;
+          this.userId = id;
+          this.username = name;
+          this.role = role as Role;
+
           localStorage.setItem("_token", this.token);
         }
       }
+    },
+    logout() {
+      localStorage.clear();
+      location.href = "/";
     },
   },
 });

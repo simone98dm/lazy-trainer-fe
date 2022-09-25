@@ -9,12 +9,15 @@
   import { useUserStore } from "../stores/user";
   import { ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
   import Loading from "../components/Loading/Loading.vue";
+  import { useSettingStore } from "../stores/settings";
 
   const store = useActivityStore();
   const isLoading = ref(true);
 
   const user = useUserStore();
-  store.setHeader(`Hello ${user.getUsername} 👋`);
+
+  const settings = useSettingStore();
+  settings.setHeader(`Hello ${user.getUsername} 👋`);
 
   const router = useRouter();
   const sessions = ref([] as ISession[] | undefined);

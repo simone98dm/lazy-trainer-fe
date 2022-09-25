@@ -10,7 +10,6 @@ export const useActivityStore = defineStore("activity", {
   state: () => ({
     plan: undefined as IPlan | undefined,
     duplicateWarmup: undefined as IActivity[] | undefined,
-    headerText: "Trainer",
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
@@ -33,9 +32,6 @@ export const useActivityStore = defineStore("activity", {
         x.dayOfWeek < y.dayOfWeek ? -1 : 1
       );
     },
-    getHeaderText(state) {
-      return state.headerText;
-    },
   },
   actions: {
     restoreSession() {
@@ -44,10 +40,19 @@ export const useActivityStore = defineStore("activity", {
         if (!this.plan) {
           const storage = retrieve();
           if (!storage) {
-            return userStore
-              .getUserActivities()
-              .then((plan) => (this.plan = plan))
-              .then(() => save(this.plan));
+            return fetch("/api/trainer", {
+              method: "GET",
+              headers: {
+                authorization: `Bearer ${userStore.token}`,
+              },
+            })
+              .then((response) => response.json())
+              .then((plan) => {
+                if (plan && plan.length > 0) {
+                  this.plan = plan[0];
+                  save(this.plan);
+                }
+              });
           } else {
             this.plan = storage;
             return Promise.resolve(storage);
@@ -60,74 +65,91 @@ export const useActivityStore = defineStore("activity", {
       return Promise.reject();
     },
     addActivity(sessionId: string, activity: IActivity) {
-      if (this.plan) {
-        const index =
-          this.plan.sessions.findIndex((obj) => obj.id === sessionId) ?? -1;
-        if (index >= 0) {
-          if (activity.id) {
-            const existingActivity =
-              this.plan?.sessions[index].activities.findIndex(
-                (act) => act.id === activity.id
-              ) ?? -1;
-            if (existingActivity >= 0) {
-              this.plan.sessions[index].activities[existingActivity] = activity;
-            } else {
-              activity.order = this.plan.sessions[index].activities.length;
-              this.plan.sessions[index].activities.push(activity);
-            }
+      if (!this.plan) {
+        this.plan = {
+          name: "My Plan",
+          sessions: [],
+        };
+      }
+
+      const index =
+        this.plan.sessions.findIndex((obj) => obj.id === sessionId) ?? -1;
+      if (index >= 0) {
+        if (activity.id) {
+          const existingActivity =
+            this.plan?.sessions[index].activities.findIndex(
+              (act) => act.id === activity.id
+            ) ?? -1;
+          if (existingActivity >= 0) {
+            this.plan.sessions[index].activities[existingActivity] = activity;
           } else {
             activity.order = this.plan.sessions[index].activities.length;
             this.plan.sessions[index].activities.push(activity);
           }
+        } else {
+          activity.order = this.plan.sessions[index].activities.length;
+          this.plan.sessions[index].activities.push(activity);
         }
-        save(this.plan);
       }
+
+      save(this.plan);
     },
     removeActivity(sessionId: string, activityId: string) {
-      if (this.plan) {
-        const index = this.plan.sessions.findIndex(
-          (obj) => obj.id === sessionId
-        );
-        if (index >= 0) {
-          if (activityId) {
-            const newActivity = this.plan.sessions[index].activities.filter(
-              (act) => act.id !== activityId
-            );
-
-            this.plan.sessions[index].activities = newActivity;
-          }
-        }
-        save(this.plan);
+      if (!this.plan) {
+        this.plan = {
+          name: "My plan",
+          sessions: [],
+        };
       }
+
+      const index = this.plan.sessions.findIndex((obj) => obj.id === sessionId);
+      if (index >= 0) {
+        if (activityId) {
+          const newActivity = this.plan.sessions[index].activities.filter(
+            (act) => act.id !== activityId
+          );
+
+          this.plan.sessions[index].activities = newActivity;
+        }
+      }
+
+      save(this.plan);
     },
     addSession(session: ISession) {
-      if (this.plan) {
-        const existingIndex = this.plan.sessions.findIndex(
-          (x) => x.id === session.id
-        );
-        if (existingIndex < 0) {
-          this.plan.sessions.push(session);
-          save(this.plan);
-        } else {
-          this.plan.sessions[existingIndex].dayOfWeek = session.dayOfWeek;
-        }
+      if (!this.plan) {
+        this.plan = {
+          name: "My plan",
+          sessions: [],
+        };
       }
+
+      const existingIndex = this.plan.sessions.findIndex(
+        (s) => s.id === session.id
+      );
+      if (existingIndex < 0) {
+        this.plan.sessions.push(session);
+      } else {
+        this.plan.sessions[existingIndex].dayOfWeek = session.dayOfWeek;
+      }
+
+      save(this.plan);
     },
     deleteSession(sessionId: string) {
-      if (this.plan) {
-        this.plan.sessions = this.plan.sessions.filter(
-          (x) => x.id !== sessionId
-        );
+      if (!this.plan) {
+        this.plan = {
+          name: "My plan",
+          sessions: [],
+        };
       }
+
+      this.plan.sessions = this.plan.sessions.filter((x) => x.id !== sessionId);
+
       save(this.plan);
     },
     setDuplicateWarmup(warmUpActivities: IActivity[] | undefined) {
       if (warmUpActivities) {
         this.duplicateWarmup = warmUpActivities;
       }
-    },
-    setHeader(str: string) {
-      this.headerText = str;
     },
   },
 });

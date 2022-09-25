@@ -14,7 +14,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
     const decoded = jwt.verify(bearer, SECRET_KEY);
     if (decoded) {
-      const { id } = decoded as { id: string; username: string; role: string };
+      const { id } = decoded as { id: string; username: string; role: number };
 
       const client = await connectToDatabase();
       if (!client) {

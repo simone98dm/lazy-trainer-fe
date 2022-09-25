@@ -3,37 +3,35 @@
   import Icon from "@/components/Icons/Icon.vue";
   import { IconSize } from "../../utils";
   import HomeIcon from "../Icons/HomeIcon.vue";
-  import { useActivityStore } from "../../stores/activity";
+  import { useSettingStore } from "../../stores/settings";
+  import { useUserStore } from "../../stores/user";
 
-  const activityStore = useActivityStore();
-
-  function resetAll() {
-    localStorage.clear();
-    location.href = "/";
-  }
+  const settings = useSettingStore();
+  const user = useUserStore();
 </script>
 
 <template>
-  <div class="w-full rounded-b-xl bg-indigo-600 p-5 text-white">
-    <div class="flex items-center justify-between">
-      <router-link to="/">
+  <div :class="['w-full rounded-b-xl p-5 text-white', settings.getBaseColor]">
+    <!-- <div :class="['flex items-center justify-between']"> -->
+    <div>
+      <!-- <router-link to="/">
         <div
           class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
         >
           <Icon :component="HomeIcon" :size="IconSize.SMALL"></Icon>
         </div>
-      </router-link>
+      </router-link> -->
       <div class="text-center">
-        <h3 class="text-center text-3xl font-semibold">
-          {{ activityStore.getHeaderText }}
+        <h3 class="text-3xl font-semibold">
+          {{ settings.getHeaderText }}
         </h3>
       </div>
-      <div
+      <!-- <div
         class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
-        @click="resetAll"
+        @click="() => user.logout()"
       >
         <Icon :component="MenuIcon" :size="IconSize.SMALL"></Icon>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

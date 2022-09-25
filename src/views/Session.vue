@@ -5,9 +5,11 @@
   import { ISession } from "../models/Session";
   import { useActivityStore } from "../stores/activity";
   import { IActivity } from "../models/Activity";
+  import { useSettingStore } from "../stores/settings";
 
   const store = useActivityStore();
-  store.setHeader("Session");
+  const settings = useSettingStore();
+  settings.setHeader("Session");
   const router = useRouter();
   const route = useRoute();
 

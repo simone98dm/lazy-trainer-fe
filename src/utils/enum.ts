@@ -28,3 +28,8 @@ export enum ButtonColor {
   SUCCESS,
   TRASPARENT,
 }
+
+export enum Role {
+  NORMAL,
+  TRAINER,
+}
