@@ -61,7 +61,7 @@
 </script>
 <template>
   <section class="flex flex-col justify-center">
-    <div class="flex mb-6 gap-2" v-if="user.isTrainer">
+    <div class="flex mb-6 gap-2" v-if="user.isTrainer || user.isSelfMadeMan">
       <Link
         :to="{ name: 'session', params: { sessionId } }"
         label="Edit session"
@@ -93,7 +93,7 @@
           @click="runWarmUp"
         />
 
-        <Dropdown v-if="user.isTrainer">
+        <Dropdown v-if="user.isTrainer || user.isSelfMadeMan">
           <div class="mt-2 text-sm font-semibold bg-transparent rounded-lg">
             <Button
               v-if="warmupActivitiesCount"
@@ -147,7 +147,7 @@
       </div>
 
       <div v-for="activity in activities">
-        <div v-if="user.isTrainer">
+        <div v-if="user.isTrainer || user.isSelfMadeMan">
           <Link
             :to="{
               name: 'activity',
@@ -183,7 +183,10 @@
         No activity found
       </h1>
     </div>
-    <div class="flex flex-col sm:flex-row" v-if="user.isTrainer">
+    <div
+      class="flex flex-col sm:flex-row"
+      v-if="user.isTrainer || user.isSelfMadeMan"
+    >
       <Link
         :icon="AddIcon"
         :size="ButtonSize.MEDIUM"

@@ -56,7 +56,7 @@
     <div v-else>
       <h1 class="mb-3 text-2xl font-bold">No sessions found</h1>
     </div>
-    <div v-if="user.isTrainer">
+    <div v-if="user.isTrainer || user.isSelfMadeMan">
       <Link
         :icon="AddIcon"
         :size="ButtonSize.MEDIUM"
