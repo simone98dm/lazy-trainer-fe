@@ -4,7 +4,7 @@ export interface IActivity {
   name: string;
   time: number;
   reps: number;
-  videoUrl: string;
+  videoUrl?: string;
   warmup: boolean;
-  order: number;
+  order?: number;
 }

@@ -8,6 +8,7 @@
   import AddIcon from "@/components/Icons/AddIcon.vue";
   import SaveIcon from "@/components/Icons/SaveIcon.vue";
   import { ButtonColor } from "../../utils";
+  import { useUserStore } from "../../stores/user";
 
   const props = defineProps([
     "id",
@@ -20,7 +21,7 @@
     "reps",
   ]);
   const emits = defineEmits(["save", "remove"]);
-
+  const user = useUserStore();
   const uuid = uuidv4();
 
   let name = ref(props.name || "");
@@ -117,7 +118,12 @@
                 :class="[
                   'flex items-center w-fit rounded-full h-10 transition-all px-10 text-lg',
                   {
-                    'bg-indigo-600 text-white shadow': isTimeBasedActivity,
+                    'bg-indigo-600 text-white shadow':
+                      isTimeBasedActivity && !user.isTrainer,
+                  },
+                  {
+                    'bg-orange-600 text-white shadow':
+                      isTimeBasedActivity && user.isTrainer,
                   },
                 ]"
                 @click="() => (isTimeBasedActivity = true)"
@@ -128,7 +134,12 @@
                 :class="[
                   'flex items-center w-fit rounded-full h-10 transition-all px-10 text-lg',
                   {
-                    'bg-indigo-600 text-white shadow': !isTimeBasedActivity,
+                    'bg-indigo-600 text-white shadow':
+                      !isTimeBasedActivity && !user.isTrainer,
+                  },
+                  {
+                    'bg-orange-600 text-white shadow':
+                      !isTimeBasedActivity && user.isTrainer,
                   },
                 ]"
                 @click="() => (isTimeBasedActivity = false)"

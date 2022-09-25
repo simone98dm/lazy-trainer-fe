@@ -30,7 +30,7 @@
       isLoading.value = false;
       if (!response) {
         router.push({
-          name: userStore.role === Role.NORMAL ? "home" : "trainer",
+          name: "home",
         });
       } else {
         error.value = response;

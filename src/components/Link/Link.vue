@@ -2,9 +2,11 @@
   import { RouterLink } from "vue-router";
   import { ButtonColor, IconSize, LinkType } from "../../utils";
   import Icon from "@/components/Icons/Icon.vue";
+  import { useUserStore } from "../../stores/user";
 
   const props = defineProps(["to", "full", "type", "label", "color", "icon"]);
   const emit = defineEmits(["click"]);
+  const user = useUserStore();
 
   const css =
     props.type === LinkType.BUTTON
@@ -17,8 +19,14 @@
           "appearance-none",
           "block",
           {
-            "bg-indigo-600 hover:bg-indigo-500":
-              !props.color || props.color === ButtonColor.PRIMARY,
+            "bg-indigo-600 hover:bg-indigo-500 text-gray-100":
+              (!props.color || props.color === ButtonColor.PRIMARY) &&
+              !user.isTrainer,
+          },
+          {
+            "bg-orange-600 hover:bg-orange-500 text-gray-100":
+              (!props.color || props.color === ButtonColor.PRIMARY) &&
+              user.isTrainer,
           },
           { "bg-red-600 hover:bg-red-500": props.color === ButtonColor.DANGER },
           {

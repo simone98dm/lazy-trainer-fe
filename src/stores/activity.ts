@@ -5,6 +5,16 @@ import { IActivity } from "../models/Activity";
 
 import { retrieve, save } from "./localStoragePlugin";
 import { useUserStore } from "./user";
+import { v4 as uuid } from "uuid";
+
+function generateBlankPlan(): IPlan {
+  return {
+    id: uuid(),
+    name: "New plan",
+    sessions: [],
+    trainerId: "",
+  };
+}
 
 export const useActivityStore = defineStore("activity", {
   state: () => ({
@@ -16,13 +26,13 @@ export const useActivityStore = defineStore("activity", {
       return state.plan?.sessions
         .find((session) => session.id === sessionId)
         ?.activities.filter((item) => !item.warmup)
-        .sort((a, b) => a.order - b.order);
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     },
     getWarmUpActivities: (state) => (sessionId: string) => {
       return state.plan?.sessions
         .find((session) => session.id === sessionId)
         ?.activities.filter((item) => item.warmup)
-        .sort((a, b) => a.order - b.order);
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     },
     getSession: (state) => (sessionId: string) => {
       return state.plan?.sessions.find((session) => session.id === sessionId);
@@ -48,8 +58,8 @@ export const useActivityStore = defineStore("activity", {
             })
               .then((response) => response.json())
               .then((plan) => {
-                if (plan && plan.length > 0) {
-                  this.plan = plan[0];
+                if (plan) {
+                  this.plan = plan;
                   save(this.plan);
                 }
               });
@@ -66,10 +76,7 @@ export const useActivityStore = defineStore("activity", {
     },
     addActivity(sessionId: string, activity: IActivity) {
       if (!this.plan) {
-        this.plan = {
-          name: "My Plan",
-          sessions: [],
-        };
+        this.plan = generateBlankPlan();
       }
 
       const index =
@@ -96,10 +103,7 @@ export const useActivityStore = defineStore("activity", {
     },
     removeActivity(sessionId: string, activityId: string) {
       if (!this.plan) {
-        this.plan = {
-          name: "My plan",
-          sessions: [],
-        };
+        this.plan = generateBlankPlan();
       }
 
       const index = this.plan.sessions.findIndex((obj) => obj.id === sessionId);
@@ -117,10 +121,7 @@ export const useActivityStore = defineStore("activity", {
     },
     addSession(session: ISession) {
       if (!this.plan) {
-        this.plan = {
-          name: "My plan",
-          sessions: [],
-        };
+        this.plan = generateBlankPlan();
       }
 
       const existingIndex = this.plan.sessions.findIndex(
@@ -136,10 +137,7 @@ export const useActivityStore = defineStore("activity", {
     },
     deleteSession(sessionId: string) {
       if (!this.plan) {
-        this.plan = {
-          name: "My plan",
-          sessions: [],
-        };
+        this.plan = generateBlankPlan();
       }
 
       this.plan.sessions = this.plan.sessions.filter((x) => x.id !== sessionId);
