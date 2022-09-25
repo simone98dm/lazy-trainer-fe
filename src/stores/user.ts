@@ -8,6 +8,7 @@ export const useUserStore = defineStore("user", {
     username: "",
     token: "",
     role: 0,
+    trainer: undefined as { name: string; id: string } | undefined,
   }),
   getters: {
     isLogged: (state) => {
@@ -18,6 +19,9 @@ export const useUserStore = defineStore("user", {
     },
     isTrainer: (state) => {
       return state.role === Role.TRAINER;
+    },
+    getTrainer: (state) => {
+      return state.trainer?.name ?? "";
     },
   },
   actions: {
@@ -62,6 +66,21 @@ export const useUserStore = defineStore("user", {
 
           localStorage.setItem("_token", this.token);
         }
+      }
+    },
+    async getTrainerInfo(trainerId: string | undefined) {
+      if (!trainerId) {
+        return;
+      }
+      const response = await fetch(`/api/user?user=${trainerId}`, {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${this.token}`,
+        },
+      }).then((response) => response.json());
+
+      if (response) {
+        this.trainer = response as { id: string; name: string };
       }
     },
     logout() {

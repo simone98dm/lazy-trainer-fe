@@ -13,10 +13,12 @@
   import { useTimerStore } from "../stores/timer";
   import Dropdown from "@/components/Dropdown/Dropdown.vue";
   import { useSettingStore } from "../stores/settings";
+  import { useUserStore } from "../stores/user";
 
   const route = useRoute();
   const activityStore = useActivityStore();
   const timerStore = useTimerStore();
+  const user = useUserStore();
   const { sessionId } = route.params;
 
   const warmUpActivities = activityStore.getWarmUpActivities(
@@ -59,7 +61,7 @@
 </script>
 <template>
   <section class="flex flex-col justify-center">
-    <div class="flex mb-6 gap-2">
+    <div class="flex mb-6 gap-2" v-if="user.isTrainer">
       <Link
         :to="{ name: 'session', params: { sessionId } }"
         label="Edit session"
@@ -91,7 +93,7 @@
           @click="runWarmUp"
         />
 
-        <Dropdown>
+        <Dropdown v-if="user.isTrainer">
           <div class="mt-2 text-sm font-semibold bg-transparent rounded-lg">
             <Button
               v-if="warmupActivitiesCount"
@@ -145,12 +147,24 @@
       </div>
 
       <div v-for="activity in activities">
-        <Link
-          :to="{
-            name: 'activity',
-            params: { sessionId, activityId: activity.id },
-          }"
-        >
+        <div v-if="user.isTrainer">
+          <Link
+            :to="{
+              name: 'activity',
+              params: { sessionId, activityId: activity.id },
+            }"
+          >
+            <Item
+              :name="activity.name"
+              :description="activity.description"
+              :time="activity.time"
+              :id="activity.id"
+              :reps="activity.reps"
+              :key="activity.id"
+            />
+          </Link>
+        </div>
+        <div v-else>
           <Item
             :name="activity.name"
             :description="activity.description"
@@ -159,7 +173,7 @@
             :reps="activity.reps"
             :key="activity.id"
           />
-        </Link>
+        </div>
       </div>
     </div>
     <div v-else>
@@ -169,7 +183,7 @@
         No activity found
       </h1>
     </div>
-    <div class="flex flex-col sm:flex-row">
+    <div class="flex flex-col sm:flex-row" v-if="user.isTrainer">
       <Link
         :icon="AddIcon"
         :size="ButtonSize.MEDIUM"
