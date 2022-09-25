@@ -3,7 +3,7 @@
   import { useRouter } from "vue-router";
   import { useUserStore } from "../stores/user";
   import Button from "../components/Button/Button.vue";
-  import { ButtonColor } from "../utils";
+  import { ButtonColor, Role } from "../utils";
 
   const username = ref("");
   const password = ref("");
@@ -29,7 +29,9 @@
     userStore.signIn(username.value, password.value).then((response) => {
       isLoading.value = false;
       if (!response) {
-        router.push({ name: "home" });
+        router.push({
+          name: userStore.role === Role.NORMAL ? "home" : "trainer",
+        });
       } else {
         error.value = response;
       }

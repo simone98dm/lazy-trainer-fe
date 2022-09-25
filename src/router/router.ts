@@ -1,3 +1,4 @@
+import { Role } from "./../utils/enum";
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "./../stores/user";
 import Home from "../views/Home.vue";
@@ -7,6 +8,9 @@ import Settings from "../views/Settings.vue";
 import Timer from "../views/Timer.vue";
 import Session from "../views/Session.vue";
 import Login from "../views/Login.vue";
+import Trainer from "../views/Trainer.vue";
+import Group from "../views/Group.vue";
+import NotFound from "../views/NotFound.vue";
 
 const routes = [
   {
@@ -14,8 +18,8 @@ const routes = [
     path: "/",
     component: Home,
     meta: {
-      showFooter: true,
       requireAuth: true,
+      requireAdmin: false,
     },
   },
   {
@@ -23,8 +27,8 @@ const routes = [
     path: "/details/:sessionId",
     component: Details,
     meta: {
-      showFooter: true,
       requireAuth: true,
+      requireAdmin: false,
     },
   },
   {
@@ -32,8 +36,8 @@ const routes = [
     path: "/activity/:sessionId/:activityId?",
     component: Activity,
     meta: {
-      showFooter: true,
       requireAuth: true,
+      requireAdmin: false,
     },
   },
   {
@@ -41,8 +45,8 @@ const routes = [
     path: "/timer/:sessionId/:activityId?",
     component: Timer,
     meta: {
-      showFooter: false,
       requireAuth: true,
+      requireAdmin: false,
     },
   },
   {
@@ -50,8 +54,8 @@ const routes = [
     path: "/session/:sessionId?",
     component: Session,
     meta: {
-      showFooter: false,
       requireAuth: true,
+      requireAdmin: false,
     },
   },
   {
@@ -59,8 +63,8 @@ const routes = [
     path: "/login",
     component: Login,
     meta: {
-      showFooter: false,
       requireAuth: false,
+      requireAdmin: false,
     },
   },
   {
@@ -69,6 +73,42 @@ const routes = [
     component: Settings,
     meta: {
       requireAuth: true,
+      requireAdmin: false,
+    },
+  },
+  {
+    name: "trainer",
+    path: "/trainer",
+    component: Trainer,
+    meta: {
+      requireAuth: true,
+      requireAdmin: true,
+    },
+  },
+  {
+    name: "group",
+    path: "/group",
+    component: Group,
+    meta: {
+      requireAuth: true,
+      requireAdmin: true,
+    },
+  },
+  {
+    name: "not-found",
+    path: "/not-found",
+    component: NotFound,
+    meta: {
+      requireAuth: false,
+      requireAdmin: false,
+    },
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    component: NotFound,
+    meta: {
+      requireAuth: false,
+      requireAdmin: false,
     },
   },
 ];
@@ -79,10 +119,22 @@ const router = createRouter({
   linkExactActiveClass: "bg-slate-100 text-indigo-600",
 });
 
-router.beforeEach((to) => {
+router.beforeEach((to, from) => {
   const userStore = useUserStore();
   if (to.meta.requireAuth && !userStore.isLogged) {
     return "/login";
+  }
+
+  if (to.meta.requireAdmin) {
+    if (userStore.role === Role.TRAINER) {
+      if (
+        !["trainer", "group", "settings"].includes(to.name?.toString() ?? "")
+      ) {
+        return "/not-found";
+      }
+    } else {
+      return "/not-found";
+    }
   }
 });
 
