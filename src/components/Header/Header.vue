@@ -11,7 +11,13 @@
 </script>
 
 <template>
-  <div :class="['w-full rounded-b-xl p-5 text-white', settings.getBaseColor]">
+  <div
+    :class="[
+      'w-full rounded-b-xl p-5 text-white',
+      { 'bg-indigo-600': !user.isTrainer },
+      { 'bg-orange-600': user.isTrainer },
+    ]"
+  >
     <!-- <div :class="['flex items-center justify-between']"> -->
     <div>
       <!-- <router-link to="/">
