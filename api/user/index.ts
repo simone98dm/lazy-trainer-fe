@@ -7,19 +7,22 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   try {
     const bearer = request.headers.authorization?.split(" ")[1] ?? "";
 
+    const traineId: string = request.query.user as string;
+
     const decoded = jwt.verify(bearer, SECRET_KEY);
     if (decoded) {
-      const { id } = decoded as { id: string; username: string; role: number };
-
       const client = await connectToDatabase();
       if (!client) {
         throw new Error("mongoClient is null");
       }
       const db = client.db("lazyTrainerDb");
-      const collection = db.collection("users");
-      const result = await collection.findOne({ id: id });
-
-      return response.status(200).json(result);
+      const result = await db.collection("users").findOne({ id: traineId });
+      if (result) {
+        return response.status(200).json({
+          id: result.id,
+          name: result.name,
+        });
+      }
     }
     return response.status(404).json({ error: "not found" });
   } catch (error) {

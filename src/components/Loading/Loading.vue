@@ -1,10 +1,18 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  import { useUserStore } from "../../stores/user";
+
+  const user = useUserStore();
+</script>
 
 <template>
   <div role="status">
     <svg
       aria-hidden="true"
-      class="mr-2 w-8 h-8 text-indigo-600 animate-spin fill-slate-300"
+      :class="[
+        'mr-2 w-8 h-8 animate-spin fill-slate-300',
+        { 'text-indigo-600': !user.isTrainer },
+        { 'text-orange-600': user.isTrainer },
+      ]"
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

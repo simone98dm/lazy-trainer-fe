@@ -32,4 +32,5 @@ export enum ButtonColor {
 export enum Role {
   NORMAL,
   TRAINER,
+  SELFMADE,
 }

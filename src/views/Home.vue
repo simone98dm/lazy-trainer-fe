@@ -56,12 +56,14 @@
     <div v-else>
       <h1 class="mb-3 text-2xl font-bold">No sessions found</h1>
     </div>
-    <Link
-      :icon="AddIcon"
-      :size="ButtonSize.MEDIUM"
-      :to="{ name: 'session' }"
-      :type="LinkType.BUTTON"
-      label="Add day activities"
-    />
+    <div v-if="user.isTrainer || user.isSelfMadeMan">
+      <Link
+        :icon="AddIcon"
+        :size="ButtonSize.MEDIUM"
+        :to="{ name: 'session' }"
+        :type="LinkType.BUTTON"
+        label="Add day activities"
+      />
+    </div>
   </section>
 </template>

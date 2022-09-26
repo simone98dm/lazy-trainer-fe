@@ -9,10 +9,12 @@
   import SaveIcon from "@/components/Icons/SaveIcon.vue";
   import { useActivityStore } from "../../stores/activity";
   import Item from "@/components/Item/Item.vue";
+  import { useUserStore } from "../../stores/user";
 
   const props = defineProps(["id", "dayOfWeek", "existingForm"]);
   const emits = defineEmits(["save", "remove"]);
   const store = useActivityStore();
+  const user = useUserStore();
 
   const uuid = uuidv4();
 
@@ -63,7 +65,13 @@
           v-for="(dayName, i) in days"
           :key="i"
           :class="[
-            { 'bg-indigo-600 text-slate-50': isDaySelected(i) },
+            {
+              'bg-indigo-600 text-slate-50':
+                isDaySelected(i) && !user.isTrainer,
+            },
+            {
+              'bg-orange-600 text-slate-50': isDaySelected(i) && user.isTrainer,
+            },
             { 'bg-gray-200 text-grey-50': !isDaySelected(i) },
             'w-full duration-200 rounded-full px-4 py-2 ',
           ]"

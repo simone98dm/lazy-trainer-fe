@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { useUserStore } from "../../stores/user";
   import { ButtonColor, Theme, IconSize } from "../../utils";
   import Icon from "../Icons/Icon.vue";
   import Loading from "../Loading/Loading.vue";
@@ -12,6 +13,7 @@
     "loading",
   ]);
   const emit = defineEmits(["click"]);
+  const user = useUserStore();
 </script>
 
 <template>
@@ -26,7 +28,13 @@
       'block',
       {
         'bg-indigo-600 hover:bg-indigo-500 text-gray-100':
-          !props.color || props.color === ButtonColor.PRIMARY,
+          (!props.color || props.color === ButtonColor.PRIMARY) &&
+          !user.isTrainer,
+      },
+      {
+        'bg-orange-600 hover:bg-orange-500 text-gray-100':
+          (!props.color || props.color === ButtonColor.PRIMARY) &&
+          user.isTrainer,
       },
       {
         'bg-red-600 hover:bg-red-500 text-gray-100':
