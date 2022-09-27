@@ -33,8 +33,8 @@
   const activitiesCount = activities?.length ?? 0;
   const warmupActivitiesCount = warmUpActivities?.length ?? 0;
 
-  function deleteSession() {
-    activityStore.deleteSession(sessionId as string);
+  async function deleteSession() {
+    await activityStore.deleteSession(sessionId as string);
     router.push({
       name: "home",
     });

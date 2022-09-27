@@ -15,7 +15,7 @@ import NotFound from "../views/NotFound.vue";
 const routes = [
   {
     name: "home",
-    path: "/",
+    path: "/:planId?",
     component: Home,
     meta: {
       requireAuth: true,
@@ -78,7 +78,7 @@ const routes = [
   },
   {
     name: "trainer",
-    path: "/trainer",
+    path: "/trainer/:planId",
     component: Trainer,
     meta: {
       requireAuth: true,

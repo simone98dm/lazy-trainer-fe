@@ -34,3 +34,9 @@ export enum Role {
   TRAINER,
   SELFMADE,
 }
+
+export const RoleName: { [role in Role]: string } = {
+  [Role.NORMAL]: "Normal",
+  [Role.TRAINER]: "Trainer",
+  [Role.SELFMADE]: "Self Made",
+};

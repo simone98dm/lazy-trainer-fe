@@ -3,7 +3,14 @@
   import Icon from "@/components/Icons/Icon.vue";
   import { IconSize } from "../../utils";
 
-  const props = defineProps(["id", "name", "description", "time", "reps"]);
+  const props = defineProps([
+    "id",
+    "name",
+    "description",
+    "time",
+    "reps",
+    "icon",
+  ]);
 
   function millisToMinutesAndSeconds(millis: number) {
     const minutes: number = Math.floor(millis / 60000);
@@ -21,13 +28,24 @@
   >
     <div class="flex">
       <div class="p-2 hidden sm:block">
-        <Icon :class="IconSize.LARGE" :component="Bench"></Icon>
+        <Icon
+          v-if="!props.icon"
+          :class="IconSize.LARGE"
+          :component="Bench"
+        ></Icon>
+        <Icon v-else :class="IconSize.LARGE" :component="props.icon"></Icon>
       </div>
-      <div class="sm:ml-4">
-        <h4 class="font-semibold text-2xl text-gray-600">
+      <div class="sm:ml-4 flex flex-col justify-center" v-if="props.name">
+        <h4
+          :class="[
+            ' text-gray-600',
+            { 'font-semibold text-2xl': props.description },
+            { 'font-bold text-5xl': !props.description },
+          ]"
+        >
           {{ props.name }}
         </h4>
-        <p class="text-sm text-slate-500">
+        <p class="text-sm text-slate-500" v-if="props.description">
           {{ props.description }}
         </p>
       </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useUserStore } from "../stores/user";
   import Button from "../components/Button/Button.vue";
-  import { ButtonColor } from "../utils";
+  import { ButtonColor, Role, RoleName } from "../utils";
   import { useSettingStore } from "../stores/settings";
   import { useActivityStore } from "../stores/activity";
   import Loading from "../components/Loading/Loading.vue";
@@ -29,7 +29,7 @@
       <h1 class="text-2xl flex justify-between shadow p-5 rounded-xl mb-3">
         Role:
         <span class="font-bold">
-          {{ user.role === 1 ? "Trainer" : "Normal" }}
+          {{ RoleName[user.role as Role] }}
         </span>
       </h1>
       <h1

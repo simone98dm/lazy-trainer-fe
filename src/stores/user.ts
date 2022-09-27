@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { IUserResponse } from "../models/User";
 import { Role } from "../utils";
+import { getGroups, signIn, userInfo, verifyUser } from "./httpClient";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -29,11 +30,7 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     async signIn(username: string, password: string) {
-      const response = await fetch("/api/auth/sign", {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-      }).then((response) => response.json());
-
+      const response = await signIn(username, password);
       if (response.data) {
         const { data } = response as IUserResponse;
         const { token, id, name, role } = data;
@@ -52,12 +49,7 @@ export const useUserStore = defineStore("user", {
     async verifyStorage() {
       const token = localStorage.getItem("_token");
       if (token) {
-        const response = await fetch("/api/auth/verify", {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }).then((response) => response.json());
-
+        const response = await verifyUser(token);
         if (response.data) {
           const { data } = response as IUserResponse;
           const { token, id, name, role } = data;
@@ -75,12 +67,7 @@ export const useUserStore = defineStore("user", {
       if (!trainerId) {
         return;
       }
-      const response = await fetch(`/api/user?user=${trainerId}`, {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${this.token}`,
-        },
-      }).then((response) => response.json());
+      const response = await userInfo(this.token, trainerId);
 
       if (response) {
         this.trainer = response as { id: string; name: string };
@@ -89,6 +76,9 @@ export const useUserStore = defineStore("user", {
     logout() {
       localStorage.clear();
       location.href = "/";
+    },
+    async retrieveClients() {
+      return getGroups(this.token, this.userId);
     },
   },
 });

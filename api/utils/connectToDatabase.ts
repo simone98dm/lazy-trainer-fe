@@ -17,13 +17,8 @@ export async function connectToDatabase() {
 
     mongoClient = await new MongoClient(uri, options).connect();
 
-    console.log("🚀 connected");
-
     return mongoClient;
   } catch (error) {
-    console.log(
-      "🚀 ~ file: connectToDatabase.ts ~ line 21 ~ connectToDatabase ~ error",
-      error
-    );
+    console.error(error);
   }
 }

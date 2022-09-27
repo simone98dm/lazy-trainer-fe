@@ -7,7 +7,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   try {
     const bearer = request.headers.authorization?.split(" ")[1] ?? "";
 
-    const traineId: string = request.query.user as string;
+    const { id } = JSON.parse(request.body);
 
     const decoded = jwt.verify(bearer, SECRET_KEY);
     if (decoded) {
@@ -17,12 +17,26 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       }
 
       const db = client.db("lazyTrainerDb");
-      const result = await db.collection("users").findOne({ id: traineId });
-      if (result) {
-        return response.status(200).json({
-          id: result.id,
-          name: result.name,
-        });
+      const plans = await db
+        .collection("plans")
+        .find({ trainerId: id })
+        .toArray();
+
+      if (plans) {
+        const userIds = plans.map((plans) => plans.ownerId);
+        const userInfos = await db
+          .collection("users")
+          .find({ id: { $in: userIds } })
+          .toArray();
+
+        if (userInfos) {
+          const p = plans.map((plan) => {
+            const user = userInfos.find((user) => user.id === plan.ownerId);
+            return { ...plan, username: user?.name };
+          });
+
+          return response.status(200).json(p);
+        }
       }
     }
     return response.status(404).json({ error: "not found" });

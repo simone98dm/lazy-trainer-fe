@@ -48,13 +48,13 @@
     });
   }
 
-  function saveActivity(activity: IActivity) {
-    store.addActivity(sessionId as string, activity);
+  async function saveActivity(activity: IActivity) {
+    await store.addActivity(sessionId as string, activity);
     redirectToList();
   }
 
-  function removeActivity(activityId: string) {
-    store.removeActivity(sessionId as string, activityId);
+  async function removeActivity(activityId: string) {
+    await store.removeActivity(sessionId as string, activityId);
     redirectToList();
   }
 </script>

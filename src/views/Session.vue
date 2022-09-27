@@ -37,8 +37,8 @@
     router.back();
   }
 
-  function addSession(session: ISession) {
-    store.addSession(session);
+  async function addSession(session: ISession) {
+    await store.addSession(session);
     cleanDuplicateWarmup();
     router.push({
       name: "home",
