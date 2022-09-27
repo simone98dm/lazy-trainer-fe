@@ -35,8 +35,11 @@ export enum Role {
   SELFMADE,
 }
 
-export const RoleName: { [role in Role]: string } = {
-  [Role.NORMAL]: "Normal",
-  [Role.TRAINER]: "Trainer",
-  [Role.SELFMADE]: "Self Made",
-};
+export enum DataAction {
+  SESSION_DELETE,
+  SESSION_UPDATE,
+  SESSION_CREATE,
+  ACTIVITY_DELETE,
+  ACTIVITY_UPDATE,
+  ACTIVITY_CREATE,
+}

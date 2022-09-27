@@ -1,20 +1,21 @@
 <script setup lang="ts">
-  import { ref, watch } from "vue";
-  import Button from "@/components/Button/Button.vue";
+  import { ref } from "vue";
+  import Button from "~/components/Button/Button.vue";
   import { v4 as uuidv4 } from "uuid";
-  import TrashIcon from "@/components/Icons/TrashIcon.vue";
-  import AddIcon from "@/components/Icons/AddIcon.vue";
-  import { ISession } from "../../models/Session";
-  import { days, ButtonColor } from "../../utils";
-  import SaveIcon from "@/components/Icons/SaveIcon.vue";
-  import { useActivityStore } from "../../stores/activity";
-  import Item from "@/components/Item/Item.vue";
-  import { useUserStore } from "../../stores/user";
+  import TrashIcon from "~/components/Icons/TrashIcon.vue";
+  import AddIcon from "~/components/Icons/AddIcon.vue";
+  import { ISession } from "~/models/Session";
+  import { days, ButtonColor } from "~/utils";
+  import SaveIcon from "~/components/Icons/SaveIcon.vue";
+  import Item from "~/components/Item/Item.vue";
+  import { useActivityStore } from "~/stores/activity";
+  import { useUserStore } from "~/stores/user";
 
   const props = defineProps(["id", "dayOfWeek", "existingForm"]);
   const emits = defineEmits(["save", "remove"]);
-  const store = useActivityStore();
-  const user = useUserStore();
+
+  const activityStore = useActivityStore();
+  const userStore = useUserStore();
 
   const uuid = uuidv4();
 
@@ -29,7 +30,7 @@
     };
 
     if (props.existingForm) {
-      store.duplicateWarmup = undefined;
+      activityStore.duplicateWarmup = undefined;
       activity.activities = [...props.existingForm];
       activity.id = uuidv4();
     }
@@ -67,10 +68,11 @@
           :class="[
             {
               'bg-indigo-600 text-slate-50':
-                isDaySelected(i) && !user.isTrainer,
+                isDaySelected(i) && !userStore.isTrainer,
             },
             {
-              'bg-orange-600 text-slate-50': isDaySelected(i) && user.isTrainer,
+              'bg-orange-600 text-slate-50':
+                isDaySelected(i) && userStore.isTrainer,
             },
             { 'bg-gray-200 text-grey-50': !isDaySelected(i) },
             'w-full duration-200 rounded-full px-4 py-2 ',

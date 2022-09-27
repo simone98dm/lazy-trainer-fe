@@ -14,7 +14,7 @@
     "baseUrl": ".",
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["./src"],
+      "~/*": ["src/*"],
       "*": ["types/*.d.ts"]
     }
   },

@@ -1,9 +1,9 @@
 import { useActivityStore } from "./activity";
-import { useUserStore } from "./user";
 import { defineStore } from "pinia";
 import { IActivity } from "../models/Activity";
-import { requestActivityChange } from "./httpClient";
+import { requestActivityChange } from "../helpers/http";
 import { useSettingStore } from "./settings";
+import { useUserStore } from "./user";
 
 export const useTimerStore = defineStore("timer", {
   state: () => ({
@@ -65,12 +65,12 @@ export const useTimerStore = defineStore("timer", {
       this.nextActivity = undefined;
     },
     async requestChange(sessionId: string) {
-      const settings = useSettingStore();
-      settings.loading(true);
+      const settingsStore = useSettingStore();
+      const userStore = useUserStore();
+      settingsStore.loading(true);
 
-      const user = useUserStore();
       return await requestActivityChange(
-        user.token,
+        userStore.token,
         this.currentActivity?.id ?? ""
       )
         .then(() => {
@@ -82,7 +82,7 @@ export const useTimerStore = defineStore("timer", {
             this.setCurrentActivity(newActivity);
           }
         })
-        .then(() => settings.loading(false));
+        .then(() => settingsStore.loading(false));
     },
   },
 });

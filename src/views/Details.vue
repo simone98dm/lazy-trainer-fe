@@ -1,24 +1,25 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router";
   import router from "../router/router";
-  import Item from "@/components/Item/Item.vue";
-  import AddIcon from "@/components/Icons/AddIcon.vue";
-  import PlayIcon from "@/components/Icons/PlayIcon.vue";
-  import Link from "@/components/Link/Link.vue";
-  import TrashIcon from "@/components/Icons/TrashIcon.vue";
-  import EditIcon from "@/components/Icons/EditIcon.vue";
-  import Button from "@/components/Button/Button.vue";
+  import Item from "~/components/Item/Item.vue";
+  import AddIcon from "~/components/Icons/AddIcon.vue";
+  import PlayIcon from "~/components/Icons/PlayIcon.vue";
+  import Link from "~/components/Link/Link.vue";
+  import TrashIcon from "~/components/Icons/TrashIcon.vue";
+  import EditIcon from "~/components/Icons/EditIcon.vue";
+  import Button from "~/components/Button/Button.vue";
   import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
-  import { useActivityStore } from "../stores/activity";
-  import { useTimerStore } from "../stores/timer";
-  import Dropdown from "@/components/Dropdown/Dropdown.vue";
-  import { useSettingStore } from "../stores/settings";
-  import { useUserStore } from "../stores/user";
+  import Dropdown from "~/components/Dropdown/Dropdown.vue";
+  import { useUserStore } from "~/stores/user";
+  import { useTimerStore } from "~/stores/timer";
+  import { useSettingStore } from "~/stores/settings";
+  import { useActivityStore } from "~/stores/activity";
 
   const route = useRoute();
   const activityStore = useActivityStore();
+  const settingsStore = useSettingStore();
+  const userStore = useUserStore();
   const timerStore = useTimerStore();
-  const user = useUserStore();
   const { sessionId } = route.params;
 
   const warmUpActivities = activityStore.getWarmUpActivities(
@@ -27,8 +28,7 @@
   const activities = activityStore.getSessionActivities(sessionId as string);
   const session = activityStore.getSession(sessionId as string);
 
-  const settings = useSettingStore();
-  settings.setHeader(getDayOfTheWeek(session?.dayOfWeek));
+  settingsStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
 
   const activitiesCount = activities?.length ?? 0;
   const warmupActivitiesCount = warmUpActivities?.length ?? 0;
@@ -59,7 +59,10 @@
 </script>
 <template>
   <section class="flex flex-col justify-center">
-    <div class="flex mb-6 gap-2" v-if="user.isTrainer || user.isSelfMadeMan">
+    <div
+      class="flex mb-6 gap-2"
+      v-if="userStore.isTrainer || userStore.isSelfMadeMan"
+    >
       <Link
         :to="{ name: 'session', params: { sessionId } }"
         label="Edit session"
@@ -91,7 +94,7 @@
           @click="runWarmUp"
         />
 
-        <Dropdown v-if="user.isTrainer || user.isSelfMadeMan">
+        <Dropdown v-if="userStore.isTrainer || userStore.isSelfMadeMan">
           <div class="mt-2 text-sm font-semibold bg-transparent rounded-lg">
             <Button
               v-if="warmupActivitiesCount"
@@ -104,7 +107,7 @@
         </Dropdown>
       </div>
       <div v-for="activity in warmUpActivities">
-        <div v-if="user.isTrainer || user.isSelfMadeMan">
+        <div v-if="userStore.isTrainer || userStore.isSelfMadeMan">
           <Link
             :to="{
               name: 'activity',
@@ -158,7 +161,7 @@
       </div>
 
       <div v-for="activity in activities">
-        <div v-if="user.isTrainer || user.isSelfMadeMan">
+        <div v-if="userStore.isTrainer || userStore.isSelfMadeMan">
           <Link
             :to="{
               name: 'activity',
@@ -196,7 +199,7 @@
     </div>
     <div
       class="flex flex-col sm:flex-row"
-      v-if="user.isTrainer || user.isSelfMadeMan"
+      v-if="userStore.isTrainer || userStore.isSelfMadeMan"
     >
       <Link
         :icon="AddIcon"

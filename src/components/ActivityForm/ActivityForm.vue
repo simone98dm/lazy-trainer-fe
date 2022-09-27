@@ -1,14 +1,14 @@
 })
 <script setup lang="ts">
-  import { IActivity } from "../../models/Activity";
-  import { ref, watch } from "vue";
-  import Button from "@/components/Button/Button.vue";
+  import { IActivity } from "~/models/Activity";
+  import { ref } from "vue";
+  import Button from "~/components/Button/Button.vue";
   import { v4 as uuidv4 } from "uuid";
-  import TrashIcon from "@/components/Icons/TrashIcon.vue";
-  import AddIcon from "@/components/Icons/AddIcon.vue";
-  import SaveIcon from "@/components/Icons/SaveIcon.vue";
-  import { ButtonColor } from "../../utils";
-  import { useUserStore } from "../../stores/user";
+  import TrashIcon from "~/components/Icons/TrashIcon.vue";
+  import AddIcon from "~/components/Icons/AddIcon.vue";
+  import SaveIcon from "~/components/Icons/SaveIcon.vue";
+  import { ButtonColor } from "~/utils";
+  import { useUserStore } from "~/stores/user";
 
   const props = defineProps([
     "id",

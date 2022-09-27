@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import AddIcon from "@/components/Icons/AddIcon.vue";
-  import Item from "@/components/Item/Item.vue";
-  import Link from "@/components/Link/Link.vue";
-  import { useUserStore } from "../../stores/user";
+  import AddIcon from "~/components/Icons/AddIcon.vue";
+  import Item from "~/components/Item/Item.vue";
+  import Link from "~/components/Link/Link.vue";
   import Loading from "../Loading/Loading.vue";
-  import { ButtonSize, LinkType } from "../../utils";
+  import { useUserStore } from "~/stores/user";
+  import { ButtonSize, LinkType } from "~/utils";
   const user = useUserStore();
   const props = defineProps(["list", "loading"]);
 </script>

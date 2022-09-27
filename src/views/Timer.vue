@@ -1,26 +1,30 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import { useRoute, useRouter } from "vue-router";
-  import Button from "@/components/Button/Button.vue";
-  import StopIcon from "@/components/Icons/StopIcon.vue";
-  import SkipIcon from "@/components/Icons/SkipIcon.vue";
-  import PlayIcon from "@/components/Icons/PlayIcon.vue";
-  import BackButton from "@/components/BackButton/BackButton.vue";
-  import { type Act, ButtonSize, COLOR_CODES, FULL_DASH_ARRAY } from "../utils";
-  import { useTimerStore } from "../stores/timer";
+  import Button from "~/components/Button/Button.vue";
+  import StopIcon from "~/components/Icons/StopIcon.vue";
+  import SkipIcon from "~/components/Icons/SkipIcon.vue";
+  import PlayIcon from "~/components/Icons/PlayIcon.vue";
+  import BackButton from "~/components/BackButton/BackButton.vue";
+  import {
+    type TimerActivity,
+    ButtonSize,
+    COLOR_CODES,
+    FULL_DASH_ARRAY,
+  } from "../utils";
   import TimerSpinner from "../components/TimerSpinner/TimerSpinner.vue";
-  import { useSettingStore } from "../stores/settings";
   import { IActivity } from "../models/Activity";
-  import Link from "../components/Link/Link.vue";
+  import { useSettingStore } from "~/stores/settings";
+  import { useTimerStore } from "~/stores/timer";
 
   const route = useRoute();
   const router = useRouter();
+  const settingsStore = useSettingStore();
+  const timerStore = useTimerStore();
 
   let timerInterval: any = null;
   let timePassed = 0;
-  const settings = useSettingStore();
-  settings.setHeader("Timer");
-  const timerStore = useTimerStore();
+  settingsStore.setHeader("Timer");
   let TIME_LIMIT = ref(0);
   let timeLeft = ref(TIME_LIMIT.value);
 
@@ -39,7 +43,7 @@
     if (!activities || activities.length <= 0) {
       router.back();
     } else {
-      const acts: Act = getActivity(activities, activityId);
+      const acts: TimerActivity = getActivity(activities, activityId);
       if (acts) {
         timerStore.setCurrentActivity(acts.firstActivity);
         timerStore.setNextActivity(acts.secondActivity);
@@ -50,8 +54,11 @@
     }
   }
 
-  function getActivity(activities: IActivity[], activityId: string): Act {
-    let obj: Act;
+  function getActivity(
+    activities: IActivity[],
+    activityId: string
+  ): TimerActivity {
+    let obj: TimerActivity;
     if (!activityId && activities.length > 0) {
       obj = { firstActivity: activities[0], secondActivity: undefined };
       if (activities.length > 1) {

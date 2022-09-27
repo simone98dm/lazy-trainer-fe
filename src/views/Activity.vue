@@ -1,19 +1,20 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from "vue-router";
-  import ActivityForm from "@/components/ActivityForm/ActivityForm.vue";
-  import BackButton from "@/components/BackButton/BackButton.vue";
-  import { useActivityStore } from "../stores/activity";
+  import ActivityForm from "~/components/ActivityForm/ActivityForm.vue";
+  import BackButton from "~/components/BackButton/BackButton.vue";
+  import { useActivityStore } from "~/stores/activity";
+  import { useSettingStore } from "~/stores/settings";
   import { IActivity } from "../models/Activity";
-  import { useSettingStore } from "../stores/settings";
 
   const route = useRoute();
   const router = useRouter();
-  const store = useActivityStore();
-  const { sessionId, activityId } = route.params;
-  const session = store.getSession(sessionId as string);
+  const activityStore = useActivityStore();
+  const settingsStore = useSettingStore();
 
-  const settings = useSettingStore();
-  settings.setHeader("Activity");
+  const { sessionId, activityId } = route.params;
+  const session = activityStore.getSession(sessionId as string);
+
+  settingsStore.setHeader("Activity");
 
   if (!session) {
     router.back();
@@ -50,12 +51,12 @@
   }
 
   async function saveActivity(activity: IActivity) {
-    await store.addActivity(sessionId as string, activity);
+    await activityStore.addActivity(sessionId as string, activity);
     redirectToList();
   }
 
   async function removeActivity(activityId: string) {
-    await store.removeActivity(sessionId as string, activityId);
+    await activityStore.removeActivity(sessionId as string, activityId);
     redirectToList();
   }
 </script>

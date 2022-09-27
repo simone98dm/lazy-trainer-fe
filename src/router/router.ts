@@ -1,13 +1,13 @@
-import { Role } from "./../utils/enum";
 import { createRouter, createWebHistory } from "vue-router";
-import { useUserStore } from "./../stores/user";
+import { useUserStore } from "../stores/user";
+import { Role } from "../utils/enum";
 import Home from "../views/Home.vue";
 import Details from "../views/Details.vue";
 import Activity from "../views/Activity.vue";
-import Settings from "../views/Settings.vue";
 import Timer from "../views/Timer.vue";
 import Session from "../views/Session.vue";
 import Login from "../views/Login.vue";
+import Settings from "../views/Settings.vue";
 import Trainer from "../views/Trainer.vue";
 import Group from "../views/Group.vue";
 import NotFound from "../views/NotFound.vue";

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-  import { useUserStore } from "../stores/user";
   import Link from "../components/Link/Link.vue";
-  import { ref, watch } from "vue";
-  import { useSettingStore } from "../stores/settings";
-  import Item from "../components/Item/Item.vue";
-  import Loading from "../components/Loading/Loading.vue";
-  import TrainerIcon from "../components/Icons/TrainerIcon.vue";
+  import { ref } from "vue";
+  import Item from "~/components/Item/Item.vue";
+  import Loading from "~/components/Loading/Loading.vue";
+  import TrainerIcon from "~/components/Icons/TrainerIcon.vue";
+  import { useSettingStore } from "~/stores/settings";
+  import { useUserStore } from "~/stores/user";
 
-  const user = useUserStore();
-  const settings = useSettingStore();
-  settings.setHeader("Your clients");
+  const settingsStore = useSettingStore();
+  const userStore = useUserStore();
+  settingsStore.setHeader("Your clients");
 
   const clients = ref(undefined as any[] | undefined);
-  user.retrieveClients().then((response) => (clients.value = response));
+  userStore.retrieveClients().then((response) => (clients.value = response));
 </script>
 
 <template>

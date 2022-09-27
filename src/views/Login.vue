@@ -1,16 +1,17 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import { useRouter } from "vue-router";
-  import { useUserStore } from "../stores/user";
-  import Button from "../components/Button/Button.vue";
-  import { ButtonColor, Role } from "../utils";
+  import { useUserStore } from "~/stores/user";
+  import Button from "~/components/Button/Button.vue";
+  import { ButtonColor } from "~/utils";
 
   const username = ref("");
   const password = ref("");
   const error = ref("");
-  const userStore = useUserStore();
   const router = useRouter();
   const isLoading = ref(false);
+
+  const userStore = useUserStore();
 
   if (userStore.isLogged) {
     router.push({ name: "home" });

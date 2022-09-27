@@ -1,36 +1,36 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from "vue-router";
-  import SessionForm from "@/components/SessionForm/SessionForm.vue";
-  import BackButton from "@/components/BackButton/BackButton.vue";
-  import { ISession } from "../models/Session";
-  import { useActivityStore } from "../stores/activity";
+  import SessionForm from "~/components/SessionForm/SessionForm.vue";
+  import BackButton from "~/components/BackButton/BackButton.vue";
+  import { ISession } from "~/models/Session";
   import { IActivity } from "../models/Activity";
-  import { useSettingStore } from "../stores/settings";
+  import { useActivityStore } from "~/stores/activity";
+  import { useSettingStore } from "~/stores/settings";
 
-  const store = useActivityStore();
-  const settings = useSettingStore();
-  settings.setHeader("Session");
   const router = useRouter();
   const route = useRoute();
+  const activityStore = useActivityStore();
+  const settingsStore = useSettingStore();
+  settingsStore.setHeader("Session");
 
   const { sessionId } = route.params;
   const { d } = route.query;
 
   let duplicateWarmupActivities: IActivity[] | undefined = undefined;
-  if (d && store.duplicateWarmup) {
-    duplicateWarmupActivities = store.duplicateWarmup;
+  if (d && activityStore.duplicateWarmup) {
+    duplicateWarmupActivities = activityStore.duplicateWarmup;
   }
 
-  if (d && !store.duplicateWarmup) {
+  if (d && !activityStore.duplicateWarmup) {
     router.push({
       name: "home",
     });
   }
 
-  const session = store.getSession(sessionId as string);
+  const session = activityStore.getSession(sessionId as string);
 
   function cleanDuplicateWarmup() {
-    store.duplicateWarmup = undefined;
+    activityStore.duplicateWarmup = undefined;
   }
   function onBackPageHandler() {
     cleanDuplicateWarmup();
@@ -38,7 +38,7 @@
   }
 
   async function addSession(session: ISession) {
-    await store.addSession(session);
+    await activityStore.addSession(session);
     cleanDuplicateWarmup();
     router.back();
   }

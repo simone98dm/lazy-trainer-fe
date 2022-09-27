@@ -1,21 +1,17 @@
 <script setup lang="ts">
-  import MenuIcon from "@/components/Icons/MenuIcon.vue";
-  import Icon from "@/components/Icons/Icon.vue";
-  import { IconSize } from "../../utils";
-  import HomeIcon from "../Icons/HomeIcon.vue";
-  import { useSettingStore } from "../../stores/settings";
-  import { useUserStore } from "../../stores/user";
+  import { useSettingStore } from "~/stores/settings";
+  import { useUserStore } from "~/stores/user";
 
-  const settings = useSettingStore();
-  const user = useUserStore();
+  const settingsStore = useSettingStore();
+  const userStore = useUserStore();
 </script>
 
 <template>
   <div
     :class="[
       'w-full rounded-b-xl p-5 text-white',
-      { 'bg-indigo-600': !user.isTrainer },
-      { 'bg-orange-600': user.isTrainer },
+      { 'bg-indigo-600': !userStore.isTrainer },
+      { 'bg-orange-600': userStore.isTrainer },
     ]"
   >
     <!-- <div :class="['flex items-center justify-between']"> -->
@@ -29,7 +25,7 @@
       </router-link> -->
       <div class="text-center">
         <h3 class="text-3xl font-semibold">
-          {{ settings.getHeaderText }}
+          {{ settingsStore.getHeaderText }}
         </h3>
       </div>
       <!-- <div

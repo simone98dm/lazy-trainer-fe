@@ -1,11 +1,10 @@
 <script setup lang="ts">
-  import HouseIcon from "@/components/Icons/HouseIcon.vue";
-  import GroupIcon from "@/components/Icons/GroupIcon.vue";
-  import SettingIcon from "@/components/Icons/SettingIcon.vue";
-  import TrainerIcon from "@/components/Icons/TrainerIcon.vue";
-  import Icon from "@/components/Icons/Icon.vue";
-  import { IconSize } from "../../utils";
-  import { useUserStore } from "../../stores/user";
+  import HouseIcon from "~/components/Icons/HouseIcon.vue";
+  import GroupIcon from "~/components/Icons/GroupIcon.vue";
+  import SettingIcon from "~/components/Icons/SettingIcon.vue";
+  import Icon from "~/components/Icons/Icon.vue";
+  import { IconSize } from "~/utils";
+  import { useUserStore } from "~/stores/user";
 
   const user = useUserStore();
 </script>

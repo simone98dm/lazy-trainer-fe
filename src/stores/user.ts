@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { IUserResponse } from "../models/User";
 import { Role } from "../utils";
-import { getGroups, signIn, userInfo, verifyUser } from "./httpClient";
+import { getGroups, signIn, userInfo, verifyUser } from "../helpers/http";
 
 export const useUserStore = defineStore("user", {
   state: () => ({

@@ -1,6 +1,4 @@
-import { useUserStore } from "./user";
 import { defineStore } from "pinia";
-import { Role } from "../utils";
 
 export const useSettingStore = defineStore("settings", {
   state: () => ({
