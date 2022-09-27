@@ -104,12 +104,25 @@
         </Dropdown>
       </div>
       <div v-for="activity in warmUpActivities">
-        <Link
-          :to="{
-            name: 'activity',
-            params: { sessionId, activityId: activity.id },
-          }"
-        >
+        <div v-if="user.isTrainer || user.isSelfMadeMan">
+          <Link
+            :to="{
+              name: 'activity',
+              params: { sessionId, activityId: activity.id },
+            }"
+          >
+            <Item
+              :name="activity.name"
+              :description="activity.description"
+              :time="activity.time"
+              :id="activity.id"
+              :reps="activity.reps"
+              :request-change="activity.requestChange"
+              :key="activity.id"
+            />
+          </Link>
+        </div>
+        <div v-else>
           <Item
             :name="activity.name"
             :description="activity.description"
@@ -118,7 +131,7 @@
             :reps="activity.reps"
             :key="activity.id"
           />
-        </Link>
+        </div>
       </div>
     </div>
     <div v-else>

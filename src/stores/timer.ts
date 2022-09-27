@@ -1,5 +1,9 @@
+import { useActivityStore } from "./activity";
+import { useUserStore } from "./user";
 import { defineStore } from "pinia";
 import { IActivity } from "../models/Activity";
+import { requestActivityChange } from "./httpClient";
+import { useSettingStore } from "./settings";
 
 export const useTimerStore = defineStore("timer", {
   state: () => ({
@@ -59,6 +63,26 @@ export const useTimerStore = defineStore("timer", {
       this.runningTimer = 0;
       this.currentActivity = undefined;
       this.nextActivity = undefined;
+    },
+    async requestChange(sessionId: string) {
+      const settings = useSettingStore();
+      settings.loading(true);
+
+      const user = useUserStore();
+      return await requestActivityChange(
+        user.token,
+        this.currentActivity?.id ?? ""
+      )
+        .then(() => {
+          const activity = useActivityStore();
+          const ca = this.currentActivity;
+          if (ca) {
+            const newActivity = { ...ca, requestChange: true };
+            activity.addActivity(sessionId, newActivity);
+            this.setCurrentActivity(newActivity);
+          }
+        })
+        .then(() => settings.loading(false));
     },
   },
 });

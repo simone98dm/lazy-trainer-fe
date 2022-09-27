@@ -32,7 +32,7 @@
         >
           <Item
             :icon="TrainerIcon"
-            :name="client.username"
+            :name="client.name"
             :id="client.id"
             :key="client.id"
           ></Item>

@@ -7,4 +7,5 @@ export interface IActivity {
   videoUrl?: string;
   warmup: boolean;
   order?: number;
+  requestChange: boolean;
 }

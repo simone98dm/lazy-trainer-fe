@@ -1,3 +1,4 @@
+import { useSettingStore } from "./settings";
 import { IPlan } from "./../models/Plan";
 import { ISession } from "./../models/Session";
 import { defineStore } from "pinia";
@@ -87,6 +88,9 @@ export const useActivityStore = defineStore("activity", {
       return Promise.reject();
     },
     async addActivity(sessionId: string, activity: IActivity) {
+      const settings = useSettingStore();
+      settings.loading(true);
+
       if (!this.plan) {
         this.plan = generateBlankPlan();
       }
@@ -107,7 +111,7 @@ export const useActivityStore = defineStore("activity", {
               data: activity,
               activityId: activity.id,
               action: DataAction.ACTIVITY_UPDATE,
-            });
+            }).then(() => settings.loading(false));
           } else {
             activity.order = this.plan.sessions[index].activities.length;
             this.plan.sessions[index].activities.push(activity);
@@ -116,7 +120,7 @@ export const useActivityStore = defineStore("activity", {
               data: activity,
               sessionId,
               action: DataAction.ACTIVITY_CREATE,
-            });
+            }).then(() => settings.loading(false));
           }
         } else {
           activity.order = this.plan.sessions[index].activities.length;
@@ -126,13 +130,16 @@ export const useActivityStore = defineStore("activity", {
             data: activity,
             sessionId,
             action: DataAction.ACTIVITY_CREATE,
-          });
+          }).then(() => settings.loading(false));
         }
       }
 
       save(this.plan);
     },
     async removeActivity(sessionId: string, activityId: string) {
+      const settings = useSettingStore();
+      settings.loading(true);
+
       if (!this.plan) {
         this.plan = generateBlankPlan();
       }
@@ -153,11 +160,14 @@ export const useActivityStore = defineStore("activity", {
       await sendToTrainer(user.token, {
         activityId,
         action: DataAction.ACTIVITY_DELETE,
-      });
+      }).then(() => settings.loading(false));
 
       save(this.plan);
     },
     async addSession(session: ISession) {
+      const settings = useSettingStore();
+      settings.loading(true);
+
       if (!this.plan) {
         this.plan = generateBlankPlan();
       }
@@ -167,6 +177,7 @@ export const useActivityStore = defineStore("activity", {
       );
 
       const user = useUserStore();
+
       if (existingIndex < 0) {
         this.plan.sessions.push(session);
 
@@ -174,7 +185,7 @@ export const useActivityStore = defineStore("activity", {
           data: session,
           planId: this.plan.id,
           action: DataAction.SESSION_CREATE,
-        });
+        }).then(() => settings.loading(false));
       } else {
         this.plan.sessions[existingIndex].dayOfWeek = session.dayOfWeek;
 
@@ -182,12 +193,15 @@ export const useActivityStore = defineStore("activity", {
           data: session,
           sessionId: session.id,
           action: DataAction.SESSION_UPDATE,
-        });
+        }).then(() => settings.loading(false));
       }
 
       save(this.plan);
     },
     async deleteSession(sessionId: string) {
+      const settings = useSettingStore();
+      settings.loading(true);
+
       if (!this.plan) {
         this.plan = generateBlankPlan();
       }
@@ -199,7 +213,7 @@ export const useActivityStore = defineStore("activity", {
       await sendToTrainer(user.token, {
         sessionId,
         action: DataAction.SESSION_DELETE,
-      });
+      }).then(() => settings.loading(false));
 
       save(this.plan);
     },

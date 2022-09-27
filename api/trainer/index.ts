@@ -1,11 +1,8 @@
-import { ISession } from "./../../src/models/Session";
-import { IPlan } from "./../../src/models/Plan";
-import { IUser } from "./../../src/models/User";
-import jwt from "jsonwebtoken";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { ObjectId } from "mongodb";
-import { mapRawToPlans } from "./utils";
-import { connectToDatabase, SECRET_KEY, verifyToken } from "../all";
+import { connectToDatabase, verifyToken } from "../all";
+import { IPlan } from "./../../src/models/Plan";
+import { ISession } from "../../src/models/Session";
+import { IUser } from "./../../src/models/User";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -52,3 +49,58 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     response.status(500).send({ error: "something went wrong" });
   }
 };
+
+export function mapRawToPlans(
+  plan: any,
+  sessions: any[],
+  activities: any[]
+): IPlan {
+  return {
+    name: plan.name,
+    id: plan.id,
+    trainerId: plan.trainerId,
+    sessions: mapRawToSession(sessions, activities),
+  };
+}
+
+export function mapRawToSession(
+  sessions: {
+    id: string;
+    dayOfWeek: number;
+  }[],
+  activities: {
+    id: string;
+    description: string;
+    name: string;
+    time: number;
+    reps: number;
+    order: number;
+    warmup: boolean;
+    requestChange: boolean;
+    sessionId: string;
+  }[]
+): ISession[] {
+  const parsedSessions: ISession[] = [];
+  for (const session of sessions) {
+    const filteredExtensions = activities
+      .filter((activity) => activity.sessionId === session.id)
+      .map((activity) => ({
+        id: activity.id,
+        description: activity.description,
+        name: activity.name,
+        time: activity.time,
+        reps: activity.reps,
+        order: activity.order,
+        warmup: activity.warmup,
+        requestChange: activity.requestChange,
+      }));
+
+    parsedSessions.push({
+      dayOfWeek: session.dayOfWeek,
+      id: session.id,
+      activities: filteredExtensions,
+    });
+  }
+
+  return parsedSessions;
+}

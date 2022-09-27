@@ -43,6 +43,7 @@ export async function updateActivity(activityId: string, data: any) {
         time: data.time,
         reps: data.reps,
         videoUrl: data.videoUrl,
+        requestChange: data.requestChange,
         warmup: data.warmup,
       },
     }

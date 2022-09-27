@@ -5,8 +5,6 @@ export async function sendToTrainer(token: string, body: any) {
       authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(body),
-  }).then((response) => {
-    console.log(response);
   });
 }
 
@@ -62,4 +60,14 @@ export async function getUserActivities(token: string, id: string) {
     },
     body: JSON.stringify({ id }),
   }).then((response) => response.json());
+}
+
+export async function requestActivityChange(token: string, activityId: string) {
+  return await fetch("/api/trainer/change", {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ activityId }),
+  });
 }

@@ -8,7 +8,6 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     if (request.headers.authorization) {
       const token = request.headers.authorization.split(" ")[1];
       const isValid = verifyToken(token);
-      console.log("🚀 ~ file: sign.ts ~ line 11 ~ isValid", isValid);
       if (!isValid) {
         response.status(403).send({ error: "token not valid" });
       } else {

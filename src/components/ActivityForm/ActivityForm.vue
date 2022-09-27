@@ -45,6 +45,7 @@
       order: order.value,
       warmup: warmup.value,
       videoUrl: videoUrl.value,
+      requestChange: false,
       reps: reps.value,
     };
     if (isTimeBasedActivity.value) {

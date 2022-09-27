@@ -2,6 +2,7 @@
   import Header from "./components/Header/Header.vue";
   import Footer from "./components/Footer/Footer.vue";
   import { useRoute } from "vue-router";
+  import GlobalLoading from "./components/Loading/GlobalLoading.vue";
   const route = useRoute();
   function isLogin() {
     return route.name === "login";
@@ -11,9 +12,10 @@
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col">
     <Header></Header>
-    <div class="p-5 w-full sm:w-4/5 md:w-2/3 mx-auto mb-14">
+    <div class="p-5 w-full sm:w-4/5 md:w-3/4 mx-auto mb-14">
       <router-view></router-view>
     </div>
     <Footer v-if="!isLogin()"></Footer>
   </div>
+  <GlobalLoading></GlobalLoading>
 </template>

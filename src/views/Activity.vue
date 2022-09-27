@@ -28,6 +28,7 @@
     warmup: false,
     order: 0,
     reps: 0,
+    requestChange: false,
   };
 
   if (activityId) {

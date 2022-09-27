@@ -11,6 +11,7 @@
   import TimerSpinner from "../components/TimerSpinner/TimerSpinner.vue";
   import { useSettingStore } from "../stores/settings";
   import { IActivity } from "../models/Activity";
+  import Link from "../components/Link/Link.vue";
 
   const route = useRoute();
   const router = useRouter();
@@ -167,11 +168,20 @@
       },
     });
   }
+
+  async function sendChangeRequest() {
+    await timerStore.requestChange(sessionId as string);
+  }
 </script>
 
 <template>
   <div>
-    <BackButton @click="redirectToActivity"></BackButton>
+    <div class="flex flex-row justify-between mb-3">
+      <BackButton @click="redirectToActivity"></BackButton>
+      <button class="text-red-800 cursor-pointer" @click="sendChangeRequest">
+        Request change
+      </button>
+    </div>
     <div v-if="timerStore.getCurrentActivity" class="text-center mb-6">
       Current activity:
       <h1 class="text-4xl font-bold">
@@ -189,13 +199,13 @@
     <div v-else>
       <h1 class="flex flex-col text-center my-20 text-pink-600">
         <span class="text-4xl">Total reps:</span>
-        <span class="text-9xl font-bold">{{
-          timerStore.getCurrentActivity?.reps
-        }}</span>
+        <span class="text-9xl font-bold">
+          {{ timerStore.getCurrentActivity?.reps }}
+        </span>
       </h1>
     </div>
 
-    <div class="mb-6 flex justify-center">
+    <div class="mb-3 flex justify-center">
       <Button
         :icon="
           timerStore.isTimerBasedActivity
@@ -215,6 +225,12 @@
         full="true"
         @click="toggleTimer"
       />
+    </div>
+    <div
+      class="text-center mb-6"
+      v-if="timerStore.getCurrentActivity?.requestChange"
+    >
+      <p class="text-red-600">Change request sended, wait for changes...</p>
     </div>
     <hr class="mb-6" />
     <div class="text-center text-slate-500 mb-6">
