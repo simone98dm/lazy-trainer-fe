@@ -16,8 +16,8 @@
 </script>
 
 <template>
-  <div class="flex flex-col justify-center">
-    <div v-if="!clients">
+  <div class="flex flex-col justify-center w-full">
+    <div v-if="!clients" class="mx-auto">
       <Loading></Loading>
     </div>
     <div v-else>

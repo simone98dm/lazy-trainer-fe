@@ -3,7 +3,6 @@
   import Item from "@/components/Item/Item.vue";
   import Link from "@/components/Link/Link.vue";
   import { useUserStore } from "../../stores/user";
-  import { ref } from "vue";
   import Loading from "../Loading/Loading.vue";
   import { ButtonSize, LinkType } from "../../utils";
   const user = useUserStore();

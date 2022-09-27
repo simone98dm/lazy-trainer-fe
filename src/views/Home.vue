@@ -10,6 +10,8 @@
 
   const store = useActivityStore();
   const isLoading = ref(true);
+  const textToShow = ref("");
+  const block = ref(false);
 
   const user = useUserStore();
 
@@ -37,7 +39,10 @@
       });
       isLoading.value = false;
     });
-  } else {
+    textToShow.value = "Client session:";
+
+    block.value = false;
+  } else if (!user.isTrainer) {
     store
       .restoreSession()
       .then(() => {
@@ -58,11 +63,19 @@
       .catch(() => {
         router.push({ name: "login" });
       });
+    textToShow.value = "Your session:";
+    block.value = false;
+  } else {
+    textToShow.value = "Nothing to see here ⚠️";
+    isLoading.value = false;
+
+    block.value = true;
   }
 </script>
 
 <template>
-  <h1 class="mb-3 text-2xl font-bold" v-if="user.isTrainer">Client session:</h1>
-  <h1 class="mb-3 text-2xl font-bold" v-else>Your session:</h1>
-  <Flow :list="sessions" :loading="isLoading"></Flow>
+  <h1 class="mb-3 text-3xl font-bold">{{ textToShow }}</h1>
+  <div v-if="!block">
+    <Flow :list="sessions" :loading="isLoading"></Flow>
+  </div>
 </template>
