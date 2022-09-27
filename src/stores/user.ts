@@ -30,26 +30,7 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     async signIn(username: string, password: string) {
-      const response = await signIn(username, password);
-      if (response.data) {
-        const { data } = response as IUserResponse;
-        const { token, id, name, role } = data;
-
-        this.token = token;
-        this.userId = id;
-        this.username = name;
-        this.role = role as Role;
-
-        localStorage.setItem("_token", this.token);
-        return undefined;
-      }
-
-      return response.error;
-    },
-    async verifyStorage() {
-      const token = localStorage.getItem("_token");
-      if (token) {
-        const response = await verifyUser(token);
+      return await signIn(username, password).then((response) => {
         if (response.data) {
           const { data } = response as IUserResponse;
           const { token, id, name, role } = data;
@@ -60,7 +41,28 @@ export const useUserStore = defineStore("user", {
           this.role = role as Role;
 
           localStorage.setItem("_token", this.token);
+          return undefined;
         }
+
+        return response.error;
+      });
+    },
+    async verifyStorage() {
+      const token = localStorage.getItem("_token");
+      if (token) {
+        return await verifyUser(token).then((response) => {
+          if (response.data) {
+            const { data } = response as IUserResponse;
+            const { token, id, name, role } = data;
+
+            this.token = token;
+            this.userId = id;
+            this.username = name;
+            this.role = role as Role;
+
+            localStorage.setItem("_token", this.token);
+          }
+        });
       }
     },
     async getTrainerInfo(trainerId: string | undefined) {

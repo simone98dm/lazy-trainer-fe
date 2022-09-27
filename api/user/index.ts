@@ -1,7 +1,5 @@
-import jwt from "jsonwebtoken";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { SECRET_KEY } from "../const";
-import { connectToDatabase } from "../utils/connectToDatabase";
+import { connectToDatabase, verifyToken } from "../all";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -9,7 +7,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
     const traineId: string = request.query.user as string;
 
-    const decoded = jwt.verify(bearer, SECRET_KEY);
+    const decoded = verifyToken(bearer);
     if (decoded) {
       const client = await connectToDatabase();
       if (!client) {

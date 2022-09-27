@@ -35,9 +35,7 @@
 
   async function deleteSession() {
     await activityStore.deleteSession(sessionId as string);
-    router.push({
-      name: "home",
-    });
+    router.back();
   }
 
   function runWarmUp() {

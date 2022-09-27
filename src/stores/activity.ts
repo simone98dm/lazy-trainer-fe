@@ -165,6 +165,7 @@ export const useActivityStore = defineStore("activity", {
       const existingIndex = this.plan.sessions.findIndex(
         (s) => s.id === session.id
       );
+
       const user = useUserStore();
       if (existingIndex < 0) {
         this.plan.sessions.push(session);
@@ -209,7 +210,7 @@ export const useActivityStore = defineStore("activity", {
     },
     async getUserActivities(id: string) {
       const userStore = useUserStore();
-      return getUserActivities(userStore.token, id).then((plan) => {
+      return await getUserActivities(userStore.token, id).then((plan) => {
         if (plan.error) {
           this.plan = generateBlankPlan();
         } else {

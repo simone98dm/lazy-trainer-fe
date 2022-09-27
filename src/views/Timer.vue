@@ -6,16 +6,11 @@
   import SkipIcon from "@/components/Icons/SkipIcon.vue";
   import PlayIcon from "@/components/Icons/PlayIcon.vue";
   import BackButton from "@/components/BackButton/BackButton.vue";
-  import {
-    type Act,
-    ButtonSize,
-    COLOR_CODES,
-    FULL_DASH_ARRAY,
-    getActivity,
-  } from "../utils";
+  import { type Act, ButtonSize, COLOR_CODES, FULL_DASH_ARRAY } from "../utils";
   import { useTimerStore } from "../stores/timer";
   import TimerSpinner from "../components/TimerSpinner/TimerSpinner.vue";
   import { useSettingStore } from "../stores/settings";
+  import { IActivity } from "../models/Activity";
 
   const route = useRoute();
   const router = useRouter();
@@ -52,6 +47,30 @@
         baseTimerLabel.value = formatTime(timeLeft.value);
       }
     }
+  }
+
+  function getActivity(activities: IActivity[], activityId: string): Act {
+    let obj: Act;
+    if (!activityId && activities.length > 0) {
+      obj = { firstActivity: activities[0], secondActivity: undefined };
+      if (activities.length > 1) {
+        obj = { ...obj, secondActivity: activities[1] };
+      }
+      return obj;
+    }
+
+    const firstActivityIndex =
+      activities?.findIndex((act) => act.id === activityId) ?? undefined;
+    const secondActivityIndex = firstActivityIndex + 1;
+
+    const firstActivity = activities[firstActivityIndex];
+    obj = { firstActivity, secondActivity: undefined };
+    if (secondActivityIndex < activities.length) {
+      obj = { ...obj, secondActivity: activities[secondActivityIndex] };
+      return obj;
+    }
+
+    return obj;
   }
 
   function formatTime(time: number) {

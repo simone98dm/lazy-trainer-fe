@@ -27,7 +27,8 @@ export async function signIn(username: string, password: string) {
 }
 
 export async function verifyUser(token: string) {
-  return await fetch("/api/auth/verify", {
+  return await fetch("/api/auth/sign", {
+    method: "POST",
     headers: {
       authorization: `Bearer ${token}`,
     },

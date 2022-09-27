@@ -24,9 +24,9 @@
     });
   }
 
-  function submit() {
+  async function submit() {
     isLoading.value = true;
-    userStore.signIn(username.value, password.value).then((response) => {
+    await userStore.signIn(username.value, password.value).then((response) => {
       isLoading.value = false;
       if (!response) {
         router.push({

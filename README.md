@@ -5,6 +5,7 @@ Track your training activity.
 ## Tech details
 
 This projects uses:
+
 - Vite 3
 - Vue 3 + Composition API
 - Tailwind.css

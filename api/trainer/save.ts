@@ -1,12 +1,12 @@
+import { Role } from "./../../src/utils/enum";
 import { VercelRequest, VercelResponse } from "@vercel/node";
+import { verifyToken } from "../all";
 import {
   createActivity,
-  createSession,
   deleteActivity,
-  deleteSession,
   updateActivity,
-  updateSession,
-} from "./utils";
+} from "./utils/activity";
+import { createSession, deleteSession, updateSession } from "./utils/session";
 
 enum DataAction {
   SESSION_DELETE,
@@ -24,6 +24,13 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   }
 
   try {
+    const bearer = request.headers.authorization?.split(" ")[1];
+    const decoded = verifyToken(bearer as string);
+
+    if (decoded?.role === Role.NORMAL) {
+      response.status(403).end();
+    }
+
     const { activityId, sessionId, planId, action, data } = JSON.parse(body);
 
     switch (action) {

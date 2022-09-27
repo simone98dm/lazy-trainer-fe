@@ -1,8 +1,7 @@
 import jwt, { decode } from "jsonwebtoken";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { SECRET_KEY } from "../const";
-import { connectToDatabase } from "../utils/connectToDatabase";
 import { mapRawToPlans } from "../trainer/utils";
+import { connectToDatabase, SECRET_KEY, verifyToken } from "../all";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -10,7 +9,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
     const { id } = JSON.parse(request.body);
 
-    const decoded = jwt.verify(bearer, SECRET_KEY);
+    const decoded = verifyToken(bearer);
     if (decoded) {
       const d = decoded as { id: string };
       const client = await connectToDatabase();

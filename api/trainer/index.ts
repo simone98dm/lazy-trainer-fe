@@ -3,10 +3,9 @@ import { IPlan } from "./../../src/models/Plan";
 import { IUser } from "./../../src/models/User";
 import jwt from "jsonwebtoken";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { SECRET_KEY } from "../const";
-import { connectToDatabase } from "../utils/connectToDatabase";
 import { ObjectId } from "mongodb";
 import { mapRawToPlans } from "./utils";
+import { connectToDatabase, SECRET_KEY, verifyToken } from "../all";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -17,7 +16,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       return;
     }
 
-    const decoded = jwt.verify(bearer, SECRET_KEY);
+    const decoded = verifyToken(bearer);
     if (decoded) {
       const { id } = decoded as IUser;
 

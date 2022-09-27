@@ -40,9 +40,7 @@
   async function addSession(session: ISession) {
     await store.addSession(session);
     cleanDuplicateWarmup();
-    router.push({
-      name: "home",
-    });
+    router.back();
   }
 </script>
 <template>

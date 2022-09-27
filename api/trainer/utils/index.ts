@@ -1,9 +1,6 @@
 import { IPlan } from "../../../src/models/Plan";
 import { ISession } from "../../../src/models/Session";
 
-export * from "./session";
-export * from "./activity";
-
 export function mapRawToPlans(
   plan: any,
   sessions: any[],
