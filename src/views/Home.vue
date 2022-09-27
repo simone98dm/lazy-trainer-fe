@@ -22,7 +22,7 @@
 
   if (user.isTrainer && route.params.planId) {
     store.getUserActivities(route.params.planId as string).then((response) => {
-      sessions.value = response?.sessions.sort((x, y) =>
+      sessions.value = response?.sessions.sort((x: ISession, y: ISession) =>
         x.dayOfWeek < y.dayOfWeek ? -1 : 1
       );
 
