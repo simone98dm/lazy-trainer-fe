@@ -14,7 +14,7 @@
   import { useTimerStore } from "~/stores/timer";
   import { useSettingStore } from "~/stores/settings";
   import { useActivityStore } from "~/stores/activity";
-  import draggable from "vue3-draggable";
+  import draggable from "vuedraggable";
 
   const route = useRoute();
   const activityStore = useActivityStore();
@@ -28,7 +28,7 @@
   );
   const activities = activityStore.getSessionActivities(sessionId as string);
   const session = activityStore.getSession(sessionId as string);
-
+  const list = JSON.parse(JSON.stringify(activities));
   settingsStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
 
   const activitiesCount = activities?.length ?? 0;
@@ -56,6 +56,20 @@
       params: { sessionId },
       query: { d: "duplicate" },
     });
+  }
+
+  let enabled = true;
+  let dragging = false;
+  function checkMove(data: any) {
+    const { draggedContext, relatedContext } = data;
+    console.log(
+      "🚀 ~ file: Details.vue ~ line 65 ~ checkMove ~ relatedContext",
+      relatedContext
+    );
+    console.log(
+      "🚀 ~ file: Details.vue ~ line 65 ~ checkMove ~ draggedContext",
+      draggedContext
+    );
   }
 </script>
 <template>
@@ -162,20 +176,29 @@
       </div>
 
       <div v-if="userStore.isTrainer || userStore.isSelfMadeMan">
-        <draggable v-model="activities">
-          <template v-slot:item="{ item }">
+        <draggable
+          :list="list"
+          :disabled="!enabled"
+          item-key="name"
+          class="list-group"
+          ghost-class="ghost"
+          :move="checkMove"
+          @start="dragging = true"
+          @end="dragging = false"
+        >
+          <template #item="{ element }">
             <Link
               :to="{
                 name: 'activity',
-                params: { sessionId, activityId: item.id },
+                params: { sessionId, activityId: element.id },
               }"
             >
               <Item
-                :name="item.name"
-                :description="item.description"
-                :time="item.time"
-                :id="item.id"
-                :reps="item.reps"
+                :name="element.name"
+                :description="element.description"
+                :time="element.time"
+                :id="element.id"
+                :reps="element.reps"
               />
             </Link>
           </template>
