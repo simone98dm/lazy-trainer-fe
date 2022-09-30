@@ -63,7 +63,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         },
         SECRET_KEY,
         {
-          expiresIn: "1h",
+          expiresIn: "3d",
         }
       );
 

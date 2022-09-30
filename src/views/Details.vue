@@ -14,6 +14,7 @@
   import { useTimerStore } from "~/stores/timer";
   import { useSettingStore } from "~/stores/settings";
   import { useActivityStore } from "~/stores/activity";
+  import draggable from "vue3-draggable";
 
   const route = useRoute();
   const activityStore = useActivityStore();
@@ -160,6 +161,39 @@
         />
       </div>
 
+      <div v-if="userStore.isTrainer || userStore.isSelfMadeMan">
+        <draggable v-model="activities">
+          <template v-slot:item="{ item }">
+            <Link
+              :to="{
+                name: 'activity',
+                params: { sessionId, activityId: item.id },
+              }"
+            >
+              <Item
+                :name="item.name"
+                :description="item.description"
+                :time="item.time"
+                :id="item.id"
+                :reps="item.reps"
+              />
+            </Link>
+          </template>
+        </draggable>
+      </div>
+      <div v-else>
+        <div v-for="activity in activities">
+          <Item
+            :name="activity.name"
+            :description="activity.description"
+            :time="activity.time"
+            :id="activity.id"
+            :reps="activity.reps"
+            :key="activity.id"
+          />
+        </div>
+      </div>
+      <!-- 
       <div v-for="activity in activities">
         <div v-if="userStore.isTrainer || userStore.isSelfMadeMan">
           <Link
@@ -188,7 +222,7 @@
             :key="activity.id"
           />
         </div>
-      </div>
+      </div> -->
     </div>
     <div v-else>
       <h1
