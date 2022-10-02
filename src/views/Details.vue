@@ -82,6 +82,15 @@
       label="Delete session"
       @click="deleteSession"
     ></Button>
+    <Link
+      v-if="userStore.isTrainer || userStore.isSelfMadeMan"
+      :icon="AddIcon"
+      :size="ButtonSize.MEDIUM"
+      :color="ButtonColor.SUCCESS"
+      :to="{ name: 'activity', params: { sessionId } }"
+      :type="LinkType.BUTTON"
+      label="Add activity"
+    />
   </div>
   <div class="flex flex-col justify-center">
     <ActivityList
@@ -98,14 +107,5 @@
       @move="sortActivities"
       :session-id="sessionId"
     ></ActivityList>
-
-    <Link
-      v-if="userStore.isTrainer || userStore.isSelfMadeMan"
-      :icon="AddIcon"
-      :size="ButtonSize.MEDIUM"
-      :to="{ name: 'activity', params: { sessionId } }"
-      :type="LinkType.BUTTON"
-      label="Add activity"
-    />
   </div>
 </template>

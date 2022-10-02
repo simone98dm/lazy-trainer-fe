@@ -82,16 +82,20 @@
           {{ dayName }}
         </button>
       </div>
-      <div v-if="props.existingForm" class="mb-6">
-        <h4>Warm-up: {{ props.existingForm?.length }}</h4>
-        <p class="text-orange-500">
+      <div
+        v-if="props.existingForm"
+        class="mb-6 text-center rounded-xl shadow-lg bg-orange-200 p-4"
+      >
+        <p class="text-red-500 mb-3">
           *This session will contains the warm-up activities from the other
           session.
         </p>
-        <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
-          <div v-for="warmup in props.existingForm">
-            <Item :id="warmup.id" :key="warmup.id" :name="warmup.name"></Item>
-          </div>
+        <div class="w-full flex flex-wrap justify-center gap-3">
+          <span
+            v-for="warmup in props.existingForm"
+            class="bg-purple-600 rounded-lg p-2 text-white"
+            >{{ warmup.name }}</span
+          >
         </div>
       </div>
       <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
