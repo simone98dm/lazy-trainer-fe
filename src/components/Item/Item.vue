@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import Bench from "~/components/Icons/Bench.vue";
   import Icon from "~/components/Icons/Icon.vue";
   import { IconSize } from "~/utils";
 
@@ -24,23 +23,18 @@
 </script>
 
 <template>
-  <div class="flex flex-col rounded-xl bg-white p-3 shadow-sm mb-2">
+  <div class="flex flex-col rounded-xl bg-white p-3 shadow-lg mb-2">
     <div class="flex flex-row items-center justify-between">
       <div class="flex">
-        <div class="p-2 hidden sm:block">
-          <Icon
-            v-if="!props.icon"
-            :class="IconSize.LARGE"
-            :component="Bench"
-          ></Icon>
-          <Icon v-else :class="IconSize.LARGE" :component="props.icon"></Icon>
+        <div class="p-2 hidden sm:block" v-if="props.icon">
+          <Icon :class="IconSize.LARGE" :component="props.icon"></Icon>
         </div>
         <div class="sm:ml-4 flex flex-col justify-center" v-if="props.name">
           <h4
             :class="[
-              ' text-gray-600',
-              { 'font-semibold text-2xl': props.description },
-              { 'font-bold text-5xl': !props.description },
+              'text-gray-600',
+              { 'font-semibold text-2xl sm:text-3xl': props.description },
+              { 'font-bold text-3xl sm:text-4xl': !props.description },
             ]"
           >
             {{ props.name }}

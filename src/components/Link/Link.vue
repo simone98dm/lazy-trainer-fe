@@ -24,7 +24,7 @@
               !user.isTrainer,
           },
           {
-            "bg-orange-600 hover:bg-orange-500 text-gray-100":
+            "bg-purple-600 hover:bg-purple-500 text-gray-100":
               (!props.color || props.color === ButtonColor.PRIMARY) &&
               user.isTrainer,
           },
@@ -34,7 +34,7 @@
               props.color === ButtonColor.SUCCESS,
           },
           {
-            "bg-orange-600 hover:bg-orange-500":
+            "bg-purple-600 hover:bg-purple-500":
               props.color === ButtonColor.WARNING,
           },
           {
@@ -49,6 +49,7 @@
           "rounded-lg",
           "py-3",
           "px-3",
+          "shadow-lg",
           "hover:bg-indigo-500",
           "mb-2",
         ]

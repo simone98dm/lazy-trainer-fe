@@ -5,15 +5,14 @@
   import Loading from "../Loading/Loading.vue";
   import { useUserStore } from "~/stores/user";
   import { ButtonSize, LinkType } from "~/utils";
+  import ErrorBanner from "../ErrorBanner/ErrorBanner.vue";
   const user = useUserStore();
   const props = defineProps(["list", "loading"]);
 </script>
 
 <template>
-  <div class="flex justify-center w-full" v-if="props.loading">
-    <Loading></Loading>
-  </div>
-  <section v-else>
+  <Loading class="flex justify-center w-full" v-if="props.loading"></Loading>
+  <div v-else>
     <div v-if="props.list && props.list.length > 0" class="mb-6">
       <div v-for="item in props.list">
         <Link :to="{ name: 'details', params: { sessionId: item.id } }">
@@ -26,17 +25,14 @@
         </Link>
       </div>
     </div>
-    <div v-else>
-      <h1 class="mb-3 text-2xl font-bold">No sessions found</h1>
-    </div>
-    <div v-if="user.isTrainer || user.isSelfMadeMan">
-      <Link
-        :icon="AddIcon"
-        :size="ButtonSize.MEDIUM"
-        :to="{ name: 'session' }"
-        :type="LinkType.BUTTON"
-        label="Add day activities"
-      />
-    </div>
-  </section>
+    <ErrorBanner v-else text="No sessions found"></ErrorBanner>
+    <Link
+      v-if="user.isTrainer || user.isSelfMadeMan"
+      :icon="AddIcon"
+      :size="ButtonSize.MEDIUM"
+      :to="{ name: 'session' }"
+      :type="LinkType.BUTTON"
+      label="Add day activities"
+    />
+  </div>
 </template>

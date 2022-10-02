@@ -14,7 +14,7 @@
         'bg-indigo-600': !user.isTrainer,
       },
       {
-        'bg-orange-600': user.isTrainer,
+        'bg-purple-600': user.isTrainer,
       },
     ]"
     v-if="settingsStore.isGlobalLoading"
