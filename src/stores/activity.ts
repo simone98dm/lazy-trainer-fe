@@ -27,14 +27,14 @@ export const useActivityStore = defineStore("activity", {
     getSessionActivities: (state) => (sessionId: string) => {
       return state.plan?.sessions
         .find((session) => session.id === sessionId)
-        ?.activities.filter((item) => !item.warmup);
-      // .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        ?.activities.filter((item) => !item.warmup)
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     },
     getWarmUpActivities: (state) => (sessionId: string) => {
       return state.plan?.sessions
         .find((session) => session.id === sessionId)
-        ?.activities.filter((item) => item.warmup);
-      // .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        ?.activities.filter((item) => item.warmup)
+        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     },
     getSession: (state) => (sessionId: string) => {
       return state.plan?.sessions.find((session) => session.id === sessionId);
@@ -77,6 +77,11 @@ export const useActivityStore = defineStore("activity", {
       }
 
       return Promise.reject();
+    },
+    async bulkSaveActivities(sessionId: string, activities: IActivity[]) {
+      for (const activity of activities) {
+        await this.addActivity(sessionId, activity);
+      }
     },
     async addActivity(sessionId: string, activity: IActivity) {
       const settingsStore = useSettingStore();

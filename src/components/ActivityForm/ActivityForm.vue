@@ -1,14 +1,12 @@
 })
 <script setup lang="ts">
   import { IActivity } from "~/models/Activity";
-  import { ref } from "vue";
+  import { ref, watch } from "vue";
   import Button from "~/components/Button/Button.vue";
   import { v4 as uuidv4 } from "uuid";
-  import TrashIcon from "~/components/Icons/TrashIcon.vue";
-  import AddIcon from "~/components/Icons/AddIcon.vue";
-  import SaveIcon from "~/components/Icons/SaveIcon.vue";
-  import { ButtonColor } from "~/utils";
   import { useUserStore } from "~/stores/user";
+  import { ButtonColor } from "~/utils";
+  import TrashIcon from "~/components/Icons/TrashIcon.vue";
 
   const props = defineProps([
     "id",
@@ -19,8 +17,9 @@
     "warmup",
     "order",
     "reps",
+    "allowDetele",
   ]);
-  const emits = defineEmits(["save", "remove"]);
+  const emits = defineEmits(["update", "remove"]);
   const user = useUserStore();
   const uuid = uuidv4();
 
@@ -36,7 +35,7 @@
     (Boolean(props.time !== 0) && Boolean(props.reps === 0)) ?? false
   );
 
-  function save() {
+  function update() {
     const activity: IActivity = {
       id: id.value,
       name: name.value,
@@ -53,26 +52,26 @@
     } else {
       activity.time = 0;
     }
-    emits("save", activity);
+    emits("update", { activityId: id.value, activity });
   }
-
-  function isNew() {
-    return !Boolean(props.id);
-  }
-
-  function remove() {
-    if (!isNew()) {
-      emits("remove", props.id);
-    }
-  }
+  watch([name, description, time, reps, warmup, order], update);
 </script>
 
 <template>
-  <div class="flex justify-center">
-    <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
-      <h1 class="mb-3 text-2xl font-bold">
-        {{ isNew() ? "Add new activity:" : "Edit activity:" }}
-      </h1>
+  <div class="flex justify-center bg-white rounded-lg shadow-md mb-6">
+    <form class="p-6 w-full" @submit.prevent>
+      <div class="flex flex-row justify-between">
+        <h1 class="mb-3 text-2xl font-bold">
+          {{ !props.allowDetele ? "Add new activity:" : "Edit activity:" }}
+        </h1>
+
+        <Button
+          v-if="props.allowDetele"
+          :color="ButtonColor.DANGER"
+          :icon="TrashIcon"
+          @click="emits('remove', props.id)"
+        />
+      </div>
       <div class="flex flex-wrap -mx-3">
         <div class="w-full px-3 mb-6">
           <label
@@ -82,6 +81,7 @@
             Name:
           </label>
           <input
+            autocomplete="false"
             v-model="name"
             class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
             name="activityName"
@@ -97,6 +97,7 @@
             Description:
           </label>
           <input
+            autocomplete="false"
             v-model="description"
             class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
             name="activityDescription"
@@ -152,6 +153,7 @@
 
           <input
             v-if="isTimeBasedActivity"
+            autocomplete="false"
             v-model="time"
             class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
             name="activityType"
@@ -159,6 +161,7 @@
           />
           <input
             v-else
+            autocomplete="false"
             v-model="reps"
             class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
             name="activityType"
@@ -193,22 +196,7 @@
           Video:
           <input type="text" name="activityVideoUrl" v-model="videoUrl" />
         </label> -->
-        <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
-          <Button
-            :color="ButtonColor.SUCCESS"
-            :icon="isNew() ? AddIcon : SaveIcon"
-            :label="isNew() ? 'Create' : 'Save'"
-            full="true"
-            @click="save"
-          />
-          <Button
-            :color="ButtonColor.DANGER"
-            :icon="TrashIcon"
-            full="true"
-            label="Remove"
-            @click="remove"
-          />
-        </div>
+        <div></div>
       </div>
     </form>
   </div>
@@ -217,7 +205,6 @@
 <style>
   .toggle-checkbox:checked {
     right: 0;
-    transition: all 0.2s ease;
     border-color: rgb(79 70 229 / var(--tw-bg-opacity));
   }
 
