@@ -9,7 +9,7 @@
 <template>
   <div
     :class="[
-      'absolute z-50 top-0 left-0 flex w-full min-h-screen justify-center items-center opacity-50 duration-700',
+      'absolute z-50 top-0 left-0 flex w-full min-h-screen justify-center items-center opacity-25   duration-700',
       {
         'bg-indigo-600': !user.isTrainer,
       },
