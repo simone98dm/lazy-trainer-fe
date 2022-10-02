@@ -11,7 +11,7 @@
     :class="[
       'w-full rounded-b-xl p-5 text-white',
       { 'bg-indigo-600': !userStore.isTrainer },
-      { 'bg-orange-600': userStore.isTrainer },
+      { 'bg-purple-600': userStore.isTrainer },
     ]"
   >
     <!-- <div :class="['flex items-center justify-between']"> -->

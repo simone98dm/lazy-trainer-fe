@@ -123,7 +123,7 @@
                       isTimeBasedActivity && !user.isTrainer,
                   },
                   {
-                    'bg-orange-600 text-white shadow':
+                    'bg-purple-600 text-white shadow':
                       isTimeBasedActivity && user.isTrainer,
                   },
                 ]"
@@ -139,7 +139,7 @@
                       !isTimeBasedActivity && !user.isTrainer,
                   },
                   {
-                    'bg-orange-600 text-white shadow':
+                    'bg-purple-600 text-white shadow':
                       !isTimeBasedActivity && user.isTrainer,
                   },
                 ]"

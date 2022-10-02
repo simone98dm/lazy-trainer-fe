@@ -1,13 +1,13 @@
 import { useSettingStore } from "./settings";
 import { useUserStore } from "./user";
-import { IPlan } from "./../models/Plan";
-import { ISession } from "./../models/Session";
+import { IPlan } from "~/models/Plan";
+import { ISession } from "~/models/Session";
 import { defineStore } from "pinia";
-import { IActivity } from "../models/Activity";
-import { DataAction } from "../utils";
-import { getStorage, saveStorage } from "../helpers/storage";
+import { IActivity } from "~/models/Activity";
+import { DataAction } from "~/utils";
+import { getStorage, saveStorage } from "~/helpers/storage";
 import { v4 as uuid } from "uuid";
-import { getPlan, getUserActivities, sendToTrainer } from "../helpers/http";
+import { getPlan, getUserActivities, sendToTrainer } from "~/helpers/http";
 
 function generateBlankPlan(): IPlan {
   return {
@@ -27,14 +27,14 @@ export const useActivityStore = defineStore("activity", {
     getSessionActivities: (state) => (sessionId: string) => {
       return state.plan?.sessions
         .find((session) => session.id === sessionId)
-        ?.activities.filter((item) => !item.warmup)
-        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        ?.activities.filter((item) => !item.warmup);
+      // .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     },
     getWarmUpActivities: (state) => (sessionId: string) => {
       return state.plan?.sessions
         .find((session) => session.id === sessionId)
-        ?.activities.filter((item) => item.warmup)
-        .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+        ?.activities.filter((item) => item.warmup);
+      // .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     },
     getSession: (state) => (sessionId: string) => {
       return state.plan?.sessions.find((session) => session.id === sessionId);
@@ -221,6 +221,48 @@ export const useActivityStore = defineStore("activity", {
         }
         return plan;
       });
+    },
+    moveActivity(
+      sessionId: string | undefined,
+      newIndex: number,
+      oldIndex: number
+    ) {
+      if (!sessionId) {
+        return;
+      }
+
+      if (this.plan) {
+        const sessionIndex = this.plan.sessions.findIndex(
+          (session) => session.id === sessionId
+        );
+        if (sessionIndex >= 0) {
+          const existingActivity =
+            this.plan.sessions[sessionIndex].activities[oldIndex];
+          if (existingActivity) {
+            this.plan.sessions[sessionIndex].activities.splice(oldIndex, 1);
+            this.plan.sessions[sessionIndex].activities.splice(
+              newIndex,
+              0,
+              existingActivity
+            );
+
+            let externalIndex = 0;
+
+            this.plan.sessions.map((session) => {
+              session.activities.map((activity) => {
+                activity.order = externalIndex;
+                externalIndex++;
+              });
+            });
+
+            saveStorage(this.plan);
+            this.addActivity(sessionId, {
+              ...existingActivity,
+              order: newIndex,
+            });
+          }
+        }
+      }
     },
   },
 });

@@ -10,7 +10,7 @@
       :class="[
         'mr-2 w-8 h-8 animate-spin fill-slate-300',
         { 'text-indigo-600': !user.isTrainer },
-        { 'text-orange-600': user.isTrainer },
+        { 'text-violet-600': user.isTrainer },
       ]"
       viewBox="0 0 100 101"
       fill="none"

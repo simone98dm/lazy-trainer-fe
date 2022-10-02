@@ -71,7 +71,7 @@
                 isDaySelected(i) && !userStore.isTrainer,
             },
             {
-              'bg-orange-600 text-slate-50':
+              'bg-purple-600 text-slate-50':
                 isDaySelected(i) && userStore.isTrainer,
             },
             { 'bg-gray-200 text-grey-50': !isDaySelected(i) },
