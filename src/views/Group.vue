@@ -19,8 +19,9 @@
 <template>
   <div class="flex flex-col justify-center w-full">
     <Loading v-if="!clients" class="mx-auto"></Loading>
-    <div v-else v-for="client in clients">
+    <div id="list-groups" v-else>
       <Link
+        v-for="client in clients"
         :to="{
           name: 'home',
           params: {

@@ -76,7 +76,5 @@
 
 <template>
   <h1 class="mb-3 text-3xl font-bold">{{ textToShow }}</h1>
-  <div v-if="!block">
-    <Flow :list="sessions" :loading="isLoading"></Flow>
-  </div>
+  <Flow v-if="!block" :list="sessions" :loading="isLoading"></Flow>
 </template>

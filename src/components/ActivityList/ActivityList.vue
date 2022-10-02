@@ -19,10 +19,11 @@
 <template>
   <div v-if="props.activities && props.activities.length > 0" class="p-3 mb-6">
     <div
-      class="flex justify-between mb-3 gap-2"
       v-if="props.activities.length > 0"
+      class="flex justify-between mb-3 gap-2"
     >
       <Button
+        id="run-timer"
         :color="ButtonColor.PRIMARY"
         :icon="PlayIcon"
         :size="ButtonSize.MEDIUM"
@@ -31,6 +32,7 @@
         @click="emits('run')"
       ></Button>
       <Button
+        id="duplicate-warmup"
         v-if="
           props.isWarmup && (userStore.isTrainer || userStore.isSelfMadeMan)
         "

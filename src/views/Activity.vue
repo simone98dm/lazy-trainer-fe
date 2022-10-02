@@ -118,6 +118,7 @@
   </div>
   <div class="w-full flex flex-col sm:flex-row w-full px-3 gap-3 mb-6">
     <Button
+      id="save-activity"
       :color="ButtonColor.SUCCESS"
       :icon="SaveIcon"
       :label="!activityId ? 'Create' : 'Save'"
@@ -145,12 +146,14 @@
       class="w-full flex flex-col sm:flex-row w-full px-6 justify-center gap-3 mb-6"
     >
       <Button
+        id="concat-activity"
         label="Concat"
         :color="ButtonColor.PRIMARY"
         :icon="AddIcon"
         @click="addActivityForm"
       ></Button>
       <Button
+        id="duplicate-activity"
         :label="`Repeat for ${repeatFor} times`"
         :color="ButtonColor.PRIMARY"
         :icon="DuplicateIcon"

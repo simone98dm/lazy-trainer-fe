@@ -16,7 +16,8 @@
     "paths": {
       "~/*": ["src/*"],
       "*": ["types/*.d.ts"]
-    }
+    },
+    "types": ["cypress"]
   },
   "include": [
     "src/**/*.ts",
@@ -30,5 +31,6 @@
     {
       "path": "./tsconfig.node.json"
     }
-  ]
+  ],
+  "exclude": ["src/main/test/cypress"]
 }
