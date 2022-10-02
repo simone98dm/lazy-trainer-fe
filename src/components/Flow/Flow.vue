@@ -13,26 +13,27 @@
 <template>
   <Loading class="flex justify-center w-full" v-if="props.loading"></Loading>
   <div v-else>
-    <div v-if="props.list && props.list.length > 0" class="mb-6">
-      <div v-for="item in props.list">
-        <Link :to="{ name: 'details', params: { sessionId: item.id } }">
-          <Item
-            :name="item.name"
-            :description="item.description"
-            :id="item.id"
-            :key="item.id"
-          />
-        </Link>
-      </div>
+    <div v-if="props.list && props.list.length > 0" class="mb-6" id="sessions">
+      <Link
+        v-for="item in props.list"
+        :to="{ name: 'details', params: { sessionId: item.id } }"
+      >
+        <Item
+          :name="item.name"
+          :description="item.description"
+          :id="item.id"
+          :key="item.id"
+        />
+      </Link>
     </div>
     <ErrorBanner v-else text="No sessions found"></ErrorBanner>
-    <Link
-      v-if="user.isTrainer || user.isSelfMadeMan"
-      :icon="AddIcon"
-      :size="ButtonSize.MEDIUM"
-      :to="{ name: 'session' }"
-      :type="LinkType.BUTTON"
-      label="Add day activities"
-    />
   </div>
+  <Link
+    v-if="user.isTrainer || user.isSelfMadeMan"
+    :icon="AddIcon"
+    :size="ButtonSize.MEDIUM"
+    :to="{ name: 'session' }"
+    :type="LinkType.BUTTON"
+    label="Add day activities"
+  />
 </template>

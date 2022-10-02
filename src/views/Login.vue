@@ -54,6 +54,7 @@
             Username:
           </label>
           <input
+            name="username"
             type="text"
             v-model="username"
             class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
@@ -68,6 +69,7 @@
             Password:
           </label>
           <input
+            name="password"
             type="password"
             v-model="password"
             class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"

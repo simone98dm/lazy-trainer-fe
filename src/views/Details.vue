@@ -70,12 +70,14 @@
     v-if="userStore.isTrainer || userStore.isSelfMadeMan"
   >
     <Link
+      id="edit-session"
       :to="{ name: 'session', params: { sessionId } }"
       label="Edit session"
       :type="LinkType.BUTTON"
       :icon="EditIcon"
     ></Link>
     <Button
+      id="delete-session"
       :color="ButtonColor.DANGER"
       :icon="TrashIcon"
       :size="ButtonSize.MEDIUM"
@@ -84,6 +86,7 @@
     ></Button>
     <Link
       v-if="userStore.isTrainer || userStore.isSelfMadeMan"
+      id="add-activity"
       :icon="AddIcon"
       :size="ButtonSize.MEDIUM"
       :color="ButtonColor.SUCCESS"
@@ -93,19 +96,23 @@
     />
   </div>
   <div class="flex flex-col justify-center">
-    <ActivityList
-      :activities="warmupList"
-      :is-warmup="true"
-      :session-id="sessionId"
-      @duplicate="duplicateWarmup"
-      @run="runWarmUp"
-      @move="sortActivities"
-    ></ActivityList>
-    <ActivityList
-      :activities="activityList"
-      @run="runActivities"
-      @move="sortActivities"
-      :session-id="sessionId"
-    ></ActivityList>
+    <div id="warmup-activities">
+      <ActivityList
+        :activities="warmupList"
+        :is-warmup="true"
+        :session-id="sessionId"
+        @duplicate="duplicateWarmup"
+        @run="runWarmUp"
+        @move="sortActivities"
+      ></ActivityList>
+    </div>
+    <div id="list-activities">
+      <ActivityList
+        :activities="activityList"
+        @run="runActivities"
+        @move="sortActivities"
+        :session-id="sessionId"
+      ></ActivityList>
+    </div>
   </div>
 </template>

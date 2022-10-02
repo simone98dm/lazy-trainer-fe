@@ -66,11 +66,12 @@
         </h1>
 
         <Button
+          id="delete-activity"
           v-if="props.allowDetele"
           :color="ButtonColor.DANGER"
           :icon="TrashIcon"
           @click="emits('remove', props.id)"
-        />
+        ></Button>
       </div>
       <div class="flex flex-wrap -mx-3">
         <div class="w-full px-3 mb-6">
@@ -117,6 +118,7 @@
               class="w-full sm:w-64 flex justify-between shadow rounded-full h-12 flex p-1 mb-3"
             >
               <button
+                id="time-based-activity"
                 :class="[
                   'flex items-center w-fit rounded-full h-10 transition-all px-10 text-lg',
                   {
@@ -133,6 +135,7 @@
                 Time
               </button>
               <button
+                id="reps-based-activity"
                 :class="[
                   'flex items-center w-fit rounded-full h-10 transition-all px-10 text-lg',
                   {
@@ -196,7 +199,6 @@
           Video:
           <input type="text" name="activityVideoUrl" v-model="videoUrl" />
         </label> -->
-        <div></div>
       </div>
     </form>
   </div>
