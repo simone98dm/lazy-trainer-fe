@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "vercel:dev": "vercel dev",
     "prepare": "husky install",
+    "mock": " node ./local/index.js",
     "gource": "gource -f -s 1 -a 1 --key --max-files 0 --disable-progress"
   },
   "dependencies": {

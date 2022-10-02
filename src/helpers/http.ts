@@ -1,5 +1,7 @@
+import { baseUrl } from "~/utils";
+
 export async function sendToTrainer(token: string, body: any) {
-  await fetch("/api/trainer/save", {
+  await fetch(`${baseUrl}/api/trainer/save`, {
     method: "POST",
     headers: {
       authorization: `Bearer ${token}`,
@@ -9,7 +11,7 @@ export async function sendToTrainer(token: string, body: any) {
 }
 
 export async function getPlan(token: string) {
-  return await fetch("/api/trainer", {
+  return await fetch(`${baseUrl}/api/trainer`, {
     method: "GET",
     headers: {
       authorization: `Bearer ${token}`,
@@ -18,15 +20,15 @@ export async function getPlan(token: string) {
 }
 
 export async function signIn(username: string, password: string) {
-  return await fetch("/api/auth/sign", {
+  return await fetch(`${baseUrl}/api/auth/sign`, {
     method: "POST",
     body: JSON.stringify({ username, password }),
   }).then((response) => response.json());
 }
 
 export async function verifyUser(token: string) {
-  return await fetch("/api/auth/sign", {
-    method: "POST",
+  return await fetch(`${baseUrl}/api/auth/sign`, {
+    method: "GET",
     headers: {
       authorization: `Bearer ${token}`,
     },
@@ -34,7 +36,7 @@ export async function verifyUser(token: string) {
 }
 
 export async function userInfo(token: string, trainerId: string) {
-  return await fetch(`/api/user?user=${trainerId}`, {
+  return await fetch(`${baseUrl}/api/user?user=${trainerId}`, {
     method: "GET",
     headers: {
       authorization: `Bearer ${token}`,
@@ -43,7 +45,7 @@ export async function userInfo(token: string, trainerId: string) {
 }
 
 export async function getGroups(token: string, userId: string) {
-  return await fetch(`/api/group`, {
+  return await fetch(`${baseUrl}/api/group`, {
     method: "POST",
     headers: {
       authorization: `Bearer ${token}`,
@@ -53,7 +55,7 @@ export async function getGroups(token: string, userId: string) {
 }
 
 export async function getUserActivities(token: string, id: string) {
-  return await fetch("/api/user/trainer", {
+  return await fetch(`${baseUrl}/api/user/trainer`, {
     method: "POST",
     headers: {
       authorization: `Bearer ${token}`,
@@ -63,7 +65,7 @@ export async function getUserActivities(token: string, id: string) {
 }
 
 export async function requestActivityChange(token: string, activityId: string) {
-  return await fetch("/api/trainer/change", {
+  return await fetch(`${baseUrl}/api/trainer/change`, {
     method: "POST",
     headers: {
       authorization: `Bearer ${token}`,
