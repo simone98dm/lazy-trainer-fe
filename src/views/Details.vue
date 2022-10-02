@@ -1,56 +1,53 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router";
-  import router from "../router/router";
-  import Item from "~/components/Item/Item.vue";
+  import router from "~/router/router";
   import AddIcon from "~/components/Icons/AddIcon.vue";
-  import PlayIcon from "~/components/Icons/PlayIcon.vue";
   import Link from "~/components/Link/Link.vue";
   import TrashIcon from "~/components/Icons/TrashIcon.vue";
   import EditIcon from "~/components/Icons/EditIcon.vue";
   import Button from "~/components/Button/Button.vue";
-  import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "../utils";
-  import Dropdown from "~/components/Dropdown/Dropdown.vue";
+  import ActivityList from "~/components/ActivityList/ActivityList.vue";
+  import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "~/utils";
   import { useUserStore } from "~/stores/user";
   import { useTimerStore } from "~/stores/timer";
   import { useSettingStore } from "~/stores/settings";
   import { useActivityStore } from "~/stores/activity";
-  import draggable from "vuedraggable";
+  import { ref } from "vue";
 
   const route = useRoute();
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
   const timerStore = useTimerStore();
-  const { sessionId } = route.params;
 
-  const warmUpActivities = activityStore.getWarmUpActivities(
-    sessionId as string
-  );
-  const activities = activityStore.getSessionActivities(sessionId as string);
-  const session = activityStore.getSession(sessionId as string);
-  const list = JSON.parse(JSON.stringify(activities));
+  const sessionId = route.params.sessionId as string;
+
+  let session = activityStore.getSession(sessionId);
+  let activityList = ref(undefined as any[] | undefined);
+  let warmupList = ref(undefined as any[] | undefined);
+
+  warmupList.value = activityStore.getWarmUpActivities(sessionId);
+  activityList.value = activityStore.getSessionActivities(sessionId);
+
   settingsStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
 
-  const activitiesCount = activities?.length ?? 0;
-  const warmupActivitiesCount = warmUpActivities?.length ?? 0;
-
   async function deleteSession() {
-    await activityStore.deleteSession(sessionId as string);
+    await activityStore.deleteSession(sessionId);
     router.back();
   }
 
   function runWarmUp() {
-    timerStore.setListActivities(warmUpActivities);
+    timerStore.setListActivities(warmupList.value);
     router.push({ name: "timer", params: { sessionId } });
   }
 
   function runActivities() {
-    timerStore.setListActivities(activities);
+    timerStore.setListActivities(activityList.value);
     router.push({ name: "timer", params: { sessionId } });
   }
 
   function duplicateWarmup() {
-    activityStore.setDuplicateWarmup(warmUpActivities);
+    activityStore.setDuplicateWarmup(warmupList.value);
     router.push({
       name: "session",
       params: { sessionId },
@@ -58,213 +55,57 @@
     });
   }
 
-  let enabled = true;
-  let dragging = false;
-  function checkMove(data: any) {
-    const { draggedContext, relatedContext } = data;
-    console.log(
-      "🚀 ~ file: Details.vue ~ line 65 ~ checkMove ~ relatedContext",
-      relatedContext
-    );
-    console.log(
-      "🚀 ~ file: Details.vue ~ line 65 ~ checkMove ~ draggedContext",
-      draggedContext
+  function sortActivities(evt: any) {
+    const { newDraggableIndex, oldDraggableIndex } = evt;
+    activityStore.moveActivity(
+      session?.id,
+      newDraggableIndex,
+      oldDraggableIndex
     );
   }
 </script>
 <template>
-  <section class="flex flex-col justify-center">
-    <div
-      class="flex mb-6 gap-2"
-      v-if="userStore.isTrainer || userStore.isSelfMadeMan"
-    >
-      <Link
-        :to="{ name: 'session', params: { sessionId } }"
-        label="Edit session"
-        :type="LinkType.BUTTON"
-        :icon="EditIcon"
-      >
-      </Link>
-      <Button
-        :color="ButtonColor.DANGER"
-        :icon="TrashIcon"
-        :size="ButtonSize.MEDIUM"
-        label="Delete session"
-        @click="deleteSession"
-      />
-    </div>
-    <div
-      v-if="warmupActivitiesCount"
-      class="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl p-3 mb-6"
-    >
-      <!-- <h1 class="mb-3 text-2xl font-bold text-slate-50">Warm-up:</h1> -->
-      <div class="flex justify-between mb-3">
-        <Button
-          v-if="warmupActivitiesCount"
-          :color="ButtonColor.PRIMARY"
-          :icon="PlayIcon"
-          :size="ButtonSize.MEDIUM"
-          :type="LinkType.BUTTON"
-          label="Run warm-up"
-          @click="runWarmUp"
-        />
+  <div
+    class="flex mb-6 gap-2"
+    v-if="userStore.isTrainer || userStore.isSelfMadeMan"
+  >
+    <Link
+      :to="{ name: 'session', params: { sessionId } }"
+      label="Edit session"
+      :type="LinkType.BUTTON"
+      :icon="EditIcon"
+    ></Link>
+    <Button
+      :color="ButtonColor.DANGER"
+      :icon="TrashIcon"
+      :size="ButtonSize.MEDIUM"
+      label="Delete session"
+      @click="deleteSession"
+    ></Button>
+  </div>
+  <div class="flex flex-col justify-center">
+    <ActivityList
+      :activities="warmupList"
+      :is-warmup="true"
+      :session-id="sessionId"
+      @duplicate="duplicateWarmup"
+      @run="runWarmUp"
+      @move="sortActivities"
+    ></ActivityList>
+    <ActivityList
+      :activities="activityList"
+      @run="runActivities"
+      @move="sortActivities"
+      :session-id="sessionId"
+    ></ActivityList>
 
-        <Dropdown v-if="userStore.isTrainer || userStore.isSelfMadeMan">
-          <div class="mt-2 text-sm font-semibold bg-transparent rounded-lg">
-            <Button
-              v-if="warmupActivitiesCount"
-              :color="ButtonColor.TRASPARENT"
-              label="Duplicate"
-              :size="ButtonSize.MEDIUM"
-              @click="duplicateWarmup"
-            />
-          </div>
-        </Dropdown>
-      </div>
-      <div v-for="activity in warmUpActivities">
-        <div v-if="userStore.isTrainer || userStore.isSelfMadeMan">
-          <Link
-            :to="{
-              name: 'activity',
-              params: { sessionId, activityId: activity.id },
-            }"
-          >
-            <Item
-              :name="activity.name"
-              :description="activity.description"
-              :time="activity.time"
-              :id="activity.id"
-              :reps="activity.reps"
-              :request-change="activity.requestChange"
-              :key="activity.id"
-            />
-          </Link>
-        </div>
-        <div v-else>
-          <Item
-            :name="activity.name"
-            :description="activity.description"
-            :time="activity.time"
-            :id="activity.id"
-            :reps="activity.reps"
-            :key="activity.id"
-          />
-        </div>
-      </div>
-    </div>
-    <div v-else>
-      <h1
-        class="mb-3 text-xl font-bold bg-red-400 rounded-xl p-3 text-gray-50 text-center uppercase mb-6"
-      >
-        No warm up activity found
-      </h1>
-    </div>
-    <div
-      v-if="activitiesCount"
-      class="bg-gradient-to-r from-pink-500 to-violet-500 rounded-xl p-3 mb-6"
-    >
-      <div class="mb-3">
-        <Button
-          v-if="activitiesCount"
-          :color="ButtonColor.PRIMARY"
-          :icon="PlayIcon"
-          :size="ButtonSize.MEDIUM"
-          :type="LinkType.BUTTON"
-          label="Run activities"
-          @click="runActivities"
-        />
-      </div>
-
-      <div v-if="userStore.isTrainer || userStore.isSelfMadeMan">
-        <draggable
-          :list="list"
-          :disabled="!enabled"
-          item-key="name"
-          class="list-group"
-          ghost-class="ghost"
-          :move="checkMove"
-          @start="dragging = true"
-          @end="dragging = false"
-        >
-          <template #item="{ element }">
-            <Link
-              :to="{
-                name: 'activity',
-                params: { sessionId, activityId: element.id },
-              }"
-            >
-              <Item
-                :name="element.name"
-                :description="element.description"
-                :time="element.time"
-                :id="element.id"
-                :reps="element.reps"
-              />
-            </Link>
-          </template>
-        </draggable>
-      </div>
-      <div v-else>
-        <div v-for="activity in activities">
-          <Item
-            :name="activity.name"
-            :description="activity.description"
-            :time="activity.time"
-            :id="activity.id"
-            :reps="activity.reps"
-            :key="activity.id"
-          />
-        </div>
-      </div>
-      <!-- 
-      <div v-for="activity in activities">
-        <div v-if="userStore.isTrainer || userStore.isSelfMadeMan">
-          <Link
-            :to="{
-              name: 'activity',
-              params: { sessionId, activityId: activity.id },
-            }"
-          >
-            <Item
-              :name="activity.name"
-              :description="activity.description"
-              :time="activity.time"
-              :id="activity.id"
-              :reps="activity.reps"
-              :key="activity.id"
-            />
-          </Link>
-        </div>
-        <div v-else>
-          <Item
-            :name="activity.name"
-            :description="activity.description"
-            :time="activity.time"
-            :id="activity.id"
-            :reps="activity.reps"
-            :key="activity.id"
-          />
-        </div>
-      </div> -->
-    </div>
-    <div v-else>
-      <h1
-        class="mb-3 text-xl font-bold bg-red-400 rounded-xl p-3 text-gray-50 text-center uppercase mb-6"
-      >
-        No activity found
-      </h1>
-    </div>
-    <div
-      class="flex flex-col sm:flex-row"
+    <Link
       v-if="userStore.isTrainer || userStore.isSelfMadeMan"
-    >
-      <Link
-        :icon="AddIcon"
-        :size="ButtonSize.MEDIUM"
-        :to="{ name: 'activity', params: { sessionId } }"
-        :type="LinkType.BUTTON"
-        label="Add activity"
-      />
-    </div>
-  </section>
+      :icon="AddIcon"
+      :size="ButtonSize.MEDIUM"
+      :to="{ name: 'activity', params: { sessionId } }"
+      :type="LinkType.BUTTON"
+      label="Add activity"
+    />
+  </div>
 </template>
