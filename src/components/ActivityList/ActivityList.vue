@@ -31,7 +31,9 @@
         @click="emits('run')"
       ></Button>
       <Button
-        v-if="props.isWarmup"
+        v-if="
+          props.isWarmup && (userStore.isTrainer || userStore.isSelfMadeMan)
+        "
         :color="ButtonColor.LIGHT"
         :icon="DuplicateIcon"
         :size="ButtonSize.MEDIUM"
