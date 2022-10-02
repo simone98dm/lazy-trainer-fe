@@ -177,7 +177,10 @@ export const useActivityStore = defineStore("activity", {
         this.plan.sessions.push(session);
 
         await sendToTrainer(userStore.token, {
-          data: session,
+          data: {
+            id: session.id,
+            dayOfWeek: session.dayOfWeek,
+          },
           planId: this.plan.id,
           action: DataAction.SESSION_CREATE,
         }).then(() => settingsStore.loading(false));
@@ -185,7 +188,10 @@ export const useActivityStore = defineStore("activity", {
         this.plan.sessions[existingIndex].dayOfWeek = session.dayOfWeek;
 
         await sendToTrainer(userStore.token, {
-          data: session,
+          data: {
+            id: session.id,
+            dayOfWeek: session.dayOfWeek,
+          },
           sessionId: session.id,
           action: DataAction.SESSION_UPDATE,
         }).then(() => settingsStore.loading(false));
