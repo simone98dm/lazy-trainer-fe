@@ -1,10 +1,7 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router";
   import router from "~/router/router";
-  import AddIcon from "~/components/Icons/AddIcon.vue";
   import Link from "~/components/Link/Link.vue";
-  import TrashIcon from "~/components/Icons/TrashIcon.vue";
-  import EditIcon from "~/components/Icons/EditIcon.vue";
   import Button from "~/components/Button/Button.vue";
   import ActivityList from "~/components/ActivityList/ActivityList.vue";
   import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "~/utils";
@@ -74,12 +71,12 @@
       :to="{ name: 'session', params: { sessionId } }"
       label="Edit session"
       :type="LinkType.BUTTON"
-      :icon="EditIcon"
+      icon="edit"
     ></Link>
     <Button
       id="delete-session"
       :color="ButtonColor.DANGER"
-      :icon="TrashIcon"
+      icon="delete"
       :size="ButtonSize.MEDIUM"
       label="Delete session"
       @click="deleteSession"
@@ -87,7 +84,7 @@
     <Link
       v-if="userStore.isTrainer || userStore.isSelfMadeMan"
       id="add-activity"
-      :icon="AddIcon"
+      icon="add"
       :size="ButtonSize.MEDIUM"
       :color="ButtonColor.SUCCESS"
       :to="{ name: 'activity', params: { sessionId } }"

@@ -23,4 +23,5 @@ export const RoleName: { [role in Role]: string } = {
   [Role.SELFMADE]: "Self Made",
 };
 
-export const baseUrl = import.meta.env.DEV ? "http://localhost:3001" : "";
+// export const baseUrl = import.meta.env.DEV ? "http://localhost:3001" : "";
+export const baseUrl = "";

@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import Icon from "~/components/Icons/Icon.vue";
-  import LeftIcon from "~/components/Icons/LeftIcon.vue";
   import { IconSize } from "~/utils";
 
   const emits = defineEmits(["click"]);
@@ -13,7 +12,7 @@ s
 
 <template>
   <button @click="onClickHandle" class="back__button">
-    <Icon :component="LeftIcon" :size="IconSize.SMALL"></Icon>
+    <Icon component="arrow_back" :size="IconSize.SMALL"></Icon>
     <span class="ml-2"> Back </span>
   </button>
 </template>

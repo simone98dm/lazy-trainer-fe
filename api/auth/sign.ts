@@ -23,34 +23,29 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       }
       return;
     } else {
-      const body = JSON.parse(request.body);
-      if (!body.username) {
+      const { username, password } = request.body;
+      if (!username) {
         response.status(400).send({ error: "username not provided" });
         return;
       }
 
-      if (!body.password) {
+      if (!password) {
         response.status(400).send({ error: "password not provided" });
         return;
       }
-      //find user
+
       const client = await connectToDatabase();
       if (!client) {
         throw new Error("mongoClient is null");
       }
       const db = client.db("lazyTrainerDb");
-      const collection = db.collection("users");
-      const user = await collection.findOne({ name: body.username });
+      const user = await db.collection("users").findOne({ name: username });
       if (!user) {
         response.status(404).send({ error: "username or password not valid" });
         return;
       }
 
-      //compare hash password
-      const founded = await bcrypt.compare(
-        body.password,
-        user?.hashPassword || ""
-      );
+      const founded = await bcrypt.compare(password, user?.hashPassword || "");
       if (!founded) {
         response.status(404).send({ error: "username or password not valid" });
         return;

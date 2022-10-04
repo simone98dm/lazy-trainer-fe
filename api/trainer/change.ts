@@ -12,7 +12,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
     const decoded = verifyToken(bearer);
     if (decoded) {
-      const { activityId } = JSON.parse(request.body);
+      const { activityId } = request.body;
 
       const client = await connectToDatabase();
       if (!client) {

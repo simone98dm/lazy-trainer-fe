@@ -3,7 +3,9 @@
   import Footer from "./components/Footer/Footer.vue";
   import { useRoute } from "vue-router";
   import GlobalLoading from "./components/GlobalLoading/GlobalLoading.vue";
+
   const route = useRoute();
+
   function isLogin() {
     return route.name === "login";
   }
@@ -12,7 +14,7 @@
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col">
     <Header></Header>
-    <div class="p-5 w-full lg:w-2/3 md:w-5/6 mx-auto mb-14">
+    <div class="p-3 w-full lg:w-2/3 md:w-5/6 mx-auto mb-14">
       <router-view v-slot="{ Component, route }">
         <transition name="fade" mode="out-in">
           <div :key="(route.name as string)">

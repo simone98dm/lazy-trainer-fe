@@ -6,12 +6,9 @@
   import { useSettingStore } from "~/stores/settings";
   import { IActivity } from "~/models/Activity";
   import { ButtonColor } from "~/utils";
-  import AddIcon from "~/components/Icons/AddIcon.vue";
-  import DuplicateIcon from "~/components/Icons/DuplicateIcon.vue";
   import Button from "~/components/Button/Button.vue";
   import { v4 as uuidv4 } from "uuid";
   import { ref } from "vue";
-  import SaveIcon from "~/components/Icons/SaveIcon.vue";
 
   const route = useRoute();
   const router = useRouter();
@@ -120,7 +117,7 @@
     <Button
       id="save-activity"
       :color="ButtonColor.SUCCESS"
-      :icon="SaveIcon"
+      icon="save"
       :label="!activityId ? 'Create' : 'Save'"
       @click="saveActivity"
     />
@@ -149,14 +146,14 @@
         id="concat-activity"
         label="Concat"
         :color="ButtonColor.PRIMARY"
-        :icon="AddIcon"
+        icon="add"
         @click="addActivityForm"
       ></Button>
       <Button
         id="duplicate-activity"
         :label="`Repeat for ${repeatFor} times`"
         :color="ButtonColor.PRIMARY"
-        :icon="DuplicateIcon"
+        icon="content_copy"
         @click="() => (repeatFor += 1)"
       ></Button>
     </div>

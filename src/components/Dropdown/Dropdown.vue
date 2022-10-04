@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import Button from "~/components/Button/Button.vue";
-  import DotsIcon from "~/components/Icons/DotsIcon.vue";
   import { ButtonColor, ButtonSize, Theme } from "~/utils";
 
   let showDropdown = ref(false);
@@ -13,7 +12,7 @@
       class="flex flex-row items-center w-full text-sm font-semibold text-left bg-transparent rounded-lg text-white"
     >
       <Button
-        :icon="DotsIcon"
+        icon="more_vert"
         :color="ButtonColor.TRASPARENT"
         :size="ButtonSize.MEDIUM"
         :theme="Theme.DARK"

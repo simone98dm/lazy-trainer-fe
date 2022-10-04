@@ -1,13 +1,10 @@
 <script setup lang="ts">
   import Link from "~/components/Link/Link.vue";
-  import { ref } from "vue";
   import Item from "~/components/Item/Item.vue";
-  import Loading from "~/components/Loading/Loading.vue";
+  import PlaceholderList from "~/components/Placeholder/PlaceholderList.vue";
   import { useSettingStore } from "~/stores/settings";
   import { useUserStore } from "~/stores/user";
-  import HandleIcon from "~/components/Icons/HandleIcon.vue";
-  import TrainerIcon from "~/components/Icons/TrainerIcon.vue";
-  import PlaceholderList from "~/components/Placeholder/PlaceholderList.vue";
+  import { ref } from "vue";
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
@@ -31,7 +28,7 @@
         }"
       >
         <Item
-          :icon="TrainerIcon"
+          icon="person"
           :name="client.name"
           :id="client.id"
           :key="client.id"

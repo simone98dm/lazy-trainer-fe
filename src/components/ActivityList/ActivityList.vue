@@ -2,13 +2,10 @@
   import { useUserStore } from "~/stores/user";
   import draggable from "vuedraggable";
   import { ButtonColor, LinkType, ButtonSize } from "~/utils";
-  import PlayIcon from "~/components/Icons/PlayIcon.vue";
   import Button from "~/components/Button/Button.vue";
   import Link from "~/components/Link/Link.vue";
   import Item from "~/components/Item/Item.vue";
   import ErrorBanner from "~/components/ErrorBanner/ErrorBanner.vue";
-  import DuplicateIcon from "~/components/Icons/DuplicateIcon.vue";
-  import BenchIcon from "~/components/Icons/BenchIcon.vue";
 
   const props = defineProps(["activities", "sessionId", "isWarmup"]);
   const userStore = useUserStore();
@@ -25,7 +22,7 @@
       <Button
         id="run-timer"
         :color="ButtonColor.PRIMARY"
-        :icon="PlayIcon"
+        icon="play_arrow"
         :size="ButtonSize.MEDIUM"
         :type="LinkType.BUTTON"
         label="Start"
@@ -37,7 +34,7 @@
           props.isWarmup && (userStore.isTrainer || userStore.isSelfMadeMan)
         "
         :color="ButtonColor.LIGHT"
-        :icon="DuplicateIcon"
+        icon="content_copy"
         :size="ButtonSize.MEDIUM"
         label="Duplicate"
         @click="emits('duplicate')"
@@ -64,7 +61,7 @@
               :description="element.description"
               :time="element.time"
               :id="element.id"
-              :icon="BenchIcon"
+              icon="fitness_center"
               :reps="element.reps"
               :request-change="element.requestChange"
             />

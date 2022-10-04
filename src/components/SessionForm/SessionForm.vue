@@ -2,12 +2,8 @@
   import { ref } from "vue";
   import Button from "~/components/Button/Button.vue";
   import { v4 as uuidv4 } from "uuid";
-  import TrashIcon from "~/components/Icons/TrashIcon.vue";
-  import AddIcon from "~/components/Icons/AddIcon.vue";
   import { ISession } from "~/models/Session";
   import { days, ButtonColor } from "~/utils";
-  import SaveIcon from "~/components/Icons/SaveIcon.vue";
-  import Item from "~/components/Item/Item.vue";
   import { useActivityStore } from "~/stores/activity";
   import { useUserStore } from "~/stores/user";
 
@@ -101,7 +97,7 @@
       <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
         <Button
           full="true"
-          :icon="!isNew() ? SaveIcon : AddIcon"
+          :icon="!isNew() ? 'save' : 'add'"
           :label="!isNew() ? 'Save' : 'Create'"
           :color="ButtonColor.SUCCESS"
           @click="save"
@@ -109,7 +105,7 @@
         <Button
           full="true"
           v-if="!isNew()"
-          :icon="TrashIcon"
+          icon="delete"
           :color="ButtonColor.DANGER"
           label="Delete"
           @click="remove"

@@ -31,7 +31,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       response.status(403).end();
     }
 
-    const { activityId, sessionId, planId, action, data } = JSON.parse(body);
+    const { activityId, sessionId, planId, action, data } = body;
 
     switch (action) {
       case DataAction.SESSION_CREATE:

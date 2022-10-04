@@ -6,7 +6,6 @@
   import { v4 as uuidv4 } from "uuid";
   import { useUserStore } from "~/stores/user";
   import { ButtonColor } from "~/utils";
-  import TrashIcon from "~/components/Icons/TrashIcon.vue";
 
   const props = defineProps([
     "id",
@@ -69,7 +68,7 @@
           id="delete-activity"
           v-if="props.allowDetele"
           :color="ButtonColor.DANGER"
-          :icon="TrashIcon"
+          icon="delete"
           @click="emits('remove', props.id)"
         ></Button>
       </div>
