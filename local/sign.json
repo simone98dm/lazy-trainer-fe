@@ -1,8 +1,28 @@
 {
-  "data": {
-    "id": "5c75f90b-4487-4c3e-82e8-2bef8ea00133",
-    "name": "demo",
-    "role": 0,
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNzVmOTBiLTQ0ODctNGMzZS04MmU4LTJiZWY4ZWEwMDEzMyIsIm5hbWUiOiJzaW1vbmUiLCJyb2xlIjowLCJpYXQiOjE2NjQ3MjQyMTcsImV4cCI6MTY2NDk4MzQxN30.fBHKf5nbDctGOqW31u1Pb5NqjgDbS_LbHe_yHHtoBwY"
-  }
+  "users": [
+    {
+      "data": {
+        "id": "71d96cce-23f5-4f5a-afd4-0acfd59911be",
+        "name": "demo",
+        "role": 2,
+        "token": "fakeToken3"
+      }
+    },
+    {
+      "data": {
+        "id": "71d96cce-23f5-4f5a-afd4-0acfd59911be",
+        "name": "trainer",
+        "role": 1,
+        "token": "fakeToken2"
+      }
+    },
+    {
+      "data": {
+        "id": "71d96cce-23f5-4f5a-afd4-0acfd59911be",
+        "name": "normal",
+        "role": 0,
+        "token": "fakeToken1"
+      }
+    }
+  ]
 }

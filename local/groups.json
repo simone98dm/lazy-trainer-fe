@@ -1,0 +1,25 @@
+[
+  {
+    "_id": "6330766dc066d661d2370a24",
+    "name": "Scheda di simone",
+    "id": "7c283921-8833-4c20-9f37-bdc05dde85d5",
+    "ownerId": "5c75f90b-4487-4c3e-82e8-2bef8ea00133",
+    "trainerId": "d1ab27da-0a00-4be1-aae9-a1261aad1080",
+    "username": "simone"
+  },
+  {
+    "_id": "633328bb4d89cd3f10c100be",
+    "id": "9c884b00-58b2-4693-9fc9-c9154917320d",
+    "name": "Scheda di tizio",
+    "ownerId": "4a798517-6ea4-4e80-8b1c-0fc74a165b13",
+    "trainerId": "d1ab27da-0a00-4be1-aae9-a1261aad1080"
+  },
+  {
+    "_id": "6333290c4d89cd3f10c100c0",
+    "id": "27bb95be-be76-4859-a0e6-c23c2a08687f",
+    "name": "Scheda di stocazzo",
+    "ownerId": "2fe78b22-bdf5-493d-bf99-1431ec7a0e81",
+    "trainerId": "d1ab27da-0a00-4be1-aae9-a1261aad1080",
+    "username": "stocazzo"
+  }
+]
