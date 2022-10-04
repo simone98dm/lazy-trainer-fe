@@ -17,13 +17,6 @@
       <router-link to="/" class="py-3 rounded-full p-3">
         <Icon :component="HouseIcon" :size="IconSize.MEDIUM"></Icon>
       </router-link>
-      <!-- <router-link
-        to="/trainer"
-        class="py-3 rounded-full p-3"
-        v-if="user.isTrainer"
-      >
-        <Icon :component="TrainerIcon" :size="IconSize.MEDIUM"></Icon>
-      </router-link> -->
       <router-link
         to="/group"
         class="py-3 rounded-full p-3"
