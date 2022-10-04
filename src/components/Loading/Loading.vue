@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores/user";
+  const props = defineProps(["small"]);
   const user = useUserStore();
 </script>
 
@@ -8,9 +9,11 @@
     <svg
       aria-hidden="true"
       :class="[
-        'mr-2 w-8 h-8 animate-spin fill-slate-300',
+        'mr-2 animate-spin fill-slate-300',
         { 'text-indigo-600': !user.isTrainer },
         { 'text-violet-600': user.isTrainer },
+        { 'w-16 h-16': !props.small },
+        { 'w-6 h-6': props.small },
       ]"
       viewBox="0 0 100 101"
       fill="none"

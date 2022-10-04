@@ -40,9 +40,7 @@
         <span class="font-bold" v-if="userStore.getTrainer">
           {{ userStore.getTrainer }}
         </span>
-        <div v-else>
-          <Loading></Loading>
-        </div>
+        <Loading v-else :small="true"></Loading>
       </h1>
     </div>
     <Button

@@ -77,7 +77,7 @@
     type="button"
     @click="emit('click')"
   >
-    <Loading v-if="props.loading"></Loading>
+    <Loading v-if="props.loading" :small="true"></Loading>
     <div v-else class="flex align-center">
       <Icon v-if="props.icon" :component="props.icon" :size="IconSize.MEDIUM" />
       <slot />
