@@ -25,7 +25,7 @@
       <Button
         id="run-timer"
         :color="ButtonColor.PRIMARY"
-        :icon="PlayIcon"
+        icon="play_arrow"
         :size="ButtonSize.MEDIUM"
         :type="LinkType.BUTTON"
         label="Start"
@@ -37,7 +37,7 @@
           props.isWarmup && (userStore.isTrainer || userStore.isSelfMadeMan)
         "
         :color="ButtonColor.LIGHT"
-        :icon="DuplicateIcon"
+        icon="content_copy"
         :size="ButtonSize.MEDIUM"
         label="Duplicate"
         @click="emits('duplicate')"
@@ -64,7 +64,7 @@
               :description="element.description"
               :time="element.time"
               :id="element.id"
-              :icon="BenchIcon"
+              icon="fitness_center"
               :reps="element.reps"
               :request-change="element.requestChange"
             />

@@ -31,7 +31,7 @@
         }"
       >
         <Item
-          :icon="TrainerIcon"
+          icon="person"
           :name="client.name"
           :id="client.id"
           :key="client.id"

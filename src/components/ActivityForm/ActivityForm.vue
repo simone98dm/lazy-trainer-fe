@@ -69,7 +69,7 @@
           id="delete-activity"
           v-if="props.allowDetele"
           :color="ButtonColor.DANGER"
-          :icon="TrashIcon"
+          icon="delete"
           @click="emits('remove', props.id)"
         ></Button>
       </div>

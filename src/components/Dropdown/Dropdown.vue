@@ -13,7 +13,7 @@
       class="flex flex-row items-center w-full text-sm font-semibold text-left bg-transparent rounded-lg text-white"
     >
       <Button
-        :icon="DotsIcon"
+        icon="more_vert"
         :color="ButtonColor.TRASPARENT"
         :size="ButtonSize.MEDIUM"
         :theme="Theme.DARK"

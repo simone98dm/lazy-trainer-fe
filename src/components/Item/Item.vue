@@ -26,7 +26,10 @@
   <div class="flex flex-col rounded-xl bg-white p-3 shadow-lg mb-2">
     <div class="flex flex-row items-center justify-between">
       <div class="flex">
-        <div class="p-2 hidden sm:block" v-if="props.icon">
+        <div
+          class="p-2 hidden sm:block flex justify-center align-center"
+          v-if="props.icon"
+        >
           <Icon :class="IconSize.LARGE" :component="props.icon"></Icon>
         </div>
         <div class="sm:ml-4 flex flex-col justify-center" v-if="props.name">

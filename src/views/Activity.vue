@@ -120,7 +120,7 @@
     <Button
       id="save-activity"
       :color="ButtonColor.SUCCESS"
-      :icon="SaveIcon"
+      icon="save"
       :label="!activityId ? 'Create' : 'Save'"
       @click="saveActivity"
     />
@@ -149,14 +149,14 @@
         id="concat-activity"
         label="Concat"
         :color="ButtonColor.PRIMARY"
-        :icon="AddIcon"
+        icon="add"
         @click="addActivityForm"
       ></Button>
       <Button
         id="duplicate-activity"
         :label="`Repeat for ${repeatFor} times`"
         :color="ButtonColor.PRIMARY"
-        :icon="DuplicateIcon"
+        icon="content_copy"
         @click="() => (repeatFor += 1)"
       ></Button>
     </div>

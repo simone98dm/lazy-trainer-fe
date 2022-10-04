@@ -217,8 +217,8 @@
         :icon="
           timerStore.isTimerBasedActivity
             ? timerStore.isRunning
-              ? StopIcon
-              : PlayIcon
+              ? 'stop_circle'
+              : 'play_circle'
             : SkipIcon
         "
         :label="

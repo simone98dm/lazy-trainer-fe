@@ -101,7 +101,7 @@
       <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
         <Button
           full="true"
-          :icon="!isNew() ? SaveIcon : AddIcon"
+          :icon="!isNew() ? 'save' : 'add'"
           :label="!isNew() ? 'Save' : 'Create'"
           :color="ButtonColor.SUCCESS"
           @click="save"
@@ -109,7 +109,7 @@
         <Button
           full="true"
           v-if="!isNew()"
-          :icon="TrashIcon"
+          icon="delete"
           :color="ButtonColor.DANGER"
           label="Delete"
           @click="remove"

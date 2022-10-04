@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <component :is="props.component" :class="props.size"></component>
+  <span class="material-icons-outlined">{{ props.component }}</span>
 </template>
 
 <style>

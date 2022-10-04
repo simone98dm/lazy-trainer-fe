@@ -74,12 +74,12 @@
       :to="{ name: 'session', params: { sessionId } }"
       label="Edit session"
       :type="LinkType.BUTTON"
-      :icon="EditIcon"
+      icon="edit"
     ></Link>
     <Button
       id="delete-session"
       :color="ButtonColor.DANGER"
-      :icon="TrashIcon"
+      icon="delete"
       :size="ButtonSize.MEDIUM"
       label="Delete session"
       @click="deleteSession"
@@ -87,7 +87,7 @@
     <Link
       v-if="userStore.isTrainer || userStore.isSelfMadeMan"
       id="add-activity"
-      :icon="AddIcon"
+      icon="add"
       :size="ButtonSize.MEDIUM"
       :color="ButtonColor.SUCCESS"
       :to="{ name: 'activity', params: { sessionId } }"

@@ -31,7 +31,7 @@
   </div>
   <Link
     v-if="user.isTrainer || user.isSelfMadeMan"
-    :icon="AddIcon"
+    icon="add"
     :size="ButtonSize.MEDIUM"
     :to="{ name: 'session' }"
     :type="LinkType.BUTTON"
