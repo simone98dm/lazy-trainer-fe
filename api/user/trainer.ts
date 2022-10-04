@@ -8,7 +8,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   try {
     const bearer = request.headers.authorization?.split(" ")[1] ?? "";
 
-    const { id } = JSON.parse(request.body);
+    const { id } = request.body;
 
     const decoded = verifyToken(bearer);
     if (decoded) {

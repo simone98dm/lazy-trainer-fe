@@ -6,12 +6,9 @@
   import { useSettingStore } from "~/stores/settings";
   import { IActivity } from "~/models/Activity";
   import { ButtonColor } from "~/utils";
-  import AddIcon from "~/components/Icons/AddIcon.vue";
-  import DuplicateIcon from "~/components/Icons/DuplicateIcon.vue";
   import Button from "~/components/Button/Button.vue";
   import { v4 as uuidv4 } from "uuid";
   import { ref } from "vue";
-  import SaveIcon from "~/components/Icons/SaveIcon.vue";
 
   const route = useRoute();
   const router = useRouter();

@@ -30,7 +30,7 @@
           class="p-2 hidden sm:block flex justify-center align-center"
           v-if="props.icon"
         >
-          <Icon :class="IconSize.LARGE" :component="props.icon"></Icon>
+          <Icon :component="props.icon" :class="IconSize.LARGE"></Icon>
         </div>
         <div class="sm:ml-4 flex flex-col justify-center" v-if="props.name">
           <h4

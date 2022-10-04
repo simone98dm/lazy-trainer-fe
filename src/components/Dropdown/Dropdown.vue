@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import Button from "~/components/Button/Button.vue";
-  import DotsIcon from "~/components/Icons/DotsIcon.vue";
   import { ButtonColor, ButtonSize, Theme } from "~/utils";
 
   let showDropdown = ref(false);

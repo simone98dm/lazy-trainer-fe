@@ -2,12 +2,8 @@
   import { ref } from "vue";
   import Button from "~/components/Button/Button.vue";
   import { v4 as uuidv4 } from "uuid";
-  import TrashIcon from "~/components/Icons/TrashIcon.vue";
-  import AddIcon from "~/components/Icons/AddIcon.vue";
   import { ISession } from "~/models/Session";
   import { days, ButtonColor } from "~/utils";
-  import SaveIcon from "~/components/Icons/SaveIcon.vue";
-  import Item from "~/components/Item/Item.vue";
   import { useActivityStore } from "~/stores/activity";
   import { useUserStore } from "~/stores/user";
 

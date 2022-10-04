@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import Icon from "~/components/Icons/Icon.vue";
-  import LeftIcon from "~/components/Icons/LeftIcon.vue";
   import { IconSize } from "~/utils";
 
   const emits = defineEmits(["click"]);

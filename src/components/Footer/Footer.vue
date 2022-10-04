@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import GroupIcon from "~/components/Icons/GroupIcon.vue";
-  import SettingIcon from "~/components/Icons/SettingIcon.vue";
   import Icon from "~/components/Icons/Icon.vue";
   import { IconSize } from "~/utils";
   import { useUserStore } from "~/stores/user";

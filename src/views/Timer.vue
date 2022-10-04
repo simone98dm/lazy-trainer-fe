@@ -2,9 +2,6 @@
   import { ref } from "vue";
   import { useRoute, useRouter } from "vue-router";
   import Button from "~/components/Button/Button.vue";
-  import StopIcon from "~/components/Icons/StopIcon.vue";
-  import SkipIcon from "~/components/Icons/SkipIcon.vue";
-  import PlayIcon from "~/components/Icons/PlayIcon.vue";
   import BackButton from "~/components/BackButton/BackButton.vue";
   import {
     type TimerActivity,
@@ -22,9 +19,10 @@
   const settingsStore = useSettingStore();
   const timerStore = useTimerStore();
 
+  settingsStore.setHeader("Timer");
+
   let timerInterval: any = null;
   let timePassed = 0;
-  settingsStore.setHeader("Timer");
   let TIME_LIMIT = ref(0);
   let timeLeft = ref(TIME_LIMIT.value);
 
@@ -35,7 +33,7 @@
   const { sessionId, activityId } = route.params;
 
   setupTimer(activityId as string);
-  startTimer();
+  // startTimer();
 
   function setupTimer(activityId: string) {
     const activities = timerStore.getListActivities;
@@ -219,7 +217,7 @@
             ? timerStore.isRunning
               ? 'stop_circle'
               : 'play_circle'
-            : SkipIcon
+            : 'skip_next'
         "
         :label="
           timerStore.isTimerBasedActivity

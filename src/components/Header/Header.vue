@@ -20,7 +20,6 @@
         <div
           class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
         >
-          <Icon :component="HomeIcon" :size="IconSize.SMALL"></Icon>
         </div>
       </router-link> -->
       <div class="text-center">
@@ -32,7 +31,6 @@
         class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
         @click="() => user.logout()"
       >
-        <Icon :component="MenuIcon" :size="IconSize.SMALL"></Icon>
       </div> -->
     </div>
   </div>

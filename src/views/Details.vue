@@ -1,10 +1,7 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router";
   import router from "~/router/router";
-  import AddIcon from "~/components/Icons/AddIcon.vue";
   import Link from "~/components/Link/Link.vue";
-  import TrashIcon from "~/components/Icons/TrashIcon.vue";
-  import EditIcon from "~/components/Icons/EditIcon.vue";
   import Button from "~/components/Button/Button.vue";
   import ActivityList from "~/components/ActivityList/ActivityList.vue";
   import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "~/utils";
