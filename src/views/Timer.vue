@@ -33,7 +33,7 @@
   const { sessionId, activityId } = route.params;
 
   setupTimer(activityId as string);
-  // startTimer();
+  startTimer();
 
   function setupTimer(activityId: string) {
     const activities = timerStore.getListActivities;
@@ -183,7 +183,11 @@
   <div>
     <div class="flex flex-row justify-between mb-3">
       <BackButton @click="redirectToActivity"></BackButton>
-      <button class="text-red-800 cursor-pointer" @click="sendChangeRequest">
+      <button
+        v-if="!timerStore.getCurrentActivity?.requestChange"
+        class="text-red-800 cursor-pointer"
+        @click="sendChangeRequest"
+      >
         Request change
       </button>
     </div>

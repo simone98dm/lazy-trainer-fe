@@ -9,8 +9,13 @@
   import { useUserStore } from "~/stores/user";
 
   const isLoading = ref(true);
-  const textToShow = ref("");
-  const block = ref(false);
+  let p = {
+    title: "Loading...",
+    subtitle: "Please wait...",
+    style: "mb-6",
+    block: false,
+  };
+  const options = ref(p);
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
@@ -40,9 +45,12 @@
         });
         isLoading.value = false;
       });
-    textToShow.value = "Client session:";
 
-    block.value = false;
+    p = {
+      ...p,
+      title: "Client sessions",
+      subtitle: "",
+    };
   } else if (!userStore.isTrainer) {
     activityStore
       .restoreSession()
@@ -64,17 +72,26 @@
       .catch(() => {
         router.push({ name: "login" });
       });
-    textToShow.value = "Your session:";
-    block.value = false;
-  } else {
-    textToShow.value = "Nothing to see here ⚠️";
-    isLoading.value = false;
 
-    block.value = true;
+    p = { ...p, title: "Your session", subtitle: "here's your weekly plan" };
+  } else {
+    isLoading.value = false;
+    p = {
+      title: "Nothing to see here",
+      subtitle: "Go to groups and open your client plan",
+      block: true,
+      style: "text-center mt-10",
+    };
   }
+  options.value = p;
 </script>
 
 <template>
-  <h1 class="mb-3 text-3xl font-bold">{{ textToShow }}</h1>
-  <Flow v-if="!block" :list="sessions" :loading="isLoading"></Flow>
+  <div :class="options.style">
+    <h1 class="mb-3 text-3xl font-bold">{{ options.title }}</h1>
+    <h4 class="mb-3 text-xl text-slate-600 font-bold">
+      {{ options.subtitle }}
+    </h4>
+  </div>
+  <Flow v-if="!options.block" :list="sessions" :loading="isLoading"></Flow>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { useSettingStore } from "~/stores/settings";
   import { useUserStore } from "~/stores/user";
+  import Icon from "../Icons/Icon.vue";
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
@@ -14,24 +15,12 @@
       { 'bg-purple-600': userStore.isTrainer },
     ]"
   >
-    <!-- <div :class="['flex items-center justify-between']"> -->
     <div>
-      <!-- <router-link to="/">
-        <div
-          class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
-        >
-        </div>
-      </router-link> -->
       <div class="text-center">
         <h3 class="text-3xl font-semibold">
           {{ settingsStore.getHeaderText }}
         </h3>
       </div>
-      <!-- <div
-        class="rounded-lg bg-indigo-50/30 p-3 hover:bg-white hover:text-indigo-500"
-        @click="() => user.logout()"
-      >
-      </div> -->
     </div>
   </div>
 </template>

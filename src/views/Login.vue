@@ -4,6 +4,7 @@
   import { useUserStore } from "~/stores/user";
   import Button from "~/components/Button/Button.vue";
   import { ButtonColor } from "~/utils";
+  import { useSettingStore } from "~/stores/settings";
 
   const username = ref("");
   const password = ref("");
@@ -12,13 +13,16 @@
   const isLoading = ref(false);
 
   const userStore = useUserStore();
+  const settingsStore = useSettingStore();
 
   if (userStore.isLogged) {
     router.push({ name: "home" });
   }
 
   if (!userStore.isLogged) {
+    settingsStore.loading(true);
     userStore.verifyStorage().then(() => {
+      settingsStore.loading(false);
       if (userStore.isLogged) {
         router.push({ name: "home" });
       }
@@ -83,6 +87,7 @@
         :loading="isLoading"
         :color="ButtonColor.PRIMARY"
         label="Login"
+        icon="login"
         full="true"
         @click="submit"
       />

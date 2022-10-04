@@ -275,5 +275,12 @@ export const useActivityStore = defineStore("activity", {
         }
       }
     },
+    async sync() {
+      const userStore = useUserStore();
+      this.plan = await getPlan(userStore.token);
+      if (!this.plan) {
+        generateBlankPlan();
+      }
+    },
   },
 });
