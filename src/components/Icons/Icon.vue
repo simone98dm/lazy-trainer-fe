@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  const props = defineProps(["component", "size"]);
+  defineProps(["component"]);
 </script>
 
 <template>
-  <span class="material-icons-outlined">{{ props.component }}</span>
+  <span class="material-icons-outlined">{{ component }}</span>
 </template>

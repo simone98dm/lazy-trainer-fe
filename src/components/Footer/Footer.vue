@@ -11,17 +11,13 @@
     class="fixed left-0 bottom-0 w-full rounded-t-xl bg-white px-5 py-2 shadow-sm shadow-gray-300"
   >
     <nav class="flex justify-around text-gray-900">
-      <router-link to="/" class="py-3 rounded-full p-3">
+      <router-link to="/" class="rounded-full p-3">
         <Icon component="house" :size="IconSize.MEDIUM"></Icon>
       </router-link>
-      <router-link
-        to="/group"
-        class="py-3 rounded-full p-3"
-        v-if="user.isTrainer"
-      >
+      <router-link v-if="user.isTrainer" to="/group" class="rounded-full p-3">
         <Icon component="groups" :size="IconSize.MEDIUM"></Icon>
       </router-link>
-      <router-link to="/settings" class="py-3 rounded-full p-3">
+      <router-link to="/settings" class="rounded-full p-3">
         <Icon component="settings" :size="IconSize.MEDIUM"></Icon>
       </router-link>
     </nav>

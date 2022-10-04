@@ -3,7 +3,9 @@
 </script>
 
 <template>
-  <PlaceholderCard />
-  <PlaceholderCard />
-  <PlaceholderCard />
+  <div class="mb-6">
+    <PlaceholderCard />
+    <PlaceholderCard />
+    <PlaceholderCard />
+  </div>
 </template>
