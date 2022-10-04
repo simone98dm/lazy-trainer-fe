@@ -7,6 +7,7 @@
   import { useUserStore } from "~/stores/user";
   import HandleIcon from "~/components/Icons/HandleIcon.vue";
   import TrainerIcon from "~/components/Icons/TrainerIcon.vue";
+  import PlaceholderList from "~/components/Placeholder/PlaceholderList.vue";
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
@@ -18,7 +19,7 @@
 
 <template>
   <div class="flex flex-col justify-center w-full">
-    <Loading v-if="!clients" class="mx-auto"></Loading>
+    <PlaceholderList v-if="!clients"></PlaceholderList>
     <div id="list-groups" v-else>
       <Link
         v-for="client in clients"

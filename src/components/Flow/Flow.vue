@@ -6,12 +6,13 @@
   import { useUserStore } from "~/stores/user";
   import { ButtonSize, LinkType } from "~/utils";
   import ErrorBanner from "../ErrorBanner/ErrorBanner.vue";
+  import PlaceholderList from "~/components/Placeholder/PlaceholderList.vue";
   const user = useUserStore();
   const props = defineProps(["list", "loading"]);
 </script>
 
 <template>
-  <Loading class="flex justify-center w-full" v-if="props.loading"></Loading>
+  <PlaceholderList v-if="props.loading"></PlaceholderList>
   <div v-else>
     <div v-if="props.list && props.list.length > 0" class="mb-6" id="sessions">
       <Link
