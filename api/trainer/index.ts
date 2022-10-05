@@ -1,8 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { ITokenPayload } from "../../src/models/User";
 import { connectToDatabase, verifyToken } from "../../utils/all";
-import { IPlan } from "./../../src/models/Plan";
 import { ISession } from "../../src/models/Session";
-import { IUser } from "./../../src/models/User";
+import { IPlan } from "../../src/models/Plan";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -20,7 +20,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
     const decoded = verifyToken(bearer);
     if (decoded) {
-      const { id } = decoded as IUser;
+      const { id } = decoded as ITokenPayload;
 
       const client = await connectToDatabase();
       if (!client) {
