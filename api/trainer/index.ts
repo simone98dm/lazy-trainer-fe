@@ -1,16 +1,21 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { connectToDatabase, verifyToken } from "../all";
+import { connectToDatabase, verifyToken } from "../../utils/all";
 import { IPlan } from "./../../src/models/Plan";
 import { ISession } from "../../src/models/Session";
 import { IUser } from "./../../src/models/User";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
+    if (request.method !== "GET") {
+      return response.status(400).end();
+    }
+
     const bearer = request.headers.authorization?.split(" ")[1] ?? undefined;
 
     if (!bearer) {
-      response.status(400).send({ error: "authorization header not found" });
-      return;
+      return response
+        .status(400)
+        .send({ error: "authorization header not found" });
     }
 
     const decoded = verifyToken(bearer);

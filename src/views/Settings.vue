@@ -54,6 +54,7 @@
       </h1>
     </div>
     <Button
+      v-if="!userStore.isTrainer"
       :color="ButtonColor.PRIMARY"
       :loading="syncStatus"
       full="false"

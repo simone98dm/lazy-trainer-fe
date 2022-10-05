@@ -1,3 +1,4 @@
+import { ITokenPayload } from "./../src/models/User";
 import { MongoClient } from "mongodb";
 
 const uri = process.env.MONGODB_URI || "";
@@ -25,11 +26,11 @@ export async function connectToDatabase() {
 }
 
 import jwt from "jsonwebtoken";
-export function verifyToken(token: string) {
+export function verifyToken(token: string): ITokenPayload | undefined {
   try {
     const decoded = jwt.verify(token, SECRET_KEY);
     if (decoded) {
-      return decoded as { id: string; name: string; role: number };
+      return decoded as ITokenPayload;
     }
   } catch (error) {
     console.error(error);

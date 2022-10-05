@@ -51,6 +51,11 @@ export const useUserStore = defineStore("user", {
       const token = localStorage.getItem("_token");
       if (token) {
         return await verifyUser(token).then((response) => {
+          if (response.error) {
+            this.logout();
+            return;
+          }
+
           if (response.data) {
             const { data } = response as IUserResponse;
             const { token, id, name, role } = data;

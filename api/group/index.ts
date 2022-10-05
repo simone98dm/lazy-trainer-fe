@@ -1,9 +1,13 @@
 import jwt from "jsonwebtoken";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { connectToDatabase, SECRET_KEY } from "../all";
+import { connectToDatabase, SECRET_KEY } from "../../utils/all";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
+    if (request.method !== "POST") {
+      return response.status(400).end();
+    }
+
     const bearer = request.headers.authorization?.split(" ")[1] ?? "";
 
     const { id } = request.body;

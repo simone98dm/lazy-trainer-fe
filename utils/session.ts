@@ -1,4 +1,4 @@
-import { connectToDatabase } from "../../all";
+import { connectToDatabase } from "./all";
 
 /**
  * Delete a session

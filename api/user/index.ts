@@ -1,8 +1,12 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { connectToDatabase, verifyToken } from "../all";
+import { connectToDatabase, verifyToken } from "../../utils/all";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
+    if (request.method !== "GET") {
+      return response.status(400).end();
+    }
+
     const bearer = request.headers.authorization?.split(" ")[1] ?? "";
 
     const traineId: string = request.query.user as string;
@@ -17,7 +21,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       const db = client.db("lazyTrainerDb");
       const result = await db.collection("users").findOne({ id: traineId });
       if (result) {
-        return response.status(200).json({
+        return response.status(200).send({
           id: result.id,
           name: result.name,
         });

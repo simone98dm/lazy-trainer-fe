@@ -8,3 +8,10 @@ export interface IUser {
   id: string;
   token: string;
 }
+
+export interface ITokenPayload {
+  id: string;
+  name: string;
+  role: number;
+  hits: number;
+}
