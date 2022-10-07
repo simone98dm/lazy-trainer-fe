@@ -1,8 +1,9 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { ITokenPayload } from "../../src/models/User";
-import { connectToDatabase, verifyToken } from "../../utils/all";
+import { connectToDatabase } from "../../utils/db";
 import { ISession } from "../../src/models/Session";
 import { IPlan } from "../../src/models/Plan";
+import { verifyToken } from "../../utils/token";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {

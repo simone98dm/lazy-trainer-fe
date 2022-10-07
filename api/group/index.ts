@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { connectToDatabase, SECRET_KEY } from "../../utils/all";
+import { connectToDatabase } from "../../utils/db";
+import { SECRET_KEY } from "../../utils/const";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {

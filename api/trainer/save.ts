@@ -1,6 +1,6 @@
 import { Role } from "./../../src/utils/enum";
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { verifyToken } from "../../utils/all";
+import { verifyToken } from "../../utils/token";
 import {
   createActivity,
   deleteActivity,

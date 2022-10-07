@@ -1,6 +1,6 @@
-import jwt, { decode } from "jsonwebtoken";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { connectToDatabase, SECRET_KEY, verifyToken } from "../../utils/all";
+import { connectToDatabase } from "../../utils/db";
+import { verifyToken } from "../../utils/token";
 import { IPlan } from "../../src/models/Plan";
 import { ISession } from "../../src/models/Session";
 

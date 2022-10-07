@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { connectToDatabase, verifyToken } from "../../utils/all";
+import { connectToDatabase } from "../../utils/db";
+import { verifyToken } from "../../utils/token";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {

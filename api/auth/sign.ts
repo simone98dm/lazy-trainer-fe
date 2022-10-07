@@ -2,7 +2,9 @@ import { IUserResponse } from "./../../src/models/User";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { connectToDatabase, SECRET_KEY, verifyToken } from "../../utils/all";
+import { connectToDatabase } from "../../utils/db";
+import { SECRET_KEY } from "../../utils/const";
+import { verifyToken } from "../../utils/token";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
