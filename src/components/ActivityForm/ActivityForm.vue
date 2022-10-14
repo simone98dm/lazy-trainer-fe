@@ -1,4 +1,3 @@
-})
 <script setup lang="ts">
   import { IActivity } from "~/models/Activity";
   import { ref, watch } from "vue";
