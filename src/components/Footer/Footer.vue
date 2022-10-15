@@ -12,13 +12,13 @@
   >
     <nav class="flex justify-around text-gray-900">
       <router-link to="/" class="rounded-full p-3">
-        <Icon component="house" :size="IconSize.MEDIUM"></Icon>
+        <Icon component="house" />
       </router-link>
       <router-link v-if="user.isTrainer" to="/group" class="rounded-full p-3">
-        <Icon component="groups" :size="IconSize.MEDIUM"></Icon>
+        <Icon component="groups" />
       </router-link>
       <router-link to="/settings" class="rounded-full p-3">
-        <Icon component="settings" :size="IconSize.MEDIUM"></Icon>
+        <Icon component="settings" />
       </router-link>
     </nav>
   </div>

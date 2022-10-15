@@ -58,8 +58,7 @@
 
 <template>
   <router-link :to="to" :class="css" @click="emit('click')">
-    <Icon v-if="props.icon" :component="props.icon" :size="IconSize.MEDIUM" />
-
+    <Icon v-if="props.icon" :component="props.icon" />
     <slot />
     <span class="ml-2" v-if="props.label">{{ props.label }}</span>
   </router-link>

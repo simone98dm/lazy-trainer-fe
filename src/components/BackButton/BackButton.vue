@@ -12,7 +12,7 @@ s
 
 <template>
   <button @click="onClickHandle" class="back__button">
-    <Icon component="arrow_back" :size="IconSize.SMALL"></Icon>
+    <Icon component="arrow_back" />
     <span class="ml-2"> Back </span>
   </button>
 </template>

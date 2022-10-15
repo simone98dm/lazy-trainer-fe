@@ -79,7 +79,7 @@
   >
     <Loading v-if="props.loading" :small="true"></Loading>
     <div v-else class="flex align-center">
-      <Icon v-if="props.icon" :component="props.icon" :size="IconSize.MEDIUM" />
+      <Icon v-if="props.icon" :component="props.icon" />
       <slot />
       <span class="ml-2" v-if="props.label">{{ props.label }}</span>
     </div>
