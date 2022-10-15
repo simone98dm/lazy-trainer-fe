@@ -1,4 +1,4 @@
-import { Role } from "./../../src/utils/enum";
+import { DataAction, Role } from "./../../src/utils/enum";
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { verifyToken } from "../../utils/token";
 import {
@@ -11,15 +11,6 @@ import {
   deleteSession,
   updateSession,
 } from "../../utils/session";
-
-enum DataAction {
-  SESSION_DELETE,
-  SESSION_UPDATE,
-  SESSION_CREATE,
-  ACTIVITY_DELETE,
-  ACTIVITY_UPDATE,
-  ACTIVITY_CREATE,
-}
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method !== "POST") {
@@ -35,9 +26,8 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     }
 
     const { activityId, sessionId, planId, action, data } = request.body;
-
-    if (!action) {
-      return response.status(400).end({ error: "something went wrong" });
+    if (!(action in DataAction)) {
+      return response.status(400).send({ error: "something went wrong" });
     }
 
     switch (action) {
@@ -66,6 +56,6 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     return response.status(200).end();
   } catch (error) {
     console.error(error);
-    response.status(500).end({ error: "something went wrong" });
+    response.status(500).send({ error: "something went wrong" });
   }
 };

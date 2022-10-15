@@ -61,6 +61,13 @@ export async function createSession(planId: string, data: any) {
     throw new Error("mongoClient is null");
   }
 
+  const { id, dayOfWeek, warmup } = data;
+
   const db = client.db("lazyTrainerDb");
-  await db.collection("sessions").insertOne({ ...data, planId });
+  await db.collection("sessions").insertOne({ id, dayOfWeek, planId });
+  const updatedWarmup = warmup.map((warm: any) => ({
+    sessionId: id,
+    ...warm,
+  }));
+  await db.collection("activities").insertMany(updatedWarmup);
 }

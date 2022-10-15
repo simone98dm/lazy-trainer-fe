@@ -180,6 +180,7 @@ export const useActivityStore = defineStore("activity", {
           data: {
             id: session.id,
             dayOfWeek: session.dayOfWeek,
+            warmup: session.activities,
           },
           planId: this.plan.id,
           action: DataAction.SESSION_CREATE,
@@ -219,7 +220,10 @@ export const useActivityStore = defineStore("activity", {
     },
     setDuplicateWarmup(warmUpActivities: IActivity[] | undefined) {
       if (warmUpActivities) {
-        this.duplicateWarmup = warmUpActivities;
+        this.duplicateWarmup = warmUpActivities.map((warmup) => ({
+          ...warmup,
+          id: uuid(),
+        }));
       }
     },
     async getUserActivities(id: string) {

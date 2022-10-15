@@ -1,12 +1,14 @@
 import { baseUrl } from "~/utils";
 
+const buildHeaders = (token: string) => ({
+  authorization: `Bearer ${token}`,
+  "Content-Type": "application/json",
+});
+
 export async function sendToTrainer(token: string, body: any) {
   await fetch(`${baseUrl}/api/trainer/save`, {
     method: "POST",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    headers: buildHeaders(token),
     body: JSON.stringify(body),
   });
 }
@@ -14,10 +16,7 @@ export async function sendToTrainer(token: string, body: any) {
 export async function getPlan(token: string) {
   return await fetch(`${baseUrl}/api/trainer`, {
     method: "GET",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    headers: buildHeaders(token),
   }).then((response) => response.json());
 }
 
@@ -34,30 +33,21 @@ export async function signIn(username: string, password: string) {
 export async function verifyUser(token: string) {
   return await fetch(`${baseUrl}/api/auth/sign`, {
     method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      authorization: `Bearer ${token}`,
-    },
+    headers: buildHeaders(token),
   }).then((response) => response.json());
 }
 
 export async function userInfo(token: string, trainerId: string) {
   return await fetch(`${baseUrl}/api/user?user=${trainerId}`, {
     method: "GET",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    headers: buildHeaders(token),
   }).then((response) => response.json());
 }
 
 export async function getGroups(token: string, userId: string) {
   return await fetch(`${baseUrl}/api/group`, {
     method: "POST",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    headers: buildHeaders(token),
     body: JSON.stringify({ id: userId }),
   }).then((response) => response.json());
 }
@@ -65,10 +55,7 @@ export async function getGroups(token: string, userId: string) {
 export async function getUserActivities(token: string, id: string) {
   return await fetch(`${baseUrl}/api/user/trainer`, {
     method: "POST",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    headers: buildHeaders(token),
     body: JSON.stringify({ id }),
   }).then((response) => response.json());
 }
@@ -76,10 +63,7 @@ export async function getUserActivities(token: string, id: string) {
 export async function requestActivityChange(token: string, activityId: string) {
   return await fetch(`${baseUrl}/api/trainer/change`, {
     method: "POST",
-    headers: {
-      authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
+    headers: buildHeaders(token),
     body: JSON.stringify({ activityId }),
   });
 }
