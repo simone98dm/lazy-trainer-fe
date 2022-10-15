@@ -1,3 +1,4 @@
+import { DbTable, DB_NAME } from "./const";
 import { connectToDatabase } from "./db";
 
 /**
@@ -14,9 +15,9 @@ export async function deleteSession(sessionId: string) {
     throw new Error("mongoClient is null");
   }
 
-  const db = client.db("lazyTrainerDb");
-  await db.collection("sessions").deleteOne({ id: sessionId });
-  await db.collection("activities").deleteMany({ sessionId: sessionId });
+  const db = client.db(DB_NAME);
+  await db.collection(DbTable.SESSIONS).deleteOne({ id: sessionId });
+  await db.collection(DbTable.ACTIVITIES).deleteMany({ sessionId: sessionId });
 }
 
 /**
@@ -37,9 +38,9 @@ export async function updateSession(sessionId: string, data: any) {
     throw new Error("mongoClient is null");
   }
 
-  const db = client.db("lazyTrainerDb");
+  const db = client.db(DB_NAME);
   await db
-    .collection("sessions")
+    .collection(DbTable.SESSIONS)
     .findOneAndUpdate(
       { id: sessionId },
       { $set: { dayOfWeek: data.dayOfWeek } }
@@ -63,11 +64,11 @@ export async function createSession(planId: string, data: any) {
 
   const { id, dayOfWeek, warmup } = data;
 
-  const db = client.db("lazyTrainerDb");
-  await db.collection("sessions").insertOne({ id, dayOfWeek, planId });
+  const db = client.db(DB_NAME);
+  await db.collection(DbTable.SESSIONS).insertOne({ id, dayOfWeek, planId });
   const updatedWarmup = warmup.map((warm: any) => ({
     sessionId: id,
     ...warm,
   }));
-  await db.collection("activities").insertMany(updatedWarmup);
+  await db.collection(DbTable.ACTIVITIES).insertMany(updatedWarmup);
 }

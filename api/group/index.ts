@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { connectToDatabase } from "../../utils/db";
-import { SECRET_KEY } from "../../utils/const";
+import { DbTable, DB_NAME, SECRET_KEY } from "../../utils/const";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -20,7 +20,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         throw new Error("mongoClient is null");
       }
 
-      const db = client.db("lazyTrainerDb");
+      const db = client.db(DB_NAME);
       const plans = await db
         .collection("plans")
         .find({ trainerId: id })
@@ -29,7 +29,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       if (plans) {
         const userIds = plans.map((plans) => plans.ownerId);
         const userInfos = await db
-          .collection("users")
+          .collection(DbTable.USERS)
           .find({ id: { $in: userIds } })
           .toArray();
 

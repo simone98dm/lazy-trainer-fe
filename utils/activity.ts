@@ -1,3 +1,4 @@
+import { DbTable, DB_NAME } from "./const";
 import { connectToDatabase } from "./db";
 
 /**
@@ -14,8 +15,8 @@ export async function deleteActivity(activityId: string) {
     throw new Error("mongoClient is null");
   }
 
-  const db = client.db("lazyTrainerDb");
-  await db.collection("activities").deleteOne({ id: activityId });
+  const db = client.db(DB_NAME);
+  await db.collection(DbTable.ACTIVITIES).deleteOne({ id: activityId });
 }
 
 /**
@@ -33,8 +34,8 @@ export async function updateActivity(activityId: string, data: any) {
     throw new Error("mongoClient is null");
   }
 
-  const db = client.db("lazyTrainerDb");
-  await db.collection("activities").findOneAndUpdate(
+  const db = client.db(DB_NAME);
+  await db.collection(DbTable.ACTIVITIES).findOneAndUpdate(
     { id: activityId },
     {
       $set: {
@@ -64,7 +65,7 @@ export async function createActivity(sessionId: string, data: any) {
     throw new Error("mongoClient is null");
   }
 
-  const db = client.db("lazyTrainerDb");
+  const db = client.db(DB_NAME);
 
-  await db.collection("activities").insertOne({ ...data, sessionId });
+  await db.collection(DbTable.ACTIVITIES).insertOne({ ...data, sessionId });
 }

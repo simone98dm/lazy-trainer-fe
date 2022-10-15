@@ -3,7 +3,7 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { connectToDatabase } from "../../utils/db";
-import { SECRET_KEY } from "../../utils/const";
+import { DbTable, DB_NAME, SECRET_KEY } from "../../utils/const";
 import { verifyToken } from "../../utils/token";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
@@ -58,8 +58,10 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       if (!client) {
         throw new Error("mongoClient is null");
       }
-      const db = client.db("lazyTrainerDb");
-      const user = await db.collection("users").findOne({ name: username });
+      const db = client.db(DB_NAME);
+      const user = await db
+        .collection(DbTable.USERS)
+        .findOne({ name: username });
       if (!user) {
         return response
           .status(404)

@@ -1,8 +1,10 @@
+import { DbTable } from "./../../utils/const";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { connectToDatabase } from "../../utils/db";
 import { verifyToken } from "../../utils/token";
 import { IPlan } from "../../src/models/Plan";
 import { ISession } from "../../src/models/Session";
+import { DB_NAME } from "../../utils/const";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -21,19 +23,19 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       if (!client) {
         throw new Error("mongoClient is null");
       }
-      const db = client.db("lazyTrainerDb");
-      const plan = await db.collection("plans").findOne({ id: id });
+      const db = client.db(DB_NAME);
+      const plan = await db.collection(DbTable.PLANS).findOne({ id: id });
 
       if (plan) {
         if (plan.trainerId === d.id) {
           const sessions = await db
-            .collection("sessions")
+            .collection(DbTable.SESSIONS)
             .find({ planId: plan?.id })
             .toArray();
 
           const sessionIds = sessions.map((session) => session.id);
           const activities = await db
-            .collection("activities")
+            .collection(DbTable.ACTIVITIES)
             .find({ sessionId: { $in: sessionIds } })
             .toArray();
 
