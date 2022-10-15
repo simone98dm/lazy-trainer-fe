@@ -4,6 +4,7 @@
   import Link from "~/components/Link/Link.vue";
   import Button from "~/components/Button/Button.vue";
   import ActivityList from "~/components/ActivityList/ActivityList.vue";
+  import BackButton from "~/components/BackButton/BackButton.vue";
   import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "~/utils";
   import { useUserStore } from "~/stores/user";
   import { useTimerStore } from "~/stores/timer";
@@ -62,6 +63,9 @@
   }
 </script>
 <template>
+  <div class="mb-6">
+    <BackButton @click="router.back()" />
+  </div>
   <div
     class="flex mb-6 gap-2"
     v-if="userStore.isTrainer || userStore.isSelfMadeMan"
@@ -69,7 +73,7 @@
     <Link
       id="edit-session"
       :to="{ name: 'session', params: { sessionId } }"
-      label="Edit session"
+      label="Edit"
       :type="LinkType.BUTTON"
       icon="edit"
     ></Link>
@@ -78,7 +82,7 @@
       :color="ButtonColor.DANGER"
       icon="delete"
       :size="ButtonSize.MEDIUM"
-      label="Delete session"
+      label="Delete"
       @click="deleteSession"
     ></Button>
     <Link
@@ -89,7 +93,7 @@
       :color="ButtonColor.SUCCESS"
       :to="{ name: 'activity', params: { sessionId } }"
       :type="LinkType.BUTTON"
-      label="Add activity"
+      label="Add"
     />
   </div>
   <div class="flex flex-col justify-center">
