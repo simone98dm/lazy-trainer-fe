@@ -3,7 +3,7 @@
   import Button from "~/components/Button/Button.vue";
   import { v4 as uuidv4 } from "uuid";
   import { ISession } from "~/models/Session";
-  import { days, ButtonColor } from "~/utils";
+  import { days, ButtonColor, getDayOfTheWeek } from "~/utils";
   import { useActivityStore } from "~/stores/activity";
   import { useUserStore } from "~/stores/user";
 
@@ -56,27 +56,34 @@
 <template>
   <div class="flex justify-center w-full">
     <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
-      <h1 class="mb-3 text-2xl font-bold mb-6">Create a new day session:</h1>
-      <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6">
-        <button
-          v-for="(dayName, i) in days"
-          :key="i"
-          :class="[
-            {
-              'bg-indigo-600 text-slate-50':
-                isDaySelected(i) && !userStore.isTrainer,
-            },
-            {
-              'bg-purple-600 text-slate-50':
-                isDaySelected(i) && userStore.isTrainer,
-            },
-            { 'bg-gray-200 text-grey-50': !isDaySelected(i) },
-            'w-full duration-200 rounded-full px-4 py-2 ',
-          ]"
-          @click="() => selectDay(i)"
-        >
-          {{ dayName }}
-        </button>
+      <div>
+        <h1 v-if="isNew()" class="mb-3 text-2xl font-bold mb-6">
+          Create a new day session:
+        </h1>
+        <h1 v-else class="mb-3 text-2xl font-bold mb-6">
+          Edit {{ getDayOfTheWeek(dayOfWeek) }} session:
+        </h1>
+        <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6">
+          <button
+            v-for="day in activityStore.getMissingDays"
+            :key="day"
+            :class="[
+              {
+                'bg-indigo-600 text-slate-50':
+                  isDaySelected(day) && !userStore.isTrainer,
+              },
+              {
+                'bg-purple-600 text-slate-50':
+                  isDaySelected(day) && userStore.isTrainer,
+              },
+              { 'bg-gray-200 text-grey-50': !isDaySelected(day) },
+              'w-full duration-200 rounded-full px-4 py-2 ',
+            ]"
+            @click="() => selectDay(day)"
+          >
+            {{ getDayOfTheWeek(day) }}
+          </button>
+        </div>
       </div>
       <div
         v-if="props.existingForm"

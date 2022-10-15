@@ -44,6 +44,16 @@ export const useActivityStore = defineStore("activity", {
         x.dayOfWeek < y.dayOfWeek ? -1 : 1
       );
     },
+    getMissingDays(state) {
+      const days = state.plan?.sessions.map((item) => item.dayOfWeek);
+      const missingDays = [];
+      for (let i = 0; i < 7; i++) {
+        if (!days?.includes(i)) {
+          missingDays.push(i);
+        }
+      }
+      return missingDays;
+    },
   },
   actions: {
     restoreSession() {
