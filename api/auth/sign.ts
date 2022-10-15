@@ -62,6 +62,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       const user = await db
         .collection(DbTable.USERS)
         .findOne({ name: username });
+      await client.close();
       if (!user) {
         return response
           .status(404)

@@ -42,6 +42,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
           .collection(DbTable.ACTIVITIES)
           .find({ sessionId: { $in: sessionIds } })
           .toArray();
+        await client.close();
 
         const result = mapRawToPlans(plan, sessions, activities);
 

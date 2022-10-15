@@ -18,6 +18,7 @@ export async function deleteSession(sessionId: string) {
   const db = client.db(DB_NAME);
   await db.collection(DbTable.SESSIONS).deleteOne({ id: sessionId });
   await db.collection(DbTable.ACTIVITIES).deleteMany({ sessionId: sessionId });
+  await client.close();
 }
 
 /**
@@ -45,6 +46,7 @@ export async function updateSession(sessionId: string, data: any) {
       { id: sessionId },
       { $set: { dayOfWeek: data.dayOfWeek } }
     );
+  await client.close();
 }
 
 /**
@@ -71,4 +73,5 @@ export async function createSession(planId: string, data: any) {
     ...warm,
   }));
   await db.collection(DbTable.ACTIVITIES).insertMany(updatedWarmup);
+  await client.close();
 }

@@ -34,6 +34,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
           { id: activityId },
           { $set: { requestChange: true } }
         );
+      await client.close();
 
       response.status(200).end();
     } else {

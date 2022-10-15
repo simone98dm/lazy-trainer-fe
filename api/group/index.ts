@@ -32,6 +32,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
           .collection(DbTable.USERS)
           .find({ id: { $in: userIds } })
           .toArray();
+        await client.close();
 
         if (userInfos) {
           const p = plans.map((plan) => {

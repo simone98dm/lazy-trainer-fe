@@ -24,6 +24,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       const result = await db
         .collection(DbTable.USERS)
         .findOne({ id: traineId });
+      await client.close();
       if (result) {
         return response.status(200).send({
           id: result.id,
