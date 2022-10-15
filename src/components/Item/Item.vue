@@ -32,7 +32,10 @@
         >
           <Icon :component="props.icon" :class="IconSize.LARGE"></Icon>
         </div>
-        <div class="sm:ml-4 flex flex-col justify-center" v-if="props.name">
+        <div
+          class="sm:ml-4 flex flex-col justify-center pl-2"
+          v-if="props.name"
+        >
           <h4
             :class="[
               'text-gray-600',
