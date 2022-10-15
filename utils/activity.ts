@@ -17,7 +17,6 @@ export async function deleteActivity(activityId: string) {
 
   const db = client.db(DB_NAME);
   await db.collection(DbTable.ACTIVITIES).deleteOne({ id: activityId });
-  await client.close();
 }
 
 /**
@@ -50,7 +49,6 @@ export async function updateActivity(activityId: string, data: any) {
       },
     }
   );
-  await client.close();
 }
 
 /**
@@ -70,5 +68,4 @@ export async function createActivity(sessionId: string, data: any) {
   const db = client.db(DB_NAME);
 
   await db.collection(DbTable.ACTIVITIES).insertOne({ ...data, sessionId });
-  await client.close();
 }
