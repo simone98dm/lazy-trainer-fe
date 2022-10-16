@@ -4,7 +4,7 @@ import { IPlan } from "~/models/Plan";
 import { ISession } from "~/models/Session";
 import { defineStore } from "pinia";
 import { IActivity } from "~/models/Activity";
-import { DataAction } from "~/utils";
+import { DataAction, parseSessions } from "~/utils";
 import { getStorage, saveStorage } from "~/helpers/storage";
 import { v4 as uuid } from "uuid";
 import { getPlan, getUserActivities, sendToTrainer } from "~/helpers/http";
@@ -238,14 +238,25 @@ export const useActivityStore = defineStore("activity", {
     },
     async getUserActivities(id: string) {
       const userStore = useUserStore();
-      return await getUserActivities(userStore.token, id).then((plan) => {
-        if (plan.error) {
-          this.plan = generateBlankPlan();
-        } else {
-          this.plan = plan;
-        }
-        return plan;
-      });
+      return await getUserActivities(userStore.token, id)
+        .then((plan) => {
+          if (plan.error) {
+            this.plan = generateBlankPlan();
+          } else {
+            this.plan = plan;
+          }
+          return plan;
+        })
+        .then((plan) =>
+          plan.sessions
+            .sort((x: ISession, y: ISession) =>
+              x.dayOfWeek < y.dayOfWeek ? -1 : 1
+            )
+            .map(parseSessions)
+        )
+        .catch((error) => {
+          console.log(error);
+        });
     },
     moveActivity(
       sessionId: string | undefined,

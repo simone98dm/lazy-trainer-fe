@@ -2,20 +2,20 @@
   import { ref } from "vue";
   import { useRoute, useRouter } from "vue-router";
   import { ISession } from "~/models/Session";
-  import { getDayOfTheWeek } from "~/utils";
+  import { parseSessions } from "~/utils";
   import Flow from "../components/Flow/Flow.vue";
   import { useActivityStore } from "~/stores/activity";
   import { useSettingStore } from "~/stores/settings";
   import { useUserStore } from "~/stores/user";
 
   const isLoading = ref(true);
-  let p = {
+  let pageOptions = {
     title: "Loading...",
-    subtitle: "Please wait...",
+    subtitle: "",
     style: "mb-6",
     block: false,
   };
-  const options = ref(p);
+  const options = ref(pageOptions);
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
@@ -29,61 +29,31 @@
   if (userStore.isTrainer && route.params.planId) {
     activityStore
       .getUserActivities(route.params.planId as string)
-      .then((response) => {
-        sessions.value = response?.sessions.sort((x: ISession, y: ISession) =>
-          x.dayOfWeek < y.dayOfWeek ? -1 : 1
-        );
+      .then((response) => (sessions.value = response))
+      .finally(() => (isLoading.value = false));
 
-        sessions.value = sessions.value?.map((session) => {
-          return {
-            ...session,
-            description: `${session.activities.length} ${
-              session.activities.length > 1 ? "activities" : "activity"
-            }`,
-            name: getDayOfTheWeek(session.dayOfWeek),
-          };
-        });
-        isLoading.value = false;
-      });
-
-    p = {
-      ...p,
+    pageOptions = {
+      ...pageOptions,
       title: "Client sessions",
-      subtitle: "",
     };
   } else if (!userStore.isTrainer) {
     activityStore
       .restoreSession()
-      .then(() => {
-        sessions.value = activityStore.getWeek;
+      .then(() => (sessions.value = activityStore.getWeek?.map(parseSessions)))
+      .catch(() => router.push({ name: "login" }))
+      .finally(() => (isLoading.value = false));
 
-        sessions.value = sessions.value?.map((session) => {
-          return {
-            ...session,
-            description: `${session.activities.length} ${
-              session.activities.length > 1 ? "activities" : "activity"
-            }`,
-            name: getDayOfTheWeek(session.dayOfWeek),
-          };
-        });
-
-        isLoading.value = false;
-      })
-      .catch(() => {
-        router.push({ name: "login" });
-      });
-
-    p = { ...p, title: "Your session", subtitle: "here's your weekly plan" };
+    pageOptions = { ...pageOptions, title: "Your session" };
   } else {
     isLoading.value = false;
-    p = {
+    pageOptions = {
       title: "Nothing to see here",
       subtitle: "Go to groups and open your client plan",
       block: true,
       style: "text-center mt-10",
     };
   }
-  options.value = p;
+  options.value = pageOptions;
 </script>
 
 <template>
