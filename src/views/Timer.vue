@@ -13,6 +13,7 @@
   import { IActivity } from "../models/Activity";
   import { useSettingStore } from "~/stores/settings";
   import { useTimerStore } from "~/stores/timer";
+  import Hourglass from "~/components/Hourglass/Hourglass.vue";
 
   const route = useRoute();
   const router = useRouter();
@@ -79,7 +80,7 @@
     return obj;
   }
 
-  function formatTime(time: number) {
+  function formatTime(time: number): string {
     const minutes = Math.floor(time / 60);
     let seconds = time % 60;
     return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
@@ -199,11 +200,11 @@
     </div>
 
     <div v-if="timerStore.isTimerBasedActivity">
-      <timer-spinner
+      <TimerSpinner
         :stroke-dasharray="strokeDasharray"
         :remaining-path-color="remainingPathColor"
         :base-timer-label="baseTimerLabel"
-      ></timer-spinner>
+      />
     </div>
     <div v-else>
       <h1 class="flex flex-col text-center my-20 text-pink-600">
