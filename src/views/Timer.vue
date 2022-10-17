@@ -3,6 +3,7 @@
   import { useRoute, useRouter } from "vue-router";
   import Button from "~/components/Button/Button.vue";
   import BackButton from "~/components/BackButton/BackButton.vue";
+  import ding from "~/assets/audio/ding.mp3";
   import {
     type TimerActivity,
     ButtonSize,
@@ -109,8 +110,16 @@
     strokeDasharray.value = circleDasharray;
   }
 
+  function playAudio(audioSrc: string) {
+    console.log("🔉 play audio");
+    const audio = new Audio(`${audioSrc}`); // path to file
+    audio.play();
+  }
+
   function onTimesUp() {
     clearInterval(timerInterval);
+
+    playAudio(ding);
 
     timePassed = 0;
     timeLeft.value = TIME_LIMIT.value;
