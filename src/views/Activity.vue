@@ -111,7 +111,9 @@
 </script>
 <template>
   <div class="mb-6">
-    <BackButton @click="router.back()" />
+    <BackButton
+      @click="router.push({ name: 'details', params: { id: sessionId } })"
+    />
   </div>
   <div class="w-full flex flex-col sm:flex-row w-full px-3 gap-3 mb-6">
     <Button

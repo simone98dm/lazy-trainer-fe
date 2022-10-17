@@ -64,7 +64,7 @@
 </script>
 <template>
   <div class="mb-6">
-    <BackButton @click="router.back()" />
+    <BackButton @click="router.push({ name: 'home' })" />
   </div>
   <div
     class="flex mb-6 gap-2"
