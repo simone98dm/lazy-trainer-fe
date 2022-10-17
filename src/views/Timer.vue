@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, watch } from "vue";
   import { useRoute, useRouter } from "vue-router";
   import Button from "~/components/Button/Button.vue";
   import BackButton from "~/components/BackButton/BackButton.vue";
@@ -14,6 +14,7 @@
   import { useSettingStore } from "~/stores/settings";
   import { useTimerStore } from "~/stores/timer";
   import Hourglass from "~/components/Hourglass/Hourglass.vue";
+  import ImageLoader from "~/components/ImageLoader/ImageLoader.vue";
 
   const route = useRoute();
   const router = useRouter();
@@ -184,6 +185,7 @@
   <div>
     <div class="flex flex-row justify-between mb-3">
       <BackButton @click="redirectToActivity"></BackButton>
+      <button @click="onTimesUp">Skip activity</button>
       <button
         v-if="!timerStore.getCurrentActivity?.requestChange"
         class="text-red-800 cursor-pointer"
@@ -199,12 +201,16 @@
       </h1>
     </div>
 
-    <div v-if="timerStore.isTimerBasedActivity">
+    <div
+      v-if="timerStore.isTimerBasedActivity"
+      :class="{ flex: timerStore.getNextActivity?.videoUrl }"
+    >
       <TimerSpinner
         :stroke-dasharray="strokeDasharray"
         :remaining-path-color="remainingPathColor"
         :base-timer-label="baseTimerLabel"
       />
+      <ImageLoader :src="timerStore.getNextActivity?.videoUrl" />
     </div>
     <div v-else>
       <h1 class="flex flex-col text-center my-20 text-pink-600">
@@ -215,7 +221,7 @@
       </h1>
     </div>
 
-    <div class="mb-3 flex justify-center">
+    <div class="mb-3 flex flex-col justify-center">
       <Button
         :icon="
           timerStore.isTimerBasedActivity
