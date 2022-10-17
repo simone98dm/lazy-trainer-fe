@@ -83,6 +83,7 @@ export function mapRawToSession(
     reps: number;
     order: number;
     warmup: boolean;
+    videoUrl: string;
     requestChange: boolean;
     sessionId: string;
   }[]
@@ -99,6 +100,7 @@ export function mapRawToSession(
         reps: activity.reps,
         order: activity.order,
         warmup: activity.warmup,
+        videoUrl: activity.videoUrl,
         requestChange: activity.requestChange,
       }));
 

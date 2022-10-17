@@ -133,6 +133,7 @@
         :warmup="act?.warmup"
         :order="act?.order"
         :reps="act?.reps"
+        :video-url="act?.videoUrl"
         :allow-detele="Boolean(activityId)"
         @update="updateActivity"
         @remove="removeActivity"

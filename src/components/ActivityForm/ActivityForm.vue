@@ -14,6 +14,7 @@
     "time",
     "warmup",
     "order",
+    "videoUrl",
     "reps",
     "allowDetele",
   ]);
@@ -28,7 +29,7 @@
   let reps = ref(props.reps || 0);
   let warmup = ref(props.warmup || false);
   let order = ref(props.order || 0);
-  let videoUrl = ref("");
+  let videoUrl = ref(props.videoUrl || "");
   let isTimeBasedActivity = ref(
     (Boolean(props.time !== 0) && Boolean(props.reps === 0)) ?? false
   );
@@ -52,7 +53,7 @@
     }
     emits("update", { activityId: id.value, activity });
   }
-  watch([name, description, time, reps, warmup, order], update);
+  watch([name, description, time, reps, warmup, order, videoUrl], update);
 </script>
 
 <template>
@@ -169,7 +170,18 @@
             type="number"
           />
         </div>
-
+        <div class="w-full md:w-full flex flex-col px-3 mb-6">
+          <label for="activityUrl">
+            Video url:
+            <input
+              type="text"
+              name="activityVideoUrl"
+              v-model="videoUrl"
+              autocomplete="false"
+              class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+            />
+          </label>
+        </div>
         <div class="w-full md:w-full flex flex-col px-3 mb-6">
           <label
             class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
@@ -193,10 +205,6 @@
             ></label>
           </div>
         </div>
-        <!-- <label for="activityUrl">
-          Video:
-          <input type="text" name="activityVideoUrl" v-model="videoUrl" />
-        </label> -->
       </div>
     </form>
   </div>
