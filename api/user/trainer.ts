@@ -2,9 +2,9 @@ import { DbTable } from "./../../utils/const";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { connectToDatabase } from "../../utils/db";
 import { verifyToken } from "../../utils/token";
-import { IPlan } from "../../src/models/Plan";
-import { ISession } from "../../src/models/Session";
 import { DB_NAME } from "../../utils/const";
+import { extractTokenFromRequest, mapRawToPlans } from "../../utils/helper";
+import { Activity, Plan, Session } from "../../utils/types";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -12,7 +12,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       return response.status(400).end();
     }
 
-    const bearer = request.headers.authorization?.split(" ")[1] ?? "";
+    const bearer = extractTokenFromRequest(request);
 
     const { id } = request.body;
 
@@ -24,18 +24,18 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         throw new Error("mongoClient is null");
       }
       const db = client.db(DB_NAME);
-      const plan = await db.collection(DbTable.PLANS).findOne({ id: id });
+      const plan = await db.collection<Plan>(DbTable.PLANS).findOne({ id: id });
 
       if (plan) {
         if (plan.trainerId === d.id) {
           const sessions = await db
-            .collection(DbTable.SESSIONS)
+            .collection<Session>(DbTable.SESSIONS)
             .find({ planId: plan?.id })
             .toArray();
 
           const sessionIds = sessions.map((session) => session.id);
           const activities = await db
-            .collection(DbTable.ACTIVITIES)
+            .collection<Activity>(DbTable.ACTIVITIES)
             .find({ sessionId: { $in: sessionIds } })
             .toArray();
 
@@ -51,58 +51,3 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     return response.status(500).json({ error: "something went wrong" });
   }
 };
-
-export function mapRawToPlans(
-  plan: any,
-  sessions: any[],
-  activities: any[]
-): IPlan {
-  return {
-    name: plan.name,
-    id: plan.id,
-    trainerId: plan.trainerId,
-    sessions: mapRawToSession(sessions, activities),
-  };
-}
-
-export function mapRawToSession(
-  sessions: {
-    id: string;
-    dayOfWeek: number;
-  }[],
-  activities: {
-    id: string;
-    description: string;
-    name: string;
-    time: number;
-    reps: number;
-    order: number;
-    warmup: boolean;
-    requestChange: boolean;
-    sessionId: string;
-  }[]
-): ISession[] {
-  const parsedSessions: ISession[] = [];
-  for (const session of sessions) {
-    const filteredExtensions = activities
-      .filter((activity) => activity.sessionId === session.id)
-      .map((activity) => ({
-        id: activity.id,
-        description: activity.description,
-        name: activity.name,
-        time: activity.time,
-        reps: activity.reps,
-        order: activity.order,
-        warmup: activity.warmup,
-        requestChange: activity.requestChange,
-      }));
-
-    parsedSessions.push({
-      dayOfWeek: session.dayOfWeek,
-      id: session.id,
-      activities: filteredExtensions,
-    });
-  }
-
-  return parsedSessions;
-}

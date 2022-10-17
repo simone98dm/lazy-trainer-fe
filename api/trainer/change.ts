@@ -1,6 +1,7 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { DbTable, DB_NAME } from "../../utils/const";
 import { connectToDatabase } from "../../utils/db";
+import { extractTokenFromRequest } from "../../utils/helper";
 import { verifyToken } from "../../utils/token";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
@@ -9,7 +10,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       return response.status(400).end();
     }
 
-    const bearer = request.headers.authorization?.split(" ")[1] ?? undefined;
+    const bearer = extractTokenFromRequest(request);
 
     if (!bearer) {
       return response

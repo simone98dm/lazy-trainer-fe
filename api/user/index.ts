@@ -1,7 +1,9 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { DbTable, DB_NAME } from "../../utils/const";
 import { connectToDatabase } from "../../utils/db";
+import { extractTokenFromRequest } from "../../utils/helper";
 import { verifyToken } from "../../utils/token";
+import { User } from "../../utils/types";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -9,7 +11,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       return response.status(400).end();
     }
 
-    const bearer = request.headers.authorization?.split(" ")[1] ?? "";
+    const bearer = extractTokenFromRequest(request);
 
     const traineId: string = request.query.user as string;
 
@@ -22,7 +24,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
       const db = client.db(DB_NAME);
       const result = await db
-        .collection(DbTable.USERS)
+        .collection<User>(DbTable.USERS)
         .findOne({ id: traineId });
 
       if (result) {

@@ -5,6 +5,8 @@ import { ISession } from "../../src/models/Session";
 import { IPlan } from "../../src/models/Plan";
 import { verifyToken } from "../../utils/token";
 import { DbTable, DB_NAME } from "../../utils/const";
+import { extractTokenFromRequest, mapRawToPlans } from "../../utils/helper";
+import { Activity, Plan, Session } from "../../utils/types";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -12,8 +14,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       return response.status(400).end();
     }
 
-    const bearer = request.headers.authorization?.split(" ")[1] ?? undefined;
-
+    const bearer = extractTokenFromRequest(request);
     if (!bearer) {
       return response
         .status(400)
@@ -30,16 +31,18 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       }
 
       const db = client.db(DB_NAME);
-      const plan = await db.collection(DbTable.PLANS).findOne({ ownerId: id });
+      const plan = await db
+        .collection<Plan>(DbTable.PLANS)
+        .findOne({ ownerId: id });
       if (plan) {
         const sessions = await db
-          .collection(DbTable.SESSIONS)
+          .collection<Session>(DbTable.SESSIONS)
           .find({ planId: plan?.id })
           .toArray();
 
         const sessionIds = sessions.map((session) => session.id);
         const activities = await db
-          .collection(DbTable.ACTIVITIES)
+          .collection<Activity>(DbTable.ACTIVITIES)
           .find({ sessionId: { $in: sessionIds } })
           .toArray();
 
@@ -56,60 +59,3 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     response.status(500).send({ error: "something went wrong" });
   }
 };
-
-export function mapRawToPlans(
-  plan: any,
-  sessions: any[],
-  activities: any[]
-): IPlan {
-  return {
-    name: plan.name,
-    id: plan.id,
-    trainerId: plan.trainerId,
-    sessions: mapRawToSession(sessions, activities),
-  };
-}
-
-export function mapRawToSession(
-  sessions: {
-    id: string;
-    dayOfWeek: number;
-  }[],
-  activities: {
-    id: string;
-    description: string;
-    name: string;
-    time: number;
-    reps: number;
-    order: number;
-    warmup: boolean;
-    videoUrl: string;
-    requestChange: boolean;
-    sessionId: string;
-  }[]
-): ISession[] {
-  const parsedSessions: ISession[] = [];
-  for (const session of sessions) {
-    const filteredExtensions = activities
-      .filter((activity) => activity.sessionId === session.id)
-      .map((activity) => ({
-        id: activity.id,
-        description: activity.description,
-        name: activity.name,
-        time: activity.time,
-        reps: activity.reps,
-        order: activity.order,
-        warmup: activity.warmup,
-        videoUrl: activity.videoUrl,
-        requestChange: activity.requestChange,
-      }));
-
-    parsedSessions.push({
-      dayOfWeek: session.dayOfWeek,
-      id: session.id,
-      activities: filteredExtensions,
-    });
-  }
-
-  return parsedSessions;
-}

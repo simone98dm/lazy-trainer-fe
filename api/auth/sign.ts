@@ -5,6 +5,8 @@ import bcrypt from "bcrypt";
 import { connectToDatabase } from "../../utils/db";
 import { DbTable, DB_NAME, SECRET_KEY } from "../../utils/const";
 import { verifyToken } from "../../utils/token";
+import { User } from "../../utils/types";
+import { extractTokenFromRequest } from "../../utils/helper";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -14,9 +16,9 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         return response.status(400).end();
       }
 
-      let token = request.headers.authorization.split(" ")[1];
+      let bearer = extractTokenFromRequest(request);
 
-      const isValid = verifyToken(token);
+      const isValid = verifyToken(bearer);
       if (!isValid) {
         response.status(403).send({ error: "token not valid" });
       } else {
@@ -27,7 +29,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         } else {
           // increment hits and renew token
           hits += 1;
-          token = await jwt.sign({ id, name, role, hits }, SECRET_KEY);
+          bearer = await jwt.sign({ id, name, role, hits }, SECRET_KEY);
         }
 
         const body: IUserResponse = {
@@ -35,7 +37,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
             id,
             name,
             role,
-            token,
+            token: bearer,
           },
         };
 
@@ -60,7 +62,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       }
       const db = client.db(DB_NAME);
       const user = await db
-        .collection(DbTable.USERS)
+        .collection<User>(DbTable.USERS)
         .findOne({ name: username });
 
       if (!user) {

@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { connectToDatabase } from "../../utils/db";
 import { DbTable, DB_NAME, SECRET_KEY } from "../../utils/const";
+import { Plan, User } from "../../utils/types";
+import { extractTokenFromRequest } from "../../utils/helper";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -9,7 +11,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       return response.status(400).end();
     }
 
-    const bearer = request.headers.authorization?.split(" ")[1] ?? "";
+    const bearer = extractTokenFromRequest(request);
 
     const { id } = request.body;
 
@@ -22,14 +24,14 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
       const db = client.db(DB_NAME);
       const plans = await db
-        .collection("plans")
+        .collection<Plan>(DbTable.PLANS)
         .find({ trainerId: id })
         .toArray();
 
       if (plans) {
         const userIds = plans.map((plans) => plans.ownerId);
         const userInfos = await db
-          .collection(DbTable.USERS)
+          .collection<User>(DbTable.USERS)
           .find({ id: { $in: userIds } })
           .toArray();
 
