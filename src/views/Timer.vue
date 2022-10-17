@@ -13,7 +13,6 @@
   import { IActivity } from "../models/Activity";
   import { useSettingStore } from "~/stores/settings";
   import { useTimerStore } from "~/stores/timer";
-  import Hourglass from "~/components/Hourglass/Hourglass.vue";
   import ImageLoader from "~/components/ImageLoader/ImageLoader.vue";
 
   const route = useRoute();
@@ -185,7 +184,6 @@
   <div>
     <div class="flex flex-row justify-between mb-3">
       <BackButton @click="redirectToActivity"></BackButton>
-      <button @click="onTimesUp">Skip activity</button>
       <button
         v-if="!timerStore.getCurrentActivity?.requestChange"
         class="text-red-800 cursor-pointer"
@@ -203,7 +201,13 @@
 
     <div
       v-if="timerStore.isTimerBasedActivity"
-      :class="{ flex: timerStore.getNextActivity?.videoUrl }"
+      :class="[
+        'w-full',
+        {
+          'flex sm:flex-row flex-col justify-center':
+            timerStore.getNextActivity?.videoUrl,
+        },
+      ]"
     >
       <TimerSpinner
         :stroke-dasharray="strokeDasharray"

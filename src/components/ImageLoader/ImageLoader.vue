@@ -3,10 +3,9 @@
 </script>
 
 <template>
-  <div v-if="props.src">
+  <div v-if="props.src" class="w-full p-3 md:w-1/2">
     <iframe
-      height="300"
-      width="450"
+      class="w-full h-full"
       :src="props.src"
       title="Video player"
       frameborder="0"
