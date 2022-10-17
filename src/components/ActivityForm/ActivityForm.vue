@@ -173,7 +173,9 @@
         </div>
         <div class="w-full md:w-full flex flex-col px-3 mb-6">
           <label for="activityUrl">
-            Video url (<i>just the video id, es. auBLPXO8Fww</i>):
+            Video url (<i class="text-gray-500"
+              >just the video id, es. auBLPXO8Fww</i
+            >):
             <input
               type="text"
               name="activityVideoUrl"
