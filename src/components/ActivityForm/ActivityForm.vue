@@ -53,6 +53,7 @@
     }
     emits("update", { activityId: id.value, activity });
   }
+
   watch([name, description, time, reps, warmup, order, videoUrl], update);
 </script>
 
@@ -172,7 +173,7 @@
         </div>
         <div class="w-full md:w-full flex flex-col px-3 mb-6">
           <label for="activityUrl">
-            Video url:
+            Video url (<i>just the video id, es. auBLPXO8Fww</i>):
             <input
               type="text"
               name="activityVideoUrl"
