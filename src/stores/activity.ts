@@ -253,10 +253,7 @@ export const useActivityStore = defineStore("activity", {
               x.dayOfWeek < y.dayOfWeek ? -1 : 1
             )
             .map(parseSessions)
-        )
-        .catch((error) => {
-          console.log(error);
-        });
+        );
     },
     moveActivity(
       sessionId: string | undefined,

@@ -111,7 +111,6 @@
   }
 
   function playAudio(audioSrc: string) {
-    console.log("🔉 play audio");
     const audio = new Audio(`${audioSrc}`); // path to file
     audio.play();
   }
