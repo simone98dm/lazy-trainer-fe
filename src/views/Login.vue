@@ -1,10 +1,13 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { useRouter } from "vue-router";
+  import { useRoute, useRouter } from "vue-router";
   import { useUserStore } from "~/stores/user";
   import Button from "~/components/Button/Button.vue";
   import { ButtonColor } from "~/utils";
   import { useSettingStore } from "~/stores/settings";
+  import { getAnalytics, logEvent } from "firebase/analytics";
+
+  const route = useRoute();
 
   const username = ref("");
   const password = ref("");
@@ -33,6 +36,14 @@
     isLoading.value = true;
     await userStore.signIn(username.value, password.value).then((response) => {
       isLoading.value = false;
+
+      logEvent(getAnalytics(), "login", {
+        page_title: route.name,
+        page_location: window.location.href,
+        page_path: route.path,
+        error: response.error,
+      });
+
       if (!response) {
         router.push({
           name: "home",
