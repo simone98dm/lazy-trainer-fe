@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { useRoute, useRouter } from "vue-router";
+  import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
   import Button from "~/components/Button/Button.vue";
   import BackButton from "~/components/BackButton/BackButton.vue";
   import ding from "~/assets/audio/ding.mp3";
@@ -36,6 +36,18 @@
   const { sessionId, activityId } = route.params;
 
   setupTimer(activityId as string);
+
+  onBeforeRouteLeave(() => {
+    const answer = confirm(
+      "Do you really want to leave? you have unsaved changes!"
+    );
+    if (!answer) {
+      return false;
+    }
+
+    timerStore.reset();
+    clearInterval(timerInterval);
+  });
 
   function setupTimer(activityId: string) {
     const activities = timerStore.getListActivities;
