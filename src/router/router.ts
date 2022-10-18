@@ -1,16 +1,19 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, RouteComponent } from "vue-router";
 import { useUserStore } from "../stores/user";
 import { Role } from "../utils/enum";
-import Home from "../views/Home.vue";
-import Details from "../views/Details.vue";
-import Activity from "../views/Activity.vue";
-import Timer from "../views/Timer.vue";
-import Session from "../views/Session.vue";
-import Login from "../views/Login.vue";
-import Settings from "../views/Settings.vue";
-import Trainer from "../views/Trainer.vue";
-import Group from "../views/Group.vue";
-import NotFound from "../views/NotFound.vue";
+
+const Home = (): Promise<RouteComponent> => import("../views/Home.vue");
+const Details = (): Promise<RouteComponent> => import("../views/Details.vue");
+const Activity = (): Promise<RouteComponent> => import("../views/Activity.vue");
+const Timer = (): Promise<RouteComponent> => import("../views/Timer.vue");
+const Session = (): Promise<RouteComponent> => import("../views/Session.vue");
+const Login = (): Promise<RouteComponent> => import("../views/Login.vue");
+const Settings = (): Promise<RouteComponent> => import("../views/Settings.vue");
+const Trainer = (): Promise<RouteComponent> => import("../views/Trainer.vue");
+const Group = (): Promise<RouteComponent> => import("../views/Group.vue");
+const NotFound = (): Promise<RouteComponent> => import("../views/NotFound.vue");
+const About = (): Promise<RouteComponent> => import("../views/About.vue");
+const License = (): Promise<RouteComponent> => import("../views/License.vue");
 
 const routes = [
   {
@@ -111,6 +114,24 @@ const routes = [
       requireAdmin: false,
     },
   },
+  {
+    path: "/about",
+    name: "about",
+    component: About,
+    meta: {
+      requireAuth: false,
+      requireAdmin: false,
+    },
+  },
+  {
+    path: "/license",
+    name: "license",
+    component: License,
+    meta: {
+      requireAuth: false,
+      requireAdmin: false,
+    },
+  },
 ];
 
 const router = createRouter({
@@ -119,7 +140,7 @@ const router = createRouter({
   linkExactActiveClass: "bg-slate-100 text-indigo-600",
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach((to) => {
   const userStore = useUserStore();
   if (to.meta.requireAuth && !userStore.isLogged) {
     return "/login";

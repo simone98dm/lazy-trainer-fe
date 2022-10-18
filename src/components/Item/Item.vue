@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import Icon from "~/components/Icons/Icon.vue";
-  import { IconSize } from "~/utils";
 
   const props = defineProps([
     "id",
@@ -18,7 +17,7 @@
     if (minutes === 0) {
       return `${(seconds < 10 ? "0" : "") + seconds}"`;
     }
-    return `${minutes}' ${(seconds < 10 ? "0" : "") + seconds}"`;
+    return `${minutes}'${(seconds < 10 ? "0" : "") + seconds}"`;
   }
 </script>
 
@@ -27,14 +26,14 @@
     <div class="flex flex-row items-center justify-between">
       <div class="flex">
         <div
-          class="p-2 hidden sm:block flex justify-center align-center"
           v-if="props.icon"
+          class="p-2 hidden sm:block flex justify-center align-center"
         >
           <Icon :component="props.icon" />
         </div>
         <div
-          class="sm:ml-4 flex flex-col justify-center pl-2"
           v-if="props.name"
+          class="sm:ml-2 flex flex-col justify-center pl-2"
         >
           <h4
             :class="[
@@ -53,13 +52,13 @@
       <div>
         <h4
           v-if="props.time"
-          class="font-bold text-6xl sm:text-4xl text-slate-500"
+          class="font-bold text-5xl sm:text-4xl text-slate-500"
         >
           {{ millisToMinutesAndSeconds(props.time) }}
         </h4>
         <h4
           v-else-if="props.reps"
-          class="font-bold text-6xl sm:text-4xl text-slate-500"
+          class="font-bold text-5xl sm:text-4xl text-slate-500"
         >
           {{ props.reps }}r
         </h4>
