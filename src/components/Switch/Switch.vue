@@ -4,21 +4,30 @@
 </script>
 
 <template>
-  <!-- <div
-    class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in"
-  > -->
-  <input
-    type="checkbox"
-    :id="id"
-    :name="name"
-    :checked="checked"
-    @change="$emit('toggle', (($event.target as any) || undefined)?.checked)"
-    class="w-6 h-6 rounded-full bg-white"
-  />
-  <!-- class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" -->
-  <!-- <label
-      :for="id"
-      class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"
-    ></label>
-  </div> -->
+  <label :for="id" class="flex items-center cursor-pointer">
+    <div class="relative">
+      <input
+        type="checkbox"
+        class="sr-only"
+        :id="id"
+        :name="name"
+        :checked="checked"
+        @change="
+          $emit('toggle', (($event.target as any) || undefined)?.checked)
+        "
+      />
+      <div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+      <div
+        class="dot absolute w-6 h-6 bg-gray-200 rounded-full shadow -left-1 -top-1 transition"
+      ></div>
+    </div>
+  </label>
 </template>
+
+<style>
+  /* Toggle A */
+  input:checked ~ .dot {
+    transform: translateX(100%);
+    background-color: rgb(79 70 229 / var(--tw-bg-opacity));
+  }
+</style>

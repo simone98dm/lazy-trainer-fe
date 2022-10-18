@@ -204,14 +204,3 @@
     </form>
   </div>
 </template>
-
-<style>
-  .toggle-checkbox:checked {
-    right: 0;
-    border-color: rgb(79 70 229 / var(--tw-bg-opacity));
-  }
-
-  .toggle-checkbox:checked + .toggle-label {
-    background-color: rgb(79 70 229 / var(--tw-bg-opacity));
-  }
-</style>
