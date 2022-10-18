@@ -61,8 +61,6 @@
           <Loading v-else :small="true"></Loading>
         </div>
       </div>
-    </div>
-    <div class="shadow p-5 rounded-xl mb-6 bg-white">
       <h1 class="text-2xl font-bold mb-3">Preferences</h1>
       <div class="w-full p-3">
         <div
