@@ -41,7 +41,7 @@
         page_title: route.name,
         page_location: window.location.href,
         page_path: route.path,
-        error: response.error,
+        error: response?.error,
       });
 
       if (!response) {

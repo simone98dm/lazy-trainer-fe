@@ -60,7 +60,7 @@ export const useActivityStore = defineStore("activity", {
       const userStore = useUserStore();
       if (userStore.isLogged) {
         if (!this.plan) {
-          const storage = getStorage();
+          const storage = getStorage<IPlan>("_plan");
           if (!storage) {
             try {
               return getPlan(userStore.token).then((plan) => {
@@ -69,14 +69,14 @@ export const useActivityStore = defineStore("activity", {
                 } else {
                   this.plan = plan;
                 }
-                saveStorage(this.plan);
+                saveStorage("_plan", this.plan);
               });
             } catch (error) {
               console.error(error);
             }
 
             this.plan = generateBlankPlan();
-            saveStorage(this.plan);
+            saveStorage("_plan", this.plan);
           } else {
             this.plan = storage;
             return Promise.resolve(storage);
@@ -140,7 +140,7 @@ export const useActivityStore = defineStore("activity", {
         }
       }
 
-      saveStorage(this.plan);
+      saveStorage("_plan", this.plan);
     },
     async removeActivity(sessionId: string, activityId: string) {
       const settingsStore = useSettingStore();
@@ -168,7 +168,7 @@ export const useActivityStore = defineStore("activity", {
         action: DataAction.ACTIVITY_DELETE,
       }).then(() => settingsStore.loading(false));
 
-      saveStorage(this.plan);
+      saveStorage("_plan", this.plan);
     },
     async addSession(session: ISession) {
       const settingsStore = useSettingStore();
@@ -208,7 +208,7 @@ export const useActivityStore = defineStore("activity", {
         }).then(() => settingsStore.loading(false));
       }
 
-      saveStorage(this.plan);
+      saveStorage("_plan", this.plan);
     },
     async deleteSession(sessionId: string) {
       const settingsStore = useSettingStore();
@@ -226,7 +226,7 @@ export const useActivityStore = defineStore("activity", {
         action: DataAction.SESSION_DELETE,
       }).then(() => settingsStore.loading(false));
 
-      saveStorage(this.plan);
+      saveStorage("_plan", this.plan);
     },
     setDuplicateWarmup(warmUpActivities: IActivity[] | undefined) {
       if (warmUpActivities) {
@@ -288,7 +288,7 @@ export const useActivityStore = defineStore("activity", {
               });
             });
 
-            saveStorage(this.plan);
+            saveStorage("_plan", this.plan);
             this.addActivity(sessionId, {
               ...existingActivity,
               order: newIndex,

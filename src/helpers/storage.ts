@@ -1,12 +1,10 @@
-import { IPlan } from "../models/Plan";
-
-export function saveStorage(data: any) {
+export function saveStorage(name: string, data: any) {
   const s = JSON.stringify(data);
-  localStorage.setItem("_plan", s);
+  localStorage.setItem(name, s);
 }
 
-export function getStorage(): IPlan | undefined {
-  const data = localStorage.getItem("_plan");
+export function getStorage<T>(name: string): T | undefined {
+  const data = localStorage.getItem(name);
   if (!data) {
     return undefined;
   }

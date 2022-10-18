@@ -1,17 +1,18 @@
 <script setup lang="ts">
-  import { ref, watch } from "vue";
+  import { ref } from "vue";
   import { useRoute, useRouter } from "vue-router";
   import Button from "~/components/Button/Button.vue";
   import BackButton from "~/components/BackButton/BackButton.vue";
   import ding from "~/assets/audio/ding.mp3";
+  import horn from "~/assets/audio/horn.mp3";
   import {
     type TimerActivity,
     ButtonSize,
     COLOR_CODES,
     FULL_DASH_ARRAY,
   } from "../utils";
-  import TimerSpinner from "../components/TimerSpinner/TimerSpinner.vue";
-  import { IActivity } from "../models/Activity";
+  import TimerSpinner from "~/components/TimerSpinner/TimerSpinner.vue";
+  import { IActivity } from "~/models/Activity";
   import { useSettingStore } from "~/stores/settings";
   import { useTimerStore } from "~/stores/timer";
   import ImageLoader from "~/components/ImageLoader/ImageLoader.vue";
@@ -35,7 +36,6 @@
   const { sessionId, activityId } = route.params;
 
   setupTimer(activityId as string);
-  startTimer();
 
   function setupTimer(activityId: string) {
     const activities = timerStore.getListActivities;
@@ -110,15 +110,17 @@
     strokeDasharray.value = circleDasharray;
   }
 
+  let audio = new Audio();
   function playAudio(audioSrc: string) {
-    const audio = new Audio(`${audioSrc}`); // path to file
-    audio.play();
+    if (!settingsStore.audioDisabled) {
+      audio.pause();
+      audio = new Audio(audioSrc);
+      audio.play();
+    }
   }
 
   function onTimesUp() {
     clearInterval(timerInterval);
-
-    playAudio(ding);
 
     timePassed = 0;
     timeLeft.value = TIME_LIMIT.value;
@@ -127,6 +129,7 @@
     baseTimerLabel.value = formatTime(timeLeft.value);
 
     if (timerStore.getNextActivity) {
+      playAudio(ding);
       const activityId = timerStore.getNextActivity.id;
       router.push({
         name: "timer",
@@ -137,8 +140,9 @@
       });
 
       setupTimer(activityId);
-      startTimer();
+      runTimer();
     } else {
+      playAudio(horn);
       timerStore.reset();
       router.push({
         name: "details",
@@ -149,7 +153,7 @@
     }
   }
 
-  function startTimer() {
+  function runTimer() {
     timerInterval = setInterval(() => {
       if (timerStore.isRunning) {
         timePassed = timePassed += 1;
@@ -168,6 +172,10 @@
   function toggleTimer() {
     if (timerStore.isTimerBasedActivity) {
       timerStore.toggle();
+      if (!timerInterval) {
+        runTimer();
+      } else {
+      }
     } else {
       onTimesUp();
     }
@@ -175,6 +183,7 @@
 
   function redirectToActivity() {
     timerStore.reset();
+    clearInterval(timerInterval);
     router.push({
       name: "details",
       params: {

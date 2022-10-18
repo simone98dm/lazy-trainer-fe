@@ -21,6 +21,7 @@
   const userStore = useUserStore();
 
   settingsStore.setHeader(`Hello ${userStore.getUsername} 👋`);
+  settingsStore.loadSettings();
 
   const router = useRouter();
   const route = useRoute();

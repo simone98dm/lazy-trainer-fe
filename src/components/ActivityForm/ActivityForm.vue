@@ -5,6 +5,7 @@
   import { v4 as uuidv4 } from "uuid";
   import { useUserStore } from "~/stores/user";
   import { ButtonColor } from "~/utils";
+  import Switch from "~/components/Switch/Switch.vue";
 
   const props = defineProps([
     "id",
@@ -192,21 +193,12 @@
           >
             Is warm-up?
           </label>
-          <div
-            class="relative inline-block w-14 mr-2 align-middle select-none transition duration-200 ease-in"
-          >
-            <input
-              id="toggle"
-              class="toggle-checkbox absolute block w-8 h-8 rounded-full bg-white border-2 appearance-none cursor-pointer"
-              name="toggle"
-              type="checkbox"
-              v-model="warmup"
-            />
-            <label
-              class="toggle-label block overflow-hidden h-8 rounded-full bg-gray-300 cursor-pointer"
-              for="toggle"
-            ></label>
-          </div>
+          <Switch
+            id="toggle"
+            name="toggleWarmup"
+            :checked="warmup"
+            @toggle="(v) => (warmup = v)"
+          />
         </div>
       </div>
     </form>
