@@ -10,7 +10,7 @@
     ButtonSize,
     COLOR_CODES,
     FULL_DASH_ARRAY,
-  } from "../utils";
+  } from "~/utils";
   import TimerSpinner from "~/components/TimerSpinner/TimerSpinner.vue";
   import { IActivity } from "~/models/Activity";
   import { useSettingStore } from "~/stores/settings";
@@ -38,11 +38,13 @@
   setupTimer(activityId as string);
 
   onBeforeRouteLeave(() => {
-    const answer = confirm(
-      "Do you really want to leave? you have unsaved changes!"
-    );
-    if (!answer) {
-      return false;
+    if (timerStore.getNextActivity) {
+      const answer = confirm(
+        "Do you really want to leave? you have unsaved changes!"
+      );
+      if (!answer) {
+        return false;
+      }
     }
 
     timerStore.reset();
@@ -140,9 +142,10 @@
     strokeDasharray.value = `283`;
     baseTimerLabel.value = formatTime(timeLeft.value);
 
-    if (timerStore.getNextActivity) {
+    const nextActivity = timerStore.getNextActivity;
+    if (nextActivity) {
       playAudio(ding);
-      const activityId = timerStore.getNextActivity.id;
+      const activityId = nextActivity.id;
       router.push({
         name: "timer",
         params: {
