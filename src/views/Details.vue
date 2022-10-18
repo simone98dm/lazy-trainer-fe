@@ -64,7 +64,14 @@
 </script>
 <template>
   <div class="mb-6">
-    <BackButton @click="router.push({ name: 'home' })" />
+    <BackButton
+      @click="
+        router.push({
+          name: 'home',
+          params: { planId: userStore.isTrainer ? activityStore.plan?.id : '' },
+        })
+      "
+    />
   </div>
   <div
     class="flex mb-6 gap-2"
