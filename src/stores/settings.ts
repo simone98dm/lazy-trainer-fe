@@ -5,7 +5,7 @@ export const useSettingStore = defineStore("settings", {
   state: () => ({
     headerText: "Trainer",
     globalLoading: false,
-    audioDisabled: true,
+    audioDisabled: false,
   }),
   getters: {
     getHeaderText(state) {
