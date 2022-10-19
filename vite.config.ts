@@ -1,7 +1,12 @@
-import { defineConfig } from "vite";
+import { app, metaTags } from "./meta";
+import { defineConfig, loadEnv } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import HtmlConfig from "vite-plugin-html-config";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
+import { VitePluginFonts } from "vite-plugin-fonts";
+
+const ENV = loadEnv("development", process.cwd());
 
 export default defineConfig({
   resolve: {
@@ -9,19 +14,32 @@ export default defineConfig({
       "~/": `${path.resolve(__dirname, "src")}/`,
     },
   },
+  build: {
+    sourcemap: true,
+    emptyOutDir: true,
+  },
   plugins: [
     vue(),
+    HtmlConfig({
+      metas: metaTags(ENV),
+    }),
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
         cleanupOutdatedCaches: false,
+        sourcemap: true,
+        offlineGoogleAnalytics: true,
+        clientsClaim: true,
+        skipWaiting: true,
       },
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
       manifest: {
-        name: "Lazy Trainer",
-        short_name: "Trainer",
-        description: "Lazy Trainer tracker",
-        theme_color: "#4f46e5",
+        name: app.name,
+        short_name: app.shortName,
+        description: app.description,
+        theme_color: app.app.background,
+        start_url: "/?source=pwa",
+        categories: app.categories,
         icons: [
           {
             src: "android-chrome-192x192.png",
@@ -33,6 +51,14 @@ export default defineConfig({
             sizes: "512x512",
             type: "image/png",
           },
+        ],
+      },
+    }),
+    VitePluginFonts({
+      google: {
+        families: [
+          "Lato:wght@400;500;600;700;800",
+          "Inter:wght@400;500;600;700;800",
         ],
       },
     }),

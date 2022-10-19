@@ -25,7 +25,9 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "api/trainer/utils/session.ts",
-    "api/connectToDatabase.ts"
+    "api/connectToDatabase.ts",
+    "meta.ts",
+    "meta.ts"
   ],
   "references": [
     {
