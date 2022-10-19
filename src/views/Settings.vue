@@ -104,12 +104,14 @@
       >
       </Link>
     </div>
-    <Button
-      :color="ButtonColor.PRIMARY"
-      full="false"
-      icon="logout"
-      label="Logout"
-      @click="() => userStore.logout()"
-    />
+    <div class="w-full flex justify-center">
+      <Button
+        :color="ButtonColor.PRIMARY"
+        full="true"
+        icon="logout"
+        label="Logout"
+        @click="() => userStore.logout()"
+      />
+    </div>
   </div>
 </template>

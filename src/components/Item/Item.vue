@@ -22,7 +22,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col rounded-xl bg-white p-3 shadow-lg mb-2">
+  <div class="flex flex-col rounded-xl bg-white p-6 md:p-4 shadow-lg mb-2">
     <div class="flex flex-row items-center justify-between">
       <div class="flex">
         <div
@@ -31,10 +31,7 @@
         >
           <Icon :component="props.icon" />
         </div>
-        <div
-          v-if="props.name"
-          class="sm:ml-2 flex flex-col justify-center pl-2"
-        >
+        <div v-if="props.name" class="flex flex-col justify-center sm:ml-2">
           <h4
             :class="[
               'text-gray-600',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores/user";
-  import { ButtonColor, Theme, IconSize } from "~/utils";
+  import { ButtonColor, ButtonSize } from "~/utils";
   import Icon from "~/components/Icons/Icon.vue";
   import Loading from "~/components/Loading/Loading.vue";
   const props = defineProps([
@@ -22,10 +22,16 @@
       'flex',
       'justify-center',
       'item-center',
-      { 'w-full': props.full ?? false },
-      { 'w-full sm:w-fit': !props.full },
       'appearance-none',
       'block',
+      'font-bold',
+      'rounded-lg',
+      'py-3',
+      'px-3',
+      'shadow-lg',
+      'mb-2',
+      { 'w-full xl:w-1/3 lg:w-1/2 md:w-4/5': props.full ?? false },
+      { 'w-full sm:w-fit': !props.full },
       {
         'bg-indigo-600 hover:bg-indigo-500 text-gray-100':
           (!props.color || props.color === ButtonColor.PRIMARY) &&
@@ -61,18 +67,14 @@
           props.color === ButtonColor.TRASPARENT,
       },
       {
-        'text-black': props.theme === Theme.LIGHT,
+        'text-xl': props.size === ButtonSize.LARGE,
       },
       {
-        'text-white': props.theme === Theme.DARK,
+        'text-md': props.size === ButtonSize.MEDIUM,
       },
-      'font-bold',
-      'rounded-lg',
-      'py-3',
-      'px-3',
-      'shadow-lg',
-      'hover:bg-indigo-500',
-      'mb-2',
+      {
+        'text-sm': props.size === ButtonSize.SMALL,
+      },
     ]"
     type="button"
     @click="emit('click')"
