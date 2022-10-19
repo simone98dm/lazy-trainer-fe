@@ -94,14 +94,16 @@
       <div class="text-center mb-6">
         <span v-if="error" class="font-bold text-red-500">{{ error }}</span>
       </div>
-      <Button
-        :loading="isLoading"
-        :color="ButtonColor.PRIMARY"
-        label="Login"
-        icon="login"
-        full="true"
-        @click="submit"
-      />
+      <div class="flex justify-center">
+        <Button
+          :loading="isLoading"
+          :color="ButtonColor.PRIMARY"
+          label="Login"
+          icon="login"
+          full="true"
+          @click="submit"
+        />
+      </div>
     </form>
   </div>
 </template>

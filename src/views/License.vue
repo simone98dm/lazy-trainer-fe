@@ -12,7 +12,7 @@
     <BackButton @click="router.back()"></BackButton>
   </div>
   <div class="shadow p-5 rounded-xl mb-6 bg-white">
-    <pre class="mx-auto">
+    <pre>
 MIT License
 
 Copyright (c) 2022 simone98dm
@@ -38,3 +38,13 @@ SOFTWARE.
     >
   </div>
 </template>
+
+<style>
+  pre {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+  }
+</style>

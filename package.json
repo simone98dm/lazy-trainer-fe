@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "lazy-trainer-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,8 +8,9 @@
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "vercel:dev": "vercel dev",
-    "prepare": "husky install",
+    "test:e2e": "npx cypress open",
     "mock": " node ./local/index.js",
+    "prepare": "husky install",
     "gource": "gource -f -s 1 -a 1 --key --max-files 0 --disable-progress"
   },
   "dependencies": {
@@ -52,6 +53,8 @@
     "tailwindcss": "^3.1.8",
     "typescript": "^4.6.4",
     "vite": "^3.1.0",
+    "vite-plugin-fonts": "^0.6.0",
+    "vite-plugin-html-config": "^1.0.10",
     "vite-plugin-pwa": "^0.13.1",
     "vue-tsc": "^0.40.4"
   },

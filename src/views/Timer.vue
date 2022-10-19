@@ -257,7 +257,7 @@
       </h1>
     </div>
 
-    <div class="mb-3 flex flex-col justify-center">
+    <div class="w-full flex justify-center mb-3">
       <Button
         :icon="
           timerStore.isTimerBasedActivity

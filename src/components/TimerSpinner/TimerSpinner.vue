@@ -9,7 +9,7 @@
 <template>
   <div class="mb-6">
     <div class="box">
-      <div class="base-timer">
+      <div class="base-timer xl:w-1/3 lg:w-1/2 md:w-4/5 w-3/4">
         <svg
           class="base-timer__svg"
           viewBox="0 0 100 100"
@@ -30,7 +30,10 @@
             ></path>
           </g>
         </svg>
-        <span id="base-timer-label" class="base-timer__label">
+        <span
+          id="base-timer-label"
+          class="base-timer__label text-6xl md:text-7xl lg:text-6xl"
+        >
           {{ props.baseTimerLabel }}
         </span>
       </div>
@@ -46,8 +49,6 @@
   }
   .base-timer {
     position: relative;
-    width: 300px;
-    height: 300px;
   }
 
   .base-timer__svg {
@@ -88,12 +89,11 @@
 
   .base-timer__label {
     position: absolute;
-    width: 300px;
-    height: 300px;
-    top: 0;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 48px;
   }
 </style>
