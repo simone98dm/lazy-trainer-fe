@@ -35,6 +35,9 @@ export const useTimerStore = defineStore("timer", {
     getListActivities(state) {
       return state.listActivities;
     },
+    hasNextActivity(state) {
+      return state.nextActivity !== undefined;
+    },
   },
   actions: {
     setListActivities(activities: IActivity[] | undefined) {
