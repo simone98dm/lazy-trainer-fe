@@ -7,7 +7,7 @@
 </script>
 
 <template>
-  <div class="mb-6">
+  <div class="w-full md:w-1/2 mb-6">
     <div class="box">
       <div class="base-timer xl:w-1/3 lg:w-1/2 md:w-4/5 w-3/4">
         <svg
