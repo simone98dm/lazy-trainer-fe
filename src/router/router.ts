@@ -9,7 +9,6 @@ const Timer = (): Promise<RouteComponent> => import("../views/Timer.vue");
 const Session = (): Promise<RouteComponent> => import("../views/Session.vue");
 const Login = (): Promise<RouteComponent> => import("../views/Login.vue");
 const Settings = (): Promise<RouteComponent> => import("../views/Settings.vue");
-const Trainer = (): Promise<RouteComponent> => import("../views/Trainer.vue");
 const Group = (): Promise<RouteComponent> => import("../views/Group.vue");
 const NotFound = (): Promise<RouteComponent> => import("../views/NotFound.vue");
 const About = (): Promise<RouteComponent> => import("../views/About.vue");
@@ -77,15 +76,6 @@ const routes = [
     meta: {
       requireAuth: true,
       requireAdmin: false,
-    },
-  },
-  {
-    name: "trainer",
-    path: "/trainer/:planId",
-    component: Trainer,
-    meta: {
-      requireAuth: true,
-      requireAdmin: true,
     },
   },
   {

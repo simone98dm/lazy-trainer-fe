@@ -1,10 +1,12 @@
 <script setup lang="ts">
-  import Link from "~/components/Link/Link.vue";
-  import Item from "~/components/Item/Item.vue";
-  import PlaceholderList from "~/components/Placeholder/PlaceholderList.vue";
   import { useSettingStore } from "~/stores/settings";
   import { useUserStore } from "~/stores/user";
-  import { ref } from "vue";
+  import { defineAsyncComponent, ref } from "vue";
+  const Link = defineAsyncComponent(() => import("~/components/Link/Link.vue"));
+  const Item = defineAsyncComponent(() => import("~/components/Item/Item.vue"));
+  const PlaceholderList = defineAsyncComponent(
+    () => import("~/components/Placeholder/PlaceholderList.vue")
+  );
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();

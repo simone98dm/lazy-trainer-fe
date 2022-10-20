@@ -1,14 +1,21 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from "vue-router";
-  import ActivityForm from "~/components/ActivityForm/ActivityForm.vue";
-  import BackButton from "~/components/BackButton/BackButton.vue";
   import { useActivityStore } from "~/stores/activity";
   import { useSettingStore } from "~/stores/settings";
   import { IActivity } from "~/models/Activity";
   import { ButtonColor } from "~/utils";
-  import Button from "~/components/Button/Button.vue";
-  import { v4 as uuidv4 } from "uuid";
+  import { defineAsyncComponent } from "vue";
   import { ref } from "vue";
+  import { v4 as uuidv4 } from "uuid";
+  const Button = defineAsyncComponent(
+    () => import("~/components/Button/Button.vue")
+  );
+  const ActivityForm = defineAsyncComponent(
+    () => import("~/components/ActivityForm/ActivityForm.vue")
+  );
+  const BackButton = defineAsyncComponent(
+    () => import("~/components/BackButton/BackButton.vue")
+  );
 
   const route = useRoute();
   const router = useRouter();

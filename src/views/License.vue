@@ -1,7 +1,10 @@
 <script setup lang="ts">
   import { useSettingStore } from "~/stores/settings";
   import { useRouter } from "vue-router";
-  import BackButton from "~/components/BackButton/BackButton.vue";
+  import { defineAsyncComponent } from "vue";
+  const BackButton = defineAsyncComponent(
+    () => import("~/components/BackButton/BackButton.vue")
+  );
   const router = useRouter();
 
   const settingsStore = useSettingStore();

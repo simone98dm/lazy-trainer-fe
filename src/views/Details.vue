@@ -1,16 +1,23 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router";
   import router from "~/router/router";
-  import Link from "~/components/Link/Link.vue";
-  import Button from "~/components/Button/Button.vue";
-  import ActivityList from "~/components/ActivityList/ActivityList.vue";
-  import BackButton from "~/components/BackButton/BackButton.vue";
   import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "~/utils";
   import { useUserStore } from "~/stores/user";
   import { useTimerStore } from "~/stores/timer";
   import { useSettingStore } from "~/stores/settings";
   import { useActivityStore } from "~/stores/activity";
-  import { ref } from "vue";
+  import { ref, defineAsyncComponent } from "vue";
+
+  const ActivityList = defineAsyncComponent(
+    () => import("~/components/ActivityList/ActivityList.vue")
+  );
+  const BackButton = defineAsyncComponent(
+    () => import("~/components/BackButton/BackButton.vue")
+  );
+  const Link = defineAsyncComponent(() => import("~/components/Link/Link.vue"));
+  const Button = defineAsyncComponent(
+    () => import("~/components/Button/Button.vue")
+  );
 
   const route = useRoute();
   const activityStore = useActivityStore();

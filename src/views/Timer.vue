@@ -1,8 +1,6 @@
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { defineAsyncComponent, ref } from "vue";
   import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
-  import Button from "~/components/Button/Button.vue";
-  import BackButton from "~/components/BackButton/BackButton.vue";
   import ding from "~/assets/audio/ding.mp3";
   import horn from "~/assets/audio/horn.mp3";
   import {
@@ -11,11 +9,21 @@
     COLOR_CODES,
     FULL_DASH_ARRAY,
   } from "~/utils";
-  import TimerSpinner from "~/components/TimerSpinner/TimerSpinner.vue";
   import { IActivity } from "~/models/Activity";
   import { useSettingStore } from "~/stores/settings";
   import { useTimerStore } from "~/stores/timer";
-  import ImageLoader from "~/components/ImageLoader/ImageLoader.vue";
+  const ImageLoader = defineAsyncComponent(
+    () => import("~/components/ImageLoader/ImageLoader.vue")
+  );
+  const Button = defineAsyncComponent(
+    () => import("~/components/Button/Button.vue")
+  );
+  const BackButton = defineAsyncComponent(
+    () => import("~/components/BackButton/BackButton.vue")
+  );
+  const TimerSpinner = defineAsyncComponent(
+    () => import("~/components/TimerSpinner/TimerSpinner.vue")
+  );
 
   const route = useRoute();
   const router = useRouter();

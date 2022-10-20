@@ -1,11 +1,13 @@
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { defineAsyncComponent, ref } from "vue";
   import { useRoute, useRouter } from "vue-router";
   import { useUserStore } from "~/stores/user";
-  import Button from "~/components/Button/Button.vue";
   import { ButtonColor } from "~/utils";
   import { useSettingStore } from "~/stores/settings";
   import { getAnalytics, logEvent } from "firebase/analytics";
+  const Button = defineAsyncComponent(
+    () => import("~/components/Button/Button.vue")
+  );
 
   const route = useRoute();
 

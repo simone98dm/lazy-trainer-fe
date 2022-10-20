@@ -1,13 +1,19 @@
 <script setup lang="ts">
-  import Button from "~/components/Button/Button.vue";
   import { ButtonColor, LinkType, Role, RoleName } from "~/utils";
-  import Loading from "~/components/Loading/Loading.vue";
   import { useActivityStore } from "~/stores/activity";
   import { useSettingStore } from "~/stores/settings";
   import { useUserStore } from "~/stores/user";
-  import Switch from "~/components/Switch/Switch.vue";
-  import { ref } from "vue";
-  import Link from "~/components/Link/Link.vue";
+  import { defineAsyncComponent, ref } from "vue";
+  const Button = defineAsyncComponent(
+    () => import("~/components/Button/Button.vue")
+  );
+  const Loading = defineAsyncComponent(
+    () => import("~/components/Loading/Loading.vue")
+  );
+  const Switch = defineAsyncComponent(
+    () => import("~/components/Switch/Switch.vue")
+  );
+  const Link = defineAsyncComponent(() => import("~/components/Link/Link.vue"));
 
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();

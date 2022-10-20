@@ -1,8 +1,15 @@
 <script setup lang="ts">
-  import Header from "./components/Header/Header.vue";
-  import Footer from "./components/Footer/Footer.vue";
+  import { defineAsyncComponent } from "vue";
   import { useRoute } from "vue-router";
-  import GlobalLoading from "./components/GlobalLoading/GlobalLoading.vue";
+  const Footer = defineAsyncComponent(
+    () => import("./components/Footer/Footer.vue")
+  );
+  const Header = defineAsyncComponent(
+    () => import("./components/Header/Header.vue")
+  );
+  const GlobalLoading = defineAsyncComponent(
+    () => import("./components/GlobalLoading/GlobalLoading.vue")
+  );
 
   const route = useRoute();
 
@@ -13,7 +20,7 @@
 
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col">
-    <Header></Header>
+    <Header />
     <div class="p-3 w-full lg:w-2/3 md:w-5/6 mx-auto mb-14">
       <router-view v-slot="{ Component, route }">
         <transition name="fade" mode="out-in">
@@ -23,9 +30,9 @@
         </transition>
       </router-view>
     </div>
-    <Footer v-if="!isLogin()"></Footer>
+    <Footer v-if="!isLogin()" />
   </div>
-  <GlobalLoading></GlobalLoading>
+  <GlobalLoading />
 </template>
 
 <style>

@@ -2,9 +2,12 @@
   import { useSettingStore } from "~/stores/settings";
   import github from "~/assets/github.svg";
   import linkedin from "~/assets/linkedin.svg";
-  import BackButton from "~/components/BackButton/BackButton.vue";
+  import { defineAsyncComponent } from "vue";
   import { useRouter } from "vue-router";
   const router = useRouter();
+  const BackButton = defineAsyncComponent(
+    () => import("~/components/BackButton/BackButton.vue")
+  );
 
   const settingsStore = useSettingStore();
   settingsStore.setHeader("About");

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { defineAsyncComponent, ref } from "vue";
   import { useRoute, useRouter } from "vue-router";
   import { ISession } from "~/models/Session";
   import { parseSessions } from "~/utils";
-  import Flow from "../components/Flow/Flow.vue";
   import { useActivityStore } from "~/stores/activity";
   import { useSettingStore } from "~/stores/settings";
   import { useUserStore } from "~/stores/user";
+  const Flow = defineAsyncComponent(() => import("~/components/Flow/Flow.vue"));
 
   const isLoading = ref(true);
   let pageOptions = {

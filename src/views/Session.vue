@@ -1,11 +1,16 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from "vue-router";
-  import SessionForm from "~/components/SessionForm/SessionForm.vue";
-  import BackButton from "~/components/BackButton/BackButton.vue";
   import { ISession } from "~/models/Session";
   import { IActivity } from "../models/Activity";
   import { useActivityStore } from "~/stores/activity";
   import { useSettingStore } from "~/stores/settings";
+  import { defineAsyncComponent } from "vue";
+  const SessionForm = defineAsyncComponent(
+    () => import("~/components/SessionForm/SessionForm.vue")
+  );
+  const BackButton = defineAsyncComponent(
+    () => import("~/components/BackButton/BackButton.vue")
+  );
 
   const router = useRouter();
   const route = useRoute();
