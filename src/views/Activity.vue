@@ -7,15 +7,6 @@
   import { defineAsyncComponent } from "vue";
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
-  const Button = defineAsyncComponent(
-    () => import("~/components/Button/Button.vue")
-  );
-  const ActivityForm = defineAsyncComponent(
-    () => import("~/components/ActivityForm/ActivityForm.vue")
-  );
-  const BackButton = defineAsyncComponent(
-    () => import("~/components/BackButton/BackButton.vue")
-  );
 
   const route = useRoute();
   const router = useRouter();

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-  import Icon from "~/components/Icons/Icon.vue";
-  import { IconSize } from "~/utils";
-
   const emits = defineEmits(["click"]);
 
   function onClickHandle() {

@@ -2,9 +2,6 @@
   import { useSettingStore } from "~/stores/settings";
   import { useRouter } from "vue-router";
   import { defineAsyncComponent } from "vue";
-  const BackButton = defineAsyncComponent(
-    () => import("~/components/BackButton/BackButton.vue")
-  );
   const router = useRouter();
 
   const settingsStore = useSettingStore();

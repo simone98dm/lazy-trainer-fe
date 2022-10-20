@@ -6,7 +6,6 @@
   import { useActivityStore } from "~/stores/activity";
   import { useSettingStore } from "~/stores/settings";
   import { useUserStore } from "~/stores/user";
-  const Flow = defineAsyncComponent(() => import("~/components/Flow/Flow.vue"));
 
   const isLoading = ref(true);
   let pageOptions = {

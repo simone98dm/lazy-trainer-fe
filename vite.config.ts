@@ -5,6 +5,7 @@ import HtmlConfig from "vite-plugin-html-config";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
 import { VitePluginFonts } from "vite-plugin-fonts";
+import Components from "unplugin-vue-components/vite";
 
 const ENV = loadEnv("development", process.cwd());
 
@@ -22,6 +23,9 @@ export default defineConfig({
     vue(),
     HtmlConfig({
       metas: metaTags(ENV),
+    }),
+    Components({
+      dts: "./src/components.d.ts",
     }),
     VitePWA({
       registerType: "autoUpdate",

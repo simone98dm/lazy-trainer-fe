@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { RouterLink } from "vue-router";
-  import { ButtonColor, IconSize, LinkType } from "~/utils";
-  import Icon from "~/components/Icons/Icon.vue";
+  import { ButtonColor, LinkType } from "~/utils";
   import { useUserStore } from "~/stores/user";
 
   const props = defineProps(["to", "full", "type", "label", "color", "icon"]);

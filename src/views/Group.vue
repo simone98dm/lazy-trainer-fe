@@ -2,11 +2,6 @@
   import { useSettingStore } from "~/stores/settings";
   import { useUserStore } from "~/stores/user";
   import { defineAsyncComponent, ref } from "vue";
-  const Link = defineAsyncComponent(() => import("~/components/Link/Link.vue"));
-  const Item = defineAsyncComponent(() => import("~/components/Item/Item.vue"));
-  const PlaceholderList = defineAsyncComponent(
-    () => import("~/components/Placeholder/PlaceholderList.vue")
-  );
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();

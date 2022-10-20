@@ -1,10 +1,6 @@
 <script setup lang="ts">
-  import Item from "~/components/Item/Item.vue";
-  import Link from "~/components/Link/Link.vue";
   import { useUserStore } from "~/stores/user";
   import { ButtonSize, LinkType } from "~/utils";
-  import ErrorBanner from "~/components/ErrorBanner/ErrorBanner.vue";
-  import PlaceholderList from "~/components/Placeholder/PlaceholderList.vue";
   const user = useUserStore();
   const props = defineProps(["list", "loading"]);
 </script>

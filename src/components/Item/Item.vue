@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import Icon from "~/components/Icons/Icon.vue";
-
   const props = defineProps([
     "id",
     "name",

@@ -1,11 +1,9 @@
 <script setup lang="ts">
   import { IActivity } from "~/models/Activity";
   import { ref, watch } from "vue";
-  import Button from "~/components/Button/Button.vue";
   import { v4 as uuidv4 } from "uuid";
   import { useUserStore } from "~/stores/user";
   import { ButtonColor } from "~/utils";
-  import Switch from "~/components/Switch/Switch.vue";
 
   const props = defineProps([
     "id",

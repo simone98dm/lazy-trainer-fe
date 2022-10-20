@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { useSettingStore } from "~/stores/settings";
   import { useUserStore } from "~/stores/user";
-  import Icon from "../Icons/Icon.vue";
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();

@@ -2,10 +2,6 @@
   import { useUserStore } from "~/stores/user";
   import draggable from "vuedraggable";
   import { ButtonColor, LinkType, ButtonSize } from "~/utils";
-  import Button from "~/components/Button/Button.vue";
-  import Link from "~/components/Link/Link.vue";
-  import Item from "~/components/Item/Item.vue";
-  import ErrorBanner from "~/components/ErrorBanner/ErrorBanner.vue";
 
   const props = defineProps(["activities", "sessionId", "isWarmup"]);
   const userStore = useUserStore();

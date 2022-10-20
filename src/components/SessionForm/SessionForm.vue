@@ -1,9 +1,8 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import Button from "~/components/Button/Button.vue";
   import { v4 as uuidv4 } from "uuid";
   import { ISession } from "~/models/Session";
-  import { days, ButtonColor, getDayOfTheWeek } from "~/utils";
+  import { ButtonColor, getDayOfTheWeek } from "~/utils";
   import { useActivityStore } from "~/stores/activity";
   import { useUserStore } from "~/stores/user";
 

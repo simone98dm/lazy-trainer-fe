@@ -4,16 +4,6 @@
   import { useSettingStore } from "~/stores/settings";
   import { useUserStore } from "~/stores/user";
   import { defineAsyncComponent, ref } from "vue";
-  const Button = defineAsyncComponent(
-    () => import("~/components/Button/Button.vue")
-  );
-  const Loading = defineAsyncComponent(
-    () => import("~/components/Loading/Loading.vue")
-  );
-  const Switch = defineAsyncComponent(
-    () => import("~/components/Switch/Switch.vue")
-  );
-  const Link = defineAsyncComponent(() => import("~/components/Link/Link.vue"));
 
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();

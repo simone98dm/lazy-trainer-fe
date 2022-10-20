@@ -5,9 +5,6 @@
   import { ButtonColor } from "~/utils";
   import { useSettingStore } from "~/stores/settings";
   import { getAnalytics, logEvent } from "firebase/analytics";
-  const Button = defineAsyncComponent(
-    () => import("~/components/Button/Button.vue")
-  );
 
   const route = useRoute();
 

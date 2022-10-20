@@ -5,12 +5,6 @@
   import { useActivityStore } from "~/stores/activity";
   import { useSettingStore } from "~/stores/settings";
   import { defineAsyncComponent } from "vue";
-  const SessionForm = defineAsyncComponent(
-    () => import("~/components/SessionForm/SessionForm.vue")
-  );
-  const BackButton = defineAsyncComponent(
-    () => import("~/components/BackButton/BackButton.vue")
-  );
 
   const router = useRouter();
   const route = useRoute();

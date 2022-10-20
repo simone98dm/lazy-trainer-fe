@@ -1,8 +1,6 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores/user";
   import { ButtonColor, ButtonSize } from "~/utils";
-  import Icon from "~/components/Icons/Icon.vue";
-  import Loading from "~/components/Loading/Loading.vue";
   const props = defineProps([
     "full",
     "size",

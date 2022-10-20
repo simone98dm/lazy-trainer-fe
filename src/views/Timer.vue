@@ -12,18 +12,6 @@
   import { IActivity } from "~/models/Activity";
   import { useSettingStore } from "~/stores/settings";
   import { useTimerStore } from "~/stores/timer";
-  const ImageLoader = defineAsyncComponent(
-    () => import("~/components/ImageLoader/ImageLoader.vue")
-  );
-  const Button = defineAsyncComponent(
-    () => import("~/components/Button/Button.vue")
-  );
-  const BackButton = defineAsyncComponent(
-    () => import("~/components/BackButton/BackButton.vue")
-  );
-  const TimerSpinner = defineAsyncComponent(
-    () => import("~/components/TimerSpinner/TimerSpinner.vue")
-  );
 
   const route = useRoute();
   const router = useRouter();

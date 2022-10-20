@@ -8,17 +8,6 @@
   import { useActivityStore } from "~/stores/activity";
   import { ref, defineAsyncComponent } from "vue";
 
-  const ActivityList = defineAsyncComponent(
-    () => import("~/components/ActivityList/ActivityList.vue")
-  );
-  const BackButton = defineAsyncComponent(
-    () => import("~/components/BackButton/BackButton.vue")
-  );
-  const Link = defineAsyncComponent(() => import("~/components/Link/Link.vue"));
-  const Button = defineAsyncComponent(
-    () => import("~/components/Button/Button.vue")
-  );
-
   const route = useRoute();
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
