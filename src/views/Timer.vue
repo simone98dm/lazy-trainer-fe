@@ -38,15 +38,14 @@
   setupTimer(activityId as string);
 
   onBeforeRouteLeave(() => {
-    if (timerStore.getNextActivity) {
+    if (timerStore.hasNextActivity) {
       const answer = confirm(
-        "Do you really want to leave? you have unsaved changes!"
+        "Do you really want to leave? You will lose your progress."
       );
       if (!answer) {
         return false;
       }
     }
-
     timerStore.reset();
     clearInterval(timerInterval);
   });
@@ -197,8 +196,6 @@
   }
 
   function redirectToActivity() {
-    timerStore.reset();
-    clearInterval(timerInterval);
     router.push({
       name: "details",
       params: {

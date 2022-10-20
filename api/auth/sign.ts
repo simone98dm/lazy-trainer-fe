@@ -22,15 +22,9 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       if (!isValid) {
         response.status(403).send({ error: "token not valid" });
       } else {
-        let { id, name, role, hits } = isValid;
+        let { id, name, role } = isValid;
 
-        if (hits >= 5) {
-          return response.status(403).send({ error: "token hits exceed" });
-        } else {
-          // increment hits and renew token
-          hits += 1;
-          bearer = await jwt.sign({ id, name, role, hits }, SECRET_KEY);
-        }
+        bearer = await jwt.sign({ id, name, role }, SECRET_KEY);
 
         const body: IUserResponse = {
           data: {
@@ -85,7 +79,6 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         id: user.id,
         name: user.name,
         role: Number(user.role),
-        hits: 1,
       };
 
       const token = jwt.sign(payload, SECRET_KEY, {
