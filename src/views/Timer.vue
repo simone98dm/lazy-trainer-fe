@@ -238,11 +238,15 @@
         },
       ]"
     >
-      <TimerSpinner
-        :stroke-dasharray="strokeDasharray"
-        :remaining-path-color="remainingPathColor"
-        :base-timer-label="baseTimerLabel"
-      />
+      <div
+        :class="[{ 'w-full md:w-1/2 ': timerStore.getNextActivity?.videoUrl }]"
+      >
+        <TimerSpinner
+          :stroke-dasharray="strokeDasharray"
+          :remaining-path-color="remainingPathColor"
+          :base-timer-label="baseTimerLabel"
+        />
+      </div>
       <ImageLoader :src="timerStore.getNextActivity?.videoUrl" />
     </div>
     <div v-else>
