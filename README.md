@@ -1,6 +1,6 @@
 # Lazy trainer
 
-Lazy-Trainer, is a web app that simplifies the approach to physical activity for those who are not particularly lazy🤓
+Lazy-Trainer, is a web app that simplifies the approach to physical activity for those who are particularly lazy🤓
 
 Through your account, you will be able to see and interact with your circuit and keep track of individual activities during execution.
 
