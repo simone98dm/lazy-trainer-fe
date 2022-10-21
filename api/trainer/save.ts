@@ -11,7 +11,7 @@ import {
   deleteSession,
   updateSession,
 } from "../../utils/session";
-import { extractTokenFromRequest } from "../../utils/helper";
+import { extractTokenFromRequest, verifyUser } from "../../utils/helper";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method !== "POST") {
@@ -23,6 +23,11 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     const decoded = verifyToken(bearer as string);
 
     if (decoded?.role === Role.NORMAL) {
+      return response.status(403).end();
+    }
+
+    const exist = await verifyUser(decoded?.id);
+    if (!exist) {
       return response.status(403).end();
     }
 

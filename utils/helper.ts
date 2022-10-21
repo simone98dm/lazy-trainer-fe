@@ -1,5 +1,7 @@
 import { IPlan } from "../src/models/Plan";
 import { ISession } from "../src/models/Session";
+import { DbTable, DB_NAME } from "./const";
+import { connectToDatabase } from "./db";
 import { Activity, Plan, Session } from "./types";
 
 export function mapRawToPlans(
@@ -47,4 +49,18 @@ export function mapRawToSession(
 
 export function extractTokenFromRequest(request: any): string {
   return request.headers.authorization?.split(" ")[1] ?? "";
+}
+
+export async function verifyUser(id?: string) {
+  if (!id) {
+    return false;
+  }
+  const client = await connectToDatabase();
+  if (!client) {
+    throw new Error("mongoClient is null");
+  }
+
+  const db = client.db(DB_NAME);
+  const user = await db.collection(DbTable.USERS).findOne({ id: id });
+  return user !== null;
 }
