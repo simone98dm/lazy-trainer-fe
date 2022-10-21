@@ -28,22 +28,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         .find({ trainerId: id })
         .toArray();
 
-      if (plans) {
-        const userIds = plans.map((plans) => plans.ownerId);
-        const userInfos = await db
-          .collection<User>(DbTable.USERS)
-          .find({ id: { $in: userIds } })
-          .toArray();
-
-        if (userInfos) {
-          const p = plans.map((plan) => {
-            const user = userInfos.find((user) => user.id === plan.ownerId);
-            return { ...plan, username: user?.name };
-          });
-
-          return response.status(200).json(p);
-        }
-      }
+      return response.status(200).json(plans);
     }
     return response.status(404).json({ error: "not found" });
   } catch (error) {
