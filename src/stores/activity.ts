@@ -175,6 +175,10 @@ export const useActivityStore = defineStore("activity", {
       const userStore = useUserStore();
       settingsStore.loading(true);
 
+      if (session.dayOfWeek === -1 && session.dayOfWeek >= 7) {
+        return;
+      }
+
       if (!this.plan) {
         this.plan = generateBlankPlan();
       }

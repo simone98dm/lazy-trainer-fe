@@ -64,6 +64,10 @@ export async function createSession(planId: string, data: any) {
 
   const { id, dayOfWeek, warmup } = data;
 
+  if (dayOfWeek === -1 || dayOfWeek >= 7) {
+    throw new Error("day of week not valid");
+  }
+
   const db = client.db(DB_NAME);
   const exists = await db
     .collection(DbTable.SESSIONS)
