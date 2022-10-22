@@ -16,6 +16,7 @@
     "videoUrl",
     "reps",
     "allowDetele",
+    "i",
   ]);
   const emits = defineEmits(["update", "remove"]);
   const user = useUserStore();
@@ -192,8 +193,8 @@
             Is warm-up?
           </label>
           <Switch
-            id="toggle"
-            name="toggleWarmup"
+            :id="`toggle-${i}`"
+            :name="`toggleWarmup-${i}`"
             :checked="warmup"
             @toggle="(v) => (warmup = v)"
           />

@@ -123,8 +123,9 @@
     />
   </div>
   <div class="">
-    <div v-for="act in multiActivities">
+    <div v-for="(act, i) in multiActivities" :key="i">
       <ActivityForm
+        :i="i"
         :name="act?.name"
         :id="act?.id"
         :description="act?.description"
