@@ -65,10 +65,18 @@ export async function createSession(planId: string, data: any) {
   const { id, dayOfWeek, warmup } = data;
 
   const db = client.db(DB_NAME);
+  const exists = await db
+    .collection(DbTable.SESSIONS)
+    .findOne({ dayOfWeek: dayOfWeek, planId: planId });
+  if (exists) {
+    throw new Error("session already exists");
+  }
   await db.collection(DbTable.SESSIONS).insertOne({ id, dayOfWeek, planId });
   const updatedWarmup = warmup.map((warm: any) => ({
     sessionId: id,
     ...warm,
   }));
-  await db.collection(DbTable.ACTIVITIES).insertMany(updatedWarmup);
+  if (updatedWarmup.length > 0) {
+    await db.collection(DbTable.ACTIVITIES).insertMany(updatedWarmup);
+  }
 }

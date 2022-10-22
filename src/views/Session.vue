@@ -44,14 +44,17 @@
 </script>
 <template>
   <div class="mb-6">
-    <BackButton @click="onBackPageHandler"></BackButton>
+    <BackButton @click="onBackPageHandler" />
   </div>
-  <div class="flex xl:flex-col flex-wrap justify-center">
+  <div v-if="activityStore.getMissingDays.length <= 0">
+    <span>No days available</span>
+  </div>
+  <div class="flex xl:flex-col flex-wrap justify-center" v-else>
     <SessionForm
       @save="addSession"
       :id="sessionId"
       :existing-form="duplicateWarmupActivities"
       :day-of-week="session?.dayOfWeek"
-    ></SessionForm>
+    />
   </div>
 </template>

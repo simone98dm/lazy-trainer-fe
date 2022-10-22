@@ -1,7 +1,9 @@
 <script setup lang="ts">
+  import { useActivityStore } from "~/stores/activity";
   import { useUserStore } from "~/stores/user";
   import { ButtonSize, LinkType } from "~/utils";
   const user = useUserStore();
+  const activityStore = useActivityStore();
   const props = defineProps(["list", "loading"]);
 </script>
 
@@ -24,7 +26,10 @@
     <ErrorBanner v-else text="No sessions found"></ErrorBanner>
   </div>
   <Link
-    v-if="user.isTrainer || user.isSelfMadeMan"
+    v-if="
+      (user.isTrainer || user.isSelfMadeMan) &&
+      activityStore.getMissingDays.length > 0
+    "
     icon="add"
     :size="ButtonSize.MEDIUM"
     :to="{ name: 'session' }"
