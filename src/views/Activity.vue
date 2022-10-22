@@ -4,7 +4,6 @@
   import { useSettingStore } from "~/stores/settings";
   import { IActivity } from "~/models/Activity";
   import { ButtonColor } from "~/utils";
-  import { defineAsyncComponent } from "vue";
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
 
@@ -94,6 +93,10 @@
   }
 
   function addActivityForm() {
+    if (multiActivities.value.length > 10) {
+      alert("You can't add more than 10 activities at once");
+      return;
+    }
     multiActivities.value.push({
       description: "",
       id: uuidv4(),
@@ -150,14 +153,16 @@
         :color="ButtonColor.PRIMARY"
         icon="add"
         @click="addActivityForm"
-      ></Button>
+      />
       <Button
         id="duplicate-activity"
         :label="`Repeat for ${repeatFor} times`"
         :color="ButtonColor.PRIMARY"
         icon="content_copy"
-        @click="() => (repeatFor += 1)"
-      ></Button>
+        @click="
+          () => (repeatFor <= 10 ? (repeatFor += 1) : (repeatFor = repeatFor))
+        "
+      />
     </div>
   </div>
 </template>

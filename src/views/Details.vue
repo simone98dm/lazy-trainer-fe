@@ -49,6 +49,14 @@
     });
   }
 
+  function canUserCreateActivity() {
+    const freeActivitySlot =
+      activityStore.getSessionActivities(sessionId)?.length ?? 100;
+    return (
+      (userStore.isTrainer || userStore.isSelfMadeMan) && freeActivitySlot < 100
+    );
+  }
+
   function sortActivities(evt: any) {
     const { newDraggableIndex, oldDraggableIndex } = evt;
     activityStore.moveActivity(
@@ -89,7 +97,7 @@
       @click="deleteSession"
     ></Button>
     <Link
-      v-if="userStore.isTrainer || userStore.isSelfMadeMan"
+      v-if="canUserCreateActivity()"
       id="add-activity"
       icon="add"
       :size="ButtonSize.MEDIUM"
