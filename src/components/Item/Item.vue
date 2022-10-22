@@ -23,26 +23,20 @@
   <div class="flex flex-col rounded-xl bg-white p-6 md:p-4 shadow-lg mb-2">
     <div class="flex flex-row items-center justify-between">
       <div class="flex">
-        <div
+        <Icon
           v-if="props.icon"
           class="p-2 hidden sm:block flex justify-center align-center"
+          :component="props.icon"
+        />
+        <h4
+          :class="[
+            'text-gray-600',
+            { 'font-semibold text-2xl sm:text-3xl': props.description },
+            { 'font-bold text-3xl sm:text-4xl': !props.description },
+          ]"
         >
-          <Icon :component="props.icon" />
-        </div>
-        <div v-if="props.name" class="flex flex-col justify-center sm:ml-2">
-          <h4
-            :class="[
-              'text-gray-600',
-              { 'font-semibold text-2xl sm:text-3xl': props.description },
-              { 'font-bold text-3xl sm:text-4xl': !props.description },
-            ]"
-          >
-            {{ props.name }}
-          </h4>
-          <p class="text-sm text-slate-500" v-if="props.description">
-            {{ props.description }}
-          </p>
-        </div>
+          {{ props.name }}
+        </h4>
       </div>
       <div>
         <h4
@@ -59,6 +53,13 @@
         </h4>
       </div>
     </div>
+
+    <p
+      class="text-sm text-slate-500 truncate whitespace-nowrap overflow-hidden"
+      v-if="props.description"
+    >
+      {{ props.description }}
+    </p>
     <div>
       <p v-if="props.requestChange" class="text-red-600">
         Client request to change this activity
