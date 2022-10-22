@@ -12,11 +12,13 @@
   import { IActivity } from "~/models/Activity";
   import { useSettingStore } from "~/stores/settings";
   import { useTimerStore } from "~/stores/timer";
+  import { useUserStore } from "~/stores/user";
 
   const route = useRoute();
   const router = useRouter();
   const settingsStore = useSettingStore();
   const timerStore = useTimerStore();
+  const userStore = useUserStore();
 
   settingsStore.setHeader("Timer");
 
@@ -210,7 +212,10 @@
     <div class="flex flex-row justify-between mb-3">
       <BackButton @click="redirectToActivity"></BackButton>
       <button
-        v-if="!timerStore.getCurrentActivity?.requestChange"
+        v-if="
+          !timerStore.getCurrentActivity?.requestChange &&
+          !(userStore.isTrainer || userStore.isSelfMadeMan)
+        "
         class="text-red-800 cursor-pointer"
         @click="sendChangeRequest"
       >
