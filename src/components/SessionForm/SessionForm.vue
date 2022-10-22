@@ -14,7 +14,7 @@
 
   const uuid = uuidv4();
 
-  let dayOfWeek = ref(props.dayOfWeek || 0);
+  let dayOfWeek = ref(props.dayOfWeek || -1);
   let id = ref(props.id || uuid);
 
   function save() {
@@ -102,6 +102,7 @@
       </div>
       <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
         <Button
+          v-if="dayOfWeek !== -1"
           full="true"
           :icon="!isNew() ? 'save' : 'add'"
           :label="!isNew() ? 'Save' : 'Create'"
