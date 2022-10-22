@@ -52,7 +52,7 @@
         >
           Trainer
           <span class="font-bold" v-if="userStore.getTrainer">
-            {{ userStore.getTrainer }}
+            {{ userStore.getTrainer.name }}
           </span>
           <Loading v-else :small="true"></Loading>
         </div>

@@ -25,7 +25,7 @@ export const useUserStore = defineStore("user", {
       return state.role === Role.SELFMADE;
     },
     getTrainer: (state) => {
-      return state.trainer?.name ?? "";
+      return state.trainer ?? { name: "" };
     },
   },
   actions: {
