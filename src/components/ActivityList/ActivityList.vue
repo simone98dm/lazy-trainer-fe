@@ -9,6 +9,7 @@
     "isWarmup",
     "allowDrag",
     "title",
+    "enableControls",
   ]);
   const userStore = useUserStore();
   const emits = defineEmits(["move", "delete", "run", "duplicate"]);
@@ -24,6 +25,7 @@
         {{ props.title }}
       </h4>
       <Button
+        v-if="props.enableControls"
         id="run-timer"
         :color="ButtonColor.PRIMARY"
         icon="play_arrow"
@@ -34,7 +36,9 @@
       <Button
         id="duplicate-warmup"
         v-if="
-          props.isWarmup && (userStore.isTrainer || userStore.isSelfMadeMan)
+          props.isWarmup &&
+          (userStore.isTrainer || userStore.isSelfMadeMan) &&
+          props.enableControls
         "
         :color="ButtonColor.LIGHT"
         icon="content_copy"
@@ -71,16 +75,15 @@
       </draggable>
     </div>
     <div v-else>
-      <div v-for="activity in props.activities">
-        <Item
-          :name="activity.name"
-          :description="activity.description"
-          :time="activity.time"
-          :id="activity.id"
-          :reps="activity.reps"
-          :key="activity.id"
-        />
-      </div>
+      <Item
+        v-for="activity in props.activities"
+        :name="activity.name"
+        :description="activity.description"
+        :time="activity.time"
+        :id="activity.id"
+        :reps="activity.reps"
+        :key="activity.id"
+      />
     </div>
   </div>
   <ErrorBanner v-else text="No activity found"></ErrorBanner>

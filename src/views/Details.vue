@@ -19,7 +19,7 @@
   let session = activityStore.getSession(sessionId);
   let activityList = ref(undefined as any[] | undefined);
   let warmupList = ref(undefined as any[] | undefined);
-  const showSwitch = userStore.isTrainer || userStore.isSelfMadeMan;
+  // const showSwitch = userStore.isTrainer || userStore.isSelfMadeMan;
   const allowEdit = ref(false);
 
   warmupList.value = activityStore.getWarmUpActivities(sessionId);
@@ -106,18 +106,6 @@
       :type="LinkType.BUTTON"
       label="Add"
     />
-    <label
-      v-if="showSwitch"
-      class="w-fit ml-auto flex flex-col sm:flex-row items-center align-centers"
-    >
-      <span class="mr-3">Enable edit</span>
-      <Switch
-        name="toggleOrder"
-        id="order"
-        :checked="allowEdit"
-        @toggle="(value) => (allowEdit = value)"
-      />
-    </label>
   </div>
   <div class="flex flex-col justify-center">
     <div id="warmup-activities">
@@ -130,6 +118,7 @@
         @run="runWarmUp"
         @move="sortActivities"
         :allow-drag="allowEdit"
+        :enable-controls="!userStore.isTrainer"
       />
     </div>
     <hr />
@@ -141,6 +130,7 @@
         @move="sortActivities"
         :session-id="sessionId"
         :allow-drag="allowEdit"
+        :enable-controls="!userStore.isTrainer"
       />
     </div>
   </div>

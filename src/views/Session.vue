@@ -4,7 +4,6 @@
   import { IActivity } from "../models/Activity";
   import { useActivityStore } from "~/stores/activity";
   import { useSettingStore } from "~/stores/settings";
-  import { defineAsyncComponent } from "vue";
 
   const router = useRouter();
   const route = useRoute();
@@ -46,9 +45,7 @@
   <div class="mb-6">
     <BackButton @click="onBackPageHandler" />
   </div>
-  <div v-if="activityStore.getMissingDays.length <= 0">
-    <span>No days available</span>
-  </div>
+  <span v-if="activityStore.getMissingDays.length <= 0">No days available</span>
   <div class="flex xl:flex-col flex-wrap justify-center" v-else>
     <SessionForm
       @save="addSession"

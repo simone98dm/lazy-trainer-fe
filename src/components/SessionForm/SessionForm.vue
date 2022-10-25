@@ -16,6 +16,10 @@
 
   let dayOfWeek = ref(props.dayOfWeek || -1);
   let id = ref(props.id || uuid);
+  let activityList = ref(undefined as any[] | undefined);
+  let warmupList = ref(undefined as any[] | undefined);
+  warmupList.value = activityStore.getWarmUpActivities(id.value);
+  activityList.value = activityStore.getSessionActivities(id.value);
 
   function save() {
     const activity: ISession = {
@@ -32,23 +36,23 @@
 
     emits("save", activity);
   }
-
   function isNew() {
     return !Boolean(props.id);
   }
-
   function remove() {
     if (!isNew()) {
       emits("remove", props.id);
     }
   }
-
   function selectDay(dayIndex: number) {
     dayOfWeek.value = dayIndex;
   }
-
   function isDaySelected(dayIndex: number) {
     return dayIndex === dayOfWeek.value;
+  }
+  function sortActivities(evt: any) {
+    const { newDraggableIndex, oldDraggableIndex } = evt;
+    activityStore.moveActivity(id.value, newDraggableIndex, oldDraggableIndex);
   }
 </script>
 
@@ -98,6 +102,28 @@
             class="bg-purple-600 rounded-lg p-2 text-white"
             >{{ warmup.name }}</span
           >
+        </div>
+      </div>
+      <div class="w-full px-3 mb-6">
+        <div class="flex flex-col justify-center">
+          <ActivityList
+            title="Warmup"
+            :activities="warmupList"
+            :is-warmup="true"
+            :session-id="id"
+            @move="sortActivities"
+            :allow-drag="true"
+            :enable-controls="false"
+          />
+          <hr />
+          <ActivityList
+            title="Activities"
+            :activities="activityList"
+            @move="sortActivities"
+            :session-id="id"
+            :allow-drag="true"
+            :enable-controls="false"
+          />
         </div>
       </div>
       <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
