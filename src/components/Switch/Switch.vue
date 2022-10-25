@@ -25,7 +25,6 @@
 </template>
 
 <style>
-  /* Toggle A */
   input:checked ~ .dot {
     transform: translateX(100%);
     background-color: rgb(79 70 229 / var(--tw-bg-opacity));

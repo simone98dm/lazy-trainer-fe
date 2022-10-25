@@ -1,16 +1,5 @@
-export enum ButtonSize {
-  LARGE,
-  MEDIUM,
-  SMALL,
-}
-
 export enum LinkType {
   BUTTON,
-}
-
-export enum Theme {
-  LIGHT,
-  DARK,
 }
 
 export enum IconSize {

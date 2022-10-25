@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { ButtonColor, LinkType, Role, RoleName } from "~/utils";
+  import { ButtonColor, Role, RoleName } from "~/utils";
   import { useActivityStore } from "~/stores/activity";
   import { useSettingStore } from "~/stores/settings";
   import { useUserStore } from "~/stores/user";
-  import { defineAsyncComponent, ref } from "vue";
+  import { ref } from "vue";
 
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
@@ -28,27 +28,23 @@
 <template>
   <div class="flex flex-col justify-center">
     <div class="shadow p-5 rounded-xl mb-6 bg-white">
-      <h1 class="text-2xl font-bold mb-3">Profile</h1>
+      <h1 class="text-xl font-bold mb-3">Profile</h1>
       <div class="w-full p-3">
-        <div
-          class="text-xl flex justify-between pb-1 mb-6 border-b-2 border-dotted"
-        >
+        <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
           Username
           <span class="font-bold">
             {{ userStore.username }}
           </span>
         </div>
-        <div
-          class="text-xl flex justify-between pb-1 mb-6 border-b-2 border-dotted"
-        >
+        <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
           Role
           <span class="font-bold">
             {{ RoleName[userStore.role as Role] }}
           </span>
         </div>
         <div
-          class="text-xl flex justify-between pb-1 mb-6 border-b-2 border-dotted"
-          v-if="!userStore.isTrainer"
+          class="flex justify-between pb-1 mb-6 border-b-2 border-dotted"
+          v-if="!userStore.isTrainer && !userStore.isSelfMadeMan"
         >
           Trainer
           <span class="font-bold" v-if="userStore.getTrainer">
@@ -57,11 +53,9 @@
           <Loading v-else :small="true"></Loading>
         </div>
       </div>
-      <h1 class="text-2xl font-bold mb-3">Preferences</h1>
+      <h1 class="text-xl font-bold mb-3">Preferences</h1>
       <div class="w-full p-3">
-        <div
-          class="text-xl flex justify-between pb-1 mb-6 border-b-2 border-dotted"
-        >
+        <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
           Disable audio
           <Switch
             id="disableAudio"
@@ -75,6 +69,7 @@
         v-if="!userStore.isTrainer"
         :color="ButtonColor.PRIMARY"
         :loading="syncStatus"
+        full="true"
         icon="cloud_sync"
         label="Sync data"
         @click="syncProfile"
@@ -84,7 +79,6 @@
       <Link
         :to="{ name: 'about' }"
         :full="true"
-        :type="LinkType.BUTTON"
         :color="ButtonColor.LIGHT"
         icon="account_circle"
         label="Author"
@@ -93,7 +87,6 @@
       <Link
         :to="{ name: 'license' }"
         :full="true"
-        :type="LinkType.BUTTON"
         :color="ButtonColor.LIGHT"
         icon="verified_user"
         label="License"

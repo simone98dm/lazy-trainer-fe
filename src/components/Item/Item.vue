@@ -20,17 +20,17 @@
 </script>
 
 <template>
-  <div class="flex flex-col rounded-xl bg-white p-6 md:p-4 shadow-lg mb-2">
+  <div class="flex flex-col rounded-xl bg-white p-4 shadow-lg mb-2">
     <div class="flex flex-row items-center justify-between">
       <div class="flex">
         <Icon
           v-if="props.icon"
-          class="p-2 hidden sm:block flex justify-center align-center"
+          class="p-2 hidden sm:block flex-left inline"
           :component="props.icon"
         />
         <h4
           :class="[
-            'text-gray-600',
+            'text-gray-600 flex-left inline',
             { 'font-semibold text-2xl sm:text-3xl': props.description },
             { 'font-bold text-3xl sm:text-4xl': !props.description },
           ]"
@@ -55,8 +55,8 @@
     </div>
 
     <p
-      class="text-sm text-slate-500 truncate whitespace-nowrap overflow-hidden"
       v-if="props.description"
+      class="text-sm text-slate-500 truncate whitespace-nowrap overflow-hidden"
     >
       {{ props.description }}
     </p>

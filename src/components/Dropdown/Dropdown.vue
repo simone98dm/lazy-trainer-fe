@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { ButtonColor, ButtonSize, Theme } from "~/utils";
+  import { ButtonColor } from "~/utils";
 
   let showDropdown = ref(false);
 </script>
@@ -13,8 +13,6 @@
       <Button
         icon="more_vert"
         :color="ButtonColor.TRASPARENT"
-        :size="ButtonSize.MEDIUM"
-        :theme="Theme.DARK"
         @click="() => (showDropdown = !showDropdown)"
       ></Button>
     </div>

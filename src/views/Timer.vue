@@ -3,12 +3,7 @@
   import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
   import ding from "~/assets/audio/ding.mp3";
   import horn from "~/assets/audio/horn.mp3";
-  import {
-    type TimerActivity,
-    ButtonSize,
-    COLOR_CODES,
-    FULL_DASH_ARRAY,
-  } from "~/utils";
+  import { type TimerActivity, COLOR_CODES, FULL_DASH_ARRAY } from "~/utils";
   import { IActivity } from "~/models/Activity";
   import { useSettingStore } from "~/stores/settings";
   import { useTimerStore } from "~/stores/timer";
@@ -275,7 +270,6 @@
               : 'Play'
             : 'Next'
         "
-        :size="ButtonSize.LARGE"
         full="true"
         @click="toggleTimer"
       />

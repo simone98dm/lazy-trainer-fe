@@ -1,12 +1,12 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router";
   import router from "~/router/router";
-  import { ButtonColor, ButtonSize, getDayOfTheWeek, LinkType } from "~/utils";
+  import { ButtonColor, getDayOfTheWeek, LinkType } from "~/utils";
   import { useUserStore } from "~/stores/user";
   import { useTimerStore } from "~/stores/timer";
   import { useSettingStore } from "~/stores/settings";
   import { useActivityStore } from "~/stores/activity";
-  import { ref, defineAsyncComponent } from "vue";
+  import { ref } from "vue";
 
   const route = useRoute();
   const activityStore = useActivityStore();
@@ -29,7 +29,7 @@
 
   async function deleteSession() {
     await activityStore.deleteSession(sessionId);
-    router.back();
+    router.push({ name: "home" });
   }
 
   function runWarmUp() {
@@ -89,36 +89,40 @@
       label="Edit"
       :type="LinkType.BUTTON"
       icon="edit"
-    ></Link>
+    />
     <Button
       id="delete-session"
       :color="ButtonColor.DANGER"
       icon="delete"
-      :size="ButtonSize.MEDIUM"
       label="Delete"
       @click="deleteSession"
-    ></Button>
+    />
     <Link
       v-if="canUserCreateActivity()"
       id="add-activity"
       icon="add"
-      :size="ButtonSize.MEDIUM"
       :color="ButtonColor.SUCCESS"
       :to="{ name: 'activity', params: { sessionId } }"
       :type="LinkType.BUTTON"
       label="Add"
     />
-    <label v-if="showSwitch" class="w-full sm:w-fit ml-auto">
-      Edit order:
+    <label
+      v-if="showSwitch"
+      class="w-fit ml-auto flex flex-col sm:flex-row items-center align-centers"
+    >
+      <span class="mr-3">Enable edit</span>
       <Switch
+        name="toggleOrder"
+        id="order"
         :checked="allowEdit"
         @toggle="(value) => (allowEdit = value)"
-      ></Switch>
+      />
     </label>
   </div>
   <div class="flex flex-col justify-center">
     <div id="warmup-activities">
       <ActivityList
+        title="Warmup"
         :activities="warmupList"
         :is-warmup="true"
         :session-id="sessionId"
@@ -126,16 +130,18 @@
         @run="runWarmUp"
         @move="sortActivities"
         :allow-drag="allowEdit"
-      ></ActivityList>
+      />
     </div>
+    <hr />
     <div id="list-activities">
       <ActivityList
+        title="Activities"
         :activities="activityList"
         @run="runActivities"
         @move="sortActivities"
         :session-id="sessionId"
         :allow-drag="allowEdit"
-      ></ActivityList>
+      />
     </div>
   </div>
 </template>

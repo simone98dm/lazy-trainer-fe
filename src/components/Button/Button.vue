@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores/user";
-  import { ButtonColor, ButtonSize } from "~/utils";
+  import { ButtonColor } from "~/utils";
   const props = defineProps([
     "full",
     "size",
@@ -20,16 +20,13 @@
       'flex',
       'justify-center',
       'item-center',
-      'appearance-none',
-      'block',
-      'font-bold',
-      'rounded-lg',
-      'py-3',
-      'px-3',
       'shadow-lg',
-      'mb-2',
-      { 'w-full xl:w-1/3 lg:w-1/2 md:w-4/5': props.full ?? false },
-      { 'w-full sm:w-fit': !props.full },
+      'font-bold',
+      'text-sm',
+      'rounded-lg',
+      'py-2 md:py-3',
+      'px-2 md:px-8',
+      { 'w-full': props.full ?? false },
       {
         'bg-indigo-600 hover:bg-indigo-500 text-gray-100':
           (!props.color || props.color === ButtonColor.PRIMARY) &&
@@ -64,24 +61,23 @@
         'bg-trasparent hover:bg-slate-100 text-black':
           props.color === ButtonColor.TRASPARENT,
       },
-      {
-        'text-xl': props.size === ButtonSize.LARGE,
-      },
-      {
-        'text-md': props.size === ButtonSize.MEDIUM,
-      },
-      {
-        'text-sm': props.size === ButtonSize.SMALL,
-      },
     ]"
     type="button"
     @click="emit('click')"
   >
     <Loading v-if="props.loading" :small="true"></Loading>
-    <div v-else class="flex align-center justify-center">
-      <Icon v-if="props.icon" :component="props.icon" />
-      <slot />
-      <span class="ml-2" v-if="props.label">{{ props.label }}</span>
+    <div v-else>
+      <Icon
+        v-if="props.icon"
+        :component="props.icon"
+        class="float-left inline"
+      />
+      <span
+        :class="['ml-2 float-left inline', { 'hidden sm:block': !props.full }]"
+        v-if="props.label"
+      >
+        {{ props.label }}
+      </span>
     </div>
   </button>
 </template>

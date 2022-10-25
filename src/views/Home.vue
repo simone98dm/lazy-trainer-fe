@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { defineAsyncComponent, ref } from "vue";
+  import { ref } from "vue";
   import { useRoute, useRouter } from "vue-router";
   import { ISession } from "~/models/Session";
   import { parseSessions } from "~/utils";

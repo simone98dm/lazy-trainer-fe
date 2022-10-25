@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useActivityStore } from "~/stores/activity";
   import { useUserStore } from "~/stores/user";
-  import { ButtonSize, LinkType } from "~/utils";
+  import { LinkType } from "~/utils";
   const user = useUserStore();
   const activityStore = useActivityStore();
   const props = defineProps(["list", "loading"]);
@@ -31,7 +31,7 @@
       activityStore.getMissingDays.length > 0
     "
     icon="add"
-    :size="ButtonSize.MEDIUM"
+    full="true"
     :to="{ name: 'session' }"
     :type="LinkType.BUTTON"
     label="Add day activities"

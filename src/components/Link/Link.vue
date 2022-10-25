@@ -1,64 +1,31 @@
 <script setup lang="ts">
   import { RouterLink } from "vue-router";
-  import { ButtonColor, LinkType } from "~/utils";
-  import { useUserStore } from "~/stores/user";
+  import { LinkType } from "~/utils";
 
   const props = defineProps(["to", "full", "type", "label", "color", "icon"]);
   const emit = defineEmits(["click"]);
-  const user = useUserStore();
-
-  const css =
-    props.type === LinkType.BUTTON
-      ? [
-          "flex",
-          "justify-center",
-          "item-center",
-          { "w-full": props.full ?? false },
-          { "w-full sm:w-fit": !props.full },
-          "appearance-none",
-          "block",
-          {
-            "bg-indigo-600 hover:bg-indigo-500 text-gray-100":
-              (!props.color || props.color === ButtonColor.PRIMARY) &&
-              !user.isTrainer,
-          },
-          {
-            "bg-purple-600 hover:bg-purple-500 text-gray-100":
-              (!props.color || props.color === ButtonColor.PRIMARY) &&
-              user.isTrainer,
-          },
-          { "bg-red-600 hover:bg-red-500": props.color === ButtonColor.DANGER },
-          {
-            "bg-green-600 hover:bg-green-500":
-              props.color === ButtonColor.SUCCESS,
-          },
-          {
-            "bg-purple-600 hover:bg-purple-500":
-              props.color === ButtonColor.WARNING,
-          },
-          {
-            "bg-slate-800 hover:bg-slate-500": props.color === ButtonColor.DARK,
-          },
-          {
-            "bg-white hover:bg-slate-100 text-black":
-              props.color === ButtonColor.LIGHT,
-          },
-          "text-gray-100",
-          "font-bold",
-          "rounded-lg",
-          "py-3",
-          "px-3",
-          "shadow-lg",
-          "hover:bg-indigo-500",
-          "mb-2",
-        ]
-      : "";
 </script>
 
 <template>
-  <router-link :to="to" :class="css" @click="emit('click')">
-    <Icon v-if="props.icon" :component="props.icon" />
-    <slot />
-    <span class="ml-2" v-if="props.label">{{ props.label }}</span>
+  <router-link :to="to" @click="emit('click')">
+    <Button
+      v-if="type === LinkType.BUTTON"
+      :full="full"
+      :type="type"
+      :label="label"
+      :color="color"
+      :icon="icon"
+    />
+    <div v-else>
+      <Icon
+        v-if="props.icon"
+        :component="props.icon"
+        class="float-left inline"
+      />
+      <slot />
+      <span v-if="props.label" class="ml-2 float-left inline">{{
+        props.label
+      }}</span>
+    </div>
   </router-link>
 </template>

@@ -1,13 +1,14 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores/user";
   import draggable from "vuedraggable";
-  import { ButtonColor, LinkType, ButtonSize } from "~/utils";
+  import { ButtonColor, LinkType } from "~/utils";
 
   const props = defineProps([
     "activities",
     "sessionId",
     "isWarmup",
     "allowDrag",
+    "title",
   ]);
   const userStore = useUserStore();
   const emits = defineEmits(["move", "delete", "run", "duplicate"]);
@@ -19,15 +20,17 @@
       v-if="props.activities.length > 0"
       class="flex justify-between mb-3 gap-2"
     >
+      <h4 v-if="props.title" class="text-4xl font-bold mr-auto">
+        {{ props.title }}
+      </h4>
       <Button
         id="run-timer"
         :color="ButtonColor.PRIMARY"
         icon="play_arrow"
-        :size="ButtonSize.MEDIUM"
         :type="LinkType.BUTTON"
         label="Start"
         @click="emits('run')"
-      ></Button>
+      />
       <Button
         id="duplicate-warmup"
         v-if="
@@ -35,10 +38,9 @@
         "
         :color="ButtonColor.LIGHT"
         icon="content_copy"
-        :size="ButtonSize.MEDIUM"
         label="Duplicate"
         @click="emits('duplicate')"
-      ></Button>
+      />
     </div>
     <div v-if="allowDrag">
       <draggable

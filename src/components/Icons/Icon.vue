@@ -1,9 +1,7 @@
 <script setup lang="ts">
-  defineProps(["component", "class"]);
+  const props = defineProps(["component", "class"]);
 </script>
 
 <template>
-  <div :class="class">
-    <span class="material-icons-outlined">{{ component }}</span>
-  </div>
+  <span :class="'material-icons-outlined ' + props.class">{{ component }}</span>
 </template>
