@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { IActivity } from "~/models/Activity";
-  import { ref, watch } from "vue";
+  import { computed, ref, watch } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { useUserStore } from "~/stores/user";
   import { ButtonColor } from "~/utils";
@@ -22,19 +22,41 @@
   const user = useUserStore();
   const uuid = uuidv4();
 
-  let name = ref(props.name || "");
   let id = ref(props.id || uuid);
+  let name = ref(props.name || "");
+  let nameError = computed(() => name.value === "" && name.value.length < 20);
+
   let description = ref(props.description || "");
+  let descriptionError = computed(() => description.value.length > 100);
+
   let time = ref(props.time / 1000 || 0);
+  let timeError = computed(() => time.value <= 0 && time.value > 3600);
+
   let reps = ref(props.reps || 0);
+  let repsError = computed(() => reps.value <= 0 && reps.value > 100);
+
   let warmup = ref(props.warmup || false);
+
   let order = ref(props.order || 0);
+
   let videoUrl = ref(props.videoUrl || "");
+  let videoUrlError = computed(() => videoUrl.value.length > 8);
+
   let isTimeBasedActivity = ref(
     (Boolean(props.time !== 0) && Boolean(props.reps === 0)) ?? false
   );
 
   function update() {
+    // if (
+    //   nameError.value ||
+    //   descriptionError.value ||
+    //   timeError.value ||
+    //   repsError.value ||
+    //   videoUrlError.value
+    // ) {
+    //   return;
+    // }
+
     const activity: IActivity = {
       id: id.value,
       name: name.value,
@@ -53,7 +75,6 @@
     }
     emits("update", { activityId: id.value, activity });
   }
-
   watch([name, description, time, reps, warmup, order, videoUrl], update);
 </script>
 
@@ -67,60 +88,48 @@
 
         <Button
           id="delete-activity"
-          v-if="props.allowDetele"
           :color="ButtonColor.DANGER"
           icon="delete"
           @click="emits('remove', props.id)"
-        ></Button>
+        />
       </div>
       <div class="flex flex-wrap -mx-3">
         <div class="w-full px-3 mb-6">
-          <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="activityName"
-          >
-            Name:
-          </label>
-          <input
-            autocomplete="false"
-            v-model="name"
-            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-            name="activityName"
-            type="text"
+          <Input
+            :value="name"
+            @change="(v) => (name = v)"
+            id="activityName"
+            name="activityNameField"
+            label="Name"
+            :has-error="nameError"
+            error="Name is required"
           />
         </div>
 
         <div class="w-full px-3 mb-6">
-          <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="activityDescription"
-          >
-            Description:
-          </label>
-          <input
-            autocomplete="false"
-            v-model="description"
-            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-            name="activityDescription"
-            type="text"
+          <Input
+            :value="description"
+            @change="(v) => (description = v)"
+            id="activityDescription"
+            name="activityDescriptionField"
+            label="Description"
+            :has-error="descriptionError"
+            error="Description is required"
           />
         </div>
 
-        <div class="w-full md:w-full px-3 mb-6">
-          <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="activityType"
-          >
-            Activity based type:
+        <div class="w-full px-3 mb-6">
+          <label class="font-bold mb-2" for="activityType">
+            Activity based type
           </label>
-          <div class="flex justify-center">
+          <div class="flex justify-center align-center my-2">
             <div
-              class="w-full sm:w-64 flex justify-between shadow rounded-full h-12 flex p-1 mb-3"
+              class="w-full sm:w-64 flex justify-between shadow rounded-full h-12 flex p-1"
             >
               <button
                 id="time-based-activity"
                 :class="[
-                  'flex items-center w-fit rounded-full h-10 transition-all px-10 text-lg',
+                  'flex items-center w-fit rounded-full h-10 transition-all px-10',
                   {
                     'bg-indigo-600 text-white shadow':
                       isTimeBasedActivity && !user.isTrainer,
@@ -137,7 +146,7 @@
               <button
                 id="reps-based-activity"
                 :class="[
-                  'flex items-center w-fit rounded-full h-10 transition-all px-10 text-lg',
+                  'flex items-center w-fit rounded-full h-10 transition-all px-10',
                   {
                     'bg-indigo-600 text-white shadow':
                       !isTimeBasedActivity && !user.isTrainer,
@@ -152,52 +161,44 @@
                 Reps
               </button>
             </div>
+            <TimeSelector
+              v-if="isTimeBasedActivity"
+              @timeSelected="(v) => (time = v)"
+              :has-error="timeError"
+            />
+            <Input
+              v-else
+              :value="reps"
+              @change="(v) => (reps = v)"
+              id="activityUrl"
+              name="activityUrlField"
+              :has-error="repsError"
+              error="Reps not valid"
+            />
           </div>
-
-          <input
-            v-if="isTimeBasedActivity"
-            autocomplete="false"
-            v-model="time"
-            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-            name="activityType"
-            type="number"
-          />
-          <input
-            v-else
-            autocomplete="false"
-            v-model="reps"
-            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-            name="activityType"
-            type="number"
-          />
         </div>
         <div class="w-full md:w-full flex flex-col px-3 mb-6">
-          <label for="activityUrl">
-            Video url (<i class="text-gray-500"
-              >just the video id, es. auBLPXO8Fww</i
-            >):
-            <input
-              type="text"
-              name="activityVideoUrl"
-              v-model="videoUrl"
-              autocomplete="false"
-              class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
+          <Input
+            :value="videoUrl"
+            @change="(v) => (videoUrl = v)"
+            id="activityUrl"
+            name="activityUrlField"
+            label="Video Url (just the video id, es. auBLPXO8Fww)"
+            :has-error="videoUrlError"
+            error="Video url not valid"
+          />
+        </div>
+        <div class="px-3 mb-6">
+          <label class="tracking-wide" :for="`toggle-${i}`">
+            <span class="flex-left inline"> Is warm-up? </span>
+            <Switch
+              class="flex-left inline"
+              :id="`toggle-${i}`"
+              :name="`toggleWarmup-${i}`"
+              :checked="warmup"
+              @toggle="(v) => (warmup = v)"
             />
           </label>
-        </div>
-        <div class="w-full md:w-full flex flex-col px-3 mb-6">
-          <label
-            class="uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="toggle"
-          >
-            Is warm-up?
-          </label>
-          <Switch
-            :id="`toggle-${i}`"
-            :name="`toggleWarmup-${i}`"
-            :checked="warmup"
-            @toggle="(v) => (warmup = v)"
-          />
         </div>
       </div>
     </form>

@@ -126,23 +126,22 @@
     />
   </div>
   <div class="">
-    <div v-for="(act, i) in multiActivities" :key="i">
-      <ActivityForm
-        :i="i"
-        :name="act?.name"
-        :id="act?.id"
-        :description="act?.description"
-        :time="act?.time"
-        :day-of-week="session?.dayOfWeek"
-        :warmup="act?.warmup"
-        :order="act?.order"
-        :reps="act?.reps"
-        :video-url="act?.videoUrl"
-        :allow-detele="Boolean(activityId)"
-        @update="updateActivity"
-        @remove="removeActivity"
-      />
-    </div>
+    <ActivityForm
+      v-for="(act, i) in multiActivities"
+      :key="i"
+      :name="act?.name"
+      :id="act?.id"
+      :description="act?.description"
+      :time="act?.time"
+      :day-of-week="session?.dayOfWeek"
+      :warmup="act?.warmup"
+      :order="act?.order"
+      :reps="act?.reps"
+      :video-url="act?.videoUrl"
+      :allow-detele="Boolean(activityId)"
+      @update="updateActivity"
+      @remove="removeActivity"
+    />
 
     <div
       class="w-full flex flex-col sm:flex-row w-full px-6 justify-center gap-3 mb-6"
