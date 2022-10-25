@@ -1,7 +1,16 @@
 <script setup lang="ts">
-  defineProps(["value", "label", "hasError", "error", "id", "name", "type"]);
+  defineProps([
+    "value",
+    "label",
+    "hasError",
+    "error",
+    "id",
+    "name",
+    "type",
+    "disabled",
+  ]);
   console.log();
-  defineEmits(["change"]);
+  defineEmits(["change", "click"]);
 </script>
 
 <template>
@@ -19,8 +28,10 @@
     ]"
     :name="name"
     :id="id"
+    :disabled="disabled"
     @change="$emit('change', (($event.target as any) || undefined)?.value)"
     @input="$emit('change', (($event.target as any) || undefined)?.value)"
+    @click="$emit('click')"
     :type="type ?? 'text'"
   />
   <span v-if="hasError" class="text-red-600">{{ error }}</span>
