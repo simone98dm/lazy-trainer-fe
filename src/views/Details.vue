@@ -19,6 +19,8 @@
   let session = activityStore.getSession(sessionId);
   let activityList = ref(undefined as any[] | undefined);
   let warmupList = ref(undefined as any[] | undefined);
+  const showSwitch = userStore.isTrainer || userStore.isSelfMadeMan;
+  const allowEdit = ref(false);
 
   warmupList.value = activityStore.getWarmUpActivities(sessionId);
   activityList.value = activityStore.getSessionActivities(sessionId);
@@ -106,6 +108,13 @@
       :type="LinkType.BUTTON"
       label="Add"
     />
+    <label v-if="showSwitch" class="w-full sm:w-fit ml-auto">
+      Edit order:
+      <Switch
+        :checked="allowEdit"
+        @toggle="(value) => (allowEdit = value)"
+      ></Switch>
+    </label>
   </div>
   <div class="flex flex-col justify-center">
     <div id="warmup-activities">
@@ -116,6 +125,7 @@
         @duplicate="duplicateWarmup"
         @run="runWarmUp"
         @move="sortActivities"
+        :allow-drag="allowEdit"
       ></ActivityList>
     </div>
     <div id="list-activities">
@@ -124,6 +134,7 @@
         @run="runActivities"
         @move="sortActivities"
         :session-id="sessionId"
+        :allow-drag="allowEdit"
       ></ActivityList>
     </div>
   </div>

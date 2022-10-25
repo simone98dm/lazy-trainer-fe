@@ -3,7 +3,7 @@
   import { useActivityStore } from "~/stores/activity";
   import { useSettingStore } from "~/stores/settings";
   import { IActivity } from "~/models/Activity";
-  import { ButtonColor } from "~/utils";
+  import { ButtonColor, MAX_ACTIIVITY_FORM } from "~/utils";
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
 
@@ -93,8 +93,8 @@
   }
 
   function addActivityForm() {
-    if (multiActivities.value.length > 10) {
-      alert("You can't add more than 10 activities at once");
+    if (multiActivities.value.length > MAX_ACTIIVITY_FORM) {
+      alert(`You can't add more than ${MAX_ACTIIVITY_FORM} activities at once`);
       return;
     }
     multiActivities.value.push({

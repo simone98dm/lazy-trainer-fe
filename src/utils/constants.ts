@@ -25,3 +25,5 @@ export const RoleName: { [role in Role]: string } = {
 
 // export const baseUrl = import.meta.env.DEV ? "http://localhost:3001" : "";
 export const baseUrl = "";
+
+export const MAX_ACTIIVITY_FORM = 10;

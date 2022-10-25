@@ -3,9 +3,13 @@
   import draggable from "vuedraggable";
   import { ButtonColor, LinkType, ButtonSize } from "~/utils";
 
-  const props = defineProps(["activities", "sessionId", "isWarmup"]);
+  const props = defineProps([
+    "activities",
+    "sessionId",
+    "isWarmup",
+    "allowDrag",
+  ]);
   const userStore = useUserStore();
-  const allowEdit = userStore.isTrainer || userStore.isSelfMadeMan;
   const emits = defineEmits(["move", "delete", "run", "duplicate"]);
 </script>
 
@@ -36,7 +40,7 @@
         @click="emits('duplicate')"
       ></Button>
     </div>
-    <div v-if="allowEdit">
+    <div v-if="allowDrag">
       <draggable
         :list="props.activities"
         item-key="id"
@@ -57,7 +61,6 @@
               :description="element.description"
               :time="element.time"
               :id="element.id"
-              icon="fitness_center"
               :reps="element.reps"
               :request-change="element.requestChange"
             />
