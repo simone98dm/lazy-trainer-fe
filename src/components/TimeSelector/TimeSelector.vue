@@ -37,7 +37,7 @@
     button-text="Select"
   >
     <div class="w-full">
-      <TimePicker @select="(v) => (selectedTime = v)" />
+      <TimePicker @select="(v: any) => (selectedTime = v)" />
     </div>
   </Modal>
   <div class="ml-2 w-full">
