@@ -5,9 +5,7 @@
   import horn from "~/assets/audio/horn.mp3";
   import { type TimerActivity, COLOR_CODES, FULL_DASH_ARRAY } from "~/utils";
   import { IActivity } from "~/models/Activity";
-  import { useSettingStore } from "~/stores/settings";
-  import { useTimerStore } from "~/stores/timer";
-  import { useUserStore } from "~/stores/user";
+  import { useTimerStore, useSettingStore, useUserStore } from "~/stores";
 
   const route = useRoute();
   const router = useRouter();

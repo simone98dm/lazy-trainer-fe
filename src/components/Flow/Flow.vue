@@ -1,6 +1,5 @@
 <script setup lang="ts">
-  import { useActivityStore } from "~/stores/activity";
-  import { useUserStore } from "~/stores/user";
+  import { useActivityStore, useUserStore } from "~/stores";
   import { LinkType } from "~/utils";
   const user = useUserStore();
   const activityStore = useActivityStore();

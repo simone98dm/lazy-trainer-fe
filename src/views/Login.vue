@@ -1,15 +1,16 @@
 <script setup lang="ts">
-  import { defineAsyncComponent, ref } from "vue";
+  import { ref } from "vue";
   import { useRoute, useRouter } from "vue-router";
-  import { useUserStore } from "~/stores/user";
+  import { useUserStore, useSettingStore } from "~/stores";
   import { ButtonColor } from "~/utils";
-  import { useSettingStore } from "~/stores/settings";
   import { getAnalytics, logEvent } from "firebase/analytics";
 
   const route = useRoute();
 
   const username = ref("");
+  const usernameError = ref(false);
   const password = ref("");
+  const passwordError = ref(false);
   const error = ref("");
   const router = useRouter();
   const isLoading = ref(false);
@@ -56,39 +57,35 @@
 
 <template>
   <div class="flex justify-center">
-    <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
+    <form
+      class="bg-white rounded-lg shadow-md p-6 w-full max-w-screen-lg"
+      @submit.prevent
+    >
       <div class="text-center">
         <h1 class="mb-3 text-4xl font-bold">Login</h1>
       </div>
-      <div class="flex flex-wrap -mx-3">
-        <div class="w-full px-3 mb-6">
-          <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-          >
-            Username:
-          </label>
-          <input
-            name="username"
-            type="text"
-            v-model="username"
-            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-          />
-        </div>
+      <div class="flex flex-wrap mb-3">
+        <Input
+          error="'Username is required'"
+          name="usernameField"
+          id="username"
+          :disabled="false"
+          :has-error="usernameError"
+          label="Username"
+          @change="(v: string) => (username = v)"
+        />
       </div>
-      <div class="flex flex-wrap -mx-3">
-        <div class="w-full px-3 mb-6">
-          <label
-            class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-          >
-            Password:
-          </label>
-          <input
-            name="password"
-            type="password"
-            v-model="password"
-            class="appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-          />
-        </div>
+      <div class="flex flex-wrap mb-3">
+        <Input
+          error="'Password is required'"
+          name="passwordField"
+          id="password"
+          type="password"
+          :disabled="false"
+          :has-error="passwordError"
+          label="Password"
+          @change="(v: string) => (password = v)"
+        />
       </div>
       <div class="text-center mb-6">
         <span v-if="error" class="font-bold text-red-500">{{ error }}</span>

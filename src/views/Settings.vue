@@ -1,8 +1,6 @@
 <script setup lang="ts">
   import { ButtonColor, Role, RoleName } from "~/utils";
-  import { useActivityStore } from "~/stores/activity";
-  import { useSettingStore } from "~/stores/settings";
-  import { useUserStore } from "~/stores/user";
+  import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
   import { ref } from "vue";
 
   const activityStore = useActivityStore();
@@ -26,7 +24,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col justify-center">
+  <div class="flex flex-col justify-center max-w-screen-lg mx-auto">
     <div class="shadow p-5 rounded-xl mb-6 bg-white">
       <h1 class="text-xl font-bold mb-3">Profile</h1>
       <div class="w-full p-3">

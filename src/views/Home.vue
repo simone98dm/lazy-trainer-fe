@@ -3,9 +3,7 @@
   import { useRoute, useRouter } from "vue-router";
   import { ISession } from "~/models/Session";
   import { parseSessions } from "~/utils";
-  import { useActivityStore } from "~/stores/activity";
-  import { useSettingStore } from "~/stores/settings";
-  import { useUserStore } from "~/stores/user";
+  import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
 
   const isLoading = ref(true);
   let pageOptions = {
@@ -57,11 +55,13 @@
 </script>
 
 <template>
-  <div :class="options.style">
-    <h1 class="mb-3 text-3xl font-bold">{{ options.title }}</h1>
-    <h4 class="mb-3 text-xl text-slate-600 font-bold">
-      {{ options.subtitle }}
-    </h4>
+  <div class="max-w-screen-lg mx-auto">
+    <div :class="options.style">
+      <h1 class="mb-3 text-3xl font-bold">{{ options.title }}</h1>
+      <h4 class="mb-3 text-xl text-slate-600 font-bold">
+        {{ options.subtitle }}
+      </h4>
+    </div>
+    <Flow v-if="!options.block" :list="sessions" :loading="isLoading"></Flow>
   </div>
-  <Flow v-if="!options.block" :list="sessions" :loading="isLoading"></Flow>
 </template>

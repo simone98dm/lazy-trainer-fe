@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from "vue-router";
-  import { useActivityStore } from "~/stores/activity";
-  import { useSettingStore } from "~/stores/settings";
+  import { useActivityStore, useSettingStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
   import { ButtonColor, MAX_ACTIIVITY_FORM } from "~/utils";
   import { ref } from "vue";
@@ -116,33 +115,32 @@
       @click="router.push({ name: 'details', params: { id: sessionId } })"
     />
   </div>
-  <div class="w-full flex flex-col sm:flex-row w-full px-3 gap-3 mb-6">
-    <Button
-      id="save-activity"
-      :color="ButtonColor.SUCCESS"
-      icon="save"
-      :label="!activityId ? 'Create' : 'Save'"
-      @click="saveActivity"
-    />
-  </div>
-  <div class="">
-    <div v-for="(act, i) in multiActivities" :key="i">
-      <ActivityForm
-        :i="i"
-        :name="act?.name"
-        :id="act?.id"
-        :description="act?.description"
-        :time="act?.time"
-        :day-of-week="session?.dayOfWeek"
-        :warmup="act?.warmup"
-        :order="act?.order"
-        :reps="act?.reps"
-        :video-url="act?.videoUrl"
-        :allow-detele="Boolean(activityId)"
-        @update="updateActivity"
-        @remove="removeActivity"
+  <div class="max-w-screen-lg mx-auto">
+    <div class="mb-6">
+      <Button
+        id="save-activity"
+        :color="ButtonColor.SUCCESS"
+        icon="save"
+        :label="!activityId ? 'Create' : 'Save'"
+        @click="saveActivity"
       />
     </div>
+    <ActivityForm
+      v-for="(act, i) in multiActivities"
+      :key="i"
+      :name="act?.name"
+      :id="act?.id"
+      :description="act?.description"
+      :time="act?.time"
+      :day-of-week="session?.dayOfWeek"
+      :warmup="act?.warmup"
+      :order="act?.order"
+      :reps="act?.reps"
+      :video-url="act?.videoUrl"
+      :allow-detele="Boolean(activityId)"
+      @update="updateActivity"
+      @remove="removeActivity"
+    />
 
     <div
       class="w-full flex flex-col sm:flex-row w-full px-6 justify-center gap-3 mb-6"
