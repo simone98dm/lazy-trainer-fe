@@ -87,7 +87,7 @@
         <div class="w-full px-3 mb-6">
           <Input
             :value="name"
-            @change="(v) => (name = v)"
+            @change="(v: string) => (name = v)"
             id="activityName"
             name="activityNameField"
             label="Name"
@@ -99,7 +99,7 @@
         <div class="w-full px-3 mb-6">
           <Input
             :value="description"
-            @change="(v) => (description = v)"
+            @change="(v: string) => (description = v)"
             id="activityDescription"
             name="activityDescriptionField"
             label="Description"
@@ -157,13 +157,13 @@
               <TimeSelector
                 v-if="isTimeBasedActivity"
                 :time="time"
-                @timeSelected="(v) => (time = v)"
+                @timeSelected="(v: number) => (time = v)"
                 :has-error="timeError"
               />
               <Input
                 v-else
                 :value="reps"
-                @change="(v) => (reps = v)"
+                @change="(v: number) => (reps = v)"
                 id="activityUrl"
                 name="activityUrlField"
                 :has-error="repsError"
@@ -175,7 +175,7 @@
         <div class="w-full md:w-full flex flex-col px-3 mb-6">
           <Input
             :value="videoUrl"
-            @change="(v) => (videoUrl = v)"
+            @change="(v: string) => (videoUrl = v)"
             id="activityUrl"
             name="activityUrlField"
             label="Video Url (just the video id, es. auBLPXO8Fww)"
@@ -191,7 +191,7 @@
               :id="`toggle-${i}`"
               :name="`toggleWarmup-${i}`"
               :checked="warmup"
-              @toggle="(v) => (warmup = v)"
+              @toggle="(v: boolean) => (warmup = v)"
             />
           </label>
         </div>

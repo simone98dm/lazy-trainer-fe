@@ -72,7 +72,7 @@
           :disabled="false"
           :has-error="usernameError"
           label="Username"
-          @change="(v) => (username = v)"
+          @change="(v: string) => (username = v)"
         />
       </div>
       <div class="flex flex-wrap mb-3">
@@ -84,7 +84,7 @@
           :disabled="false"
           :has-error="passwordError"
           label="Password"
-          @change="(v) => (password = v)"
+          @change="(v: string) => (password = v)"
         />
       </div>
       <div class="text-center mb-6">
