@@ -1,7 +1,6 @@
 <script setup lang="ts">
-  import { useSettingStore } from "~/stores/settings";
-  import { useUserStore } from "~/stores/user";
-  import { defineAsyncComponent, ref } from "vue";
+  import { useSettingStore, useUserStore } from "~/stores";
+  import { ref } from "vue";
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();

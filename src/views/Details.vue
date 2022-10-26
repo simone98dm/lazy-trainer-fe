@@ -1,14 +1,16 @@
 <script setup lang="ts">
-  import { useRoute } from "vue-router";
-  import router from "~/router/router";
+  import { useRoute, useRouter } from "vue-router";
   import { ButtonColor, getDayOfTheWeek, LinkType } from "~/utils";
-  import { useUserStore } from "~/stores/user";
-  import { useTimerStore } from "~/stores/timer";
-  import { useSettingStore } from "~/stores/settings";
-  import { useActivityStore } from "~/stores/activity";
+  import {
+    useUserStore,
+    useTimerStore,
+    useSettingStore,
+    useActivityStore,
+  } from "~/stores";
   import { ref } from "vue";
 
   const route = useRoute();
+  const router = useRouter();
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
@@ -19,8 +21,6 @@
   let session = activityStore.getSession(sessionId);
   let activityList = ref(undefined as any[] | undefined);
   let warmupList = ref(undefined as any[] | undefined);
-  // const showSwitch = userStore.isTrainer || userStore.isSelfMadeMan;
-  const allowEdit = ref(false);
 
   warmupList.value = activityStore.getWarmUpActivities(sessionId);
   activityList.value = activityStore.getSessionActivities(sessionId);
@@ -79,59 +79,59 @@
       "
     />
   </div>
-  <div
-    class="flex mb-6 gap-2"
-    v-if="userStore.isTrainer || userStore.isSelfMadeMan"
-  >
-    <Link
-      id="edit-session"
-      :to="{ name: 'session', params: { sessionId } }"
-      label="Edit"
-      :type="LinkType.BUTTON"
-      icon="edit"
-    />
-    <Button
-      id="delete-session"
-      :color="ButtonColor.DANGER"
-      icon="delete"
-      label="Delete"
-      @click="deleteSession"
-    />
-    <Link
-      v-if="canUserCreateActivity()"
-      id="add-activity"
-      icon="add"
-      :color="ButtonColor.SUCCESS"
-      :to="{ name: 'activity', params: { sessionId } }"
-      :type="LinkType.BUTTON"
-      label="Add"
-    />
-  </div>
-  <div class="flex flex-col justify-center">
-    <div id="warmup-activities">
-      <ActivityList
-        title="Warmup"
-        :activities="warmupList"
-        :is-warmup="true"
-        :session-id="sessionId"
-        @duplicate="duplicateWarmup"
-        @run="runWarmUp"
-        @move="sortActivities"
-        :allow-drag="allowEdit"
-        :enable-controls="!userStore.isTrainer"
+  <div class="max-w-screen-lg mx-auto">
+    <div
+      class="flex mb-6 gap-2"
+      v-if="userStore.isTrainer || userStore.isSelfMadeMan"
+    >
+      <Link
+        id="edit-session"
+        :to="{ name: 'session', params: { sessionId } }"
+        label="Edit"
+        :type="LinkType.BUTTON"
+        icon="edit"
+      />
+      <Button
+        id="delete-session"
+        :color="ButtonColor.DANGER"
+        icon="delete"
+        label="Delete"
+        @click="deleteSession"
+      />
+      <Link
+        v-if="canUserCreateActivity()"
+        id="add-activity"
+        icon="add"
+        :color="ButtonColor.SUCCESS"
+        :to="{ name: 'activity', params: { sessionId } }"
+        :type="LinkType.BUTTON"
+        label="Add"
       />
     </div>
-    <hr />
-    <div id="list-activities">
-      <ActivityList
-        title="Activities"
-        :activities="activityList"
-        @run="runActivities"
-        @move="sortActivities"
-        :session-id="sessionId"
-        :allow-drag="allowEdit"
-        :enable-controls="!userStore.isTrainer"
-      />
+    <div class="flex flex-col justify-center">
+      <div id="warmup-activities">
+        <ActivityList
+          title="Warmup"
+          :activities="warmupList"
+          :is-warmup="true"
+          :session-id="sessionId"
+          @duplicate="duplicateWarmup"
+          @run="runWarmUp"
+          @move="sortActivities"
+          :enable-controls="!userStore.isTrainer"
+        />
+      </div>
+      <hr />
+      <div id="list-activities">
+        <ActivityList
+          title="Activities"
+          :activities="activityList"
+          @run="runActivities"
+          @move="sortActivities"
+          :session-id="sessionId"
+          :enable-controls="!userStore.isTrainer"
+        />
+      </div>
     </div>
   </div>
 </template>

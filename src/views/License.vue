@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useSettingStore } from "~/stores/settings";
+  import { useSettingStore } from "~/stores";
   import { useRouter } from "vue-router";
   import { defineAsyncComponent } from "vue";
   const router = useRouter();
@@ -11,7 +11,7 @@
   <div class="mb-3">
     <BackButton @click="router.back()"></BackButton>
   </div>
-  <div class="shadow p-5 rounded-xl mb-6 bg-white">
+  <div class="shadow p-5 rounded-xl mb-6 bg-white max-w-screen-lg mx-auto">
     <pre>
 MIT License
 

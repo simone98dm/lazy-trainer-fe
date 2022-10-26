@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { ButtonColor } from "~/utils";
   defineProps(["show", "title"]);
   defineEmits(["close", "select"]);
 </script>
@@ -13,7 +14,7 @@
       aria-modal="true"
     >
       <div
-        class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+        class="flex justify-center h-full pt-4 px-4 text-center sm:block sm:p-0"
       >
         <div
           class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
@@ -27,34 +28,29 @@
         >
 
         <div
-          class="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+          class="inline-block my-auto bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle sm:max-w-lg w-full"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-headline"
         >
-          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div class="sm:flex sm:items-start">
-              <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                <h3
-                  class="text-lg leading-6 font-medium text-gray-900"
-                  id="modal-headline"
-                >
-                  {{ title }}
-                </h3>
-                <div class="mt-2 w-full">
-                  <slot />
-                </div>
-              </div>
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 w-full">
+            <div class="flex justify-between">
+              <h1 class="text-lg font-bold">{{ title }}</h1>
+              <button class="float-right" @click="$emit('close')">
+                &#x2715;
+              </button>
+            </div>
+            <div class="flex text-center sm:text-left p-4 w-full">
+              <slot />
             </div>
           </div>
-          <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-            <button
-              type="button"
-              class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+          <div class="bg-gray-50 px-4 py-3 sm:px-6 flex flex-row-reverse">
+            <Button
+              label="Select"
               @click="$emit('select')"
-            >
-              Ok
-            </button>
+              icon="check"
+              :color="ButtonColor.SUCCESS"
+            />
           </div>
         </div>
       </div>

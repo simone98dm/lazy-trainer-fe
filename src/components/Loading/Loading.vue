@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useUserStore } from "~/stores/user";
+  import { useUserStore } from "~/stores";
   const props = defineProps(["small"]);
   const user = useUserStore();
 </script>

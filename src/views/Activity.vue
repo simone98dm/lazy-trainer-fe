@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from "vue-router";
-  import { useActivityStore } from "~/stores/activity";
-  import { useSettingStore } from "~/stores/settings";
+  import { useActivityStore, useSettingStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
   import { ButtonColor, MAX_ACTIIVITY_FORM } from "~/utils";
   import { ref } from "vue";
@@ -116,16 +115,16 @@
       @click="router.push({ name: 'details', params: { id: sessionId } })"
     />
   </div>
-  <div class="w-full flex flex-col sm:flex-row w-full px-3 gap-3 mb-6">
-    <Button
-      id="save-activity"
-      :color="ButtonColor.SUCCESS"
-      icon="save"
-      :label="!activityId ? 'Create' : 'Save'"
-      @click="saveActivity"
-    />
-  </div>
-  <div class="">
+  <div class="max-w-screen-lg mx-auto">
+    <div class="mb-6">
+      <Button
+        id="save-activity"
+        :color="ButtonColor.SUCCESS"
+        icon="save"
+        :label="!activityId ? 'Create' : 'Save'"
+        @click="saveActivity"
+      />
+    </div>
     <ActivityForm
       v-for="(act, i) in multiActivities"
       :key="i"

@@ -2,7 +2,7 @@
   import { IActivity } from "~/models/Activity";
   import { computed, ref, watch } from "vue";
   import { v4 as uuidv4 } from "uuid";
-  import { useUserStore } from "~/stores/user";
+  import { useUserStore } from "~/stores";
   import { ButtonColor } from "~/utils";
 
   const props = defineProps([
@@ -47,16 +47,6 @@
   );
 
   function update() {
-    // if (
-    //   nameError.value ||
-    //   descriptionError.value ||
-    //   timeError.value ||
-    //   repsError.value ||
-    //   videoUrlError.value
-    // ) {
-    //   return;
-    // }
-
     const activity: IActivity = {
       id: id.value,
       name: name.value,

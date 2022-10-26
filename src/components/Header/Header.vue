@@ -1,6 +1,5 @@
 <script setup lang="ts">
-  import { useSettingStore } from "~/stores/settings";
-  import { useUserStore } from "~/stores/user";
+  import { useSettingStore, useUserStore } from "~/stores";
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();

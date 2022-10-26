@@ -15,7 +15,7 @@
 
 <template>
   <label
-    :class="['font-bold mb-2', { 'text-red-600': hasError }]"
+    :class="['font-bold mb-2 text-gray-800', { 'text-red-600': hasError }]"
     for="activityName"
   >
     {{ label }}

@@ -2,8 +2,7 @@
   import { useRoute, useRouter } from "vue-router";
   import { ISession } from "~/models/Session";
   import { IActivity } from "../models/Activity";
-  import { useActivityStore } from "~/stores/activity";
-  import { useSettingStore } from "~/stores/settings";
+  import { useActivityStore, useSettingStore } from "~/stores";
 
   const router = useRouter();
   const route = useRoute();
@@ -46,7 +45,10 @@
     <BackButton @click="onBackPageHandler" />
   </div>
   <span v-if="activityStore.getMissingDays.length <= 0">No days available</span>
-  <div class="flex xl:flex-col flex-wrap justify-center" v-else>
+  <div
+    class="flex xl:flex-col flex-wrap justify-center max-w-screen-lg mx-auto"
+    v-else
+  >
     <SessionForm
       @save="addSession"
       :id="sessionId"
