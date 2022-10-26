@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ButtonColor } from "~/utils";
   defineProps(["show", "title"]);
-  defineEmits(["close", "select"]);
+  defineEmits(["close", "confirm"]);
 </script>
 
 <template>
@@ -13,9 +13,7 @@
       role="dialog"
       aria-modal="true"
     >
-      <div
-        class="flex justify-center h-full pt-4 px-4 text-center sm:block sm:p-0"
-      >
+      <div class="flex justify-center pt-4 px-4 text-center sm:block">
         <div
           class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
           aria-hidden="true"
@@ -33,7 +31,7 @@
           aria-modal="true"
           aria-labelledby="modal-headline"
         >
-          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 w-full">
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 w-full">
             <div class="flex justify-between">
               <h1 class="text-lg font-bold">{{ title }}</h1>
               <button class="float-right" @click="$emit('close')">
@@ -44,10 +42,10 @@
               <slot />
             </div>
           </div>
-          <div class="bg-gray-50 px-4 py-3 sm:px-6 flex flex-row-reverse">
+          <div class="bg-gray-50 px-4 py-3 mb-0 sm:px-6 flex flex-row-reverse">
             <Button
               label="Select"
-              @click="$emit('select')"
+              @click="$emit('confirm')"
               icon="check"
               :color="ButtonColor.SUCCESS"
             />

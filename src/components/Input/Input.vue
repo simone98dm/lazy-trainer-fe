@@ -15,7 +15,11 @@
 
 <template>
   <label
-    :class="['font-bold mb-2 text-gray-800', { 'text-red-600': hasError }]"
+    :class="[
+      'font-bold mb-2',
+      { 'text-red-600': hasError },
+      { 'text-gray-800': !hasError },
+    ]"
     for="activityName"
   >
     {{ label }}
@@ -28,10 +32,10 @@
     ]"
     :name="name"
     :id="id"
-    :disabled="disabled"
     @change="$emit('change', (($event.target as any) || undefined)?.value)"
     @input="$emit('change', (($event.target as any) || undefined)?.value)"
     @click="$emit('click')"
+    :disabled="disabled"
     :type="type ?? 'text'"
   />
   <span v-if="hasError" class="text-red-600">{{ error }}</span>

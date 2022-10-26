@@ -112,9 +112,11 @@
           <label class="font-bold mb-2" for="activityType">
             Activity based type
           </label>
-          <div class="flex justify-center align-center my-2">
+          <div
+            class="flex flex-col sm:flex-row justify-around align-center my-2"
+          >
             <div
-              class="w-full sm:w-64 flex justify-between shadow rounded-full h-12 flex p-1"
+              class="w-full sm:w-fit sm:w-64 flex justify-between shadow rounded-full h-12 flex p-1 mb-3"
             >
               <button
                 id="time-based-activity"
@@ -151,20 +153,23 @@
                 Reps
               </button>
             </div>
-            <TimeSelector
-              v-if="isTimeBasedActivity"
-              @timeSelected="(v) => (time = v)"
-              :has-error="timeError"
-            />
-            <Input
-              v-else
-              :value="reps"
-              @change="(v) => (reps = v)"
-              id="activityUrl"
-              name="activityUrlField"
-              :has-error="repsError"
-              error="Reps not valid"
-            />
+            <div class="w-full sm:w-fit mb-3">
+              <TimeSelector
+                v-if="isTimeBasedActivity"
+                :time="time"
+                @timeSelected="(v) => (time = v)"
+                :has-error="timeError"
+              />
+              <Input
+                v-else
+                :value="reps"
+                @change="(v) => (reps = v)"
+                id="activityUrl"
+                name="activityUrlField"
+                :has-error="repsError"
+                error="Reps not valid"
+              />
+            </div>
           </div>
         </div>
         <div class="w-full md:w-full flex flex-col px-3 mb-6">

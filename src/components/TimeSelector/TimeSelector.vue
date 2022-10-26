@@ -1,61 +1,52 @@
 <script setup lang="ts">
-  import { ref } from "vue";
   import { ButtonColor } from "~/utils";
+  import { ref, watch } from "vue";
+  import { computed } from "@vue/reactivity";
 
-  import VueTimepicker from "vue3-timepicker";
+  const props = defineProps(["time", "hasError"]);
+  const emits = defineEmits(["timeSelected"]);
 
-  defineProps(["time", "hasError"]);
   let showModal = ref(false);
-  defineEmits(["timeSelected"]);
+  let seletedText = computed(
+    () => `${selectedTime.value.minutes} min, ${selectedTime.value.seconds} sec`
+  );
+
+  let selectedTime = ref({
+    minutes: 0,
+    seconds: 0,
+  });
+  const convertObjectToSeconds = () =>
+    selectedTime.value.minutes * 60 + selectedTime.value.seconds;
+
+  const minutes = Math.floor(props.time / 60);
+  const seconds = props.time - minutes * 60;
+  selectedTime.value = {
+    minutes,
+    seconds,
+  };
+
+  watch(selectedTime, () => emits("timeSelected", convertObjectToSeconds()));
 </script>
 
 <template>
   <Modal
     :show="showModal"
     @close="showModal = false"
-    title="Time selector"
+    @confirm="showModal = false"
+    title="Select time"
     button-text="Select"
   >
     <div class="w-full">
-      <h1>Enter the time</h1>
-      <!-- <TimePicker
-        name="timeField"
-        id="time"
-        class="appearance-none block w-full bg-white border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none"
-      /> -->
-      <VueTimepicker></VueTimepicker>
+      <TimePicker @select="(v) => (selectedTime = v)" />
     </div>
   </Modal>
-  <Button
-    :color="ButtonColor.LIGHT"
-    @click="showModal = true"
-    label="Open time"
-  />
+  <div class="ml-2 w-full">
+    <Button
+      :color="ButtonColor.PRIMARY"
+      :full="true"
+      :icon="'timer'"
+      :label="seletedText"
+      @click="() => (showModal = true)"
+    />
+  </div>
 </template>
-
-<style>
-  .vue__time-picker-input {
-    width: 100%;
-  }
-  .select-list {
-    display: flex;
-    max-height: 250px;
-    z-index: 100;
-  }
-  .hours {
-    max-height: 250px;
-    overflow-y: scroll;
-    width: 100%;
-    background-color: #f5f5f5;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  .minutes {
-    max-height: 250px;
-    overflow-y: scroll;
-    width: 100%;
-    background-color: #f5f5f5;
-    padding: 10px;
-    border-radius: 5px;
-  }
-</style>
