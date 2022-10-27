@@ -6,6 +6,7 @@ import vue from "@vitejs/plugin-vue";
 import path from "path";
 import { VitePluginFonts } from "vite-plugin-fonts";
 import Components from "unplugin-vue-components/vite";
+import pluginRewriteAll from "vite-plugin-rewrite-all";
 
 const ENV = loadEnv("development", process.cwd());
 
@@ -27,6 +28,7 @@ export default defineConfig({
     Components({
       dts: "./src/components.d.ts",
     }),
+    pluginRewriteAll(),
     VitePWA({
       registerType: "autoUpdate",
       workbox: {

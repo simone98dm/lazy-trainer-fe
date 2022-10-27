@@ -21,8 +21,10 @@
   let activityList = ref(undefined as any[] | undefined);
   let warmupList = ref(undefined as any[] | undefined);
 
-  warmupList.value = activityStore.getWarmUpActivities(id.value);
-  activityList.value = activityStore.getSessionActivities(id.value);
+  if (id.value) {
+    warmupList.value = activityStore.getWarmUpActivities(id.value);
+    activityList.value = activityStore.getSessionActivities(id.value);
+  }
 
   function save() {
     const session: ISession = {

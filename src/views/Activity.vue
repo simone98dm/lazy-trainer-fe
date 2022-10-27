@@ -63,15 +63,16 @@
   }
 
   async function removeActivity(activityId: string) {
-    if (confirm("Are you sure you want to delete this activity?")) {
-      if (activityId) {
-        await activityStore.removeActivity(sessionId as string, activityId);
-        redirectToList();
-      } else {
-        multiActivities.value = multiActivities.value.filter(
-          (act) => act.id !== activityId
-        );
-      }
+    if (!confirm("Are you sure you want to delete this activity?")) {
+      return;
+    }
+    if (activityId) {
+      await activityStore.removeActivity(sessionId as string, activityId);
+      redirectToList();
+    } else {
+      multiActivities.value = multiActivities.value.filter(
+        (act) => act.id !== activityId
+      );
     }
   }
 

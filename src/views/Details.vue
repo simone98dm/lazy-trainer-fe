@@ -8,7 +8,6 @@
     useActivityStore,
   } from "~/stores";
   import { ref } from "vue";
-  import { IActivity } from "~/models/Activity";
 
   const route = useRoute();
   const router = useRouter();
@@ -18,31 +17,25 @@
   const timerStore = useTimerStore();
 
   const sessionId = route.params.sessionId as string;
-
   let session = activityStore.getSession(sessionId);
+  settingsStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
+
   let activityList = ref(undefined as any[] | undefined);
   let warmupList = ref(undefined as any[] | undefined);
 
-  warmupList.value = activityStore.getWarmUpActivities(sessionId);
-  activityList.value = activityStore.getSessionActivities(sessionId);
-
-  settingsStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
-
-  async function deleteSession() {
-    await activityStore.deleteSession(sessionId);
-    router.push({ name: "home" });
+  if (sessionId) {
+    warmupList.value = activityStore.getWarmUpActivities(sessionId);
+    activityList.value = activityStore.getSessionActivities(sessionId);
   }
 
   function runWarmUp() {
     timerStore.setListActivities(warmupList.value);
     router.push({ name: "timer", params: { sessionId } });
   }
-
   function runActivities() {
     timerStore.setListActivities(activityList.value);
     router.push({ name: "timer", params: { sessionId } });
   }
-
   function canUserCreateActivity() {
     const freeActivitySlot =
       activityStore.getSessionActivities(sessionId)?.length ?? 100;
@@ -50,7 +43,6 @@
       (userStore.isTrainer || userStore.isSelfMadeMan) && freeActivitySlot < 100
     );
   }
-
   function sortActivities(evt: any) {
     const { newDraggableIndex, oldDraggableIndex } = evt;
     activityStore.moveActivity(
@@ -83,13 +75,6 @@
         :type="LinkType.BUTTON"
         icon="edit"
       />
-      <Button
-        id="delete-session"
-        :color="ButtonColor.DANGER"
-        icon="delete"
-        label="Delete"
-        @click="deleteSession"
-      />
       <Link
         v-if="canUserCreateActivity()"
         id="add-activity"
@@ -109,7 +94,7 @@
           :session-id="sessionId"
           @run="runWarmUp"
           @move="sortActivities"
-          :enable-controls="!userStore.isTrainer"
+          :enable-run="!userStore.isTrainer"
           :enable-duplicate="false"
         />
       </div>
@@ -121,7 +106,7 @@
           @run="runActivities"
           @move="sortActivities"
           :session-id="sessionId"
-          :enable-controls="!userStore.isTrainer"
+          :enable-run="!userStore.isTrainer"
           :enable-duplicate="false"
         />
       </div>

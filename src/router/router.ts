@@ -131,19 +131,13 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  const userStore = useUserStore();
-  if (to.meta.requireAuth && !userStore.isLogged) {
-    return "/login";
-  }
+  if (to.name !== "not-found" && to.name !== "login") {
+    const userStore = useUserStore();
+    if (to.meta.requireAuth && !userStore.isLogged) {
+      return "/login";
+    }
 
-  if (to.meta.requireAdmin) {
-    if (userStore.role === Role.TRAINER) {
-      if (
-        !["trainer", "group", "settings"].includes(to.name?.toString() ?? "")
-      ) {
-        return "/not-found";
-      }
-    } else {
+    if (to.meta.requireAdmin && userStore.role !== Role.TRAINER) {
       return "/not-found";
     }
   }

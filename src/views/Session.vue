@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from "vue-router";
   import { ISession } from "~/models/Session";
-  import { IActivity } from "../models/Activity";
   import { useActivityStore, useSettingStore } from "~/stores";
 
   const router = useRouter();
@@ -11,24 +10,12 @@
   settingsStore.setHeader("Session");
 
   const { sessionId } = route.params;
-  const { d } = route.query;
-
-  let duplicateWarmupActivities: IActivity[] | undefined = undefined;
-  if (d && activityStore.duplicateActivities) {
-    duplicateWarmupActivities = activityStore.duplicateActivities;
-  }
-
-  if (d && !activityStore.duplicateActivities) {
-    router.push({
-      name: "home",
-    });
-  }
-
   const session = activityStore.getSession(sessionId as string);
 
   function cleanDuplicateActivities() {
     activityStore.duplicateActivities = undefined;
   }
+
   function onBackPageHandler() {
     cleanDuplicateActivities();
     router.back();
@@ -38,6 +25,16 @@
     await activityStore.addSession(session);
     cleanDuplicateActivities();
     router.back();
+  }
+
+  async function deleteSession(sessionId: string) {
+    if (!confirm("Are you sure you want to delete this session?")) {
+      return;
+    }
+    await activityStore.deleteSession(sessionId);
+    router.push({
+      name: "home",
+    });
   }
 </script>
 <template>
@@ -51,8 +48,8 @@
   >
     <SessionForm
       @save="addSession"
+      @remove="deleteSession"
       :id="sessionId"
-      :existing-form="duplicateWarmupActivities"
       :day-of-week="session?.dayOfWeek"
     />
   </div>
