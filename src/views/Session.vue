@@ -14,11 +14,11 @@
   const { d } = route.query;
 
   let duplicateWarmupActivities: IActivity[] | undefined = undefined;
-  if (d && activityStore.duplicateWarmup) {
-    duplicateWarmupActivities = activityStore.duplicateWarmup;
+  if (d && activityStore.duplicateActivities) {
+    duplicateWarmupActivities = activityStore.duplicateActivities;
   }
 
-  if (d && !activityStore.duplicateWarmup) {
+  if (d && !activityStore.duplicateActivities) {
     router.push({
       name: "home",
     });
@@ -26,17 +26,17 @@
 
   const session = activityStore.getSession(sessionId as string);
 
-  function cleanDuplicateWarmup() {
-    activityStore.duplicateWarmup = undefined;
+  function cleanDuplicateActivities() {
+    activityStore.duplicateActivities = undefined;
   }
   function onBackPageHandler() {
-    cleanDuplicateWarmup();
+    cleanDuplicateActivities();
     router.back();
   }
 
   async function addSession(session: ISession) {
     await activityStore.addSession(session);
-    cleanDuplicateWarmup();
+    cleanDuplicateActivities();
     router.back();
   }
 </script>

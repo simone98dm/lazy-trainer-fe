@@ -8,6 +8,7 @@
     useActivityStore,
   } from "~/stores";
   import { ref } from "vue";
+  import { IActivity } from "~/models/Activity";
 
   const route = useRoute();
   const router = useRouter();
@@ -40,15 +41,6 @@
   function runActivities() {
     timerStore.setListActivities(activityList.value);
     router.push({ name: "timer", params: { sessionId } });
-  }
-
-  function duplicateWarmup() {
-    activityStore.setDuplicateWarmup(warmupList.value);
-    router.push({
-      name: "session",
-      params: { sessionId },
-      query: { d: "duplicate" },
-    });
   }
 
   function canUserCreateActivity() {
@@ -115,10 +107,10 @@
           :activities="warmupList"
           :is-warmup="true"
           :session-id="sessionId"
-          @duplicate="duplicateWarmup"
           @run="runWarmUp"
           @move="sortActivities"
           :enable-controls="!userStore.isTrainer"
+          :enable-duplicate="false"
         />
       </div>
       <hr />
@@ -130,6 +122,7 @@
           @move="sortActivities"
           :session-id="sessionId"
           :enable-controls="!userStore.isTrainer"
+          :enable-duplicate="false"
         />
       </div>
     </div>

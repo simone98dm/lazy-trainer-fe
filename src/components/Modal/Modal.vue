@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { ButtonColor } from "~/utils";
   defineProps(["show", "title"]);
   defineEmits(["close", "confirm"]);
 </script>
@@ -39,16 +38,13 @@
               </button>
             </div>
             <div class="flex text-center sm:text-left p-4 w-full">
-              <slot />
+              <slot name="content" />
             </div>
           </div>
-          <div class="bg-gray-50 px-4 py-3 mb-0 sm:px-6 flex flex-row-reverse">
-            <Button
-              label="Select"
-              @click="$emit('confirm')"
-              icon="check"
-              :color="ButtonColor.SUCCESS"
-            />
+          <div
+            class="bg-gray-50 px-4 py-3 mb-0 sm:px-6 flex flex-row-reverse gap-3"
+          >
+            <slot name="actions" />
           </div>
         </div>
       </div>

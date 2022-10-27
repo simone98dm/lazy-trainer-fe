@@ -21,7 +21,7 @@ function generateBlankPlan(): IPlan {
 export const useActivityStore = defineStore("activity", {
   state: () => ({
     plan: undefined as IPlan | undefined,
-    duplicateWarmup: undefined as IActivity[] | undefined,
+    duplicateActivities: undefined as IActivity[] | undefined,
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
@@ -232,10 +232,10 @@ export const useActivityStore = defineStore("activity", {
 
       saveStorage("_plan", this.plan);
     },
-    setDuplicateWarmup(warmUpActivities: IActivity[] | undefined) {
-      if (warmUpActivities) {
-        this.duplicateWarmup = warmUpActivities.map((warmup) => ({
-          ...warmup,
+    setDuplicateWarmup(activitiesToDuplicate: IActivity[] | undefined) {
+      if (activitiesToDuplicate) {
+        this.duplicateActivities = activitiesToDuplicate.map((activity) => ({
+          ...activity,
           id: uuid(),
         }));
       }

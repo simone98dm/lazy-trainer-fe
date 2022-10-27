@@ -9,7 +9,8 @@
     "isWarmup",
     "allowDrag",
     "title",
-    "enableControls",
+    "enableRun",
+    "enableDuplicate",
   ]);
   const userStore = useUserStore();
   const emits = defineEmits(["move", "delete", "run", "duplicate"]);
@@ -25,7 +26,7 @@
         {{ props.title }}
       </h4>
       <Button
-        v-if="props.enableControls"
+        v-if="props.enableRun"
         id="run-timer"
         :color="ButtonColor.PRIMARY"
         icon="play_arrow"
@@ -36,14 +37,13 @@
       <Button
         id="duplicate-warmup"
         v-if="
-          props.isWarmup &&
           (userStore.isTrainer || userStore.isSelfMadeMan) &&
-          props.enableControls
+          props.enableDuplicate
         "
         :color="ButtonColor.LIGHT"
         icon="content_copy"
         label="Duplicate"
-        @click="emits('duplicate')"
+        @click="emits('duplicate', props.activities)"
       />
     </div>
     <div v-if="allowDrag">

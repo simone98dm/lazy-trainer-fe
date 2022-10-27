@@ -32,13 +32,22 @@
   <Modal
     :show="showModal"
     @close="showModal = false"
-    @confirm="showModal = false"
     title="Select time"
     button-text="Select"
   >
-    <div class="w-full">
-      <TimePicker @select="(v: any) => (selectedTime = v)" />
-    </div>
+    <template #content>
+      <div class="w-full">
+        <TimePicker @select="(v: any) => (selectedTime = v)" />
+      </div>
+    </template>
+    <template #actions>
+      <Button
+        label="Select"
+        @click="showModal = false"
+        icon="check"
+        :color="ButtonColor.SUCCESS"
+      />
+    </template>
   </Modal>
   <div class="ml-2 w-full">
     <Button
