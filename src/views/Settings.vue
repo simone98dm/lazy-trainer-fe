@@ -2,6 +2,7 @@
   import { ButtonColor, Role, RoleName } from "~/utils";
   import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
   import { ref } from "vue";
+  import { version } from "../../package.json";
 
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
@@ -38,6 +39,12 @@
           Role
           <span class="font-bold">
             {{ RoleName[userStore.role as Role] }}
+          </span>
+        </div>
+        <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
+          App version
+          <span class="font-bold">
+            {{ version }}
           </span>
         </div>
         <div
