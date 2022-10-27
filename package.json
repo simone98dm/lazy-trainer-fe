@@ -11,7 +11,8 @@
     "test:e2e": "npx cypress open",
     "mock": " node ./local/index.js",
     "prepare": "husky install",
-    "gource": "gource -f -s 1 -a 1 --key --max-files 0 --disable-progress"
+    "gource": "gource -f -s 1 -a 1 --key --max-files 0 --disable-progress",
+    "release": "release-it"
   },
   "dependencies": {
     "@cypress/vue": "^3.1.0",
@@ -50,6 +51,7 @@
     "lint-staged": "^13.0.3",
     "postcss": "^8.4.16",
     "prettier": "2.7.1",
+    "release-it": "^15.5.0",
     "tailwindcss": "^3.1.8",
     "typescript": "^4.6.4",
     "unplugin-vue-components": "^0.22.8",
