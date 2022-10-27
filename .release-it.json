@@ -18,5 +18,8 @@
     "push": true,
     "pushArgs": ["--follow-tags"],
     "pushRepo": ""
+  },
+  "npm": {
+    "publish": false
   }
 }
