@@ -5,6 +5,7 @@ import "material-icons/iconfont/material-icons.css";
 import App from "./App.vue";
 import router from "./router/router";
 import { initializeApp } from "firebase/app";
+import { version } from "../package.json";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -24,5 +25,7 @@ app.use(pinia);
 app.use(router);
 
 initializeApp(firebaseConfig);
+
+console.log(`Hello fellows devs👋, app version: ${version}`);
 
 app.mount("#app");
