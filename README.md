@@ -18,34 +18,13 @@ The features currently available are:
 - ⏱ keep track of the times for the activities to be performed
 - 🤝 trainer association
 
-## Status
-
-The project is currently in a early stage. The project is currently not usable.
-
 ## Goals
 
 The project aims to be a tool that can be used by anyone who wants to improve their physical acitivity. The project is not intended to be a replacement for a personal trainer it help him/her to get in touch with you, but rather a tool that can be used to improve the physical activity of those who are not particularly lazy🤓.
 
-## Structure
+## Changelog
 
-The project is structured in the following way:
-
-- `src/` contains the source code
-- `tests/` contains the tests
-- `docs/` contains the documentation
-
-## Tech details
-
-This projects uses:
-
-- Vite 3
-- Vue router
-- Vue 3 + Composition API
-- Tailwind.css
-- Google material icon
-- Pinia
-- Vercel Serverless function
-- Atlas MongoDB
+The changelog is available [here](CHANGELOG.md).
 
 ## Scripts
 
@@ -65,4 +44,10 @@ npm run test
 
 ```bash
 npm run build
+```
+
+## Release
+
+```bash
+npm run release
 ```
