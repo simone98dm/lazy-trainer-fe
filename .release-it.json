@@ -3,7 +3,6 @@
     "after:bump": "npx auto-changelog"
   },
   "git": {
-    "changelog": "npx auto-changelog",
     "commit": true,
     "commitMessage": "Release ${version}",
     "tag": false,
