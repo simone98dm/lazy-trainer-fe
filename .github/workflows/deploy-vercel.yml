@@ -15,7 +15,7 @@ jobs:
         run: |
           git config user.name "${{ secrets.ACTOR_NAME }}"
           git config user.email "${{ secrets.ACTOR_EMAIL }}"
-          npm run release
+          git log --pretty="- %s"
   Deploy-Production:
     needs: Create-Release
     runs-on: ubuntu-latest
