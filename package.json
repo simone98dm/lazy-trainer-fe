@@ -12,7 +12,9 @@
     "mock": " node ./local/index.js",
     "prepare": "husky install",
     "gource": "gource -f -s 1 -a 1 --key --max-files 0 --disable-progress",
-    "release": "npx release-it --ci"
+    "release:patch": "auto-changelog && release-it -- patch --ci ",
+    "release:minor": "auto-changelog && release-it -- minor --ci ",
+    "release:major": "auto-changelog && release-it -- major --ci "
   },
   "dependencies": {
     "@cypress/vue": "^3.1.0",
