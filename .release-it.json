@@ -1,10 +1,10 @@
 {
   "hooks": {
-    "after:bump": "npx auto-changelog"
+    "after:bump": "npm auto-changelog -p"
   },
   "git": {
     "commit": true,
-    "commitMessage": "Release ${version}",
+    "commitMessage": "🚀 Release ${version}",
     "tag": false,
     "push": true
   },
