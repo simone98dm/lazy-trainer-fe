@@ -1,6 +1,6 @@
 {
   "hooks": {
-    "after:bump": "npm auto-changelog -p"
+    "after:bump": "npx auto-changelog -p"
   },
   "git": {
     "commit": true,
