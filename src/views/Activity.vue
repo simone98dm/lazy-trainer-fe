@@ -2,7 +2,7 @@
   import { useRoute, useRouter } from "vue-router";
   import { useActivityStore, useSettingStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
-  import { ButtonColor, MAX_ACTIIVITY_FORM } from "~/utils";
+  import { ButtonColor, DeepPartial, MAX_ACTIIVITY_FORM } from "~/utils";
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
 
@@ -92,12 +92,20 @@
     }
   }
 
-  function addActivityForm() {
+  const restActivityTemplate: DeepPartial<IActivity> = {
+    name: "Rest",
+    description: "Take a break ⏱",
+    time: 15000,
+    requestChange: false,
+  };
+
+  function addActivityForm(injectActivity?: DeepPartial<IActivity>) {
     if (multiActivities.value.length > MAX_ACTIIVITY_FORM) {
       alert(`You can't add more than ${MAX_ACTIIVITY_FORM} activities at once`);
       return;
     }
-    multiActivities.value.push({
+
+    let activity = {
       description: "",
       id: uuidv4(),
       name: "",
@@ -107,7 +115,16 @@
       order: 0,
       reps: 0,
       requestChange: false,
-    });
+    };
+
+    if (injectActivity) {
+      activity = {
+        ...activity,
+        ...injectActivity,
+      };
+    }
+
+    multiActivities.value.push(activity);
   }
 </script>
 <template>
@@ -146,6 +163,13 @@
     <div
       class="w-full flex flex-col sm:flex-row w-full px-6 justify-center gap-3 mb-6"
     >
+      <Button
+        id="concat-rest-activity"
+        label="Add rest"
+        :color="ButtonColor.PRIMARY"
+        icon="add"
+        @click="() => addActivityForm(restActivityTemplate)"
+      />
       <Button
         id="concat-activity"
         label="Concat"
