@@ -2,7 +2,7 @@
   import { useRoute, useRouter } from "vue-router";
   import { useActivityStore, useSettingStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
-  import { ButtonColor, MAX_ACTIIVITY_FORM } from "~/utils";
+  import { ButtonColor, DeepPartial, MAX_ACTIIVITY_FORM } from "~/utils";
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
 

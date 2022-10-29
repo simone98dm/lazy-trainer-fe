@@ -6,3 +6,9 @@ export type TimerActivity =
       secondActivity: IActivity | undefined;
     }
   | undefined;
+
+export type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;
