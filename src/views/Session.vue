@@ -41,10 +41,8 @@
   <div class="mb-6">
     <BackButton @click="onBackPageHandler" />
   </div>
-  <span v-if="activityStore.getMissingDays.length <= 0">No days available</span>
   <div
     class="flex xl:flex-col flex-wrap justify-center max-w-screen-lg mx-auto"
-    v-else
   >
     <SessionForm
       @save="addSession"

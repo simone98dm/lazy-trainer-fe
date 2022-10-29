@@ -90,7 +90,10 @@
         <h1 v-else class="mb-3 text-2xl font-bold mb-6">
           Edit {{ getDayOfTheWeek(dayOfWeek) }} session:
         </h1>
-        <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6">
+        <span v-if="activityStore.getMissingDays.length <= 0"
+          >No days available</span
+        >
+        <div v-else class="flex xl:flex-row flex-col justify-center gap-3 mb-6">
           <button
             v-for="day in activityStore.getMissingDays"
             :key="day"

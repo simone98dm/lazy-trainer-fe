@@ -43,14 +43,6 @@
       (userStore.isTrainer || userStore.isSelfMadeMan) && freeActivitySlot < 100
     );
   }
-  function sortActivities(evt: any) {
-    const { newDraggableIndex, oldDraggableIndex } = evt;
-    activityStore.moveActivity(
-      session?.id,
-      newDraggableIndex,
-      oldDraggableIndex
-    );
-  }
 </script>
 <template>
   <div class="mb-6">
@@ -93,9 +85,9 @@
           :is-warmup="true"
           :session-id="sessionId"
           @run="runWarmUp"
-          @move="sortActivities"
           :enable-run="!userStore.isTrainer"
           :enable-duplicate="false"
+          :allow-drag="false"
         />
       </div>
       <hr />
@@ -104,10 +96,10 @@
           title="Activities"
           :activities="activityList"
           @run="runActivities"
-          @move="sortActivities"
           :session-id="sessionId"
           :enable-run="!userStore.isTrainer"
           :enable-duplicate="false"
+          :allow-drag="false"
         />
       </div>
     </div>
