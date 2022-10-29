@@ -1,12 +1,12 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/"
-    },
-    {
       "source": "/banner.png",
       "destination": "/banner.png"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
