@@ -6,6 +6,7 @@ import App from "./App.vue";
 import router from "./router/router";
 import { initializeApp } from "firebase/app";
 import { version } from "../package.json";
+import Hotjar from "vue-hotjar";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -23,6 +24,11 @@ const app = createApp(App);
 
 app.use(pinia);
 app.use(router);
+app.use(Hotjar, {
+  id: "3226645",
+  isProduction: true,
+  snippetVersion: 6,
+});
 
 initializeApp(firebaseConfig);
 
