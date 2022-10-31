@@ -19,8 +19,8 @@ jobs:
           fetch-depth: 0
       - name: git config
         run: |
-          git config user.name "${ACTOR_NAME}"
-          git config user.email "${ACTOR_EMAIL}"
+          git config --global user.name "${ACTOR_NAME}"
+          git config --global user.email "${ACTOR_EMAIL}"
       - run: npm install
       - run: npm run release:minor
         env:
