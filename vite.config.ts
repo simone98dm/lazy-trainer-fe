@@ -7,6 +7,7 @@ import path from "path";
 import { VitePluginFonts } from "vite-plugin-fonts";
 import Components from "unplugin-vue-components/vite";
 import pluginRewriteAll from "vite-plugin-rewrite-all";
+import mkcert from "vite-plugin-mkcert";
 
 const ENV = loadEnv("development", process.cwd());
 
@@ -20,8 +21,10 @@ export default defineConfig({
     sourcemap: true,
     emptyOutDir: true,
   },
+  server: { https: true },
   plugins: [
     vue(),
+    mkcert(),
     HtmlConfig({
       metas: metaTags(ENV),
     }),
