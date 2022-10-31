@@ -13,18 +13,11 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          persist-credentials: false
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: git config
+      - name: Run release script
         run: |
           git config --global user.name "${ACTOR_NAME}"
           git config --global user.email "${ACTOR_EMAIL}"
-      - run: npm install
-      - run: |
-          git config --global user.name "${ACTOR_NAME}"
-          git config --global user.email "${ACTOR_EMAIL}"
+          npm install
           npm run release:minor
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
