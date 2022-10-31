@@ -26,6 +26,10 @@ The project aims to be a tool that can be used by anyone who wants to improve th
 
 The changelog is available [here](CHANGELOG.md).
 
+## Workflow
+
+The workflow is available [here](WORKFLOW.md).
+
 ## Scripts
 
 Before you need a MongoDB Atlas account and a Vercel account.
