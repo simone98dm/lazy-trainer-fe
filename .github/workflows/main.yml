@@ -22,7 +22,10 @@ jobs:
           git config --global user.name "${ACTOR_NAME}"
           git config --global user.email "${ACTOR_EMAIL}"
       - run: npm install
-      - run: npm run release:minor
+      - run: |
+          git config --global user.name "${ACTOR_NAME}"
+          git config --global user.email "${ACTOR_EMAIL}"
+          npm run release:minor
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ACTOR_NAME: ${{ secrets.ACTOR_NAME }}
