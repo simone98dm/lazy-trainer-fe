@@ -22,7 +22,7 @@ jobs:
           git config user.name "${ACTOR_NAME}"
           git config user.email "${ACTOR_EMAIL}"
       - run: npm install
-      - run: npm run release
+      - run: npm run release:minor
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Deploy to Vercel Action
