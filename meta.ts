@@ -11,7 +11,7 @@ export const app = {
   author: "simone98dm",
 };
 
-export const metaTags = (env: any) => [
+export const metaTags = () => [
   {
     name: "keywords",
     content: app.keywords,
@@ -30,7 +30,7 @@ export const metaTags = (env: any) => [
   },
   {
     name: "image",
-    content: `${env.VITE_BASE_URL}/banner.png`,
+    content: `/banner.png`,
   },
   {
     name: "og:title",
@@ -42,7 +42,7 @@ export const metaTags = (env: any) => [
   },
   {
     name: "og:image",
-    content: `${env.VITE_BASE_URL}/banner.png`,
+    content: `/banner.png`,
   },
   {
     name: "twitter:card",
@@ -66,7 +66,7 @@ export const metaTags = (env: any) => [
   },
   {
     name: "twitter:image",
-    content: `${env.VITE_BASE_URL}/banner.png`,
+    content: `banner.png`,
   },
   {
     name: "application-name",
@@ -74,7 +74,7 @@ export const metaTags = (env: any) => [
   },
   {
     name: "msapplication-TileImage",
-    content: `${env.VITE_BASE_URL}/icon.png`,
+    content: `icon.png`,
   },
   {
     name: "msapplication-TileColor",

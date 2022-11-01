@@ -1,5 +1,5 @@
 import { app, metaTags } from "./meta";
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import HtmlConfig from "vite-plugin-html-config";
 import vue from "@vitejs/plugin-vue";
@@ -8,8 +8,6 @@ import { VitePluginFonts } from "vite-plugin-fonts";
 import Components from "unplugin-vue-components/vite";
 import pluginRewriteAll from "vite-plugin-rewrite-all";
 import mkcert from "vite-plugin-mkcert";
-
-const ENV = loadEnv("development", process.cwd());
 
 export default defineConfig({
   resolve: {
@@ -26,7 +24,7 @@ export default defineConfig({
     vue(),
     mkcert(),
     HtmlConfig({
-      metas: metaTags(ENV),
+      metas: metaTags(),
     }),
     Components({
       dts: "./src/components.d.ts",
