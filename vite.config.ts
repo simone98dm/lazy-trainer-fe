@@ -16,7 +16,6 @@ export default defineConfig({
     },
   },
   build: {
-    sourcemap: true,
     emptyOutDir: true,
   },
   server: { https: true },
