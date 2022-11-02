@@ -7,7 +7,8 @@ import router from "./router/router";
 import { initializeApp } from "firebase/app";
 import { version } from "../package.json";
 import Hotjar from "vue-hotjar";
-
+import Vlf from "vlf";
+import localforage from "localforage";
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
   authDomain: import.meta.env.VITE_AUTHDOMAIN,
@@ -29,6 +30,11 @@ app.use(Hotjar, {
   isProduction: true,
   snippetVersion: 6,
 });
+localforage.config({
+  driver: localforage.WEBSQL,
+  name: "lazy-trainer-cache",
+});
+app.use(Vlf, localforage);
 
 initializeApp(firebaseConfig);
 

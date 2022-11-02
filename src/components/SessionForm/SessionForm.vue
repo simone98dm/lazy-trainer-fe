@@ -54,9 +54,13 @@
   function isDaySelected(dayIndex: number) {
     return dayIndex === dayOfWeek.value;
   }
-  function sortActivities(evt: any) {
+  async function sortActivities(evt: any) {
     const { newDraggableIndex, oldDraggableIndex } = evt;
-    activityStore.moveActivity(id.value, newDraggableIndex, oldDraggableIndex);
+    await activityStore.moveActivity(
+      id.value,
+      newDraggableIndex,
+      oldDraggableIndex
+    );
   }
   let showModal = ref(false);
   function duplicateActivities(activities: IActivity[]) {

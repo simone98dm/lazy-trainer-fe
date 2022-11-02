@@ -29,13 +29,15 @@ export const useSettingStore = defineStore("settings", {
       this.audioDisabled = status;
       this.saveSettings();
     },
-    saveSettings() {
-      saveStorage("_settings", {
+    async saveSettings() {
+      await saveStorage("_settings", {
         audioDisabled: this.audioDisabled,
       });
     },
-    loadSettings() {
-      const settings = getStorage<{ audioDisabled: boolean }>("_settings");
+    async loadSettings() {
+      const settings = await getStorage<{ audioDisabled: boolean }>(
+        "_settings"
+      );
       if (settings) {
         this.audioDisabled = settings.audioDisabled;
       }

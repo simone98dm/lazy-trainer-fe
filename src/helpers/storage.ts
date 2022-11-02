@@ -1,12 +1,21 @@
-export function saveStorage(name: string, data: any) {
-  const s = JSON.stringify(data);
-  localStorage.setItem(name, s);
+import localForage from "localforage";
+
+export async function saveStorage(name: string, data: any) {
+  try {
+    await localForage.setItem(name, data);
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-export function getStorage<T>(name: string): T | undefined {
-  const data = localStorage.getItem(name);
-  if (!data) {
-    return undefined;
+export async function getStorage<T>(name: string): Promise<T | undefined> {
+  try {
+    const data = await localForage.getItem<T>(name);
+    if (data) {
+      return data;
+    }
+  } catch (err) {
+    console.log(err);
   }
-  return JSON.parse(data);
+  return undefined;
 }
