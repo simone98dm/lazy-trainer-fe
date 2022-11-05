@@ -1,9 +1,9 @@
-import { DbTable } from "./../../utils/const";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { DbTable } from "./../../utils/const";
 import { connectToDatabase } from "../../utils/db";
-import { validateUser, verifyToken } from "../../utils/token";
+import { validateUser } from "../../utils/token";
 import { DB_NAME } from "../../utils/const";
-import { extractTokenFromRequest, mapRawToPlans } from "../../utils/helper";
+import { mapRawToPlans } from "../../utils/helper";
 import { Activity, Plan, Session } from "../../utils/types";
 import { log, LogLevel } from "../../utils/logger";
 

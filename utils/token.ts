@@ -37,3 +37,9 @@ export function validateUser(request: any) {
 
   return isValid;
 }
+
+export async function signToken(payload: any) {
+  return await jwt.sign(payload, SECRET_KEY, {
+    expiresIn: "3d",
+  });
+}

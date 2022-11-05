@@ -1,9 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { DbTable, DB_NAME } from "../../utils/const";
 import { connectToDatabase } from "../../utils/db";
-import { extractTokenFromRequest } from "../../utils/helper";
 import { log, LogLevel } from "../../utils/logger";
-import { validateUser, verifyToken } from "../../utils/token";
+import { validateUser } from "../../utils/token";
 import { User } from "../../utils/types";
 
 export default async (request: VercelRequest, response: VercelResponse) => {

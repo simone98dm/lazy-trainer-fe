@@ -1,10 +1,9 @@
-import { IUserResponse } from "./../../src/models/User";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { IUserResponse } from "./../../src/models/User";
 import { connectToDatabase } from "../../utils/db";
-import { DbTable, DB_NAME, SECRET_KEY } from "../../utils/const";
-import { verifyToken } from "../../utils/token";
+import { DbTable, DB_NAME } from "../../utils/const";
+import { signToken, validateUser } from "../../utils/token";
 import { User } from "../../utils/types";
 import { extractTokenFromRequest } from "../../utils/helper";
 import { log, LogLevel } from "../../utils/logger";
@@ -17,33 +16,18 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         log("User try to renew without token", LogLevel.WARNING);
         return response.status(400).end();
       }
-
-      let bearer = extractTokenFromRequest(request);
-
-      const isValid = verifyToken(bearer);
-      if (!isValid) {
-        log(
-          "User try to renew token but the passed one is not valid",
-          LogLevel.WARNING,
-          { bearer }
-        );
-        return response.status(403).send({ error: "token not valid" });
-      } else {
-        let { id, name, role } = isValid;
-
-        bearer = await jwt.sign({ id, name, role }, SECRET_KEY);
-
-        const body: IUserResponse = {
-          data: {
-            id,
-            name,
-            role,
-            token: bearer,
-          },
-        };
-
-        return response.status(200).send(body);
-      }
+      const bearer = extractTokenFromRequest(request);
+      const { id, name, role } = validateUser(bearer);
+      const token = await signToken({ id, name, role });
+      const body: IUserResponse = {
+        data: {
+          id,
+          name,
+          role,
+          token,
+        },
+      };
+      return response.status(200).send(body);
     } else if (request.method === "POST") {
       // login user from FE
       const { username, password } = request.body;
@@ -55,7 +39,6 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         log("User try to login without password", LogLevel.WARNING);
         return response.status(400).send({ error: "password not provided" });
       }
-
       const client = await connectToDatabase();
       if (!client) {
         throw new Error("mongoClient is null");
@@ -91,10 +74,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         role: Number(user.role),
       };
 
-      const token = jwt.sign(payload, SECRET_KEY, {
-        expiresIn: "3d",
-      });
-
+      const token = await signToken(payload);
       const userResponse: IUserResponse = {
         data: {
           name: user.name,

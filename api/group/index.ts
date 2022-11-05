@@ -1,11 +1,9 @@
-import jwt from "jsonwebtoken";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { connectToDatabase } from "../../utils/db";
-import { DbTable, DB_NAME, SECRET_KEY } from "../../utils/const";
-import { Plan, User } from "../../utils/types";
-import { extractTokenFromRequest } from "../../utils/helper";
+import { DbTable, DB_NAME } from "../../utils/const";
+import { Plan } from "../../utils/types";
 import { log, LogLevel } from "../../utils/logger";
-import { validateUser, verifyToken } from "../../utils/token";
+import { validateUser } from "../../utils/token";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {

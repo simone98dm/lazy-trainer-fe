@@ -1,6 +1,6 @@
 import { DataAction, Role } from "./../../src/utils/enum";
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { validateUser, verifyToken } from "../../utils/token";
+import { validateUser } from "../../utils/token";
 import {
   createActivity,
   deleteActivity,
@@ -11,7 +11,7 @@ import {
   deleteSession,
   updateSession,
 } from "../../utils/session";
-import { extractTokenFromRequest, verifyUser } from "../../utils/helper";
+import { verifyUser } from "../../utils/helper";
 import { log, LogLevel } from "../../utils/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {

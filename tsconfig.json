@@ -17,16 +17,13 @@
       "~/*": ["src/*"],
       "*": ["types/*.d.ts"]
     },
-    "types": ["cypress"]
+    "types": []
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "api/trainer/utils/session.ts",
-    "api/connectToDatabase.ts",
-    "meta.ts",
     "meta.ts"
   ],
   "references": [

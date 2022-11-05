@@ -1,12 +1,12 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import "./style.css";
-import "material-icons/iconfont/material-icons.css";
+import { initializeApp } from "firebase/app";
+import Hotjar from "vue-hotjar";
 import App from "./App.vue";
 import router from "./router/router";
-import { initializeApp } from "firebase/app";
 import { version } from "../package.json";
-import Hotjar from "vue-hotjar";
+import "./style.css";
+import "material-icons/iconfont/material-icons.css";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -25,7 +25,7 @@ const app = createApp(App);
 app.use(pinia);
 app.use(router);
 app.use(Hotjar, {
-  id: "3226645",
+  id: import.meta.env.VITE_HOTJARKEY,
   isProduction: true,
   snippetVersion: 6,
 });
