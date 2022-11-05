@@ -30,7 +30,7 @@ export const metaTags = () => [
   },
   {
     name: "image",
-    content: `/banner.png`,
+    content: `/banner-og.png`,
   },
   {
     name: "og:title",
@@ -42,7 +42,7 @@ export const metaTags = () => [
   },
   {
     name: "og:image",
-    content: `/banner.png`,
+    content: `/banner-og.png`,
   },
   {
     name: "twitter:card",
@@ -66,7 +66,7 @@ export const metaTags = () => [
   },
   {
     name: "twitter:image",
-    content: `banner.png`,
+    content: `banner-og.png`,
   },
   {
     name: "application-name",
