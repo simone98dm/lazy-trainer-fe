@@ -7,12 +7,14 @@ import { DbTable, DB_NAME, SECRET_KEY } from "../../utils/const";
 import { verifyToken } from "../../utils/token";
 import { User } from "../../utils/types";
 import { extractTokenFromRequest } from "../../utils/helper";
+import { log, LogLevel } from "../../utils/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
     if (request.method === "GET") {
       // renew or signout user from FE
       if (!request.headers.authorization) {
+        log("User try to renew without token", LogLevel.WARNING);
         return response.status(400).end();
       }
 
@@ -20,7 +22,12 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
       const isValid = verifyToken(bearer);
       if (!isValid) {
-        response.status(403).send({ error: "token not valid" });
+        log(
+          "User try to renew token but the passed one is not valid",
+          LogLevel.WARNING,
+          { bearer }
+        );
+        return response.status(403).send({ error: "token not valid" });
       } else {
         let { id, name, role } = isValid;
 
@@ -35,19 +42,18 @@ export default async (request: VercelRequest, response: VercelResponse) => {
           },
         };
 
-        response.status(200).send(body);
+        return response.status(200).send(body);
       }
-      return;
     } else if (request.method === "POST") {
       // login user from FE
       const { username, password } = request.body;
       if (!username) {
-        response.status(400).send({ error: "username not provided" });
-        return;
+        log("User try to login without username", LogLevel.WARNING);
+        return response.status(400).send({ error: "username not provided" });
       }
       if (!password) {
-        response.status(400).send({ error: "password not provided" });
-        return;
+        log("User try to login without password", LogLevel.WARNING);
+        return response.status(400).send({ error: "password not provided" });
       }
 
       const client = await connectToDatabase();
@@ -60,6 +66,9 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         .findOne({ name: username });
 
       if (!user) {
+        log("User try to login but no user found", LogLevel.WARNING, {
+          username,
+        });
         return response
           .status(404)
           .send({ error: "username or password not valid" });
@@ -70,6 +79,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         user?.hashPassword || ""
       );
       if (!passwordMatch) {
+        log("User try to login but it fail", LogLevel.WARNING, { username });
         return response
           .status(404)
           .send({ error: "username or password not valid" });
@@ -96,10 +106,14 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
       return response.status(200).send(userResponse);
     } else {
-      return response.status(400).end();
+      throw new Error("Method not allowed");
     }
   } catch (error) {
-    console.error(error);
-    response.status(500).send({ error: "something went wrong" });
+    log(error, LogLevel.ERROR, {
+      token: request.headers.authorization,
+      method: request.method,
+      path: request.url,
+    });
+    return response.status(500).send({ error: "something went wrong" });
   }
 };

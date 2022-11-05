@@ -1,5 +1,6 @@
 import { DbTable, DB_NAME } from "./const";
 import { connectToDatabase } from "./db";
+import { log, LogLevel } from "./logger";
 
 /**
  * Delete an activity
@@ -15,8 +16,15 @@ export async function deleteActivity(activityId: string) {
     throw new Error("mongoClient is null");
   }
 
-  const db = client.db(DB_NAME);
-  await db.collection(DbTable.ACTIVITIES).deleteOne({ id: activityId });
+  const result = await client
+    .db(DB_NAME)
+    .collection(DbTable.ACTIVITIES)
+    .deleteOne({ id: activityId });
+  if (result.deletedCount === 0) {
+    throw new Error("unable to delete activity");
+  } else {
+    log(`deleted activity ${activityId}`, LogLevel.INFO);
+  }
 }
 
 /**
@@ -34,21 +42,29 @@ export async function updateActivity(activityId: string, data: any) {
     throw new Error("mongoClient is null");
   }
 
-  const db = client.db(DB_NAME);
-  await db.collection(DbTable.ACTIVITIES).findOneAndUpdate(
-    { id: activityId },
-    {
-      $set: {
-        description: data.description,
-        name: data.name,
-        time: data.time,
-        reps: data.reps,
-        videoUrl: data.videoUrl,
-        requestChange: data.requestChange,
-        warmup: data.warmup,
-      },
-    }
-  );
+  const result = await client
+    .db(DB_NAME)
+    .collection(DbTable.ACTIVITIES)
+    .findOneAndUpdate(
+      { id: activityId },
+      {
+        $set: {
+          description: data.description,
+          name: data.name,
+          time: data.time,
+          reps: data.reps,
+          videoUrl: data.videoUrl,
+          requestChange: data.requestChange,
+          warmup: data.warmup,
+        },
+      }
+    );
+
+  if (result.ok === 0) {
+    throw new Error("unable to update activity");
+  } else {
+    log(`updated activity ${activityId}`, LogLevel.INFO);
+  }
 }
 
 /**
@@ -65,7 +81,14 @@ export async function createActivity(sessionId: string, data: any) {
     throw new Error("mongoClient is null");
   }
 
-  const db = client.db(DB_NAME);
+  const result = await client
+    .db(DB_NAME)
+    .collection(DbTable.ACTIVITIES)
+    .insertOne({ ...data, sessionId });
 
-  await db.collection(DbTable.ACTIVITIES).insertOne({ ...data, sessionId });
+  if (!result.insertedId) {
+    throw new Error("unable to create activity");
+  } else {
+    log(`created activity ${data.id}`, LogLevel.INFO);
+  }
 }

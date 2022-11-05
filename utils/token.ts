@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "./const";
 import { ITokenPayload } from "../src/models/User";
+import { extractTokenFromRequest } from "./helper";
 
 /**
  * Verify token and return ITokenPayload interface
@@ -21,4 +22,18 @@ export function verifyToken(token: string): ITokenPayload | undefined {
     console.error(error);
   }
   return undefined;
+}
+
+export function validateUser(request: any) {
+  const bearer = extractTokenFromRequest(request);
+  if (!bearer) {
+    throw new Error("Token not found");
+  }
+
+  const isValid = verifyToken(bearer);
+  if (!isValid) {
+    throw new Error("Token not valid");
+  }
+
+  return isValid;
 }
