@@ -6,7 +6,6 @@ import vue from "@vitejs/plugin-vue";
 import path from "path";
 import { VitePluginFonts } from "vite-plugin-fonts";
 import Components from "unplugin-vue-components/vite";
-import pluginRewriteAll from "vite-plugin-rewrite-all";
 
 export default defineConfig({
   resolve: {
@@ -25,7 +24,6 @@ export default defineConfig({
     Components({
       dts: "./src/components.d.ts",
     }),
-    pluginRewriteAll(),
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
@@ -64,6 +62,10 @@ export default defineConfig({
             sizes: "196x196",
             type: "image/png",
             purpose: "maskable",
+          },
+          {
+            src: "banner-og.png",
+            type: "image/png",
           },
         ],
       },

@@ -1,12 +1,3 @@
 {
-  "rewrites": [
-    {
-      "source": "/banner.png",
-      "destination": "/banner.png"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/"
-    }
-  ]
+  "rewrites": []
 }
