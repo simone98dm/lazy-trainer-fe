@@ -20,6 +20,7 @@ const routes = [
     path: "/:planId?",
     component: Home,
     meta: {
+      title: `Trainer`,
       requireAuth: true,
       requireAdmin: false,
     },
@@ -29,6 +30,7 @@ const routes = [
     path: "/details/:sessionId",
     component: Details,
     meta: {
+      title: `Details`,
       requireAuth: true,
       requireAdmin: false,
     },
@@ -38,6 +40,7 @@ const routes = [
     path: "/activity/:sessionId/:activityId?",
     component: Activity,
     meta: {
+      title: `Activities`,
       requireAuth: true,
       requireAdmin: false,
     },
@@ -47,6 +50,7 @@ const routes = [
     path: "/timer/:sessionId/:activityId?",
     component: Timer,
     meta: {
+      title: `Timer`,
       requireAuth: true,
       requireAdmin: false,
     },
@@ -56,6 +60,7 @@ const routes = [
     path: "/session/:sessionId?",
     component: Session,
     meta: {
+      title: `Sessions`,
       requireAuth: true,
       requireAdmin: false,
     },
@@ -65,6 +70,7 @@ const routes = [
     path: "/login",
     component: Login,
     meta: {
+      title: `Login`,
       requireAuth: false,
       requireAdmin: false,
     },
@@ -74,6 +80,7 @@ const routes = [
     path: "/settings",
     component: Settings,
     meta: {
+      title: `Settings`,
       requireAuth: true,
       requireAdmin: false,
     },
@@ -83,6 +90,7 @@ const routes = [
     path: "/group",
     component: Group,
     meta: {
+      title: `Groups`,
       requireAuth: true,
       requireAdmin: true,
     },
@@ -92,6 +100,7 @@ const routes = [
     path: "/not-found",
     component: NotFound,
     meta: {
+      title: `Not Found`,
       requireAuth: false,
       requireAdmin: false,
     },
@@ -109,6 +118,7 @@ const routes = [
     name: "about",
     component: About,
     meta: {
+      title: `About`,
       requireAuth: false,
       requireAdmin: false,
     },
@@ -118,6 +128,7 @@ const routes = [
     name: "license",
     component: License,
     meta: {
+      title: `Licence`,
       requireAuth: false,
       requireAdmin: false,
     },
@@ -131,6 +142,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
+  document.title = `${to.meta.title} • Lazy Trainer`;
   if (to.name !== "not-found" && to.name !== "login") {
     const userStore = useUserStore();
     if (to.meta.requireAuth && !userStore.isLogged) {
