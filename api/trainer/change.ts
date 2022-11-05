@@ -2,45 +2,41 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { DbTable, DB_NAME } from "../../utils/const";
 import { connectToDatabase } from "../../utils/db";
 import { extractTokenFromRequest } from "../../utils/helper";
-import { verifyToken } from "../../utils/token";
+import { log, LogLevel } from "../../utils/logger";
+import { validateUser, verifyToken } from "../../utils/token";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
     if (request.method !== "POST") {
-      return response.status(400).end();
+      throw new Error("Method not allowed");
     }
 
-    const bearer = extractTokenFromRequest(request);
+    const isValid = validateUser(request);
 
-    if (!bearer) {
-      return response
-        .status(400)
-        .send({ error: "authorization header not found" });
+    const client = await connectToDatabase();
+    if (!client) {
+      throw new Error("mongoClient is null");
     }
 
-    const decoded = verifyToken(bearer);
-    if (decoded) {
-      const { activityId } = request.body;
+    const { activityId } = request.body;
 
-      const client = await connectToDatabase();
-      if (!client) {
-        throw new Error("mongoClient is null");
-      }
+    await client
+      .db(DB_NAME)
+      .collection(DbTable.ACTIVITIES)
+      .findOneAndUpdate({ id: activityId }, { $set: { requestChange: true } });
 
-      const db = client.db(DB_NAME);
+    log("User request change", LogLevel.INFO, {
+      userId: isValid.id,
+      activityId,
+    });
 
-      await db
-        .collection(DbTable.ACTIVITIES)
-        .findOneAndUpdate(
-          { id: activityId },
-          { $set: { requestChange: true } }
-        );
-
-      response.status(200).end();
-    } else {
-      response.status(403).send({ error: "user not authorized" });
-    }
+    return response.status(200).end();
   } catch (error) {
-    response.status(500).send({ error: "something went wrong" });
+    log(error, LogLevel.ERROR, {
+      token: request.headers.authorization,
+      method: request.method,
+      path: request.url,
+    });
+    return response.status(500).send({ error: "something went wrong" });
   }
 };

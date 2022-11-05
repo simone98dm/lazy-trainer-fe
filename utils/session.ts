@@ -1,5 +1,6 @@
 import { DbTable, DB_NAME } from "./const";
 import { connectToDatabase } from "./db";
+import { log, LogLevel } from "./logger";
 
 /**
  * Delete a session
@@ -16,8 +17,24 @@ export async function deleteSession(sessionId: string) {
   }
 
   const db = client.db(DB_NAME);
-  await db.collection(DbTable.SESSIONS).deleteOne({ id: sessionId });
-  await db.collection(DbTable.ACTIVITIES).deleteMany({ sessionId: sessionId });
+
+  const delActivities = await db
+    .collection(DbTable.ACTIVITIES)
+    .deleteMany({ sessionId: sessionId });
+  if (delActivities.deletedCount === 0) {
+    throw new Error("unable to delete activities");
+  } else {
+    log(`activities deleted: ${delActivities.deletedCount}`, LogLevel.INFO);
+  }
+
+  const delSession = await db
+    .collection(DbTable.SESSIONS)
+    .deleteOne({ id: sessionId });
+  if (delSession.deletedCount === 0) {
+    throw new Error("unable to delete session");
+  } else {
+    log(`deleted session ${sessionId}`, LogLevel.INFO);
+  }
 }
 
 /**
@@ -38,13 +55,19 @@ export async function updateSession(sessionId: string, data: any) {
     throw new Error("mongoClient is null");
   }
 
-  const db = client.db(DB_NAME);
-  await db
+  const result = await client
+    .db(DB_NAME)
     .collection(DbTable.SESSIONS)
     .findOneAndUpdate(
       { id: sessionId },
       { $set: { dayOfWeek: data.dayOfWeek } }
     );
+
+  if (result.ok !== 1) {
+    throw new Error("unable to update session");
+  } else {
+    log(`updated session ${sessionId}`, LogLevel.INFO);
+  }
 }
 
 /**
@@ -75,14 +98,30 @@ export async function createSession(planId: string, data: any) {
   if (exists) {
     throw new Error("session already exists");
   }
-  await db.collection(DbTable.SESSIONS).insertOne({ id, dayOfWeek, planId });
+
+  const session = { id, dayOfWeek, planId };
+  const result = await db.collection(DbTable.SESSIONS).insertOne(session);
+  if (!result.insertedId) {
+    throw new Error("unable to insert session");
+  } else {
+    log(`created session ${id}`, LogLevel.INFO);
+  }
+
   if (warmup) {
     const updatedWarmup = warmup.map((warm: any) => ({
       sessionId: id,
       ...warm,
     }));
     if (updatedWarmup.length > 0) {
-      await db.collection(DbTable.ACTIVITIES).insertMany(updatedWarmup);
+      const result = await db
+        .collection(DbTable.ACTIVITIES)
+        .insertMany(updatedWarmup);
+
+      if (result.insertedCount < updatedWarmup.length) {
+        throw new Error("unable to insert warmup");
+      } else {
+        log("Warmup created", LogLevel.INFO, { counter: warmup.length });
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 import { DataAction, Role } from "./../../src/utils/enum";
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { verifyToken } from "../../utils/token";
+import { validateUser, verifyToken } from "../../utils/token";
 import {
   createActivity,
   deleteActivity,
@@ -12,6 +12,7 @@ import {
   updateSession,
 } from "../../utils/session";
 import { extractTokenFromRequest, verifyUser } from "../../utils/helper";
+import { log, LogLevel } from "../../utils/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method !== "POST") {
@@ -19,23 +20,18 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   }
 
   try {
-    const bearer = extractTokenFromRequest(request);
-    const decoded = verifyToken(bearer as string);
+    const { id, name, role } = validateUser(request);
 
-    if (decoded?.role === Role.NORMAL) {
-      return response.status(403).end();
+    if (role === Role.NORMAL) {
+      throw new Error("User is not a trainer");
     }
 
-    const exist = await verifyUser(decoded?.id);
+    const exist = await verifyUser(id);
     if (!exist) {
-      return response.status(403).end();
+      throw new Error("User don't exist");
     }
 
     const { activityId, sessionId, planId, action, data } = request.body;
-    if (!(action in DataAction)) {
-      return response.status(400).send({ error: "something went wrong" });
-    }
-
     switch (action) {
       case DataAction.SESSION_CREATE:
         await createSession(planId, data);
@@ -61,7 +57,11 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
     return response.status(200).end();
   } catch (error) {
-    console.error(error);
-    response.status(500).send({ error: "something went wrong" });
+    log(error, LogLevel.ERROR, {
+      token: request.headers.authorization,
+      method: request.method,
+      path: request.url,
+    });
+    return response.status(500).send({ error: "something went wrong" });
   }
 };

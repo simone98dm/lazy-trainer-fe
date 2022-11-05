@@ -3,59 +3,58 @@ import { ITokenPayload } from "../../src/models/User";
 import { connectToDatabase } from "../../utils/db";
 import { ISession } from "../../src/models/Session";
 import { IPlan } from "../../src/models/Plan";
-import { verifyToken } from "../../utils/token";
+import { validateUser, verifyToken } from "../../utils/token";
 import { DbTable, DB_NAME } from "../../utils/const";
 import { extractTokenFromRequest, mapRawToPlans } from "../../utils/helper";
 import { Activity, Plan, Session } from "../../utils/types";
+import { log, LogLevel } from "../../utils/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
     if (request.method !== "GET") {
-      return response.status(400).end();
+      throw new Error("Method not allowed");
     }
 
-    const bearer = extractTokenFromRequest(request);
-    if (!bearer) {
-      return response
-        .status(400)
-        .send({ error: "authorization header not found" });
+    const { id } = validateUser(request);
+
+    const client = await connectToDatabase();
+    if (!client) {
+      throw new Error("mongoClient is null");
     }
 
-    const decoded = verifyToken(bearer);
-    if (decoded) {
-      const { id } = decoded as ITokenPayload;
+    const db = client.db(DB_NAME);
 
-      const client = await connectToDatabase();
-      if (!client) {
-        throw new Error("mongoClient is null");
-      }
+    const plan = await db
+      .collection<Plan>(DbTable.PLANS)
+      .findOne({ ownerId: id });
 
-      const db = client.db(DB_NAME);
-      const plan = await db
-        .collection<Plan>(DbTable.PLANS)
-        .findOne({ ownerId: id });
-      if (plan) {
-        const sessions = await db
-          .collection<Session>(DbTable.SESSIONS)
-          .find({ planId: plan?.id })
-          .toArray();
+    if (plan) {
+      const sessions = await db
+        .collection<Session>(DbTable.SESSIONS)
+        .find({ planId: plan?.id })
+        .toArray();
 
-        const sessionIds = sessions.map((session) => session.id);
-        const activities = await db
-          .collection<Activity>(DbTable.ACTIVITIES)
-          .find({ sessionId: { $in: sessionIds } })
-          .toArray();
+      const sessionIds = sessions.map((session) => session.id);
+      const activities = await db
+        .collection<Activity>(DbTable.ACTIVITIES)
+        .find({ sessionId: { $in: sessionIds } })
+        .toArray();
 
-        const result = mapRawToPlans(plan, sessions, activities);
+      const result = mapRawToPlans(plan, sessions, activities);
 
-        response.status(200).send(result);
-      } else {
-        response.status(404).send({ error: "plan not found" });
-      }
+      return response.status(200).send(result);
     } else {
-      response.status(403).send({ error: "user not authorized" });
+      log("Trainer try to look for user plan", LogLevel.WARNING, {
+        planOwnerId: id,
+      });
+      return response.status(404).send({ error: "plan not found" });
     }
   } catch (error) {
-    response.status(500).send({ error: "something went wrong" });
+    log(error, LogLevel.ERROR, {
+      token: request.headers.authorization,
+      method: request.method,
+      path: request.url,
+    });
+    return response.status(500).send({ error: "something went wrong" });
   }
 };
