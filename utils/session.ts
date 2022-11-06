@@ -21,20 +21,12 @@ export async function deleteSession(sessionId: string) {
   const delActivities = await db
     .collection(DbTable.ACTIVITIES)
     .deleteMany({ sessionId: sessionId });
-  if (delActivities.deletedCount === 0) {
-    throw new Error("unable to delete activities");
-  } else {
-    log(`activities deleted: ${delActivities.deletedCount}`, LogLevel.INFO);
-  }
+  log(`activities deleted: ${delActivities.deletedCount}`, LogLevel.INFO);
 
   const delSession = await db
     .collection(DbTable.SESSIONS)
     .deleteOne({ id: sessionId });
-  if (delSession.deletedCount === 0) {
-    throw new Error("unable to delete session");
-  } else {
-    log(`deleted session ${sessionId}`, LogLevel.INFO);
-  }
+  log(`deleted session ${sessionId}`, LogLevel.INFO);
 }
 
 /**
