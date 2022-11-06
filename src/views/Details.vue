@@ -81,6 +81,7 @@
       <div id="warmup-activities">
         <ActivityList
           title="Warmup"
+          no-found-message="No warmup activities found"
           :activities="warmupList"
           :is-warmup="true"
           :session-id="sessionId"
@@ -94,6 +95,7 @@
       <div id="list-activities">
         <ActivityList
           title="Activities"
+          no-found-message="No activities found"
           :activities="activityList"
           @run="runActivities"
           :session-id="sessionId"

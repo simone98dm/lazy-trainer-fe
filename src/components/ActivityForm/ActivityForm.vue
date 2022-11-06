@@ -178,7 +178,7 @@
             @change="(v: string) => (videoUrl = v)"
             id="activityUrl"
             name="activityUrlField"
-            label="Video Url (just the video id, es. auBLPXO8Fww)"
+            label="Youtube Video Url (just the video id, es. auBLPXO8Fww)"
             :has-error="videoUrlError"
             error="Video url not valid"
           />

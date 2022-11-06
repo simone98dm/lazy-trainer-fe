@@ -119,6 +119,7 @@
         <div class="flex flex-col justify-center">
           <ActivityList
             title="Warmup"
+            no-found-message="No warmup activities found"
             :activities="warmupList"
             :is-warmup="true"
             :session-id="id"
@@ -130,6 +131,7 @@
           <hr />
           <ActivityList
             title="Activities"
+            no-found-message="No activities found"
             :activities="activityList"
             :session-id="id"
             :allow-drag="true"

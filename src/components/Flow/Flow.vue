@@ -1,26 +1,66 @@
 <script setup lang="ts">
-  import { useActivityStore, useUserStore } from "~/stores";
-  import { LinkType } from "~/utils";
+  import { useRouter } from "vue-router";
+  import { useActivityStore, useTimerStore, useUserStore } from "~/stores";
+  import { LinkType, ButtonColor, getDayOfTheWeek } from "~/utils";
   const user = useUserStore();
   const activityStore = useActivityStore();
   const props = defineProps(["list", "loading"]);
+  const router = useRouter();
+
+  function isDayActivity(activity: any) {
+    return activity.dayOfWeek === new Date().getDate();
+  }
+
+  function runWorkout(sessionId: string) {
+    const warmupList = activityStore.getWarmUpActivities(sessionId);
+    const activityList = activityStore.getSessionActivities(sessionId);
+    const timerStore = useTimerStore();
+    if (warmupList && warmupList.length > 0) {
+      timerStore.setListActivities(warmupList);
+    } else {
+      timerStore.setListActivities(activityList);
+    }
+    router.push({ name: "timer", params: { sessionId } });
+  }
+
+  function hasActivities(sessionId: string) {
+    const warmupList = activityStore.getWarmUpActivities(sessionId);
+    const activityList = activityStore.getSessionActivities(sessionId);
+    return (warmupList?.length ?? 0 > 0) || (activityList?.length ?? 0 > 0);
+  }
 </script>
 
 <template>
   <PlaceholderList v-if="props.loading"></PlaceholderList>
   <div v-else>
     <div v-if="props.list && props.list.length > 0" class="mb-6" id="sessions">
-      <Link
+      <Item
         v-for="item in props.list"
-        :to="{ name: 'details', params: { sessionId: item.id } }"
+        :name="item.name"
+        :description="item.description"
+        :id="item.id"
+        :key="item.id"
+        :highlight="!user.isTrainer && isDayActivity(item)"
+        :class="'cursor-pointer'"
+        @click="
+          () => router.push({ name: 'details', params: { sessionId: item.id } })
+        "
       >
-        <Item
-          :name="item.name"
-          :description="item.description"
-          :id="item.id"
-          :key="item.id"
-        />
-      </Link>
+        <template #actions>
+          <Button
+            v-if="
+              !user.isTrainer &&
+              isDayActivity(item.id) &&
+              hasActivities(item.id)
+            "
+            :full="true"
+            :label="'Start'"
+            :icon="'play_arrow'"
+            :color="ButtonColor.PRIMARY"
+            @click.stop="runWorkout(item.id)"
+          />
+        </template>
+      </Item>
     </div>
     <ErrorBanner v-else text="No sessions found"></ErrorBanner>
   </div>

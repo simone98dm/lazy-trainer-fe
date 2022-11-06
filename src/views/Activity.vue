@@ -134,15 +134,6 @@
     />
   </div>
   <div class="max-w-screen-lg mx-auto">
-    <div class="mb-6">
-      <Button
-        id="save-activity"
-        :color="ButtonColor.SUCCESS"
-        icon="save"
-        :label="!activityId ? 'Create' : 'Save'"
-        @click="saveActivity"
-      />
-    </div>
     <ActivityForm
       v-for="(act, i) in multiActivities"
       :key="i"
@@ -167,24 +158,31 @@
         id="concat-rest-activity"
         label="Add rest"
         :color="ButtonColor.PRIMARY"
-        icon="add"
+        icon="self_improvement"
         @click="() => addActivityForm(restActivityTemplate)"
       />
       <Button
         id="concat-activity"
         label="Concat"
         :color="ButtonColor.PRIMARY"
-        icon="add"
+        icon="exposure_plus_1"
         @click="addActivityForm"
       />
       <Button
         id="duplicate-activity"
         :label="`Repeat for ${repeatFor} times`"
         :color="ButtonColor.PRIMARY"
-        icon="content_copy"
+        icon="replay"
         @click="
           () => (repeatFor <= 10 ? (repeatFor += 1) : (repeatFor = repeatFor))
         "
+      />
+      <Button
+        id="save-activity"
+        :color="ButtonColor.SUCCESS"
+        icon="save"
+        :label="!activityId ? 'Create' : 'Save'"
+        @click="saveActivity"
       />
     </div>
   </div>

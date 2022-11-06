@@ -19,7 +19,7 @@
     :class="[
       'flex',
       'justify-center',
-      'item-center',
+      'items-center',
       'shadow-lg',
       'font-bold',
       'text-sm',
@@ -63,17 +63,17 @@
       },
     ]"
     type="button"
-    @click="emit('click')"
+    @click="emit('click', $event)"
   >
     <Loading v-if="props.loading" :small="true"></Loading>
-    <div v-else>
+    <div v-else class="">
       <Icon
         v-if="props.icon"
         :component="props.icon"
         class="float-left inline"
       />
       <span
-        :class="['ml-2 float-left inline', { 'hidden sm:block': !props.full }]"
+        :class="['ml-2 float-left', { 'hidden sm:inline': !props.full }]"
         v-if="props.label"
       >
         {{ props.label }}

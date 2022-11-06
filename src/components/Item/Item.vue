@@ -7,6 +7,8 @@
     "reps",
     "icon",
     "requestChange",
+    "highlight",
+    "class",
   ]);
 
   function millisToMinutesAndSeconds(millis: number) {
@@ -20,9 +22,19 @@
 </script>
 
 <template>
-  <div class="flex flex-col rounded-xl bg-white p-4 shadow-lg mb-2">
+  <div
+    :class="[
+      'flex flex-col rounded-xl p-4 shadow-lg mb-2',
+      { 'bg-white': !props.highlight },
+      { 'bg-orange-200': props.highlight },
+      props.class,
+    ]"
+  >
     <div class="flex flex-row items-center justify-between">
-      <div class="flex">
+      <div>
+        <p class="text-slate-500 italic text-sm" v-if="props.highlight">
+          Today session
+        </p>
         <Icon
           v-if="props.icon"
           class="p-2 hidden sm:block flex-left inline"
@@ -64,6 +76,10 @@
       <p v-if="props.requestChange" class="text-red-600">
         Client request to change this activity
       </p>
+    </div>
+
+    <div class="mt-3">
+      <slot name="actions"></slot>
     </div>
   </div>
 </template>

@@ -11,6 +11,7 @@
     "title",
     "enableRun",
     "enableDuplicate",
+    "noFoundMessage",
   ]);
   const userStore = useUserStore();
   const emits = defineEmits(["move", "delete", "run", "duplicate"]);
@@ -86,5 +87,5 @@
       />
     </div>
   </div>
-  <ErrorBanner v-else text="No activity found"></ErrorBanner>
+  <ErrorBanner v-else :text="props.noFoundMessage"></ErrorBanner>
 </template>
