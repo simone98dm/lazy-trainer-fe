@@ -5,7 +5,6 @@ import { connectToDatabase } from "../../utils/db";
 import { DbTable, DB_NAME } from "../../utils/const";
 import { signToken, validateUser } from "../../utils/token";
 import { User } from "../../utils/types";
-import { extractTokenFromRequest } from "../../utils/helper";
 import { log, LogLevel } from "../../utils/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
@@ -16,8 +15,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         log("User try to renew without token", LogLevel.WARNING);
         return response.status(400).end();
       }
-      const bearer = extractTokenFromRequest(request);
-      const { id, name, role } = validateUser(bearer);
+      const { id, name, role } = validateUser(request);
       const token = await signToken({ id, name, role });
       const body: IUserResponse = {
         data: {
