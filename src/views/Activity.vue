@@ -10,7 +10,6 @@
   const router = useRouter();
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
-  let repeatFor = ref(1);
 
   const { sessionId, activityId } = route.params;
   const session = activityStore.getSession(sessionId as string);
@@ -44,21 +43,10 @@
   }
 
   async function saveActivity() {
-    let multi = [...multiActivities.value];
-
-    if (repeatFor.value > 1 && !activityId) {
-      for (let i = 1; i < repeatFor.value; i++) {
-        multiActivities.value = multiActivities.value.map((act) => {
-          return {
-            ...act,
-            id: uuidv4(),
-          };
-        });
-        multi = [...multi, ...multiActivities.value];
-      }
-    }
-
-    await activityStore.bulkSaveActivities(sessionId as string, multi);
+    await activityStore.bulkSaveActivities(
+      sessionId as string,
+      multiActivities.value
+    );
     redirectToList();
   }
 
@@ -167,15 +155,6 @@
         :color="ButtonColor.PRIMARY"
         icon="exposure_plus_1"
         @click="addActivityForm"
-      />
-      <Button
-        id="duplicate-activity"
-        :label="`Repeat for ${repeatFor} times`"
-        :color="ButtonColor.PRIMARY"
-        icon="replay"
-        @click="
-          () => (repeatFor <= 10 ? (repeatFor += 1) : (repeatFor = repeatFor))
-        "
       />
       <Button
         id="save-activity"
