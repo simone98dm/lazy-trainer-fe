@@ -1,11 +1,13 @@
 import { defineStore } from "pinia";
 import { getStorage, saveStorage } from "~/helpers/storage";
+import { SettingStorage } from "~/utils";
 
 export const useSettingStore = defineStore("settings", {
   state: () => ({
     headerText: "Trainer",
     globalLoading: false,
     audioDisabled: false,
+    easyMode: false,
   }),
   getters: {
     getHeaderText(state) {
@@ -17,6 +19,9 @@ export const useSettingStore = defineStore("settings", {
     isAudioDisabled(state) {
       return state.audioDisabled;
     },
+    isEasyModeEnabled(state) {
+      return state.easyMode;
+    },
   },
   actions: {
     setHeader(text: string) {
@@ -25,19 +30,25 @@ export const useSettingStore = defineStore("settings", {
     loading(status: boolean) {
       this.globalLoading = status;
     },
-    disableAudio(status: boolean) {
+    toggleAudioEffects(status: boolean) {
       this.audioDisabled = status;
+      this.saveSettings();
+    },
+    toggleEasyMode(status: boolean) {
+      this.easyMode = status;
       this.saveSettings();
     },
     saveSettings() {
       saveStorage("_settings", {
         audioDisabled: this.audioDisabled,
+        easyMode: this.easyMode,
       });
     },
     loadSettings() {
-      const settings = getStorage<{ audioDisabled: boolean }>("_settings");
+      const settings = getStorage<SettingStorage>("_settings");
       if (settings) {
         this.audioDisabled = settings.audioDisabled;
+        this.easyMode = settings.easyMode;
       }
     },
   },

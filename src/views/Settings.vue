@@ -60,7 +60,16 @@
             id="disableAudio"
             name="toggleDisableAudio"
             :checked="settingsStore.isAudioDisabled"
-            @toggle="(v) => settingsStore.disableAudio(v)"
+            @toggle="(v) => settingsStore.toggleAudioEffects(v)"
+          />
+        </div>
+        <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
+          Easy mode
+          <Switch
+            id="easyMode"
+            name="toggleEasyMode"
+            :checked="settingsStore.isEasyModeEnabled"
+            @toggle="(v) => settingsStore.toggleEasyMode(v)"
           />
         </div>
         <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">

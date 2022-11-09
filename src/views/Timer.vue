@@ -3,7 +3,12 @@
   import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
   import ding from "~/assets/audio/ding.mp3";
   import horn from "~/assets/audio/horn.mp3";
-  import { type TimerActivity, COLOR_CODES, FULL_DASH_ARRAY } from "~/utils";
+  import {
+    type TimerActivity,
+    COLOR_CODES,
+    FULL_DASH_ARRAY,
+    ButtonColor,
+  } from "~/utils";
   import { IActivity } from "~/models/Activity";
   import { useTimerStore, useSettingStore, useUserStore } from "~/stores";
 
@@ -252,25 +257,36 @@
       </h1>
     </div>
 
-    <div class="w-full flex justify-center mb-3">
-      <Button
-        :icon="
-          timerStore.isTimerBasedActivity
-            ? timerStore.isRunning
-              ? 'stop_circle'
-              : 'play_circle'
-            : 'skip_next'
-        "
-        :label="
-          timerStore.isTimerBasedActivity
-            ? timerStore.isRunning
-              ? 'Stop'
-              : 'Play'
-            : 'Next'
-        "
-        full="true"
-        @click="toggleTimer"
-      />
+    <div class="w-full flex flex-col justify-center mb-3">
+      <div class="mb-3">
+        <Button
+          :icon="
+            timerStore.isTimerBasedActivity
+              ? timerStore.isRunning
+                ? 'stop_circle'
+                : 'play_circle'
+              : 'skip_next'
+          "
+          :label="
+            timerStore.isTimerBasedActivity
+              ? timerStore.isRunning
+                ? 'Stop'
+                : 'Play'
+              : 'Next'
+          "
+          full="true"
+          @click="toggleTimer"
+        />
+      </div>
+      <div class="mb-3">
+        <Button
+          v-if="settingsStore.isEasyModeEnabled"
+          label="Skip"
+          full="true"
+          @click="onTimesUp"
+          :color="ButtonColor.LIGHT"
+        />
+      </div>
     </div>
     <div
       class="text-center mb-6"
