@@ -2,20 +2,19 @@
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { ISession } from "~/models/Session";
-  import { ButtonColor, getDayOfTheWeek } from "~/utils";
+  import { ButtonColor, getDayOfTheWeek, days } from "~/utils";
   import { useActivityStore, useUserStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
-  import { useRouter } from "vue-router";
 
   const props = defineProps(["id", "dayOfWeek", "existingForm"]);
   const emits = defineEmits(["save", "remove"]);
 
   const activityStore = useActivityStore();
   const userStore = useUserStore();
-  const router = useRouter();
 
   const uuid = uuidv4();
 
+  let currentDayOfWeek = ref(props.dayOfWeek || -1);
   let dayOfWeek = ref(props.dayOfWeek || -1);
   let id = ref(props.id || uuid);
   let activityList = ref(undefined as any[] | undefined);
@@ -26,57 +25,60 @@
     activityList.value = activityStore.getSessionActivities(id.value);
   }
 
-  function save() {
+  function save(day?: number, activities?: IActivity[]) {
     const session: ISession = {
       id: id.value,
       dayOfWeek: dayOfWeek.value,
       activities: [],
     };
 
-    if (props.existingForm) {
+    if (day && activities) {
+      session.id = uuidv4();
+      session.dayOfWeek = day;
+      session.activities = activities;
+    } else if (props.existingForm) {
       session.activities = [...props.existingForm];
       session.id = uuidv4();
     }
 
     emits("save", session);
   }
+
   function isNew() {
     return !Boolean(props.id);
   }
+
   function remove() {
     if (!isNew()) {
       emits("remove", props.id);
     }
   }
+
   function selectDay(dayIndex: number) {
     dayOfWeek.value = dayIndex;
   }
+
   function isDaySelected(dayIndex: number) {
     return dayIndex === dayOfWeek.value;
   }
+
   function sortActivities(evt: any) {
     const { newDraggableIndex, oldDraggableIndex } = evt;
     activityStore.moveActivity(id.value, newDraggableIndex, oldDraggableIndex);
   }
+
   let showModal = ref(false);
   function duplicateActivities(activities: IActivity[]) {
     activityStore.setDuplicateWarmup(activities);
     showModal.value = true;
   }
-  async function runDuplicate(param: {
+
+  function duplicateSession(param: {
     dayOfWeek: number;
     activities: IActivity[];
   }) {
-    const newSessionId = uuidv4();
-    await activityStore.addSession({
-      id: newSessionId,
-      dayOfWeek: param.dayOfWeek,
-      activities: param.activities,
-    });
     showModal.value = false;
-    router.push({
-      name: "home",
-    });
+    save(param.dayOfWeek, param.activities);
   }
 </script>
 
@@ -84,16 +86,21 @@
   <div class="flex justify-center w-full">
     <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
       <div>
-        <h1 v-if="isNew()" class="mb-3 text-2xl font-bold mb-6">
+        <h1 v-if="isNew()" class="mb-3 text-2xl mb-6">
           Create a new day session:
         </h1>
-        <h1 v-else class="mb-3 text-2xl font-bold mb-6">
-          Edit {{ getDayOfTheWeek(dayOfWeek) }} session:
+        <h1 v-else class="mb-3 text-2xl mb-6">
+          Edit <strong>{{ getDayOfTheWeek(currentDayOfWeek) }}</strong> session:
         </h1>
-        <span v-if="activityStore.getMissingDays.length <= 0"
-          >No days available</span
-        >
-        <div v-else class="flex xl:flex-row flex-col justify-center gap-3 mb-6">
+
+        <span>
+          {{
+            activityStore.getMissingDays.length <= 0
+              ? "No days available"
+              : "Move this session to:"
+          }}
+        </span>
+        <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6">
           <button
             v-for="day in activityStore.getMissingDays"
             :key="day"
@@ -168,7 +175,7 @@
       :missing-days="activityStore.getMissingDays"
       :existing-form="activityStore.duplicateActivities"
       @close="showModal = false"
-      @duplicate="runDuplicate"
+      @duplicate="duplicateSession"
     />
   </div>
 </template>

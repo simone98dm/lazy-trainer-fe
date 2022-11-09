@@ -15,6 +15,7 @@
   function selectDay(dayIndex: number) {
     dayOfWeek.value = dayIndex;
   }
+
   function isDaySelected(dayIndex: number) {
     return dayIndex === dayOfWeek.value;
   }

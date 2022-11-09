@@ -9,7 +9,6 @@
     "type",
     "disabled",
   ]);
-  console.log();
   defineEmits(["change", "click", "keyup"]);
 </script>
 

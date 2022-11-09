@@ -188,6 +188,10 @@ export const useActivityStore = defineStore("activity", {
       );
 
       if (existingIndex < 0) {
+        if (!this.getMissingDays.includes(session.dayOfWeek)) {
+          return;
+        }
+
         this.plan.sessions.push(session);
 
         await sendToTrainer(userStore.token, {

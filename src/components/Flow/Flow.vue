@@ -8,7 +8,7 @@
   const router = useRouter();
 
   function isDayActivity(activity: any) {
-    return activity.dayOfWeek === new Date().getDate();
+    return activity.dayOfWeek === new Date().getDay() - 1;
   }
 
   function runWorkout(sessionId: string) {

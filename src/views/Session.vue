@@ -16,7 +16,7 @@
     activityStore.duplicateActivities = undefined;
   }
 
-  function onBackPageHandler() {
+  function backPage() {
     cleanDuplicateActivities();
     router.back();
   }
@@ -24,7 +24,7 @@
   async function addSession(session: ISession) {
     await activityStore.addSession(session);
     cleanDuplicateActivities();
-    router.back();
+    backHomePage();
   }
 
   async function deleteSession(sessionId: string) {
@@ -32,6 +32,10 @@
       return;
     }
     await activityStore.deleteSession(sessionId);
+    backHomePage();
+  }
+
+  function backHomePage() {
     router.push({
       name: "home",
     });
@@ -39,7 +43,7 @@
 </script>
 <template>
   <div class="mb-6">
-    <BackButton @click="onBackPageHandler" />
+    <BackButton @click="backPage" />
   </div>
   <div
     class="flex xl:flex-col flex-wrap justify-center max-w-screen-lg mx-auto"
