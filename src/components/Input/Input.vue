@@ -10,7 +10,7 @@
     "disabled",
   ]);
   console.log();
-  defineEmits(["change", "click"]);
+  defineEmits(["change", "click", "keyup"]);
 </script>
 
 <template>
@@ -35,6 +35,7 @@
     @change="$emit('change', (($event.target as any) || undefined)?.value)"
     @input="$emit('change', (($event.target as any) || undefined)?.value)"
     @click="$emit('click')"
+    @keyup="$emit('keyup', $event)"
     :disabled="disabled"
     :type="type ?? 'text'"
   />

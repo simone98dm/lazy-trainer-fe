@@ -73,7 +73,10 @@
         class="float-left inline"
       />
       <span
-        :class="['ml-2 float-left', { 'hidden sm:inline': !props.full }]"
+        :class="[
+          'ml-2 float-left text-sm sm:text-sm sm:inline',
+          { hidden: !props.full },
+        ]"
         v-if="props.label"
       >
         {{ props.label }}

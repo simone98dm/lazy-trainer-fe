@@ -1,9 +1,8 @@
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { ref, watch } from "vue";
   import { useRoute, useRouter } from "vue-router";
   import { useUserStore, useSettingStore } from "~/stores";
   import { ButtonColor } from "~/utils";
-  import { getAnalytics, logEvent } from "firebase/analytics";
 
   const route = useRoute();
 
@@ -34,25 +33,23 @@
 
   async function submit() {
     isLoading.value = true;
-    await userStore.signIn(username.value, password.value).then((response) => {
-      isLoading.value = false;
+    const response = await userStore.signIn(username.value, password.value);
+    isLoading.value = false;
 
-      logEvent(getAnalytics(), "login", {
-        page_title: route.name,
-        page_location: window.location.href,
-        page_path: route.path,
-        error: response?.error,
+    if (!response) {
+      router.push({
+        name: "home",
       });
-
-      if (!response) {
-        router.push({
-          name: "home",
-        });
-      } else {
-        error.value = response;
-      }
-    });
+    } else {
+      error.value = response;
+    }
   }
+
+  watch([username, password], () => {
+    if (username.value && password.value) {
+      error.value = "";
+    }
+  });
 </script>
 
 <template>
@@ -73,6 +70,7 @@
           :has-error="usernameError"
           label="Username"
           @change="(v: string) => (username = v)"
+          @keyup.enter="submit"
         />
       </div>
       <div class="flex flex-wrap mb-3">
@@ -85,6 +83,7 @@
           :has-error="passwordError"
           label="Password"
           @change="(v: string) => (password = v)"
+          @keyup.enter="submit"
         />
       </div>
       <div class="text-center mb-6">
@@ -94,6 +93,7 @@
         <Button
           :loading="isLoading"
           :color="ButtonColor.PRIMARY"
+          :disabled="isLoading"
           label="Login"
           icon="login"
           full="true"
