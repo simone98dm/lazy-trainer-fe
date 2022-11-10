@@ -7,7 +7,7 @@ import router from "./router/router";
 import { version } from "../package.json";
 import "./style.css";
 import "material-icons/iconfont/material-icons.css";
-import { logTailLogger } from "./helpers/logger";
+import { customLogger } from "./helpers/logger";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -30,7 +30,7 @@ app.use(Hotjar, {
   snippetVersion: 6,
 });
 
-app.provide("$logger", logTailLogger);
+app.provide("$logger", customLogger);
 
 initializeApp(firebaseConfig);
 

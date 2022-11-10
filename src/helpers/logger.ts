@@ -1,24 +1,10 @@
-import { Browser } from "@logtail/js";
-
 export default function log(message: string, type: "info" | "warn" | "error") {
-  switch (type) {
-    case "error":
-      console.error(message);
-      break;
-    case "warn":
-      console.warn(message);
-      break;
-    case "info":
-      console.info(message);
-      break;
-    default:
-      console.log(message);
-      break;
-  }
+  const log = customLogger();
+  log(message, type);
 }
 
-export const logTailLogger = () => {
-  const logger = new Browser(import.meta.env.VITE_LOGTAIL_API_KEY);
+export const customLogger = () => {
+  const logger = console;
   return (message: string, type: "info" | "warn" | "error") => {
     switch (type) {
       case "error":
