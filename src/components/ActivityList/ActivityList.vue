@@ -1,7 +1,8 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores";
   import draggable from "vuedraggable";
-  import { ButtonColor, LinkType } from "~/utils";
+  import { ButtonColor, GaCustomEvents, LinkType } from "~/utils";
+  import { getAnalytics, logEvent } from "@firebase/analytics";
 
   const props = defineProps([
     "activities",
@@ -15,6 +16,10 @@
   ]);
   const userStore = useUserStore();
   const emits = defineEmits(["move", "delete", "run", "duplicate"]);
+  function runWorkout() {
+    logEvent(getAnalytics(), GaCustomEvents.RUN_ACTIVITY);
+    emits("run");
+  }
 </script>
 
 <template>
@@ -33,7 +38,7 @@
         icon="play_arrow"
         :type="LinkType.BUTTON"
         label="Start"
-        @click="emits('run')"
+        @click="runWorkout"
       />
       <Button
         id="duplicate-warmup"

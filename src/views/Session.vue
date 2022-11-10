@@ -1,7 +1,9 @@
 <script setup lang="ts">
+  import { getAnalytics, logEvent } from "@firebase/analytics";
   import { useRoute, useRouter } from "vue-router";
   import { ISession } from "~/models/Session";
   import { useActivityStore, useSettingStore } from "~/stores";
+  import { GaCustomEvents } from "~/utils";
 
   const router = useRouter();
   const route = useRoute();
@@ -24,6 +26,7 @@
   async function addSession(session: ISession) {
     await activityStore.addSession(session);
     cleanDuplicateActivities();
+    logEvent(getAnalytics(), GaCustomEvents.ADD_SESSION);
     backHomePage();
   }
 
@@ -32,6 +35,7 @@
       return;
     }
     await activityStore.deleteSession(sessionId);
+    logEvent(getAnalytics(), GaCustomEvents.REMOVE_SESSION);
     backHomePage();
   }
 

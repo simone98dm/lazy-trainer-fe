@@ -1,8 +1,9 @@
 <script setup lang="ts">
+  import { getAnalytics, logEvent } from "@firebase/analytics";
   import { inject, ref, watch } from "vue";
   import { useRouter } from "vue-router";
   import { useUserStore, useSettingStore } from "~/stores";
-  import { ButtonColor, logOptions } from "~/utils";
+  import { ButtonColor, GaCustomEvents, logOptions } from "~/utils";
 
   const $log = inject("$logger") as logOptions;
 
@@ -39,11 +40,15 @@
 
     if (!response) {
       $log("Login success", "info");
+      logEvent(getAnalytics(), GaCustomEvents.LOGIN);
       router.push({
         name: "home",
       });
     } else {
       $log("Login failed", "warn");
+      logEvent(getAnalytics(), GaCustomEvents.LOGIN, {
+        attempt: "failed",
+      });
       error.value = response;
     }
   }

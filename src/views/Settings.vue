@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { ButtonColor, Role, RoleName } from "~/utils";
+  import { ButtonColor, GaCustomEvents, Role, RoleName } from "~/utils";
   import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
   import { ref } from "vue";
   import { version } from "../../package.json";
+  import { getAnalytics, logEvent } from "@firebase/analytics";
 
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
@@ -18,9 +19,29 @@
 
   function syncProfile() {
     syncStatus.value = true;
+    logEvent(getAnalytics(), GaCustomEvents.PROFILE_SYNC);
     activityStore.sync().finally(() => {
       syncStatus.value = false;
     });
+  }
+
+  function logout() {
+    logEvent(getAnalytics(), GaCustomEvents.LOGOUT);
+    userStore.logout();
+  }
+
+  function toggleAudio(v: boolean) {
+    logEvent(getAnalytics(), GaCustomEvents.UPDATE_SETTINGS, {
+      settings_name: "audio",
+    });
+    settingsStore.toggleAudioEffects(v);
+  }
+
+  function toggleEasyMode(v: boolean) {
+    logEvent(getAnalytics(), GaCustomEvents.UPDATE_SETTINGS, {
+      settings_name: "easymode",
+    });
+    settingsStore.toggleAudioEffects(v);
   }
 </script>
 
@@ -60,7 +81,7 @@
             id="disableAudio"
             name="toggleDisableAudio"
             :checked="settingsStore.isAudioDisabled"
-            @toggle="(v) => settingsStore.toggleAudioEffects(v)"
+            @toggle="toggleAudio"
           />
         </div>
         <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
@@ -69,7 +90,7 @@
             id="easyMode"
             name="toggleEasyMode"
             :checked="settingsStore.isEasyModeEnabled"
-            @toggle="(v) => settingsStore.toggleEasyMode(v)"
+            @toggle="toggleEasyMode"
           />
         </div>
         <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
@@ -91,6 +112,9 @@
     </div>
     <div class="mb-6 flex justify-around gap-4">
       <Link
+        @click="
+          logEvent(getAnalytics(), GaCustomEvents.CLICK, { to: 'author' })
+        "
         :to="{ name: 'about' }"
         :full="true"
         :color="ButtonColor.LIGHT"
@@ -99,6 +123,9 @@
       >
       </Link>
       <Link
+        @click="
+          logEvent(getAnalytics(), GaCustomEvents.CLICK, { to: 'licence' })
+        "
         :to="{ name: 'license' }"
         :full="true"
         :color="ButtonColor.LIGHT"
@@ -113,7 +140,7 @@
         full="true"
         icon="logout"
         label="Logout"
-        @click="() => userStore.logout()"
+        @click="logout"
       />
     </div>
   </div>

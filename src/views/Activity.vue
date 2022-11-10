@@ -2,9 +2,15 @@
   import { useRoute, useRouter } from "vue-router";
   import { useActivityStore, useSettingStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
-  import { ButtonColor, DeepPartial, MAX_ACTIIVITY_FORM } from "~/utils";
+  import {
+    ButtonColor,
+    DeepPartial,
+    GaCustomEvents,
+    MAX_ACTIIVITY_FORM,
+  } from "~/utils";
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
+  import { getAnalytics, logEvent } from "@firebase/analytics";
 
   const route = useRoute();
   const router = useRouter();
@@ -47,6 +53,9 @@
       sessionId as string,
       multiActivities.value
     );
+    logEvent(getAnalytics(), GaCustomEvents.ADD_ACTIVITY, {
+      activity_counter: multiActivities.value.length,
+    });
     redirectToList();
   }
 
@@ -56,6 +65,7 @@
     }
     if (activityId) {
       await activityStore.removeActivity(sessionId as string, activityId);
+      logEvent(getAnalytics(), GaCustomEvents.REMOVE_ACTIVITY);
       redirectToList();
     } else {
       multiActivities.value = multiActivities.value.filter(

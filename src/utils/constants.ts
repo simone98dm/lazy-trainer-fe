@@ -27,3 +27,18 @@ export const RoleName: { [role in Role]: string } = {
 export const baseUrl = "";
 
 export const MAX_ACTIIVITY_FORM = 10;
+
+export const GaCustomEvents = {
+  LOGIN: "login",
+  LOGOUT: "logout",
+  CLICK: "click",
+  RUN_ACTIVITY: "run_workout",
+  ADD_ACTIVITY: "add_activity",
+  REMOVE_ACTIVITY: "remove_activity",
+  UPDATE_ACTIVITY: "update_activity",
+  ADD_SESSION: "add_session",
+  REMOVE_SESSION: "remove_session",
+  UPDATE_SESSION: "update_session",
+  UPDATE_SETTINGS: "update_settings",
+  PROFILE_SYNC: "profile_sync",
+};
