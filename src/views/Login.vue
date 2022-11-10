@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { ref, watch } from "vue";
-  import { useRoute, useRouter } from "vue-router";
+  import { inject, ref, watch } from "vue";
+  import { useRouter } from "vue-router";
   import { useUserStore, useSettingStore } from "~/stores";
-  import { ButtonColor } from "~/utils";
+  import { ButtonColor, logOptions } from "~/utils";
 
-  const route = useRoute();
+  const $log = inject("$logger") as logOptions;
 
   const username = ref("");
   const usernameError = ref(false);
@@ -26,6 +26,7 @@
     userStore.verifyStorage().then(() => {
       settingsStore.loading(false);
       if (userStore.isLogged) {
+        $log("User is logged with local token");
         router.push({ name: "home" });
       }
     });
@@ -37,10 +38,12 @@
     isLoading.value = false;
 
     if (!response) {
+      $log("Login success", "info");
       router.push({
         name: "home",
       });
     } else {
+      $log("Login failed", "warn");
       error.value = response;
     }
   }

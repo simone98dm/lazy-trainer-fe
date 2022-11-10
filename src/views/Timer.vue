@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { defineAsyncComponent, ref } from "vue";
+  import { defineAsyncComponent, inject, ref } from "vue";
   import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
   import ding from "~/assets/audio/ding.mp3";
   import horn from "~/assets/audio/horn.mp3";
@@ -8,9 +8,11 @@
     COLOR_CODES,
     FULL_DASH_ARRAY,
     ButtonColor,
+    logOptions,
   } from "~/utils";
   import { IActivity } from "~/models/Activity";
   import { useTimerStore, useSettingStore, useUserStore } from "~/stores";
+  const $log = inject("$logger") as logOptions;
 
   const route = useRoute();
   const router = useRouter();
@@ -42,6 +44,7 @@
         return false;
       }
     }
+    $log("User quit the session", "info");
     timerStore.reset();
     clearInterval(timerInterval);
   });
@@ -153,6 +156,7 @@
       runTimer();
     } else {
       playAudio(horn);
+      $log("User complete the session", "info");
       timerStore.reset();
       router.push({
         name: "details",
@@ -184,7 +188,6 @@
       timerStore.toggle();
       if (!timerInterval) {
         runTimer();
-      } else {
       }
     } else {
       onTimesUp();
@@ -201,7 +204,13 @@
   }
 
   async function sendChangeRequest() {
+    $log("User send change request", "info");
     await timerStore.requestChange(sessionId as string);
+  }
+
+  function skipActivity() {
+    $log("User skip the activity", "info");
+    onTimesUp();
   }
 </script>
 
@@ -283,7 +292,7 @@
           v-if="settingsStore.isEasyModeEnabled"
           label="Skip"
           full="true"
-          @click="onTimesUp"
+          @click="skipActivity"
           :color="ButtonColor.LIGHT"
         />
       </div>

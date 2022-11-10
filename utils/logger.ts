@@ -1,34 +1,30 @@
+import { Logtail } from "@logtail/node";
+const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN || "");
+
 export function log(
   message: string,
   level: LogLevel = LogLevel.INFO,
   ...args: any[]
 ) {
-  let logObject: any = {};
+  let logObject: any = JSON.stringify({
+    message,
+    args: JSON.stringify(args),
+  });
 
   switch (level) {
     case LogLevel.INFO:
-      logObject = { message: "🌐: " + message };
+      logtail.info(logObject);
       break;
     case LogLevel.ERROR:
-      logObject = { message: "🚨: " + message };
+      logtail.error(logObject);
       break;
     case LogLevel.WARNING:
-      logObject = { message: "❗️: " + message };
+      logtail.warn(logObject);
       break;
     default:
-      logObject = { message: "☂️: " + message };
+      logtail.log(logObject);
       break;
   }
-
-  if (process.env.DEBUG) {
-    logObject = {
-      ...logObject,
-      level,
-      args: JSON.stringify(args),
-    };
-  }
-
-  console.log(logObject);
 }
 
 export enum LogLevel {

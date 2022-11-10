@@ -17,3 +17,8 @@ export type SettingStorage = {
   audioDisabled: boolean;
   easyMode: boolean;
 };
+
+export type logOptions = (
+  message: string,
+  type?: "info" | "error" | "warn"
+) => void;

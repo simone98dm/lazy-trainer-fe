@@ -7,6 +7,7 @@ import router from "./router/router";
 import { version } from "../package.json";
 import "./style.css";
 import "material-icons/iconfont/material-icons.css";
+import { logTailLogger } from "./helpers/logger";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -21,7 +22,6 @@ const firebaseConfig = {
 
 const pinia = createPinia();
 const app = createApp(App);
-
 app.use(pinia);
 app.use(router);
 app.use(Hotjar, {
@@ -29,6 +29,8 @@ app.use(Hotjar, {
   isProduction: true,
   snippetVersion: 6,
 });
+
+app.provide("$logger", logTailLogger);
 
 initializeApp(firebaseConfig);
 

@@ -32,7 +32,7 @@
 
     pageOptions = {
       ...pageOptions,
-      title: "Client sessions",
+      title: "Clients session",
     };
   } else if (!userStore.isTrainer) {
     activityStore
@@ -40,13 +40,12 @@
       .then(() => (sessions.value = activityStore.getWeek?.map(parseSessions)))
       .catch(() => router.push({ name: "login" }))
       .finally(() => (isLoading.value = false));
-
-    pageOptions = { ...pageOptions, title: "Your session" };
+    pageOptions = { ...pageOptions, title: "Your sessions" };
   } else {
     isLoading.value = false;
     pageOptions = {
       title: "Nothing to see here",
-      subtitle: "Go to groups and open your client plan",
+      subtitle: "Click on groups (bottom bar) to view your clients",
       block: true,
       style: "text-center mt-10",
     };
