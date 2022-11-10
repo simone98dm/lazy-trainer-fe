@@ -10,6 +10,7 @@ import Components from "unplugin-vue-components/vite";
 export default defineConfig({
   resolve: {
     alias: {
+      path: "path-browserify",
       "~/": `${path.resolve(__dirname, "src")}/`,
     },
   },
