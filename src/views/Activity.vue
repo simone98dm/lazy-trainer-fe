@@ -161,42 +161,56 @@
     />
 
     <div
-      class="w-full flex flex-col sm:flex-row w-full px-6 justify-center gap-3 mb-6"
+      class="w-full flex flex-col sm:flex-row w-full px-6 justify-between gap-3 mb-6"
     >
-      <Button
-        v-if="!settingsStore.isGlobalLoading"
-        id="concat-rest-activity"
-        label="Add rest"
-        :color="ButtonColor.PRIMARY"
-        icon="self_improvement"
-        @click="() => addActivityForm(restActivityTemplate)"
-      />
-      <Button
-        v-if="!settingsStore.isGlobalLoading"
-        id="duplicate-activity"
-        :label="`Repeat for ${repeatFor} times`"
-        :color="ButtonColor.PRIMARY"
-        icon="replay"
-        @click="
-          () => (repeatFor <= 10 ? (repeatFor += 1) : (repeatFor = repeatFor))
-        "
-      />
-      <Button
-        v-if="!settingsStore.isGlobalLoading"
-        id="concat-activity"
-        label="Concat"
-        :color="ButtonColor.PRIMARY"
-        icon="exposure_plus_1"
-        @click="addActivityForm"
-      />
-      <Button
-        v-if="!settingsStore.isGlobalLoading"
-        id="save-activity"
-        :color="ButtonColor.SUCCESS"
-        icon="save"
-        :label="!activityId ? 'Create' : 'Save'"
-        @click="saveActivity"
-      />
+      <div class="flex gap-2">
+        <Button
+          v-if="!settingsStore.isGlobalLoading"
+          id="concat-rest-activity"
+          label="Add 15 sec rest"
+          :color="ButtonColor.PRIMARY"
+          icon="self_improvement"
+          @click="() => addActivityForm(restActivityTemplate)"
+        />
+        <Button
+          v-if="!settingsStore.isGlobalLoading"
+          id="concat-activity"
+          label="Concat"
+          :color="ButtonColor.PRIMARY"
+          icon="exposure_plus_1"
+          @click="addActivityForm"
+        />
+        <Button
+          v-if="!settingsStore.isGlobalLoading"
+          id="increase-activity-count"
+          :label="`Repeat for ${repeatFor} times`"
+          :color="ButtonColor.PRIMARY"
+          icon="replay"
+          @click="
+            () => (repeatFor < 10 ? (repeatFor += 1) : (repeatFor = repeatFor))
+          "
+        />
+        <Button
+          v-if="!settingsStore.isGlobalLoading && repeatFor > 1"
+          id="increase-activity-count"
+          :label="`Decrease repeat count`"
+          :color="ButtonColor.LIGHT"
+          icon="remove"
+          @click="
+            () => (repeatFor > 1 ? (repeatFor -= 1) : (repeatFor = repeatFor))
+          "
+        />
+      </div>
+      <div>
+        <Button
+          v-if="!settingsStore.isGlobalLoading"
+          id="save-activity"
+          :color="ButtonColor.SUCCESS"
+          icon="save"
+          :label="!activityId ? 'Create' : 'Save'"
+          @click="saveActivity"
+        />
+      </div>
     </div>
   </div>
 </template>
