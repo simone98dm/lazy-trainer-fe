@@ -19,6 +19,7 @@
 
   const { sessionId, activityId } = route.params;
   const session = activityStore.getSession(sessionId as string);
+  let repeatFor = ref(1);
 
   settingsStore.setHeader("Activity");
 
@@ -49,10 +50,19 @@
   }
 
   async function saveActivity() {
-    await activityStore.bulkSaveActivities(
-      sessionId as string,
-      multiActivities.value
-    );
+    let multi = [...multiActivities.value];
+    if (repeatFor.value > 1 && !activityId) {
+      for (let i = 1; i < repeatFor.value; i++) {
+        multiActivities.value = multiActivities.value.map((act) => {
+          return {
+            ...act,
+            id: uuidv4(),
+          };
+        });
+        multi = [...multi, ...multiActivities.value];
+      }
+    }
+    await activityStore.bulkSaveActivities(sessionId as string, multi);
     logEvent(getAnalytics(), GaCustomEvents.ADD_ACTIVITY, {
       activity_counter: multiActivities.value.length,
     });
@@ -158,6 +168,15 @@
         :color="ButtonColor.PRIMARY"
         icon="self_improvement"
         @click="() => addActivityForm(restActivityTemplate)"
+      />
+      <Button
+        id="duplicate-activity"
+        :label="`Repeat for ${repeatFor} times`"
+        :color="ButtonColor.PRIMARY"
+        icon="replay"
+        @click="
+          () => (repeatFor <= 10 ? (repeatFor += 1) : (repeatFor = repeatFor))
+        "
       />
       <Button
         id="concat-activity"
