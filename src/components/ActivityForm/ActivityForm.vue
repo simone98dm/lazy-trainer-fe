@@ -90,7 +90,7 @@
             @change="(v: string) => (name = v)"
             id="activityName"
             name="activityNameField"
-            label="Name"
+            label="Activity name*"
             :has-error="nameError"
             error="Name is required"
           />
@@ -102,7 +102,7 @@
             @change="(v: string) => (description = v)"
             id="activityDescription"
             name="activityDescriptionField"
-            label="Description"
+            label="Activity description"
             :has-error="descriptionError"
             error="Description is required"
           />

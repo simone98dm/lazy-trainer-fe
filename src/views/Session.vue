@@ -20,7 +20,10 @@
 
   function backPage() {
     cleanDuplicateActivities();
-    router.back();
+    router.push({
+      name: "details",
+      params: { sessionId },
+    });
   }
 
   async function addSession(session: ISession) {
@@ -41,7 +44,7 @@
 
   function backHomePage() {
     router.push({
-      name: "home",
+      name: "sessions",
       params: { planId: activityStore.plan?.id },
     });
   }
