@@ -263,7 +263,7 @@ export const useActivityStore = defineStore("activity", {
             .map(parseSessions)
         );
     },
-    moveActivity(
+    async moveActivity(
       sessionId: string | undefined,
       newIndex: number,
       oldIndex: number
@@ -297,10 +297,19 @@ export const useActivityStore = defineStore("activity", {
             });
 
             saveStorage("_plan", this.plan);
-            this.addActivity(sessionId, {
-              ...existingActivity,
-              order: newIndex,
-            });
+
+            const userStore = useUserStore();
+            const settingsStore = useSettingStore();
+            settingsStore.loading(true);
+            await sendToTrainer(userStore.token, {
+              data: [
+                ...this.plan.sessions[sessionIndex].activities.map((item) => ({
+                  id: item.id,
+                  order: item.order,
+                })),
+              ],
+              action: DataAction.ACTIVITY_SORT,
+            }).finally(() => settingsStore.loading(false));
           }
         }
       }

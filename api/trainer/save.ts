@@ -4,6 +4,7 @@ import { validateUser } from "../../utils/token";
 import {
   createActivity,
   deleteActivity,
+  sortActivities,
   updateActivity,
 } from "../../utils/activity";
 import {
@@ -50,6 +51,9 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         break;
       case DataAction.ACTIVITY_UPDATE:
         await updateActivity(activityId, data);
+        break;
+      case DataAction.ACTIVITY_SORT:
+        await sortActivities(data);
         break;
       default:
         throw new Error("action not recognized");

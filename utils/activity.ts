@@ -93,3 +93,31 @@ export async function createActivity(sessionId: string, data: any) {
     log(`created activity ${data.id}`, LogLevel.INFO);
   }
 }
+
+/**
+ * Sort activities
+ * @param activities activities to sort
+ */
+export async function sortActivities(data: { id: string; order: number }[]) {
+  const client = await connectToDatabase();
+  if (!client) {
+    throw new Error("mongoClient is null");
+  }
+
+  const promises = data.map((activity) =>
+    client
+      .db(DB_NAME)
+      .collection(DbTable.ACTIVITIES)
+      .findOneAndUpdate(
+        { id: activity.id },
+        { $set: { order: activity.order } }
+      )
+      .then((result) => {
+        if (result.ok === 0) {
+          throw new Error("unable to update activity");
+        }
+      })
+  );
+
+  await Promise.all(promises);
+}

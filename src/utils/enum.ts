@@ -31,4 +31,5 @@ export enum DataAction {
   ACTIVITY_DELETE,
   ACTIVITY_UPDATE,
   ACTIVITY_CREATE,
+  ACTIVITY_SORT,
 }
