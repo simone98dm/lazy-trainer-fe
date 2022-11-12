@@ -31,9 +31,8 @@ export const useUserStore = defineStore("user", {
   actions: {
     async signIn(username: string, password: string) {
       return await signIn(username, password).then((response) => {
-        if (response.data) {
-          const { data } = response as IUserResponse;
-          const { token, id, name, role } = data;
+        if (response) {
+          const { token, id, name, role } = response;
 
           this.token = token;
           this.userId = id;

@@ -2,13 +2,12 @@ import { VercelResponse } from "@vercel/node";
 
 export const commonResponse = {
   notFound: (response: VercelResponse, data?: any) =>
-    response.status(404).send({ success: false, error: data }),
+    response.status(404).send({ error: data }),
   badRequest: (response: VercelResponse, data?: any) =>
-    response.status(400).send({ success: false, error: data }),
+    response.status(400).send({ error: data }),
   internalServerError: (response: VercelResponse, data?: any) =>
-    response.status(500).send({ success: false, error: data }),
-  ok: (response: VercelResponse, data?: any) =>
-    response.status(200).send({ success: true, data }),
+    response.status(500).send({ error: data }),
+  ok: (response: VercelResponse, data?: any) => response.status(200).send(data),
   notOk: (response: VercelResponse, data?: any) =>
-    response.status(200).send({ success: false, data }),
+    response.status(200).send(data),
 };
