@@ -1,9 +1,8 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { connectToDatabase } from "../../utils/db";
-import { DbTable, DB_NAME } from "../../utils/const";
-import { Plan } from "../../utils/types";
-import { log, LogLevel } from "../../utils/logger";
-import { validateUser } from "../../utils/token";
+import { validateUser } from "../../backend/helpers/token";
+import logger from "../../backend/utils/logger";
+import { commonResponse } from "../../backend/utils/http";
+import { getTrainerPlans } from "../../backend/helpers/group";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -12,31 +11,24 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     }
 
     const isValid = validateUser(request);
-
-    const client = await connectToDatabase();
-    if (!client) {
-      throw new Error("mongoClient is null");
+    const { id } = request.body;
+    if (!id) {
+      return commonResponse.badRequest(response, "id not provided");
     }
 
-    const { id } = request.body;
+    const plans = await getTrainerPlans(isValid.id);
 
-    const plans = await client
-      .db(DB_NAME)
-      .collection<Plan>(DbTable.PLANS)
-      .find({ trainerId: id })
-      .toArray();
-
-    log("Trainer request plans", LogLevel.INFO, {
+    logger.info("Trainer request plans", {
       trainer: isValid,
       groupId: id,
     });
-    return response.status(200).json(plans);
+    return commonResponse.ok(response, plans);
   } catch (error) {
-    log(error, LogLevel.ERROR, {
+    logger.error(error, {
       token: request.headers.authorization,
       method: request.method,
       path: request.url,
     });
-    return response.status(500).json({ error: "something went wrong" });
+    return commonResponse.internalServerError(response, "something went wrong");
   }
 };
