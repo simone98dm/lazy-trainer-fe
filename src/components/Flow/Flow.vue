@@ -66,6 +66,7 @@
   </div>
   <Link
     v-if="
+      !props.loading &&
       (user.isTrainer || user.isSelfMadeMan) &&
       activityStore.getMissingDays.length > 0
     "

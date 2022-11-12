@@ -25,6 +25,7 @@ export function mapRawToSession(
   for (const session of sessions) {
     const filteredExtensions = activities
       .filter((activity) => activity.sessionId === session.id)
+      .sort((a, b) => a.order - b.order)
       .map((activity) => ({
         id: activity.id,
         description: activity.description,

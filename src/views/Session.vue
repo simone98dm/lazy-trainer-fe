@@ -42,6 +42,7 @@
   function backHomePage() {
     router.push({
       name: "home",
+      params: { planId: activityStore.plan?.id },
     });
   }
 </script>

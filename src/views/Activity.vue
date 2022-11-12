@@ -144,7 +144,8 @@
   <div class="max-w-screen-lg mx-auto">
     <ActivityForm
       v-for="(act, i) in multiActivities"
-      :key="i"
+      :key="act.id"
+      :i="i"
       :name="act?.name"
       :id="act?.id"
       :description="act?.description"
@@ -163,6 +164,7 @@
       class="w-full flex flex-col sm:flex-row w-full px-6 justify-center gap-3 mb-6"
     >
       <Button
+        v-if="!settingsStore.isGlobalLoading"
         id="concat-rest-activity"
         label="Add rest"
         :color="ButtonColor.PRIMARY"
@@ -170,6 +172,7 @@
         @click="() => addActivityForm(restActivityTemplate)"
       />
       <Button
+        v-if="!settingsStore.isGlobalLoading"
         id="duplicate-activity"
         :label="`Repeat for ${repeatFor} times`"
         :color="ButtonColor.PRIMARY"
@@ -179,6 +182,7 @@
         "
       />
       <Button
+        v-if="!settingsStore.isGlobalLoading"
         id="concat-activity"
         label="Concat"
         :color="ButtonColor.PRIMARY"
@@ -186,6 +190,7 @@
         @click="addActivityForm"
       />
       <Button
+        v-if="!settingsStore.isGlobalLoading"
         id="save-activity"
         :color="ButtonColor.SUCCESS"
         icon="save"

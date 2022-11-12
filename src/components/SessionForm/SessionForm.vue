@@ -93,14 +93,16 @@
           Edit <strong>{{ getDayOfTheWeek(currentDayOfWeek) }}</strong> session:
         </h1>
 
-        <span>
+        <span class="text-md">
           {{
             activityStore.getMissingDays.length <= 0
               ? "No days available"
+              : isNew()
+              ? "Select day to this session"
               : "Move this session to:"
           }}
         </span>
-        <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6">
+        <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6 mt-3">
           <button
             v-for="day in activityStore.getMissingDays"
             :key="day"
@@ -122,7 +124,7 @@
           </button>
         </div>
       </div>
-      <div class="w-full px-3 mb-6">
+      <div class="w-full px-3 mb-6" v-if="!isNew()">
         <div class="flex flex-col justify-center">
           <ActivityList
             title="Warmup"
@@ -133,6 +135,7 @@
             :allow-drag="true"
             :enable-run="false"
             :enable-duplicate="true"
+            @move="sortActivities"
             @duplicate="duplicateActivities"
           />
           <hr />

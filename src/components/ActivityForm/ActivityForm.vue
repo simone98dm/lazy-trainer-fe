@@ -184,12 +184,12 @@
           />
         </div>
         <div class="px-3 mb-6">
-          <label class="tracking-wide" :for="`toggle-${i}`">
+          <label class="tracking-wide" :for="`toggle-${props.i}`">
             <span class="flex-left inline"> Is warm-up? </span>
             <Switch
               class="flex-left inline"
-              :id="`toggle-${i}`"
-              :name="`toggleWarmup-${i}`"
+              :id="`toggle-${props.i}`"
+              :name="`toggleWarmup-${props.i}`"
               :checked="warmup"
               @toggle="(v: boolean) => (warmup = v)"
             />

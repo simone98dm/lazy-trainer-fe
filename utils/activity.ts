@@ -50,7 +50,8 @@ export async function updateActivity(activityId: string, data: any) {
       {
         $set: {
           description: data.description,
-          name: data.name, order: data.order,
+          name: data.name,
+          order: data.order,
           time: data.time,
           reps: data.reps,
           videoUrl: data.videoUrl,
