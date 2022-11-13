@@ -50,7 +50,7 @@
 <template>
   <div class="flex flex-col justify-center max-w-screen-lg mx-auto">
     <div class="shadow p-5 rounded-xl mb-6 bg-white">
-      <div class="m-6">
+      <div class="m-0 sm:m-6">
         <h1 class="text-xl font-bold mb-3">Profile</h1>
         <div class="w-full pt-3 px-3">
           <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
@@ -77,7 +77,7 @@
           </div>
         </div>
       </div>
-      <div class="m-6">
+      <div class="m-0 sm:m-6">
         <h1 class="text-xl font-bold mb-3">Preferences</h1>
         <div class="w-full pt-3 px-3">
           <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
