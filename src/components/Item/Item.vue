@@ -9,6 +9,7 @@
     "requestChange",
     "highlight",
     "class",
+    "caption",
   ]);
 
   function millisToMinutesAndSeconds(millis: number) {
@@ -33,11 +34,11 @@
     <div class="flex flex-row items-center justify-between">
       <div>
         <p class="text-slate-500 italic text-sm" v-if="props.highlight">
-          Today session
+          {{ props.highlight }}
         </p>
         <Icon
           v-if="props.icon"
-          class="p-2 hidden sm:block flex-left inline"
+          class="pr-2 hidden sm:block flex-left inline"
           :component="props.icon"
         />
         <h4
@@ -49,6 +50,9 @@
         >
           {{ props.name }}
         </h4>
+        <p class="text-xs text-gray-500 my-2">
+          {{ props.caption }}
+        </p>
       </div>
       <div>
         <h4
