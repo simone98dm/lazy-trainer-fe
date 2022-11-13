@@ -1,3 +1,4 @@
+import { IConfiguration } from "~/models/Configuration";
 import { baseUrl } from "~/utils";
 import log from "./logger";
 
@@ -95,6 +96,29 @@ export async function requestActivityChange(token: string, activityId: string) {
       method: "POST",
       headers: buildHeaders(token),
       body: JSON.stringify({ activityId }),
+    });
+  } catch (error) {
+    log(JSON.stringify(error), "error");
+  }
+}
+
+export async function getConfiguration(token: string) {
+  try {
+    return await fetch(`${baseUrl}/api/user`, {
+      method: "GET",
+      headers: buildHeaders(token),
+    }).then((response) => response.json());
+  } catch (error) {
+    log(JSON.stringify(error), "error");
+  }
+}
+
+export async function saveConfiguration(token: string, data: any) {
+  try {
+    return await fetch(`${baseUrl}/api/user`, {
+      method: "POST",
+      headers: buildHeaders(token),
+      body: JSON.stringify(data),
     });
   } catch (error) {
     log(JSON.stringify(error), "error");

@@ -29,3 +29,8 @@ export type User = {
   role: number;
   hashPassword: string;
 };
+
+export type Config = {
+  userId: string;
+  configurations: string;
+};
