@@ -74,7 +74,7 @@
       />
       <span
         :class="[
-          'ml-2 float-left text-lg sm:text-sm sm:inline',
+          'ml-2 float-left text-md sm:text-sm sm:inline',
           { hidden: !props.full },
         ]"
         v-if="props.label"
