@@ -26,7 +26,9 @@
   }
 
   function logout() {
-    logEvent(getAnalytics(), GaCustomEvents.LOGOUT);
+    logEvent(getAnalytics(), GaCustomEvents.LOGOUT, {
+      id: userStore.userId,
+    });
     userStore.logout();
   }
 

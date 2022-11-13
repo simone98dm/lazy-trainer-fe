@@ -10,3 +10,7 @@ export function getStorage<T>(name: string): T | undefined {
   }
   return JSON.parse(data);
 }
+
+export function clearStorage() {
+  localStorage.clear();
+}

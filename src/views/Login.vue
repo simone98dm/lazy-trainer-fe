@@ -35,21 +35,28 @@
 
   async function submit() {
     isLoading.value = true;
-    const response = await userStore.signIn(username.value, password.value);
+    const { id, err } = await userStore.signIn(username.value, password.value);
     isLoading.value = false;
 
-    if (!response) {
+    if (id) {
       $log("Login success", "info");
-      logEvent(getAnalytics(), GaCustomEvents.LOGIN);
+      logEvent(getAnalytics(), GaCustomEvents.LOGIN, {
+        id,
+      });
       router.push({
         name: "home",
       });
-    } else {
+      return;
+    }
+
+    if (err) {
       $log("Login failed", "warn");
       logEvent(getAnalytics(), GaCustomEvents.LOGIN, {
         attempt: "failed",
+        err,
       });
-      error.value = response;
+      error.value = err;
+      return;
     }
   }
 
