@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useSettingStore } from "~/stores";
+  import { useSettingStore, useUserStore } from "~/stores";
   import github from "~/assets/github.svg";
   import linkedin from "~/assets/linkedin.svg";
   import { useRouter } from "vue-router";
@@ -7,6 +7,7 @@
   const router = useRouter();
 
   const settingsStore = useSettingStore();
+  const userStore = useUserStore();
   settingsStore.setHeader("About");
 </script>
 
@@ -25,7 +26,7 @@
       <p class="text-xl">I'm a software engineer👨🏻‍💻 from Italy🇮🇹</p>
     </div>
     <div class="mb-6 bg-white shadow rounded-xl p-5">
-      <p class="text-2xl font-bold">Reach me out:</p>
+      <p class="text-2xl font-bold">You can find me on</p>
       <div class="flex flex-col">
         <div class="flex justify-center mb-1">
           <a
@@ -34,6 +35,7 @@
             @click="
               logEvent(getAnalytics(), 'click', {
                 to: 'github profile',
+                id: userStore.userId,
               })
             "
           >
@@ -45,12 +47,14 @@
             @click="
               logEvent(getAnalytics(), 'click', {
                 to: 'linkedin profile',
+                id: userStore.userId,
               })
             "
           >
             <img :src="linkedin" class="w-10" alt="linkedin logo" />
           </a>
         </div>
+        or
         <a
           href="https://www.buymeacoffee.com/simone98dm"
           target="_blank"
@@ -58,11 +62,12 @@
           @click="
             logEvent(getAnalytics(), 'click', {
               to: 'buy me a coffee',
+              id: userStore.userId,
             })
           "
         >
           <img
-            src="https://img.shields.io/badge/Someone%20said%20Pizza-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black"
+            src="https://img.shields.io/badge/Buy%20me%20a%20Pizza-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black"
           />
         </a>
       </div>
