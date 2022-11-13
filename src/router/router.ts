@@ -13,11 +13,12 @@ const Group = (): Promise<RouteComponent> => import("../views/Group.vue");
 const NotFound = (): Promise<RouteComponent> => import("../views/NotFound.vue");
 const About = (): Promise<RouteComponent> => import("../views/About.vue");
 const License = (): Promise<RouteComponent> => import("../views/License.vue");
+const Landing = (): Promise<RouteComponent> => import("../views/Landing.vue");
 
 const routes = [
   {
     name: "home",
-    path: "/:planId?",
+    path: "/#/:planId?",
     component: Home,
     meta: {
       title: `Trainer`,
@@ -114,8 +115,8 @@ const routes = [
     },
   },
   {
-    path: "/about",
     name: "about",
+    path: "/about",
     component: About,
     meta: {
       title: `About`,
@@ -124,11 +125,22 @@ const routes = [
     },
   },
   {
-    path: "/license",
     name: "license",
+    path: "/license",
     component: License,
     meta: {
       title: `Licence`,
+      requireAuth: false,
+      requireAdmin: false,
+    },
+  },
+  {
+    path: "/",
+    name: "landing",
+    component: Landing,
+    meta: {
+      title: `Landing`,
+      empty: true,
       requireAuth: false,
       requireAdmin: false,
     },
