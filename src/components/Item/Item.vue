@@ -44,8 +44,8 @@
         <h4
           :class="[
             'text-gray-600 flex-left inline',
-            { 'font-semibold text-2xl sm:text-3xl': props.description },
-            { 'font-bold text-3xl sm:text-4xl': !props.description },
+            { 'font-semibold text-3xl sm:text-4xl': props.description },
+            { 'font-bold text-4xl sm:text-5xl': !props.description },
           ]"
         >
           {{ props.name }}
