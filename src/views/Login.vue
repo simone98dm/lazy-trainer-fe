@@ -41,7 +41,7 @@
     if (id) {
       $log("Login success", "info");
       logEvent(getAnalytics(), GaCustomEvents.LOGIN, {
-        id,
+        userId: id,
       });
       router.push({
         name: "home",

@@ -23,7 +23,7 @@
       />
       <p class="text-4xl font-bold mb-6">Hi folks 👋</p>
       <p class="text-4xl font-bolder mb-6">my name is Simone</p>
-      <p class="text-xl">I'm a software engineer👨🏻‍💻 from Italy🇮🇹</p>
+      <p class="text-xl">I'm a software engineer 👨🏻‍💻 from Italy🇮🇹</p>
     </div>
     <div class="mb-6 bg-white shadow rounded-xl p-5">
       <p class="text-2xl font-bold">You can find me on</p>
@@ -35,7 +35,7 @@
             @click="
               logEvent(getAnalytics(), 'click', {
                 to: 'github profile',
-                id: userStore.userId,
+                userId: userStore.userId,
               })
             "
           >
@@ -47,7 +47,7 @@
             @click="
               logEvent(getAnalytics(), 'click', {
                 to: 'linkedin profile',
-                id: userStore.userId,
+                userId: userStore.userId,
               })
             "
           >
@@ -62,7 +62,7 @@
           @click="
             logEvent(getAnalytics(), 'click', {
               to: 'buy me a coffee',
-              id: userStore.userId,
+              userId: userStore.userId,
             })
           "
         >
