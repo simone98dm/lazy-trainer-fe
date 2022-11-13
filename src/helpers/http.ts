@@ -100,3 +100,17 @@ export async function requestActivityChange(token: string, activityId: string) {
     log(JSON.stringify(error), "error");
   }
 }
+
+export async function markNotificationsAsRead(id?: string) {
+  try {
+    return await fetch(`${baseUrl}/api/notification`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    });
+  } catch (error) {
+    log(JSON.stringify(error), "error");
+  }
+}

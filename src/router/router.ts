@@ -13,6 +13,8 @@ const Group = (): Promise<RouteComponent> => import("../views/Group.vue");
 const NotFound = (): Promise<RouteComponent> => import("../views/NotFound.vue");
 const About = (): Promise<RouteComponent> => import("../views/About.vue");
 const License = (): Promise<RouteComponent> => import("../views/License.vue");
+const Notifications = (): Promise<RouteComponent> =>
+  import("~/views/Notifications.vue");
 
 const routes = [
   {
@@ -130,6 +132,16 @@ const routes = [
     meta: {
       title: `Licence`,
       requireAuth: false,
+      requireAdmin: false,
+    },
+  },
+  {
+    path: "/notifications",
+    name: "notifications",
+    component: Notifications,
+    meta: {
+      title: `Notifications`,
+      requireAuth: true,
       requireAdmin: false,
     },
   },
