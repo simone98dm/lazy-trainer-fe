@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { IUserResponse } from "../models/User";
 import { Role } from "../utils";
 import { getGroups, signIn, userInfo, verifyUser } from "../helpers/http";
+import { clearStorage, getStorage, saveStorage } from "~/helpers/storage";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -39,17 +40,17 @@ export const useUserStore = defineStore("user", {
           this.username = name;
           this.role = role as Role;
 
-          localStorage.setItem("_token", this.token);
-          return undefined;
+          saveStorage("_token", { token });
+          return { id };
         }
 
-        return response.error;
+        return { err: response.error };
       });
     },
     async verifyStorage() {
-      const token = localStorage.getItem("_token");
-      if (token) {
-        return await verifyUser(token).then((response) => {
+      const t = getStorage<{ token: string }>("_token");
+      if (t) {
+        return await verifyUser(t.token).then((response) => {
           if (response.error) {
             this.logout();
             return;
@@ -64,7 +65,7 @@ export const useUserStore = defineStore("user", {
             this.username = name;
             this.role = role as Role;
 
-            localStorage.setItem("_token", this.token);
+            saveStorage("_token", { token });
           }
         });
       }
@@ -80,7 +81,7 @@ export const useUserStore = defineStore("user", {
       }
     },
     logout() {
-      localStorage.clear();
+      clearStorage();
       location.href = "/";
     },
     async retrieveClients() {

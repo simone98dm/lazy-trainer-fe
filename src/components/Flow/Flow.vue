@@ -40,7 +40,9 @@
         :description="item.description"
         :id="item.id"
         :key="item.id"
-        :highlight="!user.isTrainer && isDayActivity(item)"
+        :highlight="
+          !user.isTrainer && isDayActivity(item) ? 'Today session' : ''
+        "
         :class="'cursor-pointer'"
         @click="
           () => router.push({ name: 'details', params: { sessionId: item.id } })
