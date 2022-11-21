@@ -1,6 +1,6 @@
 import { DbTable, DB_NAME } from "../const";
 import { connectToDatabase } from "../drivers/mongodb";
-import { Activity, Plan, Session, User } from "../types";
+import { Activity, Config, Plan, Session, User } from "../types";
 import logger from "../utils/logger";
 import { mapRawToPlans } from "../utils/mapper";
 
@@ -88,4 +88,43 @@ export async function getTrainer(trainerId: string) {
     .db(DB_NAME)
     .collection<User>(DbTable.USERS)
     .findOne({ id: trainerId });
+}
+
+export async function getUserConfiguration(id: string) {
+  const client = await connectToDatabase();
+  if (!client) {
+    throw new Error("mongoClient is null");
+  }
+
+  const result = await client
+    .db(DB_NAME)
+    .collection<User>(DbTable.USERS)
+    .findOne({ id: id });
+
+  if (!result) {
+    return {
+      audioDisabled: false,
+      easyMode: false,
+    };
+  }
+  const data = JSON.parse(result.configurations);
+  return data;
+}
+
+export async function saveConfiguration(id: string, options: Config) {
+  const client = await connectToDatabase();
+  if (!client) {
+    throw new Error("mongoClient is null");
+  }
+
+  const { audioDisabled, easyMode } = options;
+
+  const configurations = JSON.stringify({ audioDisabled, easyMode });
+
+  const result = await client
+    .db(DB_NAME)
+    .collection<User>(DbTable.USERS)
+    .findOneAndUpdate({ id: id }, { $set: { configurations: configurations } });
+
+  return result;
 }
