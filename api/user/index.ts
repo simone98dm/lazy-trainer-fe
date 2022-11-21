@@ -22,10 +22,8 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       if (!result) {
         log("unable to retrieve configurations", LogLevel.WARNING, { id });
         return response.status(200).send({
-          configurations: {
-            audioDisabled: false,
-            easyMode: false,
-          },
+          audioDisabled: false,
+          easyMode: false,
         });
       }
       const data = JSON.parse(result.configurations);
