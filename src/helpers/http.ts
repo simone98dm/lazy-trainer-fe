@@ -1,4 +1,3 @@
-import { IConfiguration } from "~/models/Configuration";
 import { baseUrl } from "~/utils";
 import log from "./logger";
 

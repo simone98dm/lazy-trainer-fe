@@ -16,34 +16,34 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
       const result = await client
         .db(DB_NAME)
-        .collection<Config>(DbTable.CONFIGS)
-        .findOne({ userId: id });
+        .collection<Config>(DbTable.USERS)
+        .findOne({ id: id });
 
       if (!result) {
         log("unable to retrieve configurations", LogLevel.WARNING, { id });
-        return response.status(404).send({
+        return response.status(200).send({
           configurations: {
             audioDisabled: false,
             easyMode: false,
           },
         });
       }
-
-      return response.status(200).send({
-        configurations: JSON.stringify(result.configurations),
-      });
+      const data = JSON.parse(result.configurations);
+      return response.status(200).send(data);
     } else if (request.method === "POST") {
       const client = await connectToDatabase();
       if (!client) {
         throw new Error("mongoClient is null");
       }
 
-      const { configurations } = request.body;
+      const { audioDisabled, easyMode } = request.body;
+
+      const configurations = JSON.stringify({ audioDisabled, easyMode });
 
       const result = await client
         .db(DB_NAME)
-        .collection<Config>(DbTable.CONFIGS)
-        .findOneAndUpdate({ userId: id }, { configurations });
+        .collection<Config>(DbTable.USERS)
+        .findOneAndUpdate({ id: id }, { $set: { configurations } });
 
       if (!result) {
         log("Trainer not found", LogLevel.WARNING, { id });

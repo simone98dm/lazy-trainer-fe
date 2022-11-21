@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { getConfiguration, saveConfiguration } from "~/helpers/http";
 import { getStorage, saveStorage } from "~/helpers/storage";
-import { IConfiguration } from "~/models/Configuration";
 import { SettingStorage } from "~/utils";
 import { useUserStore } from "./user";
 

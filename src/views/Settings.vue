@@ -43,7 +43,7 @@
     logEvent(getAnalytics(), GaCustomEvents.UPDATE_SETTINGS, {
       settings_name: "easymode",
     });
-    settingsStore.toggleAudioEffects(v);
+    settingsStore.toggleEasyMode(v);
   }
 </script>
 
