@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
+import { getConfiguration, saveConfiguration } from "~/helpers/http";
 import { getStorage, saveStorage } from "~/helpers/storage";
 import { SettingStorage } from "~/utils";
+import { useUserStore } from "./user";
 
 export const useSettingStore = defineStore("settings", {
   state: () => ({
@@ -38,14 +40,22 @@ export const useSettingStore = defineStore("settings", {
       this.easyMode = status;
       this.saveSettings();
     },
-    saveSettings() {
+    async saveSettings() {
+      const userStore = useUserStore();
+      await saveConfiguration(userStore.token, {
+        audioDisabled: this.audioDisabled,
+        easyMode: this.easyMode,
+      });
+
       saveStorage("_settings", {
         audioDisabled: this.audioDisabled,
         easyMode: this.easyMode,
       });
     },
-    loadSettings() {
-      const settings = getStorage<SettingStorage>("_settings");
+    async loadSettings() {
+      const userStore = useUserStore();
+      const settings = await getConfiguration(userStore.token);
+
       if (settings) {
         this.audioDisabled = settings.audioDisabled;
         this.easyMode = settings.easyMode;
