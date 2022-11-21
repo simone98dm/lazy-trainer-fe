@@ -3,35 +3,53 @@ import { DbTable, DB_NAME } from "../../utils/const";
 import { connectToDatabase } from "../../utils/db";
 import { log, LogLevel } from "../../utils/logger";
 import { validateUser } from "../../utils/token";
-import { User } from "../../utils/types";
+import { Config, User } from "../../utils/types";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
-    if (request.method !== "GET") {
-      throw new Error("Method not allowed");
+    const { id, name, role } = validateUser(request);
+    if (request.method === "GET") {
+      const client = await connectToDatabase();
+      if (!client) {
+        throw new Error("mongoClient is null");
+      }
+
+      const result = await client
+        .db(DB_NAME)
+        .collection<Config>(DbTable.USERS)
+        .findOne({ id: id });
+
+      if (!result) {
+        log("unable to retrieve configurations", LogLevel.WARNING, { id });
+        return response.status(200).send({
+          audioDisabled: false,
+          easyMode: false,
+        });
+      }
+      const data = JSON.parse(result.configurations);
+      return response.status(200).send(data);
+    } else if (request.method === "POST") {
+      const client = await connectToDatabase();
+      if (!client) {
+        throw new Error("mongoClient is null");
+      }
+
+      const { audioDisabled, easyMode } = request.body;
+
+      const configurations = JSON.stringify({ audioDisabled, easyMode });
+
+      const result = await client
+        .db(DB_NAME)
+        .collection<Config>(DbTable.USERS)
+        .findOneAndUpdate({ id: id }, { $set: { configurations } });
+
+      if (!result) {
+        log("Trainer not found", LogLevel.WARNING, { id });
+        return response.status(404).json({ error: "not found" });
+      }
+
+      return response.status(200).end();
     }
-
-    const isValid = validateUser(request);
-    const client = await connectToDatabase();
-    if (!client) {
-      throw new Error("mongoClient is null");
-    }
-
-    const trainerId: string = request.query.user as string;
-
-    const result = await client
-      .db(DB_NAME)
-      .collection<User>(DbTable.USERS)
-      .findOne({ id: trainerId });
-
-    if (!result) {
-      log("Trainer not found", LogLevel.WARNING, { trainerId });
-      return response.status(404).json({ error: "not found" });
-    }
-    return response.status(200).send({
-      id: result.id,
-      name: result.name,
-    });
   } catch (error) {
     log(error, LogLevel.ERROR, {
       token: request.headers.authorization,

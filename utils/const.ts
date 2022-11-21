@@ -6,4 +6,5 @@ export enum DbTable {
   PLANS = "plans",
   SESSIONS = "sessions",
   ACTIVITIES = "activities",
+  CONFIGS = "configs",
 }
