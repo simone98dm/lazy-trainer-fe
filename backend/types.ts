@@ -28,4 +28,10 @@ export type User = {
   name: string;
   role: number;
   hashPassword: string;
+  configurations: string;
+};
+
+export type Config = {
+  userId: string;
+  configurations: string;
 };
