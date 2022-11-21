@@ -1,16 +1,5 @@
 <script setup lang="ts">
-  import { defineAsyncComponent } from "vue";
   import { useRoute } from "vue-router";
-  const Footer = defineAsyncComponent(
-    () => import("./components/Footer/Footer.vue")
-  );
-  const Header = defineAsyncComponent(
-    () => import("./components/Header/Header.vue")
-  );
-  const GlobalLoading = defineAsyncComponent(
-    () => import("./components/GlobalLoading/GlobalLoading.vue")
-  );
-
   const route = useRoute();
 
   function isLogin() {
