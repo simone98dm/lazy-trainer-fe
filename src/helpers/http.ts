@@ -56,7 +56,7 @@ export async function verifyUser(token: string) {
 
 export async function userInfo(token: string, trainerId: string) {
   try {
-    return await fetch(`${baseUrl}/api/user?user=${trainerId}`, {
+    return await fetch(`${baseUrl}/api/user/info?user=${trainerId}`, {
       method: "GET",
       headers: buildHeaders(token),
     }).then((response) => response.json());
