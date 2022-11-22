@@ -20,7 +20,6 @@
       'flex',
       'justify-center',
       'items-center',
-      'shadow-lg',
       'font-bold',
       'text-sm',
       'rounded-lg',
@@ -58,8 +57,10 @@
           props.color === ButtonColor.LIGHT,
       },
       {
-        'bg-trasparent hover:bg-slate-100 text-black':
-          props.color === ButtonColor.TRASPARENT,
+        'hover:bg-slate-50 text-black': props.color === ButtonColor.TRASPARENT,
+      },
+      {
+        'shadow-lg': props.color !== ButtonColor.TRASPARENT,
       },
     ]"
     type="button"

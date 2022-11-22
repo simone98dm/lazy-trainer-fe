@@ -85,10 +85,12 @@
           :activities="warmupList"
           :is-warmup="true"
           :session-id="sessionId"
-          @run="runWarmUp"
           :enable-run="!userStore.isTrainer"
           :enable-duplicate="false"
           :allow-drag="false"
+          :opened="true"
+          :compat-list="true"
+          @run="runWarmUp"
         />
       </div>
       <hr />
@@ -97,11 +99,13 @@
           title="Activities"
           no-found-message="No activities found"
           :activities="activityList"
-          @run="runActivities"
           :session-id="sessionId"
           :enable-run="!userStore.isTrainer"
           :enable-duplicate="false"
           :allow-drag="false"
+          :opened="false"
+          :compat-list="true"
+          @run="runActivities"
         />
       </div>
     </div>
