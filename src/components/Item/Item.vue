@@ -27,7 +27,7 @@
     :class="[
       'flex flex-col rounded-xl p-4 shadow-lg mb-2',
       { 'bg-white': !props.highlight },
-      { 'bg-orange-200': props.highlight },
+      { 'bg-orange-200 border-2 border-orange-300': props.highlight },
       props.class,
     ]"
   >
