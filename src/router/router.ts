@@ -18,7 +18,7 @@ const Landing = (): Promise<RouteComponent> => import("../views/Landing.vue");
 const routes = [
   {
     name: "home",
-    path: "/#/:planId?",
+    path: "/:planId?",
     component: Home,
     meta: {
       title: `Trainer`,
@@ -102,6 +102,7 @@ const routes = [
     component: NotFound,
     meta: {
       title: `Not Found`,
+      empty: true,
       requireAuth: false,
       requireAdmin: false,
     },
@@ -111,6 +112,7 @@ const routes = [
     component: NotFound,
     meta: {
       requireAuth: false,
+      empty: true,
       requireAdmin: false,
     },
   },
@@ -135,11 +137,11 @@ const routes = [
     },
   },
   {
-    path: "/",
+    path: "/home",
     name: "landing",
     component: Landing,
     meta: {
-      title: `Landing`,
+      title: `Home`,
       empty: true,
       requireAuth: false,
       requireAdmin: false,
