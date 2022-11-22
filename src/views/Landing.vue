@@ -15,7 +15,7 @@
     <h1 class="text-5xl text-white font-bold">Lazy Trainers</h1>
     <div class="text-white max-w-3xl mx-4 sm:mx-auto text-center">
       <p class="mt-6 text-xl sm:text-3xl">
-        Lazy-Trainer, is a web app that simplifies the approach to physical
+        Lazy-Trainer is a web app that simplifies the approach to physical
         activity for those who are particularly lazy
       </p>
     </div>
