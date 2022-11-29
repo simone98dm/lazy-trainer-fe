@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { defineAsyncComponent, inject, ref } from "vue";
+  import { computed, defineAsyncComponent, inject, ref } from "vue";
   import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
   import ding from "~/assets/audio/ding.mp3";
   import horn from "~/assets/audio/horn.mp3";
@@ -32,6 +32,10 @@
   let baseTimerLabel = ref(formatTime(timeLeft.value));
 
   const { sessionId, activityId } = route.params;
+
+  const isNextVideo = computed(() => {
+    return timerStore.getNextActivity?.videoUrl;
+  });
 
   setupTimer(activityId as string);
 
@@ -241,20 +245,16 @@
       :class="[
         'w-full',
         {
-          'flex sm:flex-row flex-col justify-center':
-            timerStore.getNextActivity?.videoUrl,
+          'flex flex-col justify-center': isNextVideo,
         },
       ]"
     >
-      <div
-        :class="[{ 'w-full md:w-1/2 ': timerStore.getNextActivity?.videoUrl }]"
-      >
-        <TimerSpinner
-          :stroke-dasharray="strokeDasharray"
-          :remaining-path-color="remainingPathColor"
-          :base-timer-label="baseTimerLabel"
-        />
-      </div>
+      <TimerSpinner
+        :stroke-dasharray="strokeDasharray"
+        :remaining-path-color="remainingPathColor"
+        :base-timer-label="baseTimerLabel"
+        :size="isNextVideo ? 'small' : 'large'"
+      />
       <ImageLoader :src="timerStore.getNextActivity?.videoUrl" />
     </div>
     <div v-else>
