@@ -14,6 +14,7 @@ const NotFound = (): Promise<RouteComponent> => import("../views/NotFound.vue");
 const About = (): Promise<RouteComponent> => import("../views/About.vue");
 const License = (): Promise<RouteComponent> => import("../views/License.vue");
 const Landing = (): Promise<RouteComponent> => import("../views/Landing.vue");
+const User = (): Promise<RouteComponent> => import("../views/User.vue");
 
 const routes = [
   {
@@ -144,6 +145,17 @@ const routes = [
       title: `Home`,
       empty: true,
       requireAuth: false,
+      requireAdmin: false,
+    },
+  },
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    component: User,
+    meta: {
+      title: `Dashboard`,
+      empty: false,
+      requireAuth: true,
       requireAdmin: false,
     },
   },
