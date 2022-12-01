@@ -321,5 +321,6 @@ export const useActivityStore = defineStore("activity", {
         generateBlankPlan();
       }
     },
+    completeSession(sessionId: string) {},
   },
 });

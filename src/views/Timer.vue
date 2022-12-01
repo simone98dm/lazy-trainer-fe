@@ -11,7 +11,12 @@
     logOptions,
   } from "~/utils";
   import { IActivity } from "~/models/Activity";
-  import { useTimerStore, useSettingStore, useUserStore } from "~/stores";
+  import {
+    useTimerStore,
+    useSettingStore,
+    useUserStore,
+    useActivityStore,
+  } from "~/stores";
   const $log = inject("$logger") as logOptions;
 
   const route = useRoute();
@@ -19,6 +24,7 @@
   const settingsStore = useSettingStore();
   const timerStore = useTimerStore();
   const userStore = useUserStore();
+  const activityStore = useActivityStore();
 
   settingsStore.setHeader("Timer");
 
@@ -157,6 +163,7 @@
     } else {
       playAudio(horn);
       $log("User complete the session", "info");
+      activityStore.completeSession(sessionId);
       timerStore.reset();
       router.push({
         name: "details",
