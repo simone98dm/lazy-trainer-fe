@@ -1,11 +1,8 @@
 import { Logtail } from "@logtail/node";
+import { LogLevel } from "../const";
 const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN || "");
 
-export function log(
-  message: string,
-  level: LogLevel = LogLevel.INFO,
-  ...args: any[]
-) {
+function log(message: string, level: LogLevel = LogLevel.INFO, ...args: any[]) {
   let logObject: any = JSON.stringify({
     message,
     args: JSON.stringify(args),
@@ -27,9 +24,13 @@ export function log(
   }
 }
 
-export enum LogLevel {
-  INFO = "Info",
-  ERROR = "Error",
-  WARNING = "Warning",
-  DEBUG = "Debug",
-}
+export default {
+  warn: (message: string, ...args: any[]) =>
+    log(message, LogLevel.WARNING, ...args),
+  error: (message: string, ...args: any[]) =>
+    log(message, LogLevel.ERROR, ...args),
+  info: (message: string, ...args: any[]) =>
+    log(message, LogLevel.INFO, ...args),
+  log: (message: string, ...args: any[]) =>
+    log(message, LogLevel.DEBUG, ...args),
+};

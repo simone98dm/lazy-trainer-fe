@@ -12,6 +12,7 @@ declare module "@vue/runtime-core" {
     BackButton: typeof import("./components/BackButton/BackButton.vue")["default"];
     Button: typeof import("./components/Button/Button.vue")["default"];
     Calendar: typeof import("./components/Calendar/Calendar.vue")["default"];
+    Card: typeof import("./components/Card/Card.vue")["default"];
     Dropdown: typeof import("./components/Dropdown/Dropdown.vue")["default"];
     DuplicateActivities: typeof import("./components/DuplicateActivities/DuplicateActivities.vue")["default"];
     ErrorBanner: typeof import("./components/ErrorBanner/ErrorBanner.vue")["default"];

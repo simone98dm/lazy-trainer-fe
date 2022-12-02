@@ -1,6 +1,6 @@
-import { DbTable, DB_NAME } from "./const";
-import { connectToDatabase } from "./db";
-import { log, LogLevel } from "./logger";
+import { DbTable, DB_NAME } from "../const";
+import { connectToDatabase } from "../drivers/mongodb";
+import logger from "../utils/logger";
 
 /**
  * Delete a session
@@ -21,12 +21,12 @@ export async function deleteSession(sessionId: string) {
   const delActivities = await db
     .collection(DbTable.ACTIVITIES)
     .deleteMany({ sessionId: sessionId });
-  log(`activities deleted: ${delActivities.deletedCount}`, LogLevel.INFO);
+  logger.info(`activities deleted: ${delActivities.deletedCount}`);
 
   const delSession = await db
     .collection(DbTable.SESSIONS)
     .deleteOne({ id: sessionId });
-  log(`deleted session ${sessionId}`, LogLevel.INFO);
+  logger.info(`deleted session ${sessionId}`);
 }
 
 /**
@@ -58,7 +58,7 @@ export async function updateSession(sessionId: string, data: any) {
   if (result.ok !== 1) {
     throw new Error("unable to update session");
   } else {
-    log(`updated session ${sessionId}`, LogLevel.INFO);
+    logger.info(`updated session ${sessionId}`);
   }
 }
 
@@ -96,7 +96,7 @@ export async function createSession(planId: string, data: any) {
   if (!result.insertedId) {
     throw new Error("unable to insert session");
   } else {
-    log(`created session ${id}`, LogLevel.INFO);
+    logger.info(`created session ${id}`);
   }
 
   if (warmup) {
@@ -112,7 +112,7 @@ export async function createSession(planId: string, data: any) {
       if (result.insertedCount < updatedWarmup.length) {
         throw new Error("unable to insert warmup");
       } else {
-        log("Warmup created", LogLevel.INFO, { counter: warmup.length });
+        logger.info("Warmup created", { counter: warmup.length });
       }
     }
   }

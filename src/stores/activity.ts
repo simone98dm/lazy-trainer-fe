@@ -265,8 +265,8 @@ export const useActivityStore = defineStore("activity", {
     },
     async moveActivity(
       sessionId: string | undefined,
-      newIndex: number,
-      oldIndex: number
+      listActivities: IActivity[],
+      isWarmup: boolean
     ) {
       if (!sessionId) {
         return;
@@ -277,40 +277,41 @@ export const useActivityStore = defineStore("activity", {
           (session) => session.id === sessionId
         );
         if (sessionIndex >= 0) {
-          const existingActivity =
-            this.plan.sessions[sessionIndex].activities[oldIndex];
-          if (existingActivity) {
-            this.plan.sessions[sessionIndex].activities.splice(oldIndex, 1);
-            this.plan.sessions[sessionIndex].activities.splice(
-              newIndex,
-              0,
-              existingActivity
-            );
+          const activities = this.plan.sessions[sessionIndex].activities;
 
-            let externalIndex = 0;
-
-            this.plan.sessions.map((session) => {
-              session.activities.map((activity) => {
-                activity.order = externalIndex;
-                externalIndex++;
-              });
-            });
-
-            saveStorage("_plan", this.plan);
-
-            const userStore = useUserStore();
-            const settingsStore = useSettingStore();
-            settingsStore.loading(true);
-            await sendToTrainer(userStore.token, {
-              data: [
-                ...this.plan.sessions[sessionIndex].activities.map((item) => ({
-                  id: item.id,
-                  order: item.order,
-                })),
-              ],
-              action: DataAction.ACTIVITY_SORT,
-            }).finally(() => settingsStore.loading(false));
+          const warmUp = activities.filter((x) => x.warmup);
+          const workout = activities.filter((x) => !x.warmup);
+          const newList = [];
+          if (isWarmup) {
+            newList.push(...listActivities, ...workout);
+          } else {
+            newList.push(...warmUp, ...listActivities);
           }
+          this.plan.sessions[sessionIndex].activities = newList;
+
+          let externalIndex = 0;
+
+          this.plan.sessions.map((session) => {
+            session.activities.map((activity) => {
+              activity.order = externalIndex;
+              externalIndex++;
+            });
+          });
+
+          saveStorage("_plan", this.plan);
+
+          const userStore = useUserStore();
+          const settingsStore = useSettingStore();
+          settingsStore.loading(true);
+          await sendToTrainer(userStore.token, {
+            data: [
+              ...this.plan.sessions[sessionIndex].activities.map((item) => ({
+                id: item.id,
+                order: item.order,
+              })),
+            ],
+            action: DataAction.ACTIVITY_SORT,
+          }).finally(() => settingsStore.loading(false));
         }
       }
     },

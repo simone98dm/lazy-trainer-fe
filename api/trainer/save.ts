@@ -1,23 +1,24 @@
 import { DataAction, Role } from "./../../src/utils/enum";
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { validateUser } from "../../utils/token";
+import { validateUser } from "../../backend/helpers/token";
 import {
   createActivity,
   deleteActivity,
   sortActivities,
   updateActivity,
-} from "../../utils/activity";
+} from "../../backend/helpers/activity";
 import {
   createSession,
   deleteSession,
   updateSession,
-} from "../../utils/session";
-import { verifyUser } from "../../utils/helper";
-import { log, LogLevel } from "../../utils/logger";
+} from "../../backend/helpers/session";
+import { verifyUser } from "../../backend/helpers/user";
+import logger from "../../backend/utils/logger";
+import { commonResponse } from "../../backend/utils/http";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method !== "POST") {
-    return response.status(400).end();
+    return commonResponse.badRequest(response);
   }
 
   try {
@@ -59,13 +60,13 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         throw new Error("action not recognized");
     }
 
-    return response.status(200).end();
+    return commonResponse.ok(response);
   } catch (error) {
-    log(error, LogLevel.ERROR, {
+    logger.error(error, {
       token: request.headers.authorization,
       method: request.method,
       path: request.url,
     });
-    return response.status(500).send({ error: "something went wrong" });
+    return commonResponse.internalServerError(response, "something went wrong");
   }
 };
