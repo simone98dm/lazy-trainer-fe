@@ -12,10 +12,12 @@ if (!uri) {
 export async function connectToDatabase() {
   try {
     if (mongoClient) {
+      console.log("return cached mongoClient");
       return mongoClient;
     }
 
     mongoClient = await new MongoClient(uri, options).connect();
+    console.log("new mongoClient");
 
     return mongoClient;
   } catch (error) {
