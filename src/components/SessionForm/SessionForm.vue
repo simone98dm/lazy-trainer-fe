@@ -62,9 +62,8 @@
     return dayIndex === dayOfWeek.value;
   }
 
-  function sortActivities(evt: any) {
-    const { newDraggableIndex, oldDraggableIndex } = evt;
-    activityStore.moveActivity(id.value, newDraggableIndex, oldDraggableIndex);
+  function sortActivities(listActivities: IActivity[], isWarmup: boolean) {
+    activityStore.moveActivity(id.value, listActivities, isWarmup);
   }
 
   let showModal = ref(false);

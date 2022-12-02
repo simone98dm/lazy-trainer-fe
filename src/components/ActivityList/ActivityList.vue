@@ -19,11 +19,16 @@
   ]);
   const userStore = useUserStore();
   const emits = defineEmits(["move", "delete", "run", "duplicate"]);
+
   function runWorkout() {
     logEvent(getAnalytics(), GaCustomEvents.RUN_ACTIVITY);
     emits("run");
   }
   const showList = ref(props.opened ?? true);
+
+  function moveItem(evt: any) {
+    emits("move", props.activities, props.isWarmup);
+  }
 </script>
 
 <template>
@@ -64,36 +69,32 @@
         @click="showList = !showList"
       />
     </div>
-    <draggable
-      v-if="allowDrag"
-      :list="props.activities"
-      item-key="id"
-      class="mx-2 mt-3"
-      @end="emits('move', $event)"
-    >
-      <template #item="{ element }">
-        <Link
-          :to="{
-            name: 'activity',
-            params: {
-              sessionId: props.sessionId,
-              activityId: element.id,
-            },
-          }"
-        >
-          <Item
-            :name="element.name"
-            :description="element.description"
-            :time="element.time"
-            :id="element.id"
-            :reps="element.reps"
-            :request-change="element.requestChange"
-            :no-card="props.compatList"
-            class="mx-2"
-          />
-        </Link>
-      </template>
-    </draggable>
+    <div v-if="allowDrag">
+      <draggable :list="props.activities" item-key="id" @end="moveItem">
+        <template #item="{ element }">
+          <Link
+            :to="{
+              name: 'activity',
+              params: {
+                sessionId: props.sessionId,
+                activityId: element.id,
+              },
+            }"
+          >
+            <Item
+              :name="element.name"
+              :description="element.description"
+              :time="element.time"
+              :id="element.id"
+              :reps="element.reps"
+              :request-change="element.requestChange"
+              :no-card="props.compatList"
+              class="mx-2"
+            />
+          </Link>
+        </template>
+      </draggable>
+    </div>
     <div v-else>
       <Item
         v-if="showList"
