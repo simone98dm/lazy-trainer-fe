@@ -49,7 +49,7 @@
 
 <template>
   <div class="flex flex-col justify-center max-w-screen-lg mx-auto">
-    <div class="shadow p-5 rounded-xl mb-6 bg-white">
+    <Card>
       <div class="m-0 sm:m-6">
         <h1 class="text-xl font-bold mb-3">Profile</h1>
         <div class="w-full pt-3 px-3">
@@ -143,7 +143,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </Card>
     <div class="w-full flex justify-center mb-3">
       <Button
         v-if="!userStore.isTrainer"

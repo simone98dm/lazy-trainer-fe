@@ -20,10 +20,14 @@
 
   function backPage() {
     cleanDuplicateActivities();
-    router.push({
-      name: "details",
-      params: { sessionId },
-    });
+    if (!sessionId) {
+      backHomePage();
+    } else {
+      router.push({
+        name: "details",
+        params: { sessionId },
+      });
+    }
   }
 
   async function addSession(session: ISession) {

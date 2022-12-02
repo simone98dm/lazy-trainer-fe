@@ -1,4 +1,9 @@
+<script lang="ts" setup>
+  import { useRouter } from "vue-router";
+  const router = useRouter();
+</script>
 <template>
+  <BackButton @click="router.back()"></BackButton>
   <div class="main">
     <svg
       xmlns="http://www.w3.org/2000/svg"

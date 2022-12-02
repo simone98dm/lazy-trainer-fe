@@ -1,26 +1,19 @@
 <script setup lang="ts">
-  import { defineAsyncComponent } from "vue";
   import { useRoute } from "vue-router";
-  const Footer = defineAsyncComponent(
-    () => import("./components/Footer/Footer.vue")
-  );
-  const Header = defineAsyncComponent(
-    () => import("./components/Header/Header.vue")
-  );
-  const GlobalLoading = defineAsyncComponent(
-    () => import("./components/GlobalLoading/GlobalLoading.vue")
-  );
-
   const route = useRoute();
 
   function isLogin() {
     return route.name === "login";
   }
+
+  function hideDecoration() {
+    return route.meta.empty;
+  }
 </script>
 
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col">
-    <Header />
+    <Header v-if="!hideDecoration()" />
     <div class="p-3 w-full lg:w-2/3 md:w-5/6 mx-auto mb-14">
       <router-view v-slot="{ Component, route }">
         <transition name="fade" mode="out-in">
@@ -30,7 +23,7 @@
         </transition>
       </router-view>
     </div>
-    <Footer v-if="!isLogin()" />
+    <Footer v-if="!isLogin() && !hideDecoration()" />
   </div>
   <GlobalLoading />
 </template>
