@@ -16,9 +16,14 @@
   ]);
   const userStore = useUserStore();
   const emits = defineEmits(["move", "delete", "run", "duplicate"]);
+
   function runWorkout() {
     logEvent(getAnalytics(), GaCustomEvents.RUN_ACTIVITY);
     emits("run");
+  }
+
+  function moveItem(evt: any) {
+    emits("move", props.activities, props.isWarmup);
   }
 </script>
 
@@ -53,11 +58,7 @@
       />
     </div>
     <div v-if="allowDrag">
-      <draggable
-        :list="props.activities"
-        item-key="id"
-        @end="emits('move', $event)"
-      >
+      <draggable :list="props.activities" item-key="id" @end="moveItem">
         <template #item="{ element }">
           <Link
             :to="{
