@@ -66,117 +66,126 @@
     activityStore.moveActivity(id.value, listActivities, isWarmup);
   }
 
-  let showModal = ref(false);
+  let showDuplicateModal = ref(false);
   function duplicateActivities(activities: IActivity[]) {
     activityStore.setDuplicateWarmup(activities);
-    showModal.value = true;
+    showDuplicateModal.value = true;
   }
 
   function duplicateSession(param: {
     dayOfWeek: number;
     activities: IActivity[];
   }) {
-    showModal.value = false;
+    showDuplicateModal.value = false;
     save(param.dayOfWeek, param.activities);
   }
 </script>
 
 <template>
   <div class="flex justify-center w-full">
-    <form class="bg-white rounded-lg shadow-md p-6 w-full" @submit.prevent>
-      <div>
-        <h1 v-if="isNew()" class="mb-3 text-2xl mb-6">
-          Create a new day session:
-        </h1>
-        <h1 v-else class="mb-3 text-2xl mb-6">
-          Edit <strong>{{ getDayOfTheWeek(currentDayOfWeek) }}</strong> session:
-        </h1>
+    <Card>
+      <form class="w-full" @submit.prevent>
+        <div>
+          <h1 v-if="isNew()" class="mb-3 text-4xl mb-6">
+            Create a new day session:
+          </h1>
+          <h1 v-else class="mb-3 text-4xl mb-6">
+            Edit
+            <strong>{{ getDayOfTheWeek(currentDayOfWeek) }}</strong> session:
+          </h1>
 
-        <span class="text-md">
-          {{
-            activityStore.getMissingDays.length <= 0
-              ? "No days available"
-              : isNew()
-              ? "Select day to this session"
-              : "Move this session to:"
-          }}
-        </span>
-        <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6 mt-3">
-          <button
-            v-for="day in activityStore.getMissingDays"
-            :key="day"
-            :class="[
-              {
-                'bg-indigo-600 text-slate-50':
-                  isDaySelected(day) && !userStore.isTrainer,
-              },
-              {
-                'bg-purple-600 text-slate-50':
-                  isDaySelected(day) && userStore.isTrainer,
-              },
-              { 'bg-gray-200 text-grey-50': !isDaySelected(day) },
-              'w-full duration-200 rounded-full px-4 py-2 ',
-            ]"
-            @click="() => selectDay(day)"
-          >
-            {{ getDayOfTheWeek(day) }}
-          </button>
+          <span class="text-2xl">
+            {{
+              activityStore.getMissingDays.length <= 0
+                ? "No days available"
+                : isNew()
+                ? "Select day to this session"
+                : "Move this session to:"
+            }}
+          </span>
+          <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6 mt-3">
+            <button
+              v-for="day in activityStore.getMissingDays"
+              :key="day"
+              :class="[
+                {
+                  'bg-indigo-600 text-slate-50':
+                    isDaySelected(day) && !userStore.isTrainer,
+                },
+                {
+                  'bg-purple-600 text-slate-50':
+                    isDaySelected(day) && userStore.isTrainer,
+                },
+                { 'bg-gray-200 text-grey-50': !isDaySelected(day) },
+                'w-full duration-200 rounded-full px-4 py-2 ',
+              ]"
+              @click="() => selectDay(day)"
+            >
+              {{ getDayOfTheWeek(day) }}
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="w-full px-3 mb-6" v-if="!isNew()">
-        <div class="flex flex-col justify-center">
-          <ActivityList
-            title="Warmup"
-            no-found-message="No warmup activities found"
-            :activities="warmupList"
-            :is-warmup="true"
-            :session-id="id"
-            :allow-drag="true"
-            :enable-run="false"
-            :enable-duplicate="true"
-            @move="sortActivities"
-            @duplicate="duplicateActivities"
+        <div class="w-full px-3 mb-6" v-if="!isNew()">
+          <div class="flex flex-col justify-center">
+            <div class="my-4">
+              <ActivityList
+                title="Warmup"
+                no-found-message="No warmup activities found"
+                :activities="warmupList"
+                :is-warmup="true"
+                :session-id="id"
+                :allow-drag="true"
+                :enable-run="false"
+                :enable-duplicate="true"
+                :compat-list="false"
+                @move="sortActivities"
+                @duplicate="duplicateActivities"
+              />
+            </div>
+            <hr />
+            <div class="my-4">
+              <ActivityList
+                title="Activities"
+                no-found-message="No activities found"
+                :activities="activityList"
+                :session-id="id"
+                :allow-drag="true"
+                :enable-run="false"
+                :enable-duplicate="true"
+                :compat-list="false"
+                @move="sortActivities"
+                @duplicate="duplicateActivities"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
+          <Button
+            v-if="dayOfWeek !== -1"
+            full="true"
+            :icon="!isNew() ? 'save' : 'add'"
+            :label="!isNew() ? 'Save' : 'Create'"
+            :color="ButtonColor.SUCCESS"
+            @click="save"
           />
-          <hr />
-          <ActivityList
-            title="Activities"
-            no-found-message="No activities found"
-            :activities="activityList"
-            :session-id="id"
-            :allow-drag="true"
-            :enable-run="false"
-            :enable-duplicate="true"
-            @move="sortActivities"
-            @duplicate="duplicateActivities"
+          <Button
+            full="true"
+            v-if="!isNew()"
+            icon="delete"
+            :color="ButtonColor.DANGER"
+            label="Delete"
+            @click="remove"
           />
         </div>
-      </div>
-      <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
-        <Button
-          v-if="dayOfWeek !== -1"
-          full="true"
-          :icon="!isNew() ? 'save' : 'add'"
-          :label="!isNew() ? 'Save' : 'Create'"
-          :color="ButtonColor.SUCCESS"
-          @click="save"
-        />
-        <Button
-          full="true"
-          v-if="!isNew()"
-          icon="delete"
-          :color="ButtonColor.DANGER"
-          label="Delete"
-          @click="remove"
-        />
-      </div>
-    </form>
+      </form>
+    </Card>
     <DuplicateActivities
-      :show="showModal"
+      :show="showDuplicateModal"
       :day-of-week="dayOfWeek"
       :is-trainer="userStore.isTrainer"
       :missing-days="activityStore.getMissingDays"
       :existing-form="activityStore.duplicateActivities"
-      @close="showModal = false"
+      @close="showDuplicateModal = false"
       @duplicate="duplicateSession"
     />
   </div>

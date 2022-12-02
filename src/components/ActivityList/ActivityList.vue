@@ -3,6 +3,7 @@
   import draggable from "vuedraggable";
   import { ButtonColor, GaCustomEvents, LinkType } from "~/utils";
   import { getAnalytics, logEvent } from "@firebase/analytics";
+  import { ref } from "vue";
 
   const props = defineProps([
     "activities",
@@ -13,6 +14,8 @@
     "enableRun",
     "enableDuplicate",
     "noFoundMessage",
+    "opened",
+    "compatList",
   ]);
   const userStore = useUserStore();
   const emits = defineEmits(["move", "delete", "run", "duplicate"]);
@@ -21,6 +24,7 @@
     logEvent(getAnalytics(), GaCustomEvents.RUN_ACTIVITY);
     emits("run");
   }
+  const showList = ref(props.opened ?? true);
 
   function moveItem(evt: any) {
     emits("move", props.activities, props.isWarmup);
@@ -28,12 +32,15 @@
 </script>
 
 <template>
-  <div v-if="props.activities && props.activities.length > 0" class="p-3 mb-6">
+  <div v-if="props.activities && props.activities.length > 0">
     <div
       v-if="props.activities.length > 0"
-      class="flex justify-between mb-3 gap-2"
+      class="flex items-center justify-between gap-2"
     >
-      <h4 v-if="props.title" class="text-4xl font-bold mr-auto">
+      <h4
+        v-if="props.title"
+        class="text-4xl sm:text-5xl font-bold mr-auto text-black"
+      >
         {{ props.title }}
       </h4>
       <Button
@@ -42,6 +49,7 @@
         :color="ButtonColor.PRIMARY"
         icon="play_arrow"
         :type="LinkType.BUTTON"
+        circular="true"
         label="Start"
         @click="runWorkout"
       />
@@ -56,40 +64,55 @@
         label="Duplicate"
         @click="emits('duplicate', props.activities)"
       />
+      <!-- <Button
+        :color="ButtonColor.TRASPARENT"
+        :icon="showList ? 'expand_more' : 'expand_less'"
+        circular="true"
+        @click="showList = !showList"
+      /> -->
     </div>
-    <div v-if="allowDrag">
-      <draggable :list="props.activities" item-key="id" @end="moveItem">
-        <template #item="{ element }">
-          <Link
-            :to="{
-              name: 'activity',
-              params: {
-                sessionId: props.sessionId,
-                activityId: element.id,
-              },
-            }"
-          >
-            <Item
-              :name="element.name"
-              :description="element.description"
-              :time="element.time"
-              :id="element.id"
-              :reps="element.reps"
-              :request-change="element.requestChange"
-            />
-          </Link>
-        </template>
-      </draggable>
-    </div>
+    <draggable
+      v-if="allowDrag"
+      class="mt-4"
+      :list="props.activities"
+      item-key="id"
+      @end="moveItem"
+    >
+      <template #item="{ element }">
+        <Link
+          :to="{
+            name: 'activity',
+            params: {
+              sessionId: props.sessionId,
+              activityId: element.id,
+            },
+          }"
+        >
+          <Item
+            :name="element.name"
+            :description="element.description"
+            :time="element.time"
+            :id="element.id"
+            :reps="element.reps"
+            :request-change="element.requestChange"
+            :no-card="props.compatList"
+            class="mx-2"
+          />
+        </Link>
+      </template>
+    </draggable>
     <div v-else>
       <Item
         v-for="activity in props.activities"
+        :no-card="props.compatList"
         :name="activity.name"
         :description="activity.description"
         :time="activity.time"
         :id="activity.id"
         :reps="activity.reps"
         :key="activity.id"
+        class="mx-2"
+        checkable="true"
       />
     </div>
   </div>

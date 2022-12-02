@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  import { computed, ref } from "vue";
+
   const props = defineProps([
     "id",
     "name",
@@ -10,7 +12,16 @@
     "highlight",
     "class",
     "caption",
+    "noCard",
   ]);
+
+  const showFullDescription = ref(false);
+  const itemDescription = computed(() => {
+    if (props.description && !showFullDescription) {
+      return props.description.substring(0, 100);
+    }
+    return props.description;
+  });
 
   function millisToMinutesAndSeconds(millis: number) {
     const minutes: number = Math.floor(millis / 60000);
@@ -25,15 +36,18 @@
 <template>
   <div
     :class="[
-      'flex flex-col rounded-xl p-4 shadow-lg mb-2',
+      'flex flex-col mb-2',
+      { 'rounded-xl p-4 shadow-lg': !noCard },
+      { 'border-b-2 border-dashed mt-3': noCard },
       { 'bg-white': !props.highlight },
       { 'bg-orange-200 border-2 border-orange-300': props.highlight },
       props.class,
     ]"
+    @click="showFullDescription = !showFullDescription"
   >
-    <div class="flex flex-row items-center justify-between">
+    <div class="flex flex-row items-center justify-between inline">
       <div>
-        <p class="text-slate-500 italic text-sm" v-if="props.highlight">
+        <p v-if="props.highlight" class="text-slate-500 italic text-sm">
           {{ props.highlight }}
         </p>
         <Icon
@@ -43,27 +57,27 @@
         />
         <h4
           :class="[
-            'text-gray-600 flex-left inline',
-            { 'font-semibold text-3xl sm:text-4xl': props.description },
-            { 'font-bold text-4xl sm:text-5xl': !props.description },
+            'text-slate-600 flex-left inline text-3xl sm:text-4xl',
+            { 'font-semibold': props.description },
+            { 'font-bold': !props.description },
           ]"
         >
           {{ props.name }}
         </h4>
-        <p class="text-xs text-gray-500 my-2">
+        <p class="text-xs text-slate-600 my-2">
           {{ props.caption }}
         </p>
       </div>
       <div>
         <h4
           v-if="props.time"
-          class="font-bold text-5xl sm:text-4xl text-slate-500"
+          class="font-bold text-5xl sm:text-4xl text-slate-600"
         >
           {{ millisToMinutesAndSeconds(props.time) }}
         </h4>
         <h4
           v-else-if="props.reps"
-          class="font-bold text-5xl sm:text-4xl text-slate-500"
+          class="font-bold text-5xl sm:text-4xl text-slate-600"
         >
           {{ props.reps }}r
         </h4>
@@ -72,18 +86,14 @@
 
     <p
       v-if="props.description"
-      class="text-sm text-slate-500 truncate whitespace-nowrap overflow-hidden"
+      class="text-sm text-slate-600 truncate whitespace-nowrap overflow-hidden"
     >
-      {{ props.description }}
+      {{ itemDescription }}
     </p>
-    <div>
-      <p v-if="props.requestChange" class="text-red-600">
-        Client request to change this activity
-      </p>
-    </div>
 
-    <div class="mt-3">
-      <slot name="actions"></slot>
-    </div>
+    <p v-if="props.requestChange" class="text-red-600">
+      Client request to change this activity
+    </p>
+    <slot class="mt-3" name="actions"></slot>
   </div>
 </template>
