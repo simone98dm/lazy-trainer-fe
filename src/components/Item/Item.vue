@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { computed, ref } from "vue";
+  import { ButtonColor } from "~/utils";
 
   const props = defineProps([
     "id",
@@ -13,6 +14,7 @@
     "class",
     "caption",
     "noCard",
+    "allowDelete",
   ]);
 
   const showFullDescription = ref(false);
@@ -82,6 +84,12 @@
           {{ props.reps }}r
         </h4>
       </div>
+      <Button
+        v-if="props.allowDelete"
+        icon="delete"
+        :color="ButtonColor.DANGER"
+        @click.prevent="$emit('delete', props.id)"
+      />
     </div>
 
     <p
