@@ -9,6 +9,7 @@
     "icon",
     "theme",
     "loading",
+    "circular",
   ]);
   const emit = defineEmits(["click"]);
   const user = useUserStore();
@@ -22,7 +23,8 @@
       'items-center',
       'font-bold',
       'text-sm',
-      'rounded-lg',
+      { 'rounded-full': circular },
+      { 'rounded-lg': !circular },
       'py-4 md:py-3',
       'px-4 md:px-8',
       { 'w-full': props.full ?? false },

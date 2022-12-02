@@ -66,17 +66,17 @@
     activityStore.moveActivity(id.value, listActivities, isWarmup);
   }
 
-  let showModal = ref(false);
+  let showDuplicateModal = ref(false);
   function duplicateActivities(activities: IActivity[]) {
     activityStore.setDuplicateWarmup(activities);
-    showModal.value = true;
+    showDuplicateModal.value = true;
   }
 
   function duplicateSession(param: {
     dayOfWeek: number;
     activities: IActivity[];
   }) {
-    showModal.value = false;
+    showDuplicateModal.value = false;
     save(param.dayOfWeek, param.activities);
   }
 </script>
@@ -86,15 +86,15 @@
     <Card>
       <form class="w-full" @submit.prevent>
         <div>
-          <h1 v-if="isNew()" class="mb-3 text-2xl mb-6">
+          <h1 v-if="isNew()" class="mb-3 text-4xl mb-6">
             Create a new day session:
           </h1>
-          <h1 v-else class="mb-3 text-2xl mb-6">
+          <h1 v-else class="mb-3 text-4xl mb-6">
             Edit
             <strong>{{ getDayOfTheWeek(currentDayOfWeek) }}</strong> session:
           </h1>
 
-          <span class="text-md">
+          <span class="text-2xl">
             {{
               activityStore.getMissingDays.length <= 0
                 ? "No days available"
@@ -127,32 +127,36 @@
         </div>
         <div class="w-full px-3 mb-6" v-if="!isNew()">
           <div class="flex flex-col justify-center">
-            <ActivityList
-              title="Warmup"
-              no-found-message="No warmup activities found"
-              :activities="warmupList"
-              :is-warmup="true"
-              :session-id="id"
-              :allow-drag="true"
-              :enable-run="false"
-              :enable-duplicate="true"
-              :compat-list="true"
-              @move="sortActivities"
-              @duplicate="duplicateActivities"
-            />
+            <div class="my-4">
+              <ActivityList
+                title="Warmup"
+                no-found-message="No warmup activities found"
+                :activities="warmupList"
+                :is-warmup="true"
+                :session-id="id"
+                :allow-drag="true"
+                :enable-run="false"
+                :enable-duplicate="true"
+                :compat-list="false"
+                @move="sortActivities"
+                @duplicate="duplicateActivities"
+              />
+            </div>
             <hr />
-            <ActivityList
-              title="Activities"
-              no-found-message="No activities found"
-              :activities="activityList"
-              :session-id="id"
-              :allow-drag="true"
-              :enable-run="false"
-              :enable-duplicate="true"
-              :compat-list="true"
-              @move="sortActivities"
-              @duplicate="duplicateActivities"
-            />
+            <div class="my-4">
+              <ActivityList
+                title="Activities"
+                no-found-message="No activities found"
+                :activities="activityList"
+                :session-id="id"
+                :allow-drag="true"
+                :enable-run="false"
+                :enable-duplicate="true"
+                :compat-list="false"
+                @move="sortActivities"
+                @duplicate="duplicateActivities"
+              />
+            </div>
           </div>
         </div>
         <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
@@ -176,12 +180,12 @@
       </form>
     </Card>
     <DuplicateActivities
-      :show="showModal"
+      :show="showDuplicateModal"
       :day-of-week="dayOfWeek"
       :is-trainer="userStore.isTrainer"
       :missing-days="activityStore.getMissingDays"
       :existing-form="activityStore.duplicateActivities"
-      @close="showModal = false"
+      @close="showDuplicateModal = false"
       @duplicate="duplicateSession"
     />
   </div>
