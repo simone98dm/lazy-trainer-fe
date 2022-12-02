@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
-import { SECRET_KEY } from "./const";
-import { ITokenPayload } from "../src/models/User";
-import { extractTokenFromRequest } from "./helper";
+import { SECRET_KEY } from "../const";
+import { ITokenPayload } from "../../src/models/User";
 
 /**
  * Verify token and return ITokenPayload interface
@@ -42,4 +41,8 @@ export async function signToken(payload: any) {
   return await jwt.sign(payload, SECRET_KEY, {
     expiresIn: "3d",
   });
+}
+
+export function extractTokenFromRequest(request: any): string {
+  return request.headers.authorization?.split(" ")[1] ?? "";
 }

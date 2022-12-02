@@ -32,6 +32,6 @@ export type User = {
 };
 
 export type Config = {
-  userId: string;
-  configurations: string;
+  audioDisabled: boolean;
+  easyMode: boolean;
 };

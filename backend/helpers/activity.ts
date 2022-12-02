@@ -1,6 +1,6 @@
-import { DbTable, DB_NAME } from "./const";
-import { connectToDatabase } from "./db";
-import { log, LogLevel } from "./logger";
+import { DbTable, DB_NAME } from "../const";
+import { connectToDatabase } from "../drivers/mongodb";
+import logger from "../utils/logger";
 
 /**
  * Delete an activity
@@ -23,7 +23,7 @@ export async function deleteActivity(activityId: string) {
   if (result.deletedCount === 0) {
     throw new Error("unable to delete activity");
   } else {
-    log(`deleted activity ${activityId}`, LogLevel.INFO);
+    logger.info(`deleted activity ${activityId}`);
   }
 }
 
@@ -64,7 +64,7 @@ export async function updateActivity(activityId: string, data: any) {
   if (result.ok === 0) {
     throw new Error("unable to update activity");
   } else {
-    log(`updated activity ${activityId}`, LogLevel.INFO);
+    logger.info(`updated activity ${activityId}`);
   }
 }
 
@@ -90,7 +90,7 @@ export async function createActivity(sessionId: string, data: any) {
   if (!result.insertedId) {
     throw new Error("unable to create activity");
   } else {
-    log(`created activity ${data.id}`, LogLevel.INFO);
+    logger.info(`created activity ${data.id}`);
   }
 }
 
