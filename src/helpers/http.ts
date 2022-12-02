@@ -123,3 +123,26 @@ export async function saveConfiguration(token: string, data: any) {
     log(JSON.stringify(error), "error");
   }
 }
+
+export async function completeSession(token: string, data: any) {
+  try {
+    return await fetch(`${baseUrl}/api/workout/complete`, {
+      method: "POST",
+      headers: buildHeaders(token),
+      body: JSON.stringify(data),
+    });
+  } catch (error) {
+    log(JSON.stringify(error), "error");
+  }
+}
+
+export async function getUserStats(token: string) {
+  try {
+    return await fetch(`${baseUrl}/api/workout/complete`, {
+      method: "GET",
+      headers: buildHeaders(token),
+    });
+  } catch (error) {
+    log(JSON.stringify(error), "error");
+  }
+}

@@ -1,5 +1,6 @@
 import { DbTable, DB_NAME } from "../const";
 import { connectToDatabase } from "../drivers/mongodb";
+import { Statistics, UserStats } from "../types";
 import logger from "../utils/logger";
 
 /**
@@ -115,5 +116,53 @@ export async function createSession(planId: string, data: any) {
         logger.info("Warmup created", { counter: warmup.length });
       }
     }
+  }
+}
+
+export async function markSessionAsComplete(userId: string, sessionId: string) {
+  if (!userId) {
+    throw new Error("unable to find user");
+  }
+  if (!sessionId) {
+    throw new Error("unable to find session");
+  }
+
+  const client = await connectToDatabase();
+  if (!client) {
+    throw new Error("mongoClient is null");
+  }
+
+  const db = client.db(DB_NAME);
+
+  let existingStats: UserStats | null = await db
+    .collection<UserStats>(DbTable.STATS)
+    .findOne({ userId: userId });
+
+  if (!existingStats) {
+    existingStats = {
+      userId: userId,
+      stats: "",
+    };
+  }
+
+  const stats = JSON.parse(existingStats.stats) as Statistics;
+
+  const currentIsoString = new Date().toISOString();
+  stats.completion = [...stats.completion, currentIsoString];
+
+  existingStats.stats = JSON.stringify(stats);
+
+  const result = await db
+    .collection(DbTable.STATS)
+    .findOneAndUpdate(
+      { userId: userId },
+      { $set: { stats: existingStats } },
+      { upsert: true }
+    );
+
+  if (result.ok !== 1) {
+    throw new Error("unable to update completion");
+  } else {
+    logger.info(`updated completion ${userId}`);
   }
 }

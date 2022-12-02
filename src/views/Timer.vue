@@ -167,7 +167,7 @@
     } else {
       playAudio(horn);
       $log("User complete the session", "info");
-      activityStore.completeSession(sessionId);
+      activityStore.completeSession(sessionId as string);
       timerStore.reset();
       router.push({
         name: "details",

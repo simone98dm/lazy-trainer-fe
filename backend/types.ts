@@ -35,3 +35,12 @@ export type Config = {
   audioDisabled: boolean;
   easyMode: boolean;
 };
+
+export type UserStats = {
+  userId: string;
+  stats: string;
+};
+
+export type Statistics = {
+  completion: string[];
+};

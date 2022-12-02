@@ -8,6 +8,7 @@ export enum DbTable {
   SESSIONS = "sessions",
   ACTIVITIES = "activities",
   CONFIGS = "configs",
+  STATS = "stats",
 }
 
 export enum LogLevel {

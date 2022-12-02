@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  const props = defineProps(["completion"]);
+
   const attr = [
     {
       key: "today",
@@ -8,12 +10,18 @@
       },
       dates: new Date(),
     },
-    {
+  ];
+
+  props.completion?.forEach((item: string) => {
+    attr.push({
       key: "completed",
       dot: true,
-      dates: new Date(2022, 11, 2),
-    },
-  ];
+      dates: new Date(item),
+      popover: {
+        label: "Workout completed 🎉",
+      },
+    });
+  });
 </script>
 
 <template>
