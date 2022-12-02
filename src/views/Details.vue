@@ -78,7 +78,7 @@
       />
     </div>
     <div class="flex flex-col justify-center">
-      <div id="warmup-activities">
+      <Card id="warmup-activities" padding="medium">
         <ActivityList
           title="Warmup"
           no-found-message="No warmup activities found"
@@ -92,9 +92,8 @@
           :compat-list="true"
           @run="runWarmUp"
         />
-      </div>
-      <hr />
-      <div id="list-activities">
+      </Card>
+      <Card id="list-activities">
         <ActivityList
           title="Activities"
           no-found-message="No activities found"
@@ -107,7 +106,7 @@
           :compat-list="true"
           @run="runActivities"
         />
-      </div>
+      </Card>
     </div>
   </div>
 </template>

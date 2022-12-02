@@ -27,7 +27,7 @@
 </script>
 
 <template>
-  <Card v-if="props.activities && props.activities.length > 0">
+  <div v-if="props.activities && props.activities.length > 0">
     <div
       v-if="props.activities.length > 0"
       class="flex items-center justify-between gap-2"
@@ -109,6 +109,6 @@
         checkable="true"
       />
     </div>
-  </Card>
+  </div>
   <ErrorBanner v-else :text="props.noFoundMessage"></ErrorBanner>
 </template>
