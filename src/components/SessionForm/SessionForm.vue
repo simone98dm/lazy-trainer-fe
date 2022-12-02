@@ -54,6 +54,10 @@
     }
   }
 
+  function removeActivity(activityId: string) {
+    activityStore.removeActivity(id.value, activityId);
+  }
+
   function selectDay(dayIndex: number) {
     dayOfWeek.value = dayIndex;
   }
@@ -135,11 +139,13 @@
                 :is-warmup="true"
                 :session-id="id"
                 :allow-drag="true"
+                :allow-delete="true"
                 :enable-run="false"
                 :enable-duplicate="true"
                 :compat-list="false"
                 @move="sortActivities"
                 @duplicate="duplicateActivities"
+                @delete="removeActivity"
               />
             </div>
             <hr />
@@ -150,11 +156,13 @@
                 :activities="activityList"
                 :session-id="id"
                 :allow-drag="true"
+                :allow-delete="true"
                 :enable-run="false"
                 :enable-duplicate="true"
                 :compat-list="false"
                 @move="sortActivities"
                 @duplicate="duplicateActivities"
+                @delete="removeActivity"
               />
             </div>
           </div>

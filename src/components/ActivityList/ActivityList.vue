@@ -10,6 +10,7 @@
     "sessionId",
     "isWarmup",
     "allowDrag",
+    "allowDelete",
     "title",
     "enableRun",
     "enableDuplicate",
@@ -96,6 +97,8 @@
             :reps="element.reps"
             :request-change="element.requestChange"
             :no-card="props.compatList"
+            :allow-delete="props.allowDelete"
+            @delete="$emit('delete', $event)"
             class="mx-2"
           />
         </Link>
@@ -112,7 +115,7 @@
         :reps="activity.reps"
         :key="activity.id"
         class="mx-2"
-        checkable="true"
+        @delete="$emit('delete-activity', activity)"
       />
     </div>
   </div>
