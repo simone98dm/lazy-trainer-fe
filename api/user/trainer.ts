@@ -13,7 +13,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     validateUser(request);
 
     const { id } = request.body;
-    const result = await getMappedPlan(id);
+    const result = await getMappedPlan({ id: id });
 
     if (result) {
       return commonResponse.ok(response, result);
