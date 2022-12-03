@@ -104,7 +104,7 @@ export async function getUserConfiguration(id: string) {
     .collection<User>(DbTable.USERS)
     .findOne({ id: id });
 
-  if (!result) {
+  if (!result?.configurations) {
     return {
       audioDisabled: false,
       easyMode: false,
