@@ -100,7 +100,21 @@
             :allow-delete="props.allowDelete"
             @delete="$emit('delete', $event)"
             class="mx-2"
-          />
+          >
+            <template #actions>
+              <div>
+                <Button
+                  v-if="props.allowDelete"
+                  id="delete-activity"
+                  :color="ButtonColor.DANGER"
+                  icon="delete"
+                  class="float-right ml-2"
+                  circular="true"
+                  @click.prevent="$emit('delete', element.id)"
+                />
+              </div>
+            </template>
+          </Item>
         </Link>
       </template>
     </draggable>

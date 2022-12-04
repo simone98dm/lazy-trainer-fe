@@ -44,7 +44,10 @@ export async function requestActivityChange(activityId: string) {
     .findOneAndUpdate({ id: activityId }, { $set: { requestChange: true } });
 }
 
-export async function getMappedPlan(ownerId: string) {
+export async function getMappedPlan(searchFor: {
+  id?: string;
+  ownerId?: string;
+}) {
   const client = await connectToDatabase();
   if (!client) {
     throw new Error("mongoClient is null");
@@ -53,11 +56,11 @@ export async function getMappedPlan(ownerId: string) {
   const plan = await client
     .db(DB_NAME)
     .collection<Plan>(DbTable.PLANS)
-    .findOne({ ownerId });
+    .findOne(searchFor);
 
   if (!plan) {
     logger.warn("Trainer try to look for user plan", {
-      planOwnerId: ownerId,
+      planOwnerId: searchFor.ownerId,
     });
     return null;
   }
@@ -101,7 +104,7 @@ export async function getUserConfiguration(id: string) {
     .collection<User>(DbTable.USERS)
     .findOne({ id: id });
 
-  if (!result) {
+  if (!result?.configurations) {
     return {
       audioDisabled: false,
       easyMode: false,

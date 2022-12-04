@@ -1,20 +1,20 @@
-import { createRouter, createWebHistory, RouteComponent } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "../stores/user";
 import { Role } from "../utils/enum";
 
-const Home = (): Promise<RouteComponent> => import("../views/Home.vue");
-const Details = (): Promise<RouteComponent> => import("../views/Details.vue");
-const Activity = (): Promise<RouteComponent> => import("../views/Activity.vue");
-const Timer = (): Promise<RouteComponent> => import("../views/Timer.vue");
-const Session = (): Promise<RouteComponent> => import("../views/Session.vue");
-const Login = (): Promise<RouteComponent> => import("../views/Login.vue");
-const Settings = (): Promise<RouteComponent> => import("../views/Settings.vue");
-const Group = (): Promise<RouteComponent> => import("../views/Group.vue");
-const NotFound = (): Promise<RouteComponent> => import("../views/NotFound.vue");
-const About = (): Promise<RouteComponent> => import("../views/About.vue");
-const License = (): Promise<RouteComponent> => import("../views/License.vue");
-const Landing = (): Promise<RouteComponent> => import("../views/Landing.vue");
-const User = (): Promise<RouteComponent> => import("../views/User.vue");
+import Home from "../views/Home.vue";
+import Details from "../views/Details.vue";
+import Activity from "../views/Activity.vue";
+import Timer from "../views/Timer.vue";
+import Session from "../views/Session.vue";
+import Login from "../views/Login.vue";
+import Settings from "../views/Settings.vue";
+import Group from "../views/Group.vue";
+import NotFound from "../views/NotFound.vue";
+import About from "../views/About.vue";
+import License from "../views/License.vue";
+import Landing from "../views/Landing.vue";
+import User from "../views/User.vue";
 
 const routes = [
   {

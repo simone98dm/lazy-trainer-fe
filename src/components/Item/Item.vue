@@ -14,7 +14,6 @@
     "class",
     "caption",
     "noCard",
-    "allowDelete",
   ]);
 
   const showFullDescription = ref(false);
@@ -47,7 +46,7 @@
     ]"
     @click="showFullDescription = !showFullDescription"
   >
-    <div class="flex flex-row items-center justify-between inline">
+    <div class="flex flex-row items-center justify-between">
       <div>
         <p v-if="props.highlight" class="text-slate-500 italic text-sm">
           {{ props.highlight }}
@@ -84,12 +83,6 @@
           {{ props.reps }}r
         </h4>
       </div>
-      <Button
-        v-if="props.allowDelete"
-        icon="delete"
-        :color="ButtonColor.DANGER"
-        @click.prevent="$emit('delete', props.id)"
-      />
     </div>
 
     <p
