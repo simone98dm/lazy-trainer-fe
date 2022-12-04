@@ -336,9 +336,20 @@ export const useActivityStore = defineStore("activity", {
       const settingsStore = useSettingStore();
       const userStore = useUserStore();
       settingsStore.loading(true);
-      await completeSession(userStore.token, { sessionId }).finally(() =>
-        settingsStore.loading(false)
-      );
+      await completeSession(userStore.token, { sessionId })
+        .then(() => {
+          const d = new Date();
+          if (!this.completionDates) {
+            this.completionDates = [];
+          }
+          const alradyExists = this.completionDates?.find((x) =>
+            checkCompleteDate(new Date(x), d)
+          );
+          if (!alradyExists) {
+            this.completionDates?.push(d.toISOString());
+          }
+        })
+        .finally(() => settingsStore.loading(false));
     },
     async retrieveUserStats() {
       const settingsStore = useSettingStore();
@@ -353,3 +364,11 @@ export const useActivityStore = defineStore("activity", {
     },
   },
 });
+
+function checkCompleteDate(complete: Date, currentDate: Date) {
+  return (
+    complete.getDate() === currentDate.getDate() &&
+    complete.getMonth() === currentDate.getMonth() &&
+    complete.getFullYear() === currentDate.getFullYear()
+  );
+}
