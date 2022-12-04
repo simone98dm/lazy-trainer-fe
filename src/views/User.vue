@@ -2,6 +2,7 @@
   import { useActivityStore, useSettingStore } from "~/stores";
 
   const settingsStore = useSettingStore();
+  settingsStore.setHeader("Dashboard");
   const activityStore = useActivityStore();
   activityStore.retrieveUserStats();
 </script>
