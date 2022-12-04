@@ -7,7 +7,13 @@ import { IActivity } from "~/models/Activity";
 import { DataAction, parseSessions } from "~/utils";
 import { getStorage, saveStorage } from "~/helpers/storage";
 import { v4 as uuid } from "uuid";
-import { getPlan, getUserActivities, sendToTrainer } from "~/helpers/http";
+import {
+  completeSession,
+  getPlan,
+  getUserActivities,
+  getUserStats,
+  sendToTrainer,
+} from "~/helpers/http";
 
 function generateBlankPlan(): IPlan {
   return {
@@ -22,6 +28,7 @@ export const useActivityStore = defineStore("activity", {
   state: () => ({
     plan: undefined as IPlan | undefined,
     duplicateActivities: undefined as IActivity[] | undefined,
+    completionDates: undefined as string[] | undefined,
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
@@ -53,6 +60,9 @@ export const useActivityStore = defineStore("activity", {
         }
       }
       return missingDays;
+    },
+    getCompletedWorkouts(state) {
+      return state.completionDates;
     },
   },
   actions: {
@@ -321,6 +331,25 @@ export const useActivityStore = defineStore("activity", {
       if (!this.plan) {
         generateBlankPlan();
       }
+    },
+    async completeSession(sessionId: string) {
+      const settingsStore = useSettingStore();
+      const userStore = useUserStore();
+      settingsStore.loading(true);
+      await completeSession(userStore.token, { sessionId }).finally(() =>
+        settingsStore.loading(false)
+      );
+    },
+    async retrieveUserStats() {
+      const settingsStore = useSettingStore();
+      settingsStore.loading(true);
+      const userStore = useUserStore();
+      await getUserStats(userStore.token)
+        .then((response) => response?.json())
+        .then((response: { completion: string[] }) => {
+          this.completionDates = response.completion;
+        })
+        .finally(() => settingsStore.loading(false));
     },
   },
 });

@@ -1,5 +1,6 @@
 import { DbTable, DB_NAME } from "../const";
 import { connectToDatabase } from "../drivers/mongodb";
+import { Statistics, User, UserStats } from "../types";
 import logger from "../utils/logger";
 
 /**
@@ -116,4 +117,67 @@ export async function createSession(planId: string, data: any) {
       }
     }
   }
+}
+
+export async function markSessionAsComplete(userId: string, sessionId: string) {
+  if (!userId) {
+    throw new Error("unable to find user");
+  }
+  if (!sessionId) {
+    throw new Error("unable to find session");
+  }
+
+  const client = await connectToDatabase();
+  if (!client) {
+    throw new Error("mongoClient is null");
+  }
+
+  const db = client.db(DB_NAME);
+
+  let existingStats: UserStats | null = await db
+    .collection<UserStats>(DbTable.STATS)
+    .findOne({ userId: userId });
+
+  if (!existingStats || !existingStats.stats) {
+    existingStats = {
+      userId: userId,
+      stats: { completion: [] },
+    };
+  }
+
+  const stats = existingStats.stats as Statistics;
+  const currentDate = new Date();
+  const alreadyExist =
+    stats.completion.length > 0
+      ? stats.completion.find((complete) => {
+          return checkCompleteDate(new Date(complete), currentDate);
+        })
+      : false;
+
+  const completion = [...stats.completion];
+  if (!alreadyExist) {
+    completion.push(currentDate.toISOString());
+  }
+
+  const result = await db
+    .collection(DbTable.STATS)
+    .findOneAndUpdate(
+      { userId: userId },
+      { $set: { stats: { completion } } },
+      { upsert: true }
+    );
+
+  if (result.ok !== 1) {
+    throw new Error("unable to update completion");
+  } else {
+    logger.info(`updated completion ${userId}`);
+  }
+}
+
+function checkCompleteDate(complete: Date, currentDate: Date) {
+  return (
+    complete.getDate() === currentDate.getDate() &&
+    complete.getMonth() === currentDate.getMonth() &&
+    complete.getFullYear() === currentDate.getFullYear()
+  );
 }

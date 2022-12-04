@@ -1,6 +1,6 @@
 import { DbTable, DB_NAME } from "../const";
 import { connectToDatabase } from "../drivers/mongodb";
-import { Activity, Config, Plan, Session, User } from "../types";
+import { Activity, Config, Plan, Session, User, UserStats } from "../types";
 import logger from "../utils/logger";
 import { mapRawToPlans } from "../utils/mapper";
 
@@ -130,4 +130,22 @@ export async function saveConfiguration(id: string, options: Config) {
     .findOneAndUpdate({ id: id }, { $set: { configurations: configurations } });
 
   return result;
+}
+
+export async function getStats(userId: string) {
+  const client = await connectToDatabase();
+  if (!client) {
+    throw new Error("mongoClient is null");
+  }
+
+  const user = await client
+    .db(DB_NAME)
+    .collection<UserStats>(DbTable.STATS)
+    .findOne({ userId: userId });
+
+  if (user) {
+    return user.stats;
+  }
+
+  return null;
 }

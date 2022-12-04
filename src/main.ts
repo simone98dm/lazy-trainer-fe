@@ -8,6 +8,8 @@ import { version } from "../package.json";
 import "./style.css";
 import "material-icons/iconfont/material-icons.css";
 import { customLogger } from "./helpers/logger";
+import VCalendar from "v-calendar";
+import "v-calendar/dist/style.css";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -29,7 +31,7 @@ app.use(Hotjar, {
   isProduction: true,
   snippetVersion: 6,
 });
-
+app.use(VCalendar, {});
 app.provide("$logger", customLogger);
 
 initializeApp(firebaseConfig);

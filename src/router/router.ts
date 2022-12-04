@@ -14,6 +14,7 @@ import NotFound from "../views/NotFound.vue";
 import About from "../views/About.vue";
 import License from "../views/License.vue";
 import Landing from "../views/Landing.vue";
+import User from "../views/User.vue";
 
 const routes = [
   {
@@ -144,6 +145,17 @@ const routes = [
       title: `Home`,
       empty: true,
       requireAuth: false,
+      requireAdmin: false,
+    },
+  },
+  {
+    path: "/dashboard",
+    name: "dashboard",
+    component: User,
+    meta: {
+      title: `Dashboard`,
+      empty: false,
+      requireAuth: true,
       requireAdmin: false,
     },
   },
