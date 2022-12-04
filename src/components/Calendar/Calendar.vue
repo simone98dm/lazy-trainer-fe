@@ -1,21 +1,8 @@
 <script setup lang="ts">
+  import { CalendarMarker } from "~/models/CalendarMarker";
   const props = defineProps(["completion"]);
-  console.log("🚀 ~ file: Calendar.vue:3 ~ props", props.completion);
 
-  interface Marker {
-    key: string;
-    highlight?: {
-      class: string;
-      fillMode: string;
-    };
-    dot?: boolean;
-    dates: Date;
-    popover?: {
-      label: string;
-    };
-  }
-
-  const attr: Marker[] = [
+  const attr: CalendarMarker[] = [
     {
       key: "today",
       highlight: {
