@@ -17,7 +17,11 @@
       >
         <Icon component="house" />
       </router-link>
-      <router-link to="/dashboard" class="rounded-full p-3">
+      <router-link
+        v-if="!user.isTrainer"
+        to="/dashboard"
+        class="rounded-full p-3"
+      >
         <Icon component="dashboard" />
       </router-link>
       <router-link v-if="user.isTrainer" to="/group" class="rounded-full p-3">
