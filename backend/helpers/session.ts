@@ -1,6 +1,6 @@
 import { DbTable, DB_NAME } from "../const";
 import { connectToDatabase } from "../drivers/mongodb";
-import { Statistics, UserStats } from "../types";
+import { Statistics, User, UserStats } from "../types";
 import logger from "../utils/logger";
 
 /**
@@ -138,25 +138,32 @@ export async function markSessionAsComplete(userId: string, sessionId: string) {
     .collection<UserStats>(DbTable.STATS)
     .findOne({ userId: userId });
 
-  if (!existingStats) {
+  if (!existingStats || !existingStats.stats) {
     existingStats = {
       userId: userId,
-      stats: "",
+      stats: { completion: [] },
     };
   }
 
-  const stats = JSON.parse(existingStats.stats) as Statistics;
+  const stats = existingStats.stats as Statistics;
+  const currentDate = new Date();
+  const alreadyExist =
+    stats.completion.length > 0
+      ? stats.completion.find((complete) => {
+          return checkCompleteDate(new Date(complete), currentDate);
+        })
+      : false;
 
-  const currentIsoString = new Date().toISOString();
-  stats.completion = [...stats.completion, currentIsoString];
-
-  existingStats.stats = JSON.stringify(stats);
+  const completion = [...stats.completion];
+  if (!alreadyExist) {
+    completion.push(currentDate.toISOString());
+  }
 
   const result = await db
     .collection(DbTable.STATS)
     .findOneAndUpdate(
       { userId: userId },
-      { $set: { stats: existingStats } },
+      { $set: { stats: { completion } } },
       { upsert: true }
     );
 
@@ -165,4 +172,12 @@ export async function markSessionAsComplete(userId: string, sessionId: string) {
   } else {
     logger.info(`updated completion ${userId}`);
   }
+}
+
+function checkCompleteDate(complete: Date, currentDate: Date) {
+  return (
+    complete.getDate() === currentDate.getDate() &&
+    complete.getMonth() === currentDate.getMonth() &&
+    complete.getFullYear() === currentDate.getFullYear()
+  );
 }

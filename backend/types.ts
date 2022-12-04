@@ -38,7 +38,7 @@ export type Config = {
 
 export type UserStats = {
   userId: string;
-  stats: string;
+  stats: Statistics;
 };
 
 export type Statistics = {
