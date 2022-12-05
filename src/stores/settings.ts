@@ -47,7 +47,7 @@ export const useSettingStore = defineStore("settings", {
         easyMode: this.easyMode,
       });
 
-      saveStorage("_settings", {
+      await saveStorage("_settings", {
         audioDisabled: this.audioDisabled,
         easyMode: this.easyMode,
       });

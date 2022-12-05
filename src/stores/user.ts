@@ -31,7 +31,7 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     async signIn(username: string, password: string) {
-      return await signIn(username, password).then((response) => {
+      return await signIn(username, password).then(async (response) => {
         if (response) {
           const { token, id, name, role } = response;
 
@@ -40,7 +40,7 @@ export const useUserStore = defineStore("user", {
           this.username = name;
           this.role = role as Role;
 
-          saveStorage("_token", { token });
+          await saveStorage("_token", { token });
           return { id };
         }
 
@@ -48,11 +48,11 @@ export const useUserStore = defineStore("user", {
       });
     },
     async verifyStorage() {
-      const t = getStorage<{ token: string }>("_token");
+      const t = await getStorage<{ token: string }>("_token");
       if (t) {
-        return await verifyUser(t.token).then((response) => {
+        return await verifyUser(t.token).then(async (response) => {
           if (response.error) {
-            this.logout();
+            await this.logout();
             return;
           }
 
@@ -63,7 +63,7 @@ export const useUserStore = defineStore("user", {
           this.username = name;
           this.role = role as Role;
 
-          saveStorage("_token", { token });
+          await saveStorage("_token", { token });
         });
       }
     },
@@ -77,8 +77,8 @@ export const useUserStore = defineStore("user", {
         this.trainer = response as { id: string; name: string };
       }
     },
-    logout() {
-      clearStorage();
+    async logout() {
+      await clearStorage();
       location.href = "/";
     },
     async retrieveClients() {

@@ -25,11 +25,11 @@
     });
   }
 
-  function logout() {
+  async function logout() {
     logEvent(getAnalytics(), GaCustomEvents.LOGOUT, {
       id: userStore.userId,
     });
-    userStore.logout();
+    await userStore.logout();
   }
 
   function toggleAudio(v: boolean) {
