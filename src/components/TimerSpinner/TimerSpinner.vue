@@ -12,7 +12,7 @@
     <div class="box">
       <div
         :class="[
-          'base-timer xl:w-1/3 lg:w-96 md:w-64',
+          'base-timer xl:w-2/5',
           { 'w-24': size === 'small' },
           { 'w-4/5': size === 'large' },
         ]"
