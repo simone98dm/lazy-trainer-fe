@@ -6,8 +6,10 @@
 
 <template>
   <div
+    v-if="settingsStore.isGlobalLoading"
+    id="loading-screen"
     :class="[
-      'absolute z-50 top-0 left-0 flex w-full h-full justify-center items-center opacity-25 duration-700',
+      'w-full h-full fixed block top-0 left-0 bg-white opacity-25 z-50',
       {
         'bg-indigo-600': !user.isTrainer,
       },
@@ -15,8 +17,11 @@
         'bg-purple-600': user.isTrainer,
       },
     ]"
-    v-if="settingsStore.isGlobalLoading"
   >
-    <Loading></Loading>
+    <span
+      class="text-green-500 opacity-75 top-1/2 my-0 mx-auto block relative w-0 h-0"
+    >
+      <Loading></Loading>
+    </span>
   </div>
 </template>

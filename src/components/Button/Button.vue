@@ -9,6 +9,7 @@
     "icon",
     "theme",
     "loading",
+    "circular",
   ]);
   const emit = defineEmits(["click"]);
   const user = useUserStore();
@@ -20,12 +21,12 @@
       'flex',
       'justify-center',
       'items-center',
-      'shadow-lg',
       'font-bold',
       'text-sm',
-      'rounded-lg',
-      'py-2 md:py-3',
-      'px-2 md:px-8',
+      { 'rounded-full': circular },
+      { 'rounded-lg': !circular },
+      'py-4 md:py-3',
+      'px-4 md:px-8',
       { 'w-full': props.full ?? false },
       {
         'bg-indigo-600 hover:bg-indigo-500 text-gray-100':
@@ -58,8 +59,10 @@
           props.color === ButtonColor.LIGHT,
       },
       {
-        'bg-trasparent hover:bg-slate-100 text-black':
-          props.color === ButtonColor.TRASPARENT,
+        'hover:bg-slate-50 text-black': props.color === ButtonColor.TRASPARENT,
+      },
+      {
+        'shadow-lg': props.color !== ButtonColor.TRASPARENT,
       },
     ]"
     type="button"
@@ -74,7 +77,7 @@
       />
       <span
         :class="[
-          'ml-2 float-left text-sm sm:text-sm sm:inline',
+          'ml-2 float-left text-md sm:text-sm sm:inline',
           { hidden: !props.full },
         ]"
         v-if="props.label"

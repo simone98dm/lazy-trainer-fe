@@ -78,32 +78,35 @@
       />
     </div>
     <div class="flex flex-col justify-center">
-      <div id="warmup-activities">
+      <Card id="warmup-activities" padding="medium">
         <ActivityList
           title="Warmup"
           no-found-message="No warmup activities found"
           :activities="warmupList"
           :is-warmup="true"
           :session-id="sessionId"
-          @run="runWarmUp"
           :enable-run="!userStore.isTrainer"
           :enable-duplicate="false"
           :allow-drag="false"
+          :opened="true"
+          :compat-list="true"
+          @run="runWarmUp"
         />
-      </div>
-      <hr />
-      <div id="list-activities">
+      </Card>
+      <Card id="list-activities">
         <ActivityList
           title="Activities"
           no-found-message="No activities found"
           :activities="activityList"
-          @run="runActivities"
           :session-id="sessionId"
           :enable-run="!userStore.isTrainer"
           :enable-duplicate="false"
           :allow-drag="false"
+          :opened="false"
+          :compat-list="true"
+          @run="runActivities"
         />
-      </div>
+      </Card>
     </div>
   </div>
 </template>

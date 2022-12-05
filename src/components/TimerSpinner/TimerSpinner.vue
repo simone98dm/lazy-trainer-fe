@@ -3,13 +3,20 @@
     "strokeDasharray",
     "remainingPathColor",
     "baseTimerLabel",
+    "size",
   ]);
 </script>
 
 <template>
   <div class="mb-6">
     <div class="box">
-      <div class="base-timer xl:w-1/3 lg:w-1/2 md:w-4/5 w-3/4">
+      <div
+        :class="[
+          'base-timer xl:w-2/5',
+          { 'w-24': size === 'small' },
+          { 'w-4/5': size === 'large' },
+        ]"
+      >
         <svg
           class="base-timer__svg"
           viewBox="0 0 100 100"
@@ -32,7 +39,11 @@
         </svg>
         <span
           id="base-timer-label"
-          class="base-timer__label text-6xl md:text-7xl lg:text-6xl"
+          :class="[
+            'base-timer__label text-2xl md:text-7xl lg:text-6xl',
+            { 'text-2xl': size === 'small' },
+            { 'text-6xl': size === 'large' },
+          ]"
         >
           {{ props.baseTimerLabel }}
         </span>

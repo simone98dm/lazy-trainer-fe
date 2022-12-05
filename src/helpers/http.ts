@@ -56,7 +56,7 @@ export async function verifyUser(token: string) {
 
 export async function userInfo(token: string, trainerId: string) {
   try {
-    return await fetch(`${baseUrl}/api/user?user=${trainerId}`, {
+    return await fetch(`${baseUrl}/api/user/info?user=${trainerId}`, {
       method: "GET",
       headers: buildHeaders(token),
     }).then((response) => response.json());
@@ -109,6 +109,52 @@ export async function markNotificationsAsRead(id?: string) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ id }),
+    });
+  } catch (error) {
+    log(JSON.stringify(error), "error");
+  }
+}
+
+export async function getConfiguration(token: string) {
+  try {
+    return await fetch(`${baseUrl}/api/user`, {
+      method: "GET",
+      headers: buildHeaders(token),
+    }).then((response) => response.json());
+  } catch (error) {
+    log(JSON.stringify(error), "error");
+  }
+}
+
+export async function saveConfiguration(token: string, data: any) {
+  try {
+    return await fetch(`${baseUrl}/api/user`, {
+      method: "POST",
+      headers: buildHeaders(token),
+      body: JSON.stringify(data),
+    });
+  } catch (error) {
+    log(JSON.stringify(error), "error");
+  }
+}
+
+export async function completeSession(token: string, data: any) {
+  try {
+    return await fetch(`${baseUrl}/api/workout/complete`, {
+      method: "POST",
+      headers: buildHeaders(token),
+      body: JSON.stringify(data),
+    });
+  } catch (error) {
+    log(JSON.stringify(error), "error");
+  }
+}
+
+export async function getUserStats(token: string) {
+  try {
+    return await fetch(`${baseUrl}/api/workout/complete`, {
+      method: "GET",
+      headers: buildHeaders(token),
     });
   } catch (error) {
     log(JSON.stringify(error), "error");

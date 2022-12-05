@@ -1,28 +1,23 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import { markSessionAsComplete } from "../../backend/helpers/session";
 import { validateUser } from "../../backend/helpers/token";
-import logger from "../../backend/utils/logger";
+import { getStats } from "../../backend/helpers/user";
 import { commonResponse } from "../../backend/utils/http";
-import { getTrainerPlans } from "../../backend/helpers/group";
+import logger from "../../backend/utils/logger";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
-    if (request.method !== "POST") {
+    const { id } = validateUser(request);
+    if (request.method === "POST") {
+      const { sessionId } = request.body;
+      await markSessionAsComplete(id, sessionId);
+      return commonResponse.ok(response);
+    } else if (request.method === "GET") {
+      const stats = await getStats(id);
+      return commonResponse.ok(response, stats);
+    } else {
       throw new Error("Method not allowed");
     }
-
-    const isValid = validateUser(request);
-    const { id } = request.body;
-    if (!id) {
-      return commonResponse.badRequest(response, "id not provided");
-    }
-
-    const plans = await getTrainerPlans(isValid.id);
-
-    logger.info("Trainer request plans", {
-      trainer: isValid,
-      groupId: id,
-    });
-    return commonResponse.ok(response, plans);
   } catch (error) {
     logger.error(error, {
       token: request.headers.authorization,

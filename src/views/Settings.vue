@@ -43,30 +43,34 @@
     logEvent(getAnalytics(), GaCustomEvents.UPDATE_SETTINGS, {
       settings_name: "easymode",
     });
-    settingsStore.toggleAudioEffects(v);
+    settingsStore.toggleEasyMode(v);
   }
 </script>
 
 <template>
   <div class="flex flex-col justify-center max-w-screen-lg mx-auto">
-    <div class="shadow p-5 rounded-xl mb-6 bg-white">
-      <div class="m-6">
+    <Card>
+      <div class="m-0 sm:m-6">
         <h1 class="text-xl font-bold mb-3">Profile</h1>
         <div class="w-full pt-3 px-3">
-          <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
+          <div
+            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg"
+          >
             Username
             <span class="font-bold">
               {{ userStore.username }}
             </span>
           </div>
-          <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
+          <div
+            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg"
+          >
             Role
             <span class="font-bold">
               {{ RoleName[userStore.role as Role] }}
             </span>
           </div>
           <div
-            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted"
+            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg"
             v-if="!userStore.isTrainer && !userStore.isSelfMadeMan"
           >
             Trainer
@@ -77,10 +81,12 @@
           </div>
         </div>
       </div>
-      <div class="m-6">
+      <div class="m-0 sm:m-6">
         <h1 class="text-xl font-bold mb-3">Preferences</h1>
         <div class="w-full pt-3 px-3">
-          <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
+          <div
+            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg"
+          >
             Disable audio
             <Switch
               id="disableAudio"
@@ -90,7 +96,9 @@
             />
           </div>
 
-          <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
+          <div
+            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg"
+          >
             Easy mode
             <Switch
               id="easyMode"
@@ -100,7 +108,9 @@
             />
           </div>
 
-          <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted">
+          <div
+            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg"
+          >
             App version
             <span class="font-bold">
               {{ version }}
@@ -133,7 +143,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </Card>
     <div class="w-full flex justify-center mb-3">
       <Button
         v-if="!userStore.isTrainer"

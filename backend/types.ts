@@ -28,4 +28,19 @@ export type User = {
   name: string;
   role: number;
   hashPassword: string;
+  configurations: string;
+};
+
+export type Config = {
+  audioDisabled: boolean;
+  easyMode: boolean;
+};
+
+export type UserStats = {
+  userId: string;
+  stats: Statistics;
+};
+
+export type Statistics = {
+  completion: string[];
 };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { defineAsyncComponent, inject, ref } from "vue";
+  import { computed, defineAsyncComponent, inject, ref } from "vue";
   import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
   import ding from "~/assets/audio/ding.mp3";
   import horn from "~/assets/audio/horn.mp3";
@@ -11,7 +11,12 @@
     logOptions,
   } from "~/utils";
   import { IActivity } from "~/models/Activity";
-  import { useTimerStore, useSettingStore, useUserStore } from "~/stores";
+  import {
+    useTimerStore,
+    useSettingStore,
+    useUserStore,
+    useActivityStore,
+  } from "~/stores";
   const $log = inject("$logger") as logOptions;
 
   const route = useRoute();
@@ -19,6 +24,7 @@
   const settingsStore = useSettingStore();
   const timerStore = useTimerStore();
   const userStore = useUserStore();
+  const activityStore = useActivityStore();
 
   settingsStore.setHeader("Timer");
 
@@ -32,6 +38,10 @@
   let baseTimerLabel = ref(formatTime(timeLeft.value));
 
   const { sessionId, activityId } = route.params;
+
+  const isNextVideo = computed(() => {
+    return timerStore.getNextActivity?.videoUrl;
+  });
 
   setupTimer(activityId as string);
 
@@ -157,6 +167,7 @@
     } else {
       playAudio(horn);
       $log("User complete the session", "info");
+      activityStore.completeSession(sessionId as string);
       timerStore.reset();
       router.push({
         name: "details",
@@ -241,20 +252,16 @@
       :class="[
         'w-full',
         {
-          'flex sm:flex-row flex-col justify-center':
-            timerStore.getNextActivity?.videoUrl,
+          'flex flex-col justify-center': isNextVideo,
         },
       ]"
     >
-      <div
-        :class="[{ 'w-full md:w-1/2 ': timerStore.getNextActivity?.videoUrl }]"
-      >
-        <TimerSpinner
-          :stroke-dasharray="strokeDasharray"
-          :remaining-path-color="remainingPathColor"
-          :base-timer-label="baseTimerLabel"
-        />
-      </div>
+      <TimerSpinner
+        :stroke-dasharray="strokeDasharray"
+        :remaining-path-color="remainingPathColor"
+        :base-timer-label="baseTimerLabel"
+        :size="isNextVideo ? 'small' : 'large'"
+      />
       <ImageLoader :src="timerStore.getNextActivity?.videoUrl" />
     </div>
     <div v-else>

@@ -23,9 +23,11 @@
         class="float-left inline"
       />
       <slot />
-      <span v-if="props.label" class="ml-2 float-left inline">{{
-        props.label
-      }}</span>
+      <span
+        v-if="props.label"
+        class="ml-2 float-left inline text-md sm:text-sm"
+        >{{ props.label }}</span
+      >
     </div>
   </router-link>
 </template>
