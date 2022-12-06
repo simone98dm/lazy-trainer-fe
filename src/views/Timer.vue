@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, defineAsyncComponent, inject, ref } from "vue";
+  import { computed, inject, ref } from "vue";
   import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
   import ding from "~/assets/audio/ding.mp3";
   import horn from "~/assets/audio/horn.mp3";
@@ -9,6 +9,7 @@
     FULL_DASH_ARRAY,
     ButtonColor,
     logOptions,
+    ButtonSize,
   } from "~/utils";
   import { IActivity } from "~/models/Activity";
   import {
@@ -283,6 +284,7 @@
                 : 'play_circle'
               : 'skip_next'
           "
+          :size="ButtonSize.LARGE"
           :label="
             timerStore.isTimerBasedActivity
               ? timerStore.isRunning
@@ -299,6 +301,7 @@
           v-if="settingsStore.isEasyModeEnabled"
           label="Skip"
           full="true"
+          :size="ButtonSize.LARGE"
           @click="skipActivity"
           :color="ButtonColor.LIGHT"
         />

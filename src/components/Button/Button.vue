@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores";
-  import { ButtonColor } from "~/utils";
+  import { ButtonColor, ButtonSize } from "~/utils";
   const props = defineProps([
     "full",
     "size",
@@ -22,11 +22,8 @@
       'justify-center',
       'items-center',
       'font-bold',
-      'text-sm',
       { 'rounded-full': circular },
       { 'rounded-lg': !circular },
-      'py-4 md:py-3',
-      'px-4 md:px-8',
       { 'w-full': props.full ?? false },
       {
         'bg-indigo-600 hover:bg-indigo-500 text-gray-100':
@@ -64,22 +61,29 @@
       {
         'shadow-lg': props.color !== ButtonColor.TRASPARENT,
       },
+      {
+        'py-4 md:py-3 px-4 md:px-8 text-sm':
+          !props.size || props.size === ButtonSize.MEDIUM,
+      },
+      {
+        'py-2 md:py-1 px-2 md:px-4 text-xs': props.size === ButtonSize.SMALL,
+      },
+      {
+        'py-6 md:py-5 px-6 md:px-10 text-xl': props.size === ButtonSize.LARGE,
+      },
     ]"
     type="button"
     @click="emit('click', $event)"
   >
     <Loading v-if="props.loading" :small="true"></Loading>
-    <div v-else class="">
+    <div v-else class="flex justify-center items-center">
       <Icon
         v-if="props.icon"
         :component="props.icon"
         class="float-left inline"
       />
       <span
-        :class="[
-          'ml-2 float-left text-md sm:text-sm sm:inline',
-          { hidden: !props.full },
-        ]"
+        :class="['ml-2 float-left sm:inline', { hidden: !props.full }]"
         v-if="props.label"
       >
         {{ props.label }}
