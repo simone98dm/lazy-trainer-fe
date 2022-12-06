@@ -265,14 +265,12 @@
       />
       <ImageLoader :src="timerStore.getNextActivity?.videoUrl" />
     </div>
-    <div v-else>
-      <h1 class="flex flex-col text-center my-20 text-pink-600">
-        <span class="text-4xl">Total reps:</span>
-        <span class="text-9xl font-bold">
-          {{ timerStore.getCurrentActivity?.reps }}
-        </span>
-      </h1>
-    </div>
+    <h1 class="flex flex-col text-center my-20 text-pink-600" v-else>
+      <span class="text-4xl">Total reps:</span>
+      <span class="text-9xl font-bold">
+        {{ timerStore.getCurrentActivity?.reps }}
+      </span>
+    </h1>
 
     <div class="w-full flex flex-col justify-center mb-3">
       <div class="mb-3">
@@ -284,7 +282,9 @@
                 : 'play_circle'
               : 'skip_next'
           "
-          :size="ButtonSize.LARGE"
+          :color="
+            timerStore.isRunning ? ButtonColor.DANGER : ButtonColor.PRIMARY
+          "
           :label="
             timerStore.isTimerBasedActivity
               ? timerStore.isRunning
@@ -301,20 +301,18 @@
           v-if="settingsStore.isEasyModeEnabled"
           label="Skip"
           full="true"
-          :size="ButtonSize.LARGE"
           @click="skipActivity"
           :color="ButtonColor.LIGHT"
         />
       </div>
     </div>
     <div
-      class="text-center mb-6"
+      class="text-center mb-3"
       v-if="timerStore.getCurrentActivity?.requestChange"
     >
       <p class="text-red-600">Change request sended, wait for changes...</p>
     </div>
-    <hr class="mb-6" />
-    <div class="text-center text-slate-500 mb-6">
+    <div class="text-center text-slate-500 mb-3">
       Next activty:
       <h1 v-if="timerStore.getNextActivity" class="text-4xl font-bolder">
         {{ timerStore.getNextActivity.name }}
