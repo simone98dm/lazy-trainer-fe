@@ -14,6 +14,19 @@
       dates: new Date(),
     },
   ];
+
+  const colors = [
+    "red",
+    "orange",
+    "yellow",
+    "green",
+    "teal",
+    "blue",
+    "indigo",
+    "purple",
+    "pink",
+    "gray",
+  ];
   if (props.completion) {
     props.completion?.forEach(
       (statistics: {
@@ -26,10 +39,10 @@
         if (userStore.userId === userId) {
           label = "You have completed this workout";
         }
-        stats.completion.forEach((item) => {
+        stats.completion.forEach((item, index) => {
           attr.push({
             key: "completed",
-            dot: true,
+            dot: colors[index < colors.length ? index : 0],
             dates: new Date(item),
             popover: {
               label,
