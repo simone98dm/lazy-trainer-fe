@@ -140,12 +140,52 @@ export async function getStats(userId: string) {
 
   const user = await client
     .db(DB_NAME)
-    .collection<UserStats>(DbTable.STATS)
-    .findOne({ userId: userId });
+    .collection<User>(DbTable.USERS)
+    .findOne({ id: userId });
 
-  if (user) {
-    return user.stats;
+  if (!user) {
+    return null;
   }
 
-  return null;
+  let userStats: UserStats[] = [];
+  if (Number(user.role) === 1) {
+    // is trainer
+    const plans = await client
+      .db(DB_NAME)
+      .collection<Plan>(DbTable.PLANS)
+      .find({ trainerId: userId })
+      .toArray();
+    const clients = plans.map((plan) => plan.ownerId);
+
+    const users = await client
+      .db(DB_NAME)
+      .collection<User>(DbTable.USERS)
+      .find({ id: { $in: clients } })
+      .toArray();
+
+    const stats = await client
+      .db(DB_NAME)
+      .collection<UserStats>(DbTable.STATS)
+      .find({ userId: { $in: clients } })
+      .toArray();
+
+    userStats.push(
+      ...stats.map((s) => ({
+        userId: s.userId,
+        userName: users.find((u) => u.id === s.userId)?.name,
+        stats: s.stats,
+      }))
+    );
+  } else {
+    let userStat = await client
+      .db(DB_NAME)
+      .collection<UserStats>(DbTable.STATS)
+      .findOne({ userId: userId });
+    if (userStat) {
+      const s = { userId, stats: userStat.stats };
+      userStats.push(s);
+    }
+  }
+
+  return userStats;
 }
