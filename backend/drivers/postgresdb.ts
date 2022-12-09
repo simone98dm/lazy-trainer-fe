@@ -1,24 +1,16 @@
-import postgres from "postgres";
+import { Client, ClientConfig, Pool } from "pg";
 import { uri } from "../const";
 
-const options = {};
+const options: ClientConfig = {
+  user: process.env.VITE_SUPABASE_USERNAME,
+  password: process.env.VITE_SUPABASE_PASSWORD,
+  host: process.env.VITE_SUPABASE_HOST,
+  port: Number(process.env.VITE_SUPABASE_PORT),
+  database: process.env.VITE_SUPABASE_DATABASE,
+};
 
-let postgresClient;
-
-if (!uri) {
-  throw new Error("uri not setted");
-}
-
-export async function connectToDatabase() {
-  try {
-    if (postgresClient) {
-      return postgresClient;
-    }
-
-    postgresClient = postgres(uri, options);
-
-    return postgresClient;
-  } catch (error) {
-    console.error(error);
-  }
-}
+export const pool = new Pool({
+  connectionString: process.env.POSTGRES_URI,
+  max: 20,
+  idleTimeoutMillis: 30000,
+});

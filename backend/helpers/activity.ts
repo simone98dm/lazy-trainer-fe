@@ -1,5 +1,6 @@
 import { DbTable, DB_NAME } from "../const";
-import { connectToDatabase } from "../drivers/mongodb";
+import { pool } from "../drivers/postgresdb";
+import { Activity } from "../types";
 import logger from "../utils/logger";
 
 /**
@@ -11,16 +12,13 @@ export async function deleteActivity(activityId: string) {
     throw new Error("unable to find session");
   }
 
-  const client = await connectToDatabase();
-  if (!client) {
-    throw new Error("mongoClient is null");
-  }
+  const client = await pool.connect();
+  const { rows } = await client.query(
+    `DELETE FROM ${DbTable.ACTIVITIES} WHERE id = $1;`,
+    [activityId]
+  );
 
-  const result = await client
-    .db(DB_NAME)
-    .collection(DbTable.ACTIVITIES)
-    .deleteOne({ id: activityId });
-  if (result.deletedCount === 0) {
+  if (rows.length === 0) {
     throw new Error("unable to delete activity");
   } else {
     logger.info(`deleted activity ${activityId}`);
@@ -37,31 +35,32 @@ export async function updateActivity(activityId: string, data: any) {
     throw new Error("unable to find session");
   }
 
-  const client = await connectToDatabase();
-  if (!client) {
-    throw new Error("mongoClient is null");
-  }
+  const client = await pool.connect();
+  const { rows } = await client.query(
+    `UPDATE ${DbTable.ACTIVITIES} SET 
+      description = $1, 
+      name = $2, 
+      order_index = $3, 
+      "time" = $4, 
+      reps = $5, 
+      videoUrl = $6, 
+      requestChange = $7, 
+      warmup = $8 
+    WHERE id = $9;`,
+    [
+      data.description,
+      data.name,
+      data.order,
+      data.time,
+      data.reps,
+      data.videoUrl,
+      data.requestChange,
+      data.warmup,
+      activityId,
+    ]
+  );
 
-  const result = await client
-    .db(DB_NAME)
-    .collection(DbTable.ACTIVITIES)
-    .findOneAndUpdate(
-      { id: activityId },
-      {
-        $set: {
-          description: data.description,
-          name: data.name,
-          order: data.order,
-          time: data.time,
-          reps: data.reps,
-          videoUrl: data.videoUrl,
-          requestChange: data.requestChange,
-          warmup: data.warmup,
-        },
-      }
-    );
-
-  if (result.ok === 0) {
+  if (rows.length === 0) {
     throw new Error("unable to update activity");
   } else {
     logger.info(`updated activity ${activityId}`);
@@ -77,21 +76,42 @@ export async function createActivity(sessionId: string, data: any) {
   if (!sessionId) {
     throw new Error("unable to find the plan");
   }
-  const client = await connectToDatabase();
-  if (!client) {
-    throw new Error("mongoClient is null");
-  }
-
-  const result = await client
-    .db(DB_NAME)
-    .collection(DbTable.ACTIVITIES)
-    .insertOne({ ...data, sessionId });
-
-  if (!result.insertedId) {
+  const client = await pool.connect();
+  const { rows } = await client.query(
+    `INSERT INTO ${DbTable.ACTIVITIES} 
+        (id, description, name, order_index, "time", reps, videoUrl, requestChange, warmup, sessionid)
+      VALUES 
+        ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10);`,
+    [
+      data.id,
+      data.description,
+      data.name,
+      data.order,
+      data.time,
+      data.reps,
+      data.videoUrl,
+      data.requestChange,
+      data.warmup,
+      sessionId,
+    ]
+  );
+  if (rows.length !== 0) {
     throw new Error("unable to create activity");
   } else {
     logger.info(`created activity ${data.id}`);
   }
+}
+
+export async function getActivities(sessionId: string) {
+  if (!sessionId) {
+    throw new Error("unable to find the plan");
+  }
+  const client = await pool.connect();
+  const activities = await client.query<Activity>(
+    `SELECT * FROM ${DbTable.ACTIVITIES} WHERE sessionid = $1;`,
+    [sessionId]
+  );
+  return activities;
 }
 
 /**
@@ -99,24 +119,12 @@ export async function createActivity(sessionId: string, data: any) {
  * @param activities activities to sort
  */
 export async function sortActivities(data: { id: string; order: number }[]) {
-  const client = await connectToDatabase();
-  if (!client) {
-    throw new Error("mongoClient is null");
-  }
-
+  const client = await pool.connect();
   const promises = data.map((activity) =>
-    client
-      .db(DB_NAME)
-      .collection(DbTable.ACTIVITIES)
-      .findOneAndUpdate(
-        { id: activity.id },
-        { $set: { order: activity.order } }
-      )
-      .then((result) => {
-        if (result.ok === 0) {
-          throw new Error("unable to update activity");
-        }
-      })
+    client.query(
+      `UPDATE ${DbTable.ACTIVITIES} SET order_index = $1 WHERE id = $2;`,
+      [activity.order, activity.id]
+    )
   );
 
   await Promise.all(promises);

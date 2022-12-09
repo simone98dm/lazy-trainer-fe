@@ -1,5 +1,5 @@
 import { DbTable, DB_NAME } from "../const";
-import { connectToDatabase } from "../drivers/mongodb";
+import { connectToDatabase, pool } from "../drivers/postgresdb";
 import { Statistics, User, UserStats } from "../types";
 import logger from "../utils/logger";
 
@@ -12,21 +12,16 @@ export async function deleteSession(sessionId: string) {
     throw new Error("unable to find session");
   }
 
-  const client = await connectToDatabase();
-  if (!client) {
-    throw new Error("mongoClient is null");
-  }
+  const client = await pool.connect();
+  const { rows } = await client.query(
+    `DELETE FROM ${DbTable.ACTIVITIES} WHERE sessionid = $1;`,
+    [sessionId]
+  );
+  logger.info(`activities deleted: ${rows.length}`);
 
-  const db = client.db(DB_NAME);
-
-  const delActivities = await db
-    .collection(DbTable.ACTIVITIES)
-    .deleteMany({ sessionId: sessionId });
-  logger.info(`activities deleted: ${delActivities.deletedCount}`);
-
-  const delSession = await db
-    .collection(DbTable.SESSIONS)
-    .deleteOne({ id: sessionId });
+  await client.query(`DELETE FROM ${DbTable.SESSIONS} WHERE id = $1;`, [
+    sessionId,
+  ]);
   logger.info(`deleted session ${sessionId}`);
 }
 
@@ -43,20 +38,16 @@ export async function updateSession(sessionId: string, data: any) {
     throw new Error("payload not valid");
   }
 
-  const client = await connectToDatabase();
-  if (!client) {
-    throw new Error("mongoClient is null");
-  }
+  const client = await pool.connect();
+  const { rows } = await client.query(
+    `UPDATE ${DbTable.SESSIONS} SET 
+      dayofweek = $1,
+      planid = $2
+      WHERE id = $3;`,
+    [data.dayOfWeek, data.planId, sessionId]
+  );
 
-  const result = await client
-    .db(DB_NAME)
-    .collection(DbTable.SESSIONS)
-    .findOneAndUpdate(
-      { id: sessionId },
-      { $set: { dayOfWeek: data.dayOfWeek } }
-    );
-
-  if (result.ok !== 1) {
+  if (rows.length === 0) {
     throw new Error("unable to update session");
   } else {
     logger.info(`updated session ${sessionId}`);
@@ -73,28 +64,27 @@ export async function createSession(planId: string, data: any) {
     throw new Error("unable to find the plan");
   }
 
-  const client = await connectToDatabase();
-  if (!client) {
-    throw new Error("mongoClient is null");
-  }
-
   const { id, dayOfWeek, warmup } = data;
 
   if (dayOfWeek === -1 || dayOfWeek >= 7) {
     throw new Error("day of week not valid");
   }
 
-  const db = client.db(DB_NAME);
-  const exists = await db
-    .collection(DbTable.SESSIONS)
-    .findOne({ dayOfWeek: dayOfWeek, planId: planId });
-  if (exists) {
+  const client = await pool.connect();
+  const { rows } = await client.query(
+    `SELECT id FROM ${DbTable.SESSIONS} WHERE dayofweek = $1 AND planid = $2;`,
+    [dayOfWeek, planId]
+  );
+
+  if (rows.length === 0) {
     throw new Error("session already exists");
   }
 
-  const session = { id, dayOfWeek, planId };
-  const result = await db.collection(DbTable.SESSIONS).insertOne(session);
-  if (!result.insertedId) {
+  const { rowCount } = await client.query(
+    `INSERT INTO ${DbTable.SESSIONS} (id, dayofweek, planid) VALUES ($1, $2, $3);`,
+    [id, dayOfWeek, planId]
+  );
+  if (rowCount > 0) {
     throw new Error("unable to insert session");
   } else {
     logger.info(`created session ${id}`);
@@ -106,15 +96,24 @@ export async function createSession(planId: string, data: any) {
       ...warm,
     }));
     if (updatedWarmup.length > 0) {
-      const result = await db
-        .collection(DbTable.ACTIVITIES)
-        .insertMany(updatedWarmup);
-
-      if (result.insertedCount < updatedWarmup.length) {
-        throw new Error("unable to insert warmup");
-      } else {
-        logger.info("Warmup created", { counter: warmup.length });
-      }
+      updatedWarmup.forEach(async (warm: any) => {
+        const { rows, rowCount } = await client.query(
+          `INSERT INTO ${DbTable.ACTIVITIES} (id, sessionid, name, duration, type, order) VALUES ($1, $2, $3, $4, $5, $6);`,
+          [
+            warm.id,
+            warm.sessionId,
+            warm.name,
+            warm.duration,
+            warm.type,
+            warm.order,
+          ]
+        );
+        if (rowCount < updatedWarmup.length) {
+          throw new Error("unable to insert warmup");
+        } else {
+          logger.info("Warmup created", { counter: warmup.length });
+        }
+      });
     }
   }
 }
@@ -127,25 +126,20 @@ export async function markSessionAsComplete(userId: string, sessionId: string) {
     throw new Error("unable to find session");
   }
 
-  const client = await connectToDatabase();
-  if (!client) {
-    throw new Error("mongoClient is null");
-  }
-
-  const db = client.db(DB_NAME);
-
-  let existingStats: UserStats | null = await db
-    .collection<UserStats>(DbTable.STATS)
-    .findOne({ userId: userId });
-
-  if (!existingStats || !existingStats.stats) {
+  const client = await pool.connect();
+  let existing = await client.query(
+    `SELECT stats FROM ${DbTable.STATS} WHERE userid = $1;`,
+    [userId]
+  );
+  let existingStats: UserStats | null = null;
+  if (!existing.rows || !existing.rows[0].stats) {
     existingStats = {
       userId: userId,
       stats: { completion: [] },
     };
   }
 
-  const stats = existingStats.stats as Statistics;
+  const stats = (existingStats?.stats as Statistics) ?? ({} as Statistics);
   const currentDate = new Date();
   const alreadyExist =
     stats.completion.length > 0
@@ -159,15 +153,12 @@ export async function markSessionAsComplete(userId: string, sessionId: string) {
     completion.push(currentDate.toISOString());
   }
 
-  const result = await db
-    .collection(DbTable.STATS)
-    .findOneAndUpdate(
-      { userId: userId },
-      { $set: { stats: { completion } } },
-      { upsert: true }
-    );
+  const { rowCount } = await client.query(
+    `UPDATE ${DbTable.STATS} SET stats = $1 WHERE userid = $2;`,
+    [completion, userId]
+  );
 
-  if (result.ok !== 1) {
+  if (rowCount !== 1) {
     throw new Error("unable to update completion");
   } else {
     logger.info(`updated completion ${userId}`);

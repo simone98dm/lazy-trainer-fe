@@ -36,6 +36,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
       // get user
       const user = await getUser(username);
+      console.log("🚀 ~ file: sign.ts:39 ~ user", user);
       if (!user) {
         logger.warn("User not found", {
           username,

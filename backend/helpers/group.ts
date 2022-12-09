@@ -1,15 +1,11 @@
 import { DbTable, DB_NAME } from "../const";
-import { connectToDatabase } from "../drivers/mongodb";
-import { Plan } from "../types";
+import { connectToDatabase, pool } from "../drivers/postgresdb";
 
 export async function getTrainerPlans(id: string) {
-  const client = await connectToDatabase();
-  if (!client) {
-    throw new Error("mongoClient is null");
-  }
-  return await client
-    .db(DB_NAME)
-    .collection<Plan>(DbTable.PLANS)
-    .find({ trainerId: id })
-    .toArray();
+  const client = await pool.connect();
+  const { rows } = await client.query(
+    `SELECT id, name, trainerid, ownerid FROM ${DbTable.PLANS} WHERE trainerid = $1`,
+    [id]
+  );
+  return rows;
 }
