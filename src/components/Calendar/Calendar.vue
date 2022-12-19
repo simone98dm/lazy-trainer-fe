@@ -29,17 +29,20 @@
   ];
   if (props.completion) {
     props.completion?.forEach(
-      (statistics: {
-        userId: string;
-        userName: string;
-        stats: { completion: string[] };
-      }) => {
+      (
+        statistics: {
+          userId: string;
+          userName: string;
+          stats: { completion: string[] };
+        },
+        index: number
+      ) => {
         const { userId, userName, stats } = statistics;
         let label = `${userName} complete the workout 🎉`;
         if (userStore.userId === userId) {
           label = "You have completed this workout";
         }
-        stats.completion.forEach((item, index) => {
+        stats.completion.forEach((item) => {
           attr.push({
             key: "completed",
             dot: colors[index < colors.length ? index : 0],
