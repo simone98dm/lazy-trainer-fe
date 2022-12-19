@@ -4,7 +4,7 @@ export interface CalendarMarker {
     class: string;
     fillMode: string;
   };
-  dot?: boolean;
+  dot?: string;
   dates: Date;
   popover?: {
     label: string;
