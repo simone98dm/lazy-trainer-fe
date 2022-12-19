@@ -26,12 +26,15 @@ export const useNotificationStore = defineStore("notification", {
   },
   actions: {
     async retrieveUserNotifications() {
-      const { data, error } = await supabase.from("notifications").select();
+      const userStore = useUserStore();
+      const { data, error } = await supabase
+        .from("notifications")
+        .select()
+        .or(`userId.eq.broadcast,userId.eq.${userStore.userId}`);
       if (!error) {
         this.notifications = mapNotifications(data as INotification[]);
 
-        const userStore = useUserStore();
-        supabase
+        await supabase
           .channel("public:notifications")
           .on(
             "postgres_changes",
@@ -42,11 +45,9 @@ export const useNotificationStore = defineStore("notification", {
               filter: `userId=eq.${userStore.userId}`,
             },
             (payload) => {
-              const mappedNotification = [
-                ...this.notifications,
-                ...mapNotifications([payload.new as INotification]),
-              ];
-              this.notifications = mappedNotification;
+              this.notifications.push(
+                ...mapNotifications([payload.new as INotification])
+              );
             }
           )
           .on(
@@ -58,11 +59,9 @@ export const useNotificationStore = defineStore("notification", {
               filter: `userId=eq.broadcast`,
             },
             (payload) => {
-              const mappedNotification = [
-                ...this.notifications,
-                ...mapNotifications([payload.new as INotification]),
-              ];
-              this.notifications = mappedNotification;
+              this.notifications.push(
+                ...mapNotifications([payload.new as INotification])
+              );
             }
           )
           .subscribe();
