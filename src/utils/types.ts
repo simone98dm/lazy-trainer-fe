@@ -32,4 +32,5 @@ export type Notification = {
   readAt: string;
   type: number;
   isRead: boolean;
+  formattedDate: string;
 };

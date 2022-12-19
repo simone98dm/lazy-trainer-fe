@@ -29,15 +29,8 @@
     <NotificationItem
       :title="notification.title"
       :description="notification.message"
-      :caption="
-        Intl.DateTimeFormat('it-IT', {
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric',
-          hour: 'numeric',
-          minute: 'numeric',
-        }).format(new Date(notification.createdAt))
-      "
+      :type="notification.type"
+      :caption="notification.formattedDate"
       :is-read="notification.isRead"
     />
   </div>

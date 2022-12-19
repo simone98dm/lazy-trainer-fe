@@ -20,6 +20,9 @@ export const useNotificationStore = defineStore("notification", {
           new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
     },
+    hasUnreadNotifications(state) {
+      return state.notifications.some((notification) => !notification.isRead);
+    },
   },
   actions: {
     async retrieveUserNotifications() {
@@ -38,13 +41,27 @@ export const useNotificationStore = defineStore("notification", {
               table: "notifications",
               filter: `userId=eq.${userStore.userId}`,
             },
-
             (payload) => {
               const mappedNotification = [
                 ...this.notifications,
                 ...mapNotifications([payload.new as INotification]),
               ];
-
+              this.notifications = mappedNotification;
+            }
+          )
+          .on(
+            "postgres_changes",
+            {
+              event: "INSERT",
+              schema: "public",
+              table: "notifications",
+              filter: `userId=eq.broadcast`,
+            },
+            (payload) => {
+              const mappedNotification = [
+                ...this.notifications,
+                ...mapNotifications([payload.new as INotification]),
+              ];
               this.notifications = mappedNotification;
             }
           )
@@ -67,5 +84,12 @@ function mapNotifications(data: INotification[]): Notification[] {
     readAt: notification.read_at,
     type: notification.type,
     isRead: !!notification.read_at,
+    formattedDate: Intl.DateTimeFormat("it-IT", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+    }).format(new Date(notification.created_at)),
   }));
 }

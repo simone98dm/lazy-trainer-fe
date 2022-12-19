@@ -1,18 +1,19 @@
 <script setup lang="ts">
-  defineProps(["title", "description", "caption", "isRead"]);
+  defineProps(["title", "description", "caption", "isRead", "type"]);
 </script>
+
 <template>
-  <div class="flex flex-col rounded-xl p-4 shadow-lg mb-2 bg-white">
+  <Card :highlight="type === 1">
     <span
       class="relative rounded-full h-3 w-3 bg-red-500 ml-auto"
-      v-if="!isRead"
+      v-if="true"
     ></span>
-    <p class="text-xs text-gray-500 mb-2">
-      {{ caption }}
-    </p>
-    <h4 class="text-gray-600 font-bold text-3xl inline mb-2">{{ title }}</h4>
-    <p class="text-slate-500 text-md mb-2">
+    <h4 class="text-gray-700 font-bold text-3xl inline mb-2">{{ title }}</h4>
+    <p class="text-slate-600 text-md mb-2">
       {{ description }}
     </p>
-  </div>
+    <p class="text-xs text-gray-400 mb-2">
+      {{ caption }}
+    </p>
+  </Card>
 </template>
