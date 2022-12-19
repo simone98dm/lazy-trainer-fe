@@ -23,6 +23,9 @@
       <router-link v-if="user.isTrainer" to="/group" class="rounded-full p-3">
         <Icon component="groups" />
       </router-link>
+      <router-link to="/notifications" class="rounded-full p-3">
+        <Icon component="notifications" />
+      </router-link>
       <router-link to="/settings" class="rounded-full p-3">
         <Icon component="settings" />
       </router-link>
