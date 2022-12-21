@@ -19,7 +19,7 @@ export async function getStorage<T>(name: string): Promise<T | undefined> {
     if (!data) {
       data = await get(name, customStore);
       if (data) {
-        saveStorage(name, data);
+        await saveStorage(name, data);
       }
     }
     if (!data) {
