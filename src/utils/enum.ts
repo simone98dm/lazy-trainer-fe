@@ -18,6 +18,12 @@ export enum ButtonColor {
   TRASPARENT,
 }
 
+export enum ButtonSize {
+  SMALL,
+  MEDIUM,
+  LARGE,
+}
+
 export enum Role {
   NORMAL,
   TRAINER,

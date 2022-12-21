@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed, defineAsyncComponent, inject, ref } from "vue";
+  import { computed, inject, ref } from "vue";
   import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
   import ding from "~/assets/audio/ding.mp3";
   import horn from "~/assets/audio/horn.mp3";
@@ -9,6 +9,7 @@
     FULL_DASH_ARRAY,
     ButtonColor,
     logOptions,
+    ButtonSize,
   } from "~/utils";
   import { IActivity } from "~/models/Activity";
   import {
@@ -264,14 +265,12 @@
       />
       <ImageLoader :src="timerStore.getNextActivity?.videoUrl" />
     </div>
-    <div v-else>
-      <h1 class="flex flex-col text-center my-20 text-pink-600">
-        <span class="text-4xl">Total reps:</span>
-        <span class="text-9xl font-bold">
-          {{ timerStore.getCurrentActivity?.reps }}
-        </span>
-      </h1>
-    </div>
+    <h1 class="flex flex-col text-center my-20 text-pink-600" v-else>
+      <span class="text-4xl">Total reps:</span>
+      <span class="text-9xl font-bold">
+        {{ timerStore.getCurrentActivity?.reps }}
+      </span>
+    </h1>
 
     <div class="w-full flex flex-col justify-center mb-3">
       <div class="mb-3">
@@ -282,6 +281,9 @@
                 ? 'stop_circle'
                 : 'play_circle'
               : 'skip_next'
+          "
+          :color="
+            timerStore.isRunning ? ButtonColor.DANGER : ButtonColor.PRIMARY
           "
           :label="
             timerStore.isTimerBasedActivity
@@ -305,13 +307,12 @@
       </div>
     </div>
     <div
-      class="text-center mb-6"
+      class="text-center mb-3"
       v-if="timerStore.getCurrentActivity?.requestChange"
     >
       <p class="text-red-600">Change request sended, wait for changes...</p>
     </div>
-    <hr class="mb-6" />
-    <div class="text-center text-slate-500 mb-6">
+    <div class="text-center text-slate-500 mb-3">
       Next activty:
       <h1 v-if="timerStore.getNextActivity" class="text-4xl font-bolder">
         {{ timerStore.getNextActivity.name }}

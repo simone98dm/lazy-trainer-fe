@@ -4,7 +4,7 @@ import { IPlan } from "~/models/Plan";
 import { ISession } from "~/models/Session";
 import { defineStore } from "pinia";
 import { IActivity } from "~/models/Activity";
-import { DataAction, parseSessions } from "~/utils";
+import { DataAction, parseSessions, Role } from "~/utils";
 import { getStorage, saveStorage } from "~/helpers/storage";
 import { v4 as uuid } from "uuid";
 import {
@@ -28,7 +28,13 @@ export const useActivityStore = defineStore("activity", {
   state: () => ({
     plan: undefined as IPlan | undefined,
     duplicateActivities: undefined as IActivity[] | undefined,
-    completionDates: undefined as string[] | undefined,
+    completionDates: undefined as
+      | {
+          userId: string;
+          userName?: string;
+          completion: string[];
+        }[]
+      | undefined,
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
@@ -343,10 +349,13 @@ export const useActivityStore = defineStore("activity", {
             this.completionDates = [];
           }
           const alradyExists = this.completionDates?.find((x) =>
-            checkCompleteDate(new Date(x), d)
+            checkCompleteDate(
+              x.completion.map((k) => new Date(k)),
+              d
+            )
           );
           if (!alradyExists) {
-            this.completionDates?.push(d.toISOString());
+            this.completionDates.map((x) => x.completion.push(d.toISOString()));
           }
         })
         .finally(() => settingsStore.loading(false));
@@ -357,18 +366,24 @@ export const useActivityStore = defineStore("activity", {
       const userStore = useUserStore();
       await getUserStats(userStore.token)
         .then((response) => response?.json())
-        .then((response: { completion: string[] }) => {
-          this.completionDates = response.completion;
+        .then((response: { userId: string; completion: string[] }[]) => {
+          const userState = useUserStore();
+          if (userState.role === Role.TRAINER) {
+            this.completionDates = response.flat();
+          } else {
+            this.completionDates = response;
+          }
         })
         .finally(() => settingsStore.loading(false));
     },
   },
 });
 
-function checkCompleteDate(complete: Date, currentDate: Date) {
-  return (
-    complete.getDate() === currentDate.getDate() &&
-    complete.getMonth() === currentDate.getMonth() &&
-    complete.getFullYear() === currentDate.getFullYear()
+function checkCompleteDate(completionDates: Date[], currentDate: Date) {
+  return completionDates.filter(
+    (date) =>
+      date.getDate() === currentDate.getDate() &&
+      date.getMonth() === currentDate.getMonth() &&
+      date.getFullYear() === currentDate.getFullYear()
   );
 }
