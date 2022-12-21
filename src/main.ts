@@ -10,6 +10,7 @@ import "material-icons/iconfont/material-icons.css";
 import { customLogger } from "./helpers/logger";
 import VCalendar from "v-calendar";
 import "v-calendar/dist/style.css";
+import { initNotification } from "./utils/supabase";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -33,6 +34,8 @@ app.use(Hotjar, {
 });
 app.use(VCalendar, {});
 app.provide("$logger", customLogger);
+
+initNotification();
 
 initializeApp(firebaseConfig);
 

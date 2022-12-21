@@ -1,13 +1,9 @@
 import { defineStore } from "pinia";
 import { markNotificationsAsRead } from "~/helpers/http";
-import { createClient } from "@supabase/supabase-js";
 import { useUserStore } from "./user";
 import { INotification } from "~/models/Notification";
 import { Notification } from "~/utils";
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_NOTIFICATION_URL,
-  import.meta.env.VITE_SUPABASE_NOTIFICATION_KEY
-);
+import { notificationClient } from "~/utils/supabase";
 
 export const useNotificationStore = defineStore("notification", {
   state: () => ({
@@ -21,20 +17,24 @@ export const useNotificationStore = defineStore("notification", {
       );
     },
     hasUnreadNotifications(state) {
-      return state.notifications.some((notification) => !notification.isRead);
+      return (
+        state.notifications.filter((notification) => !notification.isRead)
+          .length > 0
+      );
     },
   },
   actions: {
     async retrieveUserNotifications() {
+      console.log("retrieveUserNotifications");
       const userStore = useUserStore();
-      const { data, error } = await supabase
+      const { data, error } = await notificationClient
         .from("notifications")
         .select()
         .or(`userId.eq.broadcast,userId.eq.${userStore.userId}`);
       if (!error) {
         this.notifications = mapNotifications(data as INotification[]);
 
-        await supabase
+        await notificationClient
           .channel("public:notifications")
           .on(
             "postgres_changes",
@@ -44,7 +44,7 @@ export const useNotificationStore = defineStore("notification", {
               table: "notifications",
               filter: `userId=eq.${userStore.userId}`,
             },
-            (payload) => {
+            (payload: any) => {
               this.notifications.push(
                 ...mapNotifications([payload.new as INotification])
               );
@@ -58,7 +58,7 @@ export const useNotificationStore = defineStore("notification", {
               table: "notifications",
               filter: `userId=eq.broadcast`,
             },
-            (payload) => {
+            (payload: any) => {
               this.notifications.push(
                 ...mapNotifications([payload.new as INotification])
               );
@@ -68,7 +68,34 @@ export const useNotificationStore = defineStore("notification", {
       }
     },
     async markAsRead(id?: string) {
-      await markNotificationsAsRead(id);
+      const userStore = useUserStore();
+      const ids = [];
+      if (!id) {
+        ids.push(...this.notifications.map((notification) => notification.id));
+      }
+
+      await ids.map(
+        async (id) => await markNotificationsAsRead(userStore.userId, id)
+      );
+
+      if (id) {
+        const notificationIndex = this.notifications.findIndex(
+          (notification) => notification.id === id
+        );
+        if (notificationIndex) {
+          this.notifications[notificationIndex].isRead = true;
+          this.notifications[notificationIndex].readAt =
+            new Date().toISOString();
+        }
+      } else {
+        this.notifications = this.notifications.map((notification) => ({
+          ...notification,
+          isRead: true,
+          readAt: notification.readAt
+            ? notification.readAt
+            : new Date().toISOString(),
+        }));
+      }
     },
   },
 });

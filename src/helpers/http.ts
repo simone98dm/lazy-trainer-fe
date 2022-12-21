@@ -1,4 +1,5 @@
 import { baseUrl } from "~/utils";
+import { notificationClient } from "~/utils/supabase";
 import log from "./logger";
 
 const buildHeaders = (token: string) => ({
@@ -101,15 +102,17 @@ export async function requestActivityChange(token: string, activityId: string) {
   }
 }
 
-export async function markNotificationsAsRead(id?: string) {
+export async function markNotificationsAsRead(userId: string, id: string) {
   try {
-    return await fetch(`${baseUrl}/api/notification`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
-    });
+    const { data, error } = await notificationClient
+      .from("notifications")
+      .update({ read_at: new Date() })
+      .eq("userId", userId)
+      .or(`id.eq.broadcast,id.eq.${id}`);
+
+    if (error) {
+      throw error;
+    }
   } catch (error) {
     log(JSON.stringify(error), "error");
   }

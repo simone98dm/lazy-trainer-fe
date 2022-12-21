@@ -6,7 +6,9 @@
   const settingsStore = useSettingStore();
   settingsStore.setHeader("Notifications");
 
-  notificationStore.retrieveUserNotifications();
+  setTimeout(() => {
+    notificationStore.markAsRead();
+  }, 5000);
 </script>
 
 <template>
@@ -21,17 +23,14 @@
       </div>
     </div>
   </div>
-  <div
+  <NotificationItem
     v-else
     v-for="notification in notificationStore.getUserNotifications"
     :key="notification.id"
-  >
-    <NotificationItem
-      :title="notification.title"
-      :description="notification.message"
-      :type="notification.type"
-      :caption="notification.formattedDate"
-      :is-read="notification.isRead"
-    />
-  </div>
+    :title="notification.title"
+    :description="notification.message"
+    :type="notification.type"
+    :caption="notification.formattedDate"
+    :is-read="notification.isRead"
+  />
 </template>
