@@ -3,6 +3,7 @@ import { IUserResponse } from "../models/User";
 import { Role } from "../utils";
 import { getGroups, signIn, userInfo, verifyUser } from "../helpers/http";
 import { clearStorage, getStorage, saveStorage } from "~/helpers/storage";
+import log from "~/helpers/logger";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
@@ -31,21 +32,25 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     async signIn(username: string, password: string) {
-      return await signIn(username, password).then(async (response) => {
-        if (response) {
+      return await signIn(username, password)
+        .then(async (response) => {
           const { token, id, name, role } = response;
+          if (token && id) {
+            this.token = token;
+            this.userId = id;
+            this.username = name;
+            this.role = role as Role;
 
-          this.token = token;
-          this.userId = id;
-          this.username = name;
-          this.role = role as Role;
+            await saveStorage("_token", { token });
+            return { id };
+          }
 
-          await saveStorage("_token", { token });
-          return { id };
-        }
-
-        return { err: response.error };
-      });
+          return { err: response.error };
+        })
+        .catch((err) => {
+          log(err, "error");
+          return { id: undefined, err: "Error" };
+        });
     },
     async verifyStorage() {
       const t = await getStorage<{ token: string }>("_token");
