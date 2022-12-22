@@ -7,6 +7,7 @@
 </script>
 
 <template>
+  <Offline />
   <div
     class="fixed left-0 bottom-0 w-full rounded-t-xl bg-white px-5 py-2 shadow-sm shadow-gray-300"
   >

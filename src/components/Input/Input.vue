@@ -26,7 +26,7 @@
   <input
     :value="value"
     :class="[
-      'appearance-none block w-full bg-white border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none',
+      'appearance-none block w-full bg-white border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:border-indigo-500',
       { 'border-red-600': hasError },
     ]"
     :name="name"
