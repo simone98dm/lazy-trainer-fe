@@ -16,16 +16,24 @@
         :to="{ name: 'home', params: { planId } }"
         class="rounded-full p-3"
       >
-        <Icon component="house" />
+        <div class="flex justify-center items-center">
+          <Icon component="house" />
+        </div>
       </router-link>
       <router-link to="/dashboard" class="rounded-full p-3">
-        <Icon component="dashboard" />
+        <div class="flex justify-center items-center">
+          <Icon component="dashboard" />
+        </div>
       </router-link>
       <router-link v-if="user.isTrainer" to="/group" class="rounded-full p-3">
-        <Icon component="groups" />
+        <div class="flex justify-center items-center">
+          <Icon component="groups" />
+        </div>
       </router-link>
       <router-link to="/settings" class="rounded-full p-3">
-        <Icon component="settings" />
+        <div class="flex justify-center items-center">
+          <Icon component="settings" />
+        </div>
       </router-link>
     </nav>
   </div>
