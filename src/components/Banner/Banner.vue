@@ -1,10 +1,16 @@
 <script setup lang="ts">
-  defineProps(["text"]);
+  defineProps(["text", "color"]);
 </script>
 
 <template>
-  <div class="fixed bottom-18 left-0 w-full">
-    <div class="bg-red-400 text-white text-center py-1 lg:px-4">
+  <div class="fixed bottom-16 left-0 w-full">
+    <div
+      :class="[
+        { 'bg-red-400': color === 'error' },
+        { 'bg-green-400': color === 'success' },
+        'text-white text-center py-1 lg:px-4',
+      ]"
+    >
       <p class="p-2">
         {{ text }}
       </p>
@@ -18,7 +24,7 @@
 </template>
 
 <style scoped>
-  .bottom-18 {
-    bottom: 4.5rem;
+  .bottom-16 {
+    bottom: 4rem;
   }
 </style>
