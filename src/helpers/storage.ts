@@ -19,7 +19,8 @@ export async function getStorage<T>(name: string): Promise<T | undefined> {
     if (!data) {
       data = await get(name, customStore);
       if (data) {
-        await saveStorage(name, data);
+        const d = JSON.parse(data);
+        await saveStorage(name, d);
       }
     }
     if (!data) {
