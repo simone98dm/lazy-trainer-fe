@@ -73,7 +73,7 @@
       activityStore.getMissingDays.length > 0
     "
     icon="add"
-    full="true"
+    :full="true"
     :to="{ name: 'session' }"
     :type="LinkType.BUTTON"
     label="Add day activities"

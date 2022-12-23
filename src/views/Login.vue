@@ -111,7 +111,7 @@
           :disabled="isLoading"
           label="Login"
           icon="login"
-          full="true"
+          :full="true"
           @click="submit"
         />
       </div>

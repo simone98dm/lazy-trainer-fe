@@ -149,7 +149,7 @@
         v-if="!userStore.isTrainer"
         :color="ButtonColor.LIGHT"
         :loading="syncStatus"
-        full="true"
+        :full="true"
         icon="cloud_sync"
         label="Sync data"
         @click="syncProfile"
@@ -158,7 +158,7 @@
     <div class="w-full flex justify-center mb-3">
       <Button
         :color="ButtonColor.PRIMARY"
-        full="true"
+        :full="true"
         icon="logout"
         label="Logout"
         @click="logout"

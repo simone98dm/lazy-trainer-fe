@@ -170,14 +170,14 @@
         <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
           <Button
             v-if="dayOfWeek !== -1"
-            full="true"
+            :full="true"
             :icon="!isNew() ? 'save' : 'add'"
             :label="!isNew() ? 'Save' : 'Create'"
             :color="ButtonColor.SUCCESS"
             @click="save"
           />
           <Button
-            full="true"
+            :full="true"
             v-if="!isNew()"
             icon="delete"
             :color="ButtonColor.DANGER"

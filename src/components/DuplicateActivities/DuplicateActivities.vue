@@ -60,14 +60,14 @@
     </template>
     <template #actions>
       <Button
-        full="true"
+        :full="true"
         icon="cancel"
         :color="ButtonColor.DANGER"
         label="Cancel"
         @click="$emit('close')"
       />
       <Button
-        full="true"
+        :full="true"
         icon="save"
         :color="ButtonColor.SUCCESS"
         label="Duplicate"

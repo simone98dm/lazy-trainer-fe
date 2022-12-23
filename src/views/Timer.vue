@@ -292,7 +292,7 @@
                 : 'Play'
               : 'Next'
           "
-          full="true"
+          :full="true"
           @click="toggleTimer"
         />
       </div>
@@ -300,7 +300,7 @@
         <Button
           v-if="settingsStore.isEasyModeEnabled"
           label="Skip"
-          full="true"
+          :full="true"
           @click="skipActivity"
           :color="ButtonColor.LIGHT"
         />

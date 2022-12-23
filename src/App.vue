@@ -23,6 +23,7 @@
         </transition>
       </router-view>
     </div>
+    <CookieBanner />
     <Footer v-if="!isLogin() && !hideDecoration()" />
   </div>
   <GlobalLoading />

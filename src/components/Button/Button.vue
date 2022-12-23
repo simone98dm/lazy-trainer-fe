@@ -1,18 +1,27 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores";
   import { ButtonColor, ButtonSize } from "~/utils";
-  const props = defineProps([
-    "full",
-    "size",
-    "label",
-    "color",
-    "icon",
-    "theme",
-    "loading",
-    "circular",
-  ]);
+  const props = defineProps({
+    full: { type: Boolean, required: false, default: false },
+    size: { type: Number, required: false, default: ButtonSize.MEDIUM },
+    label: { type: String, required: false, default: "" },
+    color: { type: Number, required: false, default: ButtonColor.PRIMARY },
+    icon: { type: String, required: false, default: "" },
+    loading: { type: Boolean, required: false, default: false },
+    circular: { type: Boolean, required: false, default: false },
+  });
   const emit = defineEmits(["click"]);
   const user = useUserStore();
+
+  const ColorMapping = {
+    [ButtonColor.PRIMARY]: "bg-indigo-600 hover:bg-indigo-500 text-gray-100",
+    [ButtonColor.DANGER]: "bg-red-600 hover:bg-red-500 text-gray-100",
+    [ButtonColor.DARK]: "bg-slate-800 hover:bg-slate-500 text-gray-100",
+    [ButtonColor.LIGHT]: "bg-white hover:bg-slate-100 text-black",
+    [ButtonColor.SUCCESS]: "bg-green-600 hover:bg-green-400 text-gray-100",
+    [ButtonColor.WARNING]: "bg-yellow-600 hover:bg-yellow-500 text-gray-100",
+    [ButtonColor.TRASPARENT]: "hover:bg-slate-50 text-black",
+  };
 </script>
 
 <template>
@@ -22,41 +31,14 @@
       'justify-center',
       'items-center',
       'font-bold',
+      ColorMapping[props.color as ButtonColor ?? ButtonColor.PRIMARY],
       { 'rounded-full': circular },
       { 'rounded-lg': !circular },
       { 'w-full': props.full ?? false },
       {
-        'bg-indigo-600 hover:bg-indigo-500 text-gray-100':
-          (!props.color || props.color === ButtonColor.PRIMARY) &&
-          !user.isTrainer,
-      },
-      {
         'bg-purple-600 hover:bg-purple-500 text-gray-100':
           (!props.color || props.color === ButtonColor.PRIMARY) &&
           user.isTrainer,
-      },
-      {
-        'bg-red-600 hover:bg-red-500 text-gray-100':
-          props.color === ButtonColor.DANGER,
-      },
-      {
-        'bg-green-600 hover:bg-green-500 text-gray-100':
-          props.color === ButtonColor.SUCCESS,
-      },
-      {
-        'bg-purple-600 hover:bg-purple-500 text-gray-100':
-          props.color === ButtonColor.WARNING,
-      },
-      {
-        'bg-slate-800 hover:bg-slate-500 text-gray-100':
-          props.color === ButtonColor.DARK,
-      },
-      {
-        'bg-white hover:bg-slate-100 text-black':
-          props.color === ButtonColor.LIGHT,
-      },
-      {
-        'hover:bg-slate-50 text-black': props.color === ButtonColor.TRASPARENT,
       },
       {
         'shadow-lg': props.color !== ButtonColor.TRASPARENT,
