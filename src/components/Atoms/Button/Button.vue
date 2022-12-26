@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { computed } from "vue";
   import { useUserStore } from "~/stores";
   import { ButtonColor, ButtonSize } from "~/utils";
   const props = defineProps({
@@ -13,15 +14,26 @@
   const emit = defineEmits(["click"]);
   const user = useUserStore();
 
-  const ColorMapping = {
-    [ButtonColor.PRIMARY]: "bg-indigo-600 hover:bg-indigo-500 text-gray-100",
-    [ButtonColor.DANGER]: "bg-red-600 hover:bg-red-500 text-gray-100",
-    [ButtonColor.DARK]: "bg-slate-800 hover:bg-slate-500 text-gray-100",
-    [ButtonColor.LIGHT]: "bg-white hover:bg-slate-100 text-black",
-    [ButtonColor.SUCCESS]: "bg-green-600 hover:bg-green-400 text-gray-100",
-    [ButtonColor.WARNING]: "bg-yellow-600 hover:bg-yellow-500 text-gray-100",
-    [ButtonColor.TRASPARENT]: "hover:bg-slate-50 text-black",
-  };
+  const buttonColor = computed(() => {
+    switch ((props.color as ButtonColor) ?? ButtonColor.PRIMARY) {
+      case ButtonColor.PRIMARY:
+        return "bg-indigo-600 hover:bg-indigo-500 text-gray-100";
+      case ButtonColor.DANGER:
+        return "bg-red-600 hover:bg-red-500 text-gray-100";
+      case ButtonColor.DARK:
+        return "bg-slate-800 hover:bg-slate-500 text-gray-100";
+      case ButtonColor.LIGHT:
+        return "bg-white hover:bg-slate-100 text-black";
+      case ButtonColor.SUCCESS:
+        return "bg-green-600 hover:bg-green-400 text-gray-100";
+      case ButtonColor.WARNING:
+        return "bg-yellow-600 hover:bg-yellow-500 text-gray-100";
+      case ButtonColor.TRASPARENT:
+        return "hover:bg-slate-50 text-black";
+      default:
+        return "bg-indigo-600 hover:bg-indigo-500 text-gray-100";
+    }
+  });
 </script>
 
 <template>
@@ -31,7 +43,7 @@
       'justify-center',
       'items-center',
       'font-bold',
-      ColorMapping[props.color as ButtonColor ?? ButtonColor.PRIMARY],
+      buttonColor,
       { 'rounded-full': circular },
       { 'rounded-lg': !circular },
       { 'w-full': props.full ?? false },
