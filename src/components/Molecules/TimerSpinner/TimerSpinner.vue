@@ -1,10 +1,22 @@
 <script setup lang="ts">
-  const props = defineProps([
-    "strokeDasharray",
-    "remainingPathColor",
-    "baseTimerLabel",
-    "size",
-  ]);
+  const props = defineProps({
+    strokeDasharray: {
+      type: String,
+      default: "283",
+    },
+    remainingPathColor: {
+      type: String,
+      default: "green",
+    },
+    baseTimerLabel: {
+      type: String,
+      default: "00:00",
+    },
+    size: {
+      type: String,
+      default: "medium",
+    },
+  });
 </script>
 
 <template>

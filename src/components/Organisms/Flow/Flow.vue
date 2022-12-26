@@ -1,10 +1,20 @@
 <script setup lang="ts">
   import { useRouter } from "vue-router";
+  import { ICustomSession, ISession } from "~/models/Session";
   import { useActivityStore, useTimerStore, useUserStore } from "~/stores";
   import { LinkType, ButtonColor, getDayOfTheWeek } from "~/utils";
   const user = useUserStore();
   const activityStore = useActivityStore();
-  const props = defineProps(["list", "loading"]);
+  const props = defineProps({
+    list: {
+      type: Array<ICustomSession>,
+      default: () => [],
+    },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
+  });
   const router = useRouter();
 
   function isDayActivity(activity: any) {
@@ -38,8 +48,8 @@
         v-for="item in props.list"
         :name="item.name"
         :description="item.description"
-        :id="item.id"
         :key="item.id"
+        :id="item.id"
         :highlight="
           !user.isTrainer && isDayActivity(item) ? 'Today session' : ''
         "
@@ -75,7 +85,6 @@
     icon="add"
     :full="true"
     :to="{ name: 'session' }"
-    :type="LinkType.BUTTON"
     label="Add day activities"
   />
 </template>

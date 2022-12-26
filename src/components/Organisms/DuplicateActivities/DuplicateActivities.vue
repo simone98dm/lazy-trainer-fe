@@ -1,14 +1,31 @@
 <script setup lang="ts">
   import { ref } from "vue";
+  import { IActivity } from "~/models/Activity";
   import { ButtonColor, getDayOfTheWeek } from "~/utils";
 
-  const props = defineProps([
-    "show",
-    "dayOfWeek",
-    "existingForm",
-    "isTrainer",
-    "missingDays",
-  ]);
+  const props = defineProps({
+    show: {
+      type: Boolean,
+      required: true,
+    },
+    dayOfWeek: {
+      type: Number,
+      required: false,
+      default: -1,
+    },
+    existingForm: {
+      type: Array<IActivity>,
+      required: true,
+    },
+    isTrainer: {
+      type: Boolean,
+      required: true,
+    },
+    missingDays: {
+      type: Array<number>,
+      required: true,
+    },
+  });
 
   let dayOfWeek = ref(props.dayOfWeek || -1);
 

@@ -1,14 +1,46 @@
 <script setup lang="ts">
-  defineProps([
-    "value",
-    "label",
-    "hasError",
-    "error",
-    "id",
-    "name",
-    "type",
-    "disabled",
-  ]);
+  defineProps({
+    value: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    label: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    error: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    id: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    name: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    type: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    hasError: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  });
   defineEmits(["change", "click", "keyup"]);
 </script>
 

@@ -3,7 +3,12 @@
   import { ref, watch } from "vue";
   import { computed } from "@vue/reactivity";
 
-  const props = defineProps(["time", "hasError"]);
+  const props = defineProps({
+    time: {
+      type: Number,
+      required: true,
+    },
+  });
   const emits = defineEmits(["timeSelected"]);
 
   let showModal = ref(false);

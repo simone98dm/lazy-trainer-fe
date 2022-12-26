@@ -1,6 +1,12 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores";
-  const props = defineProps(["small"]);
+  const props = defineProps({
+    small: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  });
   const user = useUserStore();
 </script>
 

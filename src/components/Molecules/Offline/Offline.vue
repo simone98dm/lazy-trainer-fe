@@ -1,8 +1,6 @@
 <script lang="ts" setup>
   import { ref } from "vue";
-
   let isOnline = ref(true);
-
   let dismissBanner = ref(false);
 </script>
 

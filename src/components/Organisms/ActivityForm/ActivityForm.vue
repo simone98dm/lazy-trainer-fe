@@ -5,19 +5,52 @@
   import { useUserStore } from "~/stores";
   import { ButtonColor } from "~/utils";
 
-  const props = defineProps([
-    "id",
-    "dayOfWeek",
-    "name",
-    "description",
-    "time",
-    "warmup",
-    "order",
-    "videoUrl",
-    "reps",
-    "allowDetele",
-    "i",
-  ]);
+  const props = defineProps({
+    id: {
+      type: String,
+      default: "",
+    },
+    dayOfWeek: {
+      type: Number,
+      default: 0,
+    },
+    name: {
+      type: String,
+      default: "",
+    },
+    description: {
+      type: String,
+      default: "",
+    },
+    time: {
+      type: Number,
+      default: 0,
+    },
+    warmup: {
+      type: Boolean,
+      default: false,
+    },
+    order: {
+      type: Number,
+      default: 0,
+    },
+    videoUrl: {
+      type: String,
+      default: "",
+    },
+    reps: {
+      type: Number,
+      default: 0,
+    },
+    allowDetele: {
+      type: Boolean,
+      default: true,
+    },
+    i: {
+      type: Number,
+      default: 0,
+    },
+  });
   const emits = defineEmits(["update", "remove"]);
   const user = useUserStore();
   const uuid = uuidv4();
@@ -162,7 +195,7 @@
               />
               <Input
                 v-else
-                :value="reps"
+                :value="`${reps}`"
                 @change="(v: number) => (reps = v)"
                 id="activityUrl"
                 name="activityUrlField"

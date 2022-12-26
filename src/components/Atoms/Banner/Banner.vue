@@ -1,5 +1,15 @@
 <script setup lang="ts">
-  defineProps(["text", "color"]);
+  defineProps({
+    text: {
+      type: String,
+      required: true,
+    },
+    color: {
+      type: String,
+      required: false,
+      default: "primary",
+    },
+  });
 </script>
 
 <template>
@@ -8,6 +18,7 @@
       :class="[
         { 'bg-red-400': color === 'error' },
         { 'bg-green-300': color === 'success' },
+        { 'bg-indigo-300': color === 'success' },
         'text-white text-center py-1 lg:px-4',
       ]"
     >

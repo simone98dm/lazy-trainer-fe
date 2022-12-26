@@ -1,12 +1,28 @@
 <script setup lang="ts">
-  import { ref } from "vue";
+  import { PropType, ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { ISession } from "~/models/Session";
   import { ButtonColor, getDayOfTheWeek, days } from "~/utils";
   import { useActivityStore, useUserStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
 
-  const props = defineProps(["id", "dayOfWeek", "existingForm"]);
+  const props = defineProps({
+    id: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    dayOfWeek: {
+      type: Number,
+      required: false,
+      default: -1,
+    },
+    existingForm: {
+      type: Object as PropType<IActivity>,
+      required: false,
+      default: false,
+    },
+  });
   const emits = defineEmits(["save", "remove"]);
 
   const activityStore = useActivityStore();
@@ -37,7 +53,8 @@
       session.dayOfWeek = day;
       session.activities = activities;
     } else if (props.existingForm) {
-      session.activities = [...props.existingForm];
+      session.activities = [];
+      session.activities.push(props.existingForm);
       session.id = uuidv4();
     }
 
@@ -192,7 +209,7 @@
       :day-of-week="dayOfWeek"
       :is-trainer="userStore.isTrainer"
       :missing-days="activityStore.getMissingDays"
-      :existing-form="activityStore.duplicateActivities"
+      :existing-form="activityStore.duplicateActivities || []"
       @close="showDuplicateModal = false"
       @duplicate="duplicateSession"
     />

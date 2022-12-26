@@ -2,12 +2,41 @@
   import { RouterLink } from "vue-router";
   import { LinkType } from "~/utils";
 
-  const props = defineProps(["to", "full", "type", "label", "color", "icon"]);
-  const emit = defineEmits(["click"]);
+  const props = defineProps({
+    to: {
+      type: Object,
+      required: true,
+    },
+    full: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    type: {
+      type: String,
+      required: false,
+      default: LinkType.BUTTON,
+    },
+    label: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    color: {
+      type: String,
+      required: false,
+      default: "primary",
+    },
+    icon: {
+      type: String,
+      required: false,
+      default: "",
+    },
+  });
 </script>
 
 <template>
-  <router-link :to="to" @click="emit('click')">
+  <router-link :to="to" @click="$emit('click')">
     <Button
       v-if="type === LinkType.BUTTON"
       :full="full"

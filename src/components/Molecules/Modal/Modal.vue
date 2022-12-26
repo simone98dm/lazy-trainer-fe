@@ -1,5 +1,16 @@
 <script setup lang="ts">
-  defineProps(["show", "title"]);
+  defineProps({
+    show: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    title: {
+      type: String,
+      required: false,
+      default: "",
+    },
+  });
   defineEmits(["close", "confirm"]);
 </script>
 

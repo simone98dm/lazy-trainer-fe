@@ -1,8 +1,12 @@
 <script setup lang="ts">
-  import { type } from "cypress/types/jquery";
   import { computed, ref, watch } from "vue";
-
-  defineProps(["class"]);
+  defineProps({
+    class: {
+      type: String,
+      required: false,
+      default: "",
+    },
+  });
   const emit = defineEmits(["select"]);
   const minutes = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,

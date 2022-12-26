@@ -1,5 +1,11 @@
 <script setup lang="ts">
-  defineProps(["padding"]);
+  defineProps({
+    padding: {
+      type: String,
+      required: false,
+      default: "medium",
+    },
+  });
 </script>
 
 <template>

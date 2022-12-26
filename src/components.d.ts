@@ -26,7 +26,7 @@ declare module "@vue/runtime-core" {
     ImageLoader: typeof import("./components/Molecules/ImageLoader/ImageLoader.vue")["default"];
     Input: typeof import("./components/Atoms/Input/Input.vue")["default"];
     Item: typeof import("./components/Atoms/Item/Item.vue")["default"];
-    Link: typeof import("./components/Atoms/Link/Link.vue")["default"];
+    Link: typeof import("./components/Molecules/Link/Link.vue")["default"];
     Loading: typeof import("./components/Atoms/Loading/Loading.vue")["default"];
     Modal: typeof import("./components/Molecules/Modal/Modal.vue")["default"];
     Offline: typeof import("./components/Molecules/Offline/Offline.vue")["default"];

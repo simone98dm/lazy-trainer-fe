@@ -2,7 +2,6 @@
   import { getAnalytics, logEvent } from "@firebase/analytics";
   import { useSettingStore, useUserStore } from "~/stores";
   import { GaCustomEvents } from "~/utils";
-
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
 </script>

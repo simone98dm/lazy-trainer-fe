@@ -4,20 +4,54 @@
   import { ButtonColor, GaCustomEvents, LinkType } from "~/utils";
   import { getAnalytics, logEvent } from "@firebase/analytics";
   import { ref } from "vue";
+  import { IActivity } from "~/models/Activity";
 
-  const props = defineProps([
-    "activities",
-    "sessionId",
-    "isWarmup",
-    "allowDrag",
-    "allowDelete",
-    "title",
-    "enableRun",
-    "enableDuplicate",
-    "noFoundMessage",
-    "opened",
-    "compatList",
-  ]);
+  const props = defineProps({
+    activities: {
+      type: Array<IActivity>,
+      default: () => [],
+    },
+    sessionId: {
+      type: String,
+      default: "",
+    },
+    isWarmup: {
+      type: Boolean,
+      default: false,
+    },
+    allowDrag: {
+      type: Boolean,
+      default: false,
+    },
+    allowDelete: {
+      type: Boolean,
+      default: false,
+    },
+    title: {
+      type: String,
+      default: "",
+    },
+    enableRun: {
+      type: Boolean,
+      default: false,
+    },
+    enableDuplicate: {
+      type: Boolean,
+      default: false,
+    },
+    noFoundMessage: {
+      type: String,
+      default: "No activities found",
+    },
+    opened: {
+      type: Boolean,
+      default: true,
+    },
+    compatList: {
+      type: Boolean,
+      default: false,
+    },
+  });
   const userStore = useUserStore();
   const emits = defineEmits(["move", "delete", "run", "duplicate"]);
 
@@ -50,7 +84,7 @@
         :color="ButtonColor.PRIMARY"
         icon="play_arrow"
         :type="LinkType.BUTTON"
-        circular="true"
+        :circular="true"
         label="Start"
         @click="runWorkout"
       />
@@ -109,7 +143,7 @@
                   :color="ButtonColor.DANGER"
                   icon="delete"
                   class="float-right ml-2"
-                  circular="true"
+                  :circular="true"
                   @click.prevent="$emit('delete', element.id)"
                 />
               </div>

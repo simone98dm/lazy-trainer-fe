@@ -2,19 +2,63 @@
   import { computed, ref } from "vue";
   import { ButtonColor } from "~/utils";
 
-  const props = defineProps([
-    "id",
-    "name",
-    "description",
-    "time",
-    "reps",
-    "icon",
-    "requestChange",
-    "highlight",
-    "class",
-    "caption",
-    "noCard",
-  ]);
+  const props = defineProps({
+    id: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    name: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    description: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    time: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    reps: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
+    icon: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    requestChange: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    highlight: {
+      type: String,
+      required: false,
+      default: false,
+    },
+    class: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    caption: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    noCard: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  });
 
   const showFullDescription = ref(false);
   const itemDescription = computed(() => {
