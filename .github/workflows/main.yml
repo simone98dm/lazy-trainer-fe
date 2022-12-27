@@ -8,9 +8,7 @@ on:
       - master
 jobs:
   bump-patch:
-    if:
-      - $CI_COMMIT_MESSAGE =~ /^fix .*$/
-      - github.ref == 'refs/heads/master'
+    if: ${{ ($CI_COMMIT_MESSAGE =~ /^fix .*$/) && (github.ref == 'refs/heads/master') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,9 +27,7 @@ jobs:
           ACTOR_EMAIL: ${{ secrets.ACTOR_EMAIL }}
 
   bump-minor:
-    if:
-      - $CI_COMMIT_MESSAGE =~ /^feature .*$/
-      - github.ref == 'refs/heads/master'
+    if: ${{ ($CI_COMMIT_MESSAGE =~ /^feature .*$/) && (github.ref == 'refs/heads/master') }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
