@@ -40,4 +40,6 @@ initializeOffline();
 
 console.log(`Hello fellows devs👋, app version: ${version}`);
 
+console.log("test");
+
 app.mount("#app");
