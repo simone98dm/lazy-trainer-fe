@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import { useRoute, useRouter } from "vue-router";
-  import { ISession } from "~/models/Session";
+  import { ICustomSession, ISession } from "~/models/Session";
   import { parseSessions } from "~/utils";
   import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
 
@@ -22,7 +22,7 @@
 
   const router = useRouter();
   const route = useRoute();
-  const sessions = ref([] as ISession[] | undefined);
+  const sessions = ref([] as ICustomSession[] | undefined);
 
   if (userStore.isTrainer && route.params.planId) {
     activityStore
@@ -44,8 +44,8 @@
   } else {
     isLoading.value = false;
     pageOptions = {
-      title: "Nothing to see here",
-      subtitle: "Click on groups (bottom bar) to view your clients",
+      title: "Welcome",
+      subtitle: "Click on the group icon to view your clients",
       block: true,
       style: "text-center mt-10",
     };

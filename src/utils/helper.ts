@@ -1,7 +1,7 @@
-import { ISession } from "./../models/Session";
+import { ICustomSession, ISession } from "./../models/Session";
 import { getDayOfTheWeek } from "./dates";
 
-export function parseSessions(session: ISession) {
+export function parseSessions(session: ISession): ICustomSession {
   return {
     ...session,
     description: `${session.activities.length} ${
