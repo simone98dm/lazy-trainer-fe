@@ -8,11 +8,9 @@ on:
       - master
 jobs:
   bump-patch:
-    only:
-      push:
-        branch: [master]
-      variables:
-        - $CI_COMMIT_MESSAGE =~ /^fix .*$/
+    if:
+      - $CI_COMMIT_MESSAGE =~ /^fix .*$/
+      - github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -31,11 +29,9 @@ jobs:
           ACTOR_EMAIL: ${{ secrets.ACTOR_EMAIL }}
 
   bump-minor:
-    only:
-      push:
-        branch: [master]
-      variables:
-        - $CI_COMMIT_MESSAGE =~ /^feature .*$/
+    if:
+      - $CI_COMMIT_MESSAGE =~ /^feature .*$/
+      - github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -55,11 +51,7 @@ jobs:
 
   deploy-preview:
     runs-on: ubuntu-latest
-    only:
-      pull_request:
-        branches:
-          - "feature/**"
-          - "fix/**"
+    if: github.ref != 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
       - name: Install Vercel CLI
@@ -73,9 +65,8 @@ jobs:
 
   deploy-prod:
     runs-on: ubuntu-latest
-    only:
-      push:
-        branch: [master]
+    if: github.ref == 'refs/heads/master'
+    needs: [bump-patch, bump-minor]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
