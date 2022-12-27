@@ -29,13 +29,7 @@ export const useActivityStore = defineStore("activity", {
   state: () => ({
     plan: undefined as IPlan | undefined,
     duplicateActivities: undefined as IActivity[] | undefined,
-    completionDates: undefined as
-      | {
-          userId: string;
-          userName: string;
-          completion: string[];
-        }[]
-      | undefined,
+    completionDates: undefined as ICompletion[] | undefined,
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
@@ -69,7 +63,7 @@ export const useActivityStore = defineStore("activity", {
       return missingDays;
     },
     getCompletedWorkouts(state): ICompletion[] | undefined {
-      return mappedCompletionDates(state.completionDates);
+      return state.completionDates;
     },
   },
   actions: {
@@ -351,12 +345,14 @@ export const useActivityStore = defineStore("activity", {
           }
           const alradyExists = this.completionDates?.find((x) =>
             checkCompleteDate(
-              x.completion.map((k) => new Date(k)),
+              x.stats.completion.map((k) => new Date(k)),
               d
             )
           );
           if (!alradyExists) {
-            this.completionDates.map((x) => x.completion.push(d.toISOString()));
+            this.completionDates.map((x) =>
+              x.stats.completion.push(d.toISOString())
+            );
           }
         })
         .finally(() => settingsStore.loading(false));
@@ -367,22 +363,14 @@ export const useActivityStore = defineStore("activity", {
       const userStore = useUserStore();
       await getUserStats(userStore.token)
         .then((response) => response?.json())
-        .then(
-          (
-            response: {
-              userId: string;
-              userName: string;
-              completion: string[];
-            }[]
-          ) => {
-            const userState = useUserStore();
-            if (userState.role === Role.TRAINER) {
-              this.completionDates = response.flat();
-            } else {
-              this.completionDates = response;
-            }
+        .then((response: ICompletion[]) => {
+          const userState = useUserStore();
+          if (userState.role === Role.TRAINER) {
+            this.completionDates = response.flat();
+          } else {
+            this.completionDates = response;
           }
-        )
+        })
         .finally(() => settingsStore.loading(false));
     },
   },
@@ -395,21 +383,4 @@ function checkCompleteDate(completionDates: Date[], currentDate: Date) {
       date.getMonth() === currentDate.getMonth() &&
       date.getFullYear() === currentDate.getFullYear()
   );
-}
-
-function mappedCompletionDates(
-  completionDates:
-    | { userId: string; userName: string; completion: string[] }[]
-    | undefined
-): ICompletion[] | undefined {
-  if (!completionDates) {
-    return undefined;
-  }
-  return completionDates.map((x) => ({
-    userId: x.userId,
-    userName: x.userName,
-    stats: {
-      completion: x.completion.map((y) => new Date(y).toISOString()),
-    },
-  }));
 }
