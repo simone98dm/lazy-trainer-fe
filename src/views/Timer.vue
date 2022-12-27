@@ -9,7 +9,6 @@
     FULL_DASH_ARRAY,
     ButtonColor,
     logOptions,
-    ButtonSize,
   } from "~/utils";
   import { IActivity } from "~/models/Activity";
   import {
@@ -263,7 +262,7 @@
         :base-timer-label="baseTimerLabel"
         :size="isNextVideo ? 'small' : 'large'"
       />
-      <ImageLoader :src="timerStore.getNextActivity?.videoUrl" />
+      <ImageLoader :src="timerStore.getNextActivity?.videoUrl || ''" />
     </div>
     <h1 class="flex flex-col text-center my-20 text-pink-600" v-else>
       <span class="text-4xl">Total reps:</span>

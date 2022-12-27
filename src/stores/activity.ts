@@ -14,6 +14,7 @@ import {
   getUserStats,
   sendToTrainer,
 } from "~/helpers/http";
+import { ICompletion } from "~/models/Completion";
 
 function generateBlankPlan(): IPlan {
   return {
@@ -31,7 +32,7 @@ export const useActivityStore = defineStore("activity", {
     completionDates: undefined as
       | {
           userId: string;
-          userName?: string;
+          userName: string;
           completion: string[];
         }[]
       | undefined,
@@ -67,8 +68,8 @@ export const useActivityStore = defineStore("activity", {
       }
       return missingDays;
     },
-    getCompletedWorkouts(state) {
-      return state.completionDates;
+    getCompletedWorkouts(state): ICompletion[] | undefined {
+      return mappedCompletionDates(state.completionDates);
     },
   },
   actions: {
@@ -366,14 +367,22 @@ export const useActivityStore = defineStore("activity", {
       const userStore = useUserStore();
       await getUserStats(userStore.token)
         .then((response) => response?.json())
-        .then((response: { userId: string; completion: string[] }[]) => {
-          const userState = useUserStore();
-          if (userState.role === Role.TRAINER) {
-            this.completionDates = response.flat();
-          } else {
-            this.completionDates = response;
+        .then(
+          (
+            response: {
+              userId: string;
+              userName: string;
+              completion: string[];
+            }[]
+          ) => {
+            const userState = useUserStore();
+            if (userState.role === Role.TRAINER) {
+              this.completionDates = response.flat();
+            } else {
+              this.completionDates = response;
+            }
           }
-        })
+        )
         .finally(() => settingsStore.loading(false));
     },
   },
@@ -386,4 +395,21 @@ function checkCompleteDate(completionDates: Date[], currentDate: Date) {
       date.getMonth() === currentDate.getMonth() &&
       date.getFullYear() === currentDate.getFullYear()
   );
+}
+
+function mappedCompletionDates(
+  completionDates:
+    | { userId: string; userName: string; completion: string[] }[]
+    | undefined
+): ICompletion[] | undefined {
+  if (!completionDates) {
+    return undefined;
+  }
+  return completionDates.map((x) => ({
+    userId: x.userId,
+    userName: x.userName,
+    stats: {
+      completion: x.completion.map((y) => new Date(y).toISOString()),
+    },
+  }));
 }
