@@ -66,9 +66,12 @@
     @change="$emit('change', (($event.target as any) || undefined)?.value)"
     @input="$emit('change', (($event.target as any) || undefined)?.value)"
     @click="$emit('click')"
-    @keyup="$emit('keyup', $event)"
+    @keyup="
+      $emit('keyup', $event, (($event.target as any) || undefined)?.value)
+    "
     :disabled="disabled"
     :type="type ?? 'text'"
+    autocomplete="off"
   />
   <span v-if="hasError" class="text-red-600">{{ error }}</span>
 </template>

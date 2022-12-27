@@ -85,6 +85,7 @@
     icon="add"
     :full="true"
     :to="{ name: 'session' }"
+    :type="LinkType.BUTTON"
     label="Add day activities"
   />
 </template>

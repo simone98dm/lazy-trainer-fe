@@ -14,7 +14,7 @@
 <template>
   <div class="min-h-screen bg-gray-50 flex flex-col">
     <Header v-if="!hideDecoration()" />
-    <div class="p-3 w-full lg:w-2/3 md:w-5/6 mx-auto mb-14">
+    <div class="p-4 w-full lg:w-2/3 md:w-5/6 mx-auto mb-14">
       <router-view v-slot="{ Component, route }">
         <transition name="fade" mode="out-in">
           <div :key="(route.name as string)">
@@ -23,7 +23,7 @@
         </transition>
       </router-view>
     </div>
-    <CookieBanner />
+    <!-- <CookieBanner /> -->
     <Footer v-if="!isLogin() && !hideDecoration()" />
   </div>
   <GlobalLoading />

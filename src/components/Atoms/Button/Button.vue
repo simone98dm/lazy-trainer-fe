@@ -3,13 +3,41 @@
   import { useUserStore } from "~/stores";
   import { ButtonColor, ButtonSize } from "~/utils";
   const props = defineProps({
-    full: { type: Boolean, required: false, default: false },
-    size: { type: Number, required: false, default: ButtonSize.MEDIUM },
-    label: { type: String, required: false, default: "" },
-    color: { type: Number, required: false, default: ButtonColor.PRIMARY },
-    icon: { type: String, required: false, default: "" },
-    loading: { type: Boolean, required: false, default: false },
-    circular: { type: Boolean, required: false, default: false },
+    full: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    size: {
+      type: Number,
+      required: false,
+      default: ButtonSize.MEDIUM,
+    },
+    label: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    color: {
+      type: Number,
+      required: false,
+      default: ButtonColor.PRIMARY,
+    },
+    icon: {
+      type: String,
+      required: false,
+      default: "",
+    },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    circular: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   });
   const emit = defineEmits(["click"]);
   const user = useUserStore();
@@ -17,7 +45,9 @@
   const buttonColor = computed(() => {
     switch ((props.color as ButtonColor) ?? ButtonColor.PRIMARY) {
       case ButtonColor.PRIMARY:
-        return "bg-indigo-600 hover:bg-indigo-500 text-gray-100";
+        return !user.isTrainer
+          ? "bg-indigo-600 hover:bg-indigo-500 text-gray-100"
+          : "";
       case ButtonColor.DANGER:
         return "bg-red-600 hover:bg-red-500 text-gray-100";
       case ButtonColor.DARK:

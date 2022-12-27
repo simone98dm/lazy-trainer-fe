@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { computed, ref } from "vue";
-  import { ButtonColor } from "~/utils";
 
   const props = defineProps({
     id: {
@@ -41,7 +40,7 @@
     highlight: {
       type: String,
       required: false,
-      default: false,
+      default: "",
     },
     class: {
       type: String,

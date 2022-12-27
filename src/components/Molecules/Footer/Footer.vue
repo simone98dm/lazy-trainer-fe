@@ -14,23 +14,23 @@
     <nav class="flex justify-around text-gray-900">
       <router-link
         :to="{ name: 'home', params: { planId } }"
-        class="rounded-full p-3"
+        class="rounded-full p-4"
       >
         <div class="flex justify-center items-center">
           <Icon component="house" />
         </div>
       </router-link>
-      <router-link to="/dashboard" class="rounded-full p-3">
+      <router-link to="/dashboard" class="rounded-full p-4">
         <div class="flex justify-center items-center">
           <Icon component="dashboard" />
         </div>
       </router-link>
-      <router-link v-if="user.isTrainer" to="/group" class="rounded-full p-3">
+      <router-link v-if="user.isTrainer" to="/group" class="rounded-full p-4">
         <div class="flex justify-center items-center">
           <Icon component="groups" />
         </div>
       </router-link>
-      <router-link to="/settings" class="rounded-full p-3">
+      <router-link to="/settings" class="rounded-full p-4">
         <div class="flex justify-center items-center">
           <Icon component="settings" />
         </div>

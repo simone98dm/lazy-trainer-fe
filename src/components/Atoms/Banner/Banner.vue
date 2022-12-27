@@ -2,7 +2,8 @@
   defineProps({
     text: {
       type: String,
-      required: true,
+      required: false,
+      default: "",
     },
     color: {
       type: String,
@@ -26,7 +27,7 @@
         <p v-if="text" class="p-2">
           {{ text }}
         </p>
-        <div class="absolute top-0 right-0 p-3">
+        <div class="absolute top-0 right-0 p-4">
           <button @click="$emit('close')">
             <Icon component="close" class="text-white" />
           </button>

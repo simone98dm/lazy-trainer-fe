@@ -124,11 +124,11 @@
           }"
         >
           <Item
+            :id="element.id"
             :name="element.name"
             :description="element.description"
-            :time="element.time"
-            :id="element.id"
-            :reps="element.reps"
+            :time="Number(element.time)"
+            :reps="Number(element.reps)"
             :request-change="element.requestChange"
             :no-card="props.compatList"
             :allow-delete="props.allowDelete"
@@ -155,13 +155,13 @@
     <div v-else>
       <Item
         v-for="activity in props.activities"
+        :id="activity.id"
+        :key="activity.id"
         :no-card="props.compatList"
         :name="activity.name"
         :description="activity.description"
-        :time="activity.time"
-        :id="activity.id"
-        :reps="activity.reps"
-        :key="activity.id"
+        :time="Number(activity.time)"
+        :reps="Number(activity.reps)"
         class="mx-2"
         @delete="$emit('delete-activity', activity)"
       />

@@ -10,7 +10,7 @@
 <template>
   <iframe
     v-if="props.src"
-    class="w-full p-3 mx-auto h-96 sm:h-128"
+    class="w-full p-4 mx-auto h-96 sm:h-128"
     :src="`https://www.youtube.com/embed/${props.src}?&autoplay=1`"
     title="Video player"
     frameborder="0"

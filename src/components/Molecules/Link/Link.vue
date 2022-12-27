@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { RouterLink } from "vue-router";
-  import { LinkType } from "~/utils";
+  import { ButtonColor, LinkType } from "~/utils";
 
   const props = defineProps({
     to: {
@@ -13,9 +13,9 @@
       default: false,
     },
     type: {
-      type: String,
+      type: Number,
       required: false,
-      default: LinkType.BUTTON,
+      default: LinkType.ROUTER,
     },
     label: {
       type: String,
@@ -23,9 +23,9 @@
       default: "",
     },
     color: {
-      type: String,
+      type: Number,
       required: false,
-      default: "primary",
+      default: ButtonColor.PRIMARY,
     },
     icon: {
       type: String,
@@ -40,7 +40,6 @@
     <Button
       v-if="type === LinkType.BUTTON"
       :full="full"
-      :type="type"
       :label="label"
       :color="color"
       :icon="icon"
@@ -55,8 +54,9 @@
       <span
         v-if="props.label"
         class="ml-2 float-left inline text-md sm:text-sm"
-        >{{ props.label }}</span
       >
+        {{ props.label }}
+      </span>
     </div>
   </router-link>
 </template>

@@ -9,6 +9,7 @@ declare module "@vue/runtime-core" {
   export interface GlobalComponents {
     ActivityForm: typeof import("./components/Organisms/ActivityForm/ActivityForm.vue")["default"];
     ActivityList: typeof import("./components/Organisms/ActivityList/ActivityList.vue")["default"];
+    Autocomplete: typeof import("./components/Atoms/Autocomplete/Autocomplete.vue")["default"];
     BackButton: typeof import("./components/Molecules/BackButton/BackButton.vue")["default"];
     Banner: typeof import("./components/Atoms/Banner/Banner.vue")["default"];
     Button: typeof import("./components/Atoms/Button/Button.vue")["default"];
@@ -39,5 +40,7 @@ declare module "@vue/runtime-core" {
     TimePicker: typeof import("./components/Molecules/TimePicker/TimePicker.vue")["default"];
     TimerSpinner: typeof import("./components/Molecules/TimerSpinner/TimerSpinner.vue")["default"];
     TimeSelector: typeof import("./components/Molecules/TimeSelector/TimeSelector.vue")["default"];
+    TrainerTutorial: typeof import("./components/Organisms/Tutorial/TrainerTutorial.vue")["default"];
+    UserTutorial: typeof import("./components/Organisms/Tutorial/UserTutorial.vue")["default"];
   }
 }
