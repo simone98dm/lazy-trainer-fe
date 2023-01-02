@@ -15,6 +15,7 @@ import About from "../views/About.vue";
 import License from "../views/License.vue";
 import Landing from "../views/Landing.vue";
 import User from "../views/User.vue";
+import Notifications from "~/views/Notifications.vue";
 import PrivacyPolicy from "../views/PrivacyPolicy.vue";
 
 const routes = [
@@ -135,6 +136,16 @@ const routes = [
     meta: {
       title: `Licence`,
       requireAuth: false,
+      requireAdmin: false,
+    },
+  },
+  {
+    path: "/notifications",
+    name: "notifications",
+    component: Notifications,
+    meta: {
+      title: `Notifications`,
+      requireAuth: true,
       requireAdmin: false,
     },
   },

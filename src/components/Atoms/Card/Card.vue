@@ -5,6 +5,11 @@
       required: false,
       default: "medium",
     },
+    highlight: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   });
 </script>
 
@@ -18,6 +23,7 @@
         'p-4': padding || padding === 'medium',
         'p-6': padding === 'large',
       },
+      { 'bg-orange-200 border-2 border-orange-300': highlight },
     ]"
   >
     <slot />

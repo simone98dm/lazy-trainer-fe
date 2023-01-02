@@ -14,17 +14,15 @@
       { 'bg-purple-600': userStore.isTrainer },
     ]"
   >
-    <div>
-      <div class="text-center">
-        <h3
-          class="text-3xl font-semibold"
-          @click="
-            logEvent(getAnalytics(), GaCustomEvents.CLICK, { to: 'page title' })
-          "
-        >
-          {{ settingsStore.getHeaderText }}
-        </h3>
-      </div>
+    <div class="flex items-center justify-around">
+      <h3
+        class="text-3xl font-semibold"
+        @click="
+          logEvent(getAnalytics(), GaCustomEvents.CLICK, { to: 'page title' })
+        "
+      >
+        {{ settingsStore.getHeaderText }}
+      </h3>
     </div>
   </div>
 </template>

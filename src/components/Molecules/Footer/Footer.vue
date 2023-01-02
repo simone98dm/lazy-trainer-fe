@@ -1,8 +1,10 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores";
   import { useRoute } from "vue-router";
+  import { useNotificationStore } from "~/stores/notification";
   const route = useRoute();
   const user = useUserStore();
+  const notifications = useNotificationStore();
   const planId = route.query.planId as string;
 </script>
 
@@ -30,6 +32,16 @@
           <Icon component="groups" />
         </div>
       </router-link>
+      <span class="relative inline-lock my-auto">
+        <router-link to="/notifications" class="rounded-full p-4">
+          <Icon component="notifications" />
+          <span
+            v-if="notifications.hasUnreadNotifications"
+            class="absolute top-0 right-3 inline-block w-2 h-2 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full"
+          ></span>
+        </router-link>
+      </span>
+
       <router-link to="/settings" class="rounded-full p-4">
         <div class="flex justify-center items-center">
           <Icon component="settings" />

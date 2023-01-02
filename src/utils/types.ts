@@ -22,3 +22,15 @@ export type logOptions = (
   message: string,
   type?: "info" | "error" | "warn"
 ) => void;
+
+export type Notification = {
+  id: string;
+  userId: string;
+  title: string;
+  message: string;
+  createdAt: string;
+  readAt: string;
+  type: number;
+  isRead: boolean;
+  formattedDate: string;
+};
