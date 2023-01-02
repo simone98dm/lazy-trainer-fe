@@ -20,7 +20,7 @@
     existingForm: {
       type: Object as PropType<IActivity>,
       required: false,
-      default: false,
+      default: undefined,
     },
   });
   const emits = defineEmits(["save", "remove"]);
