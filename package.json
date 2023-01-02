@@ -1,7 +1,7 @@
 {
   "name": "lazy-trainer-frontend",
   "private": true,
-  "version": "1.58.0",
+  "version": "1.63.5",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -27,6 +27,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.1",
     "firebase": "^9.12.1",
+    "idb-keyval": "^6.2.0",
     "jsonwebtoken": "^8.5.1",
     "material-icons": "^1.12.0",
     "mongodb": "^4.10.0",

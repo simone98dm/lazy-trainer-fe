@@ -7,9 +7,29 @@ const buildHeaders = (token: string) => ({
   "Content-Type": "application/json",
 });
 
+interface RequestOptions {
+  timeout?: number;
+  method: any;
+  headers?: any;
+  body?: any;
+}
+
+async function fetchWithTimeout(url: string, options: RequestOptions) {
+  const { timeout = 10000 } = options;
+
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  const response = await fetch(url, {
+    ...options,
+    signal: controller.signal,
+  });
+  clearTimeout(id);
+  return response;
+}
+
 export async function sendToTrainer(token: string, body: any) {
   try {
-    await fetch(`${baseUrl}/api/trainer/save`, {
+    await fetchWithTimeout(`${baseUrl}/api/trainer/save`, {
       method: "POST",
       headers: buildHeaders(token),
       body: JSON.stringify(body),
@@ -21,7 +41,7 @@ export async function sendToTrainer(token: string, body: any) {
 
 export async function getPlan(token: string) {
   try {
-    return await fetch(`${baseUrl}/api/trainer`, {
+    return await fetchWithTimeout(`${baseUrl}/api/trainer`, {
       method: "GET",
       headers: buildHeaders(token),
     }).then((response) => response.json());
@@ -32,7 +52,7 @@ export async function getPlan(token: string) {
 
 export async function signIn(username: string, password: string) {
   try {
-    return await fetch(`${baseUrl}/api/auth/sign`, {
+    return await fetchWithTimeout(`${baseUrl}/api/auth/sign`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -46,7 +66,7 @@ export async function signIn(username: string, password: string) {
 
 export async function verifyUser(token: string) {
   try {
-    return await fetch(`${baseUrl}/api/auth/sign`, {
+    return await fetchWithTimeout(`${baseUrl}/api/auth/sign`, {
       method: "GET",
       headers: buildHeaders(token),
     }).then((response) => response.json());
@@ -57,10 +77,13 @@ export async function verifyUser(token: string) {
 
 export async function userInfo(token: string, trainerId: string) {
   try {
-    return await fetch(`${baseUrl}/api/user/info?user=${trainerId}`, {
-      method: "GET",
-      headers: buildHeaders(token),
-    }).then((response) => response.json());
+    return await fetchWithTimeout(
+      `${baseUrl}/api/user/info?user=${trainerId}`,
+      {
+        method: "GET",
+        headers: buildHeaders(token),
+      }
+    ).then((response) => response.json());
   } catch (error) {
     log(JSON.stringify(error), "error");
   }
@@ -68,7 +91,7 @@ export async function userInfo(token: string, trainerId: string) {
 
 export async function getGroups(token: string, userId: string) {
   try {
-    return await fetch(`${baseUrl}/api/group`, {
+    return await fetchWithTimeout(`${baseUrl}/api/group`, {
       method: "POST",
       headers: buildHeaders(token),
       body: JSON.stringify({ id: userId }),
@@ -80,7 +103,7 @@ export async function getGroups(token: string, userId: string) {
 
 export async function getUserActivities(token: string, id: string) {
   try {
-    return await fetch(`${baseUrl}/api/user/trainer`, {
+    return await fetchWithTimeout(`${baseUrl}/api/user/trainer`, {
       method: "POST",
       headers: buildHeaders(token),
       body: JSON.stringify({ id }),
@@ -92,7 +115,7 @@ export async function getUserActivities(token: string, id: string) {
 
 export async function requestActivityChange(token: string, activityId: string) {
   try {
-    return await fetch(`${baseUrl}/api/trainer/change`, {
+    return await fetchWithTimeout(`${baseUrl}/api/trainer/change`, {
       method: "POST",
       headers: buildHeaders(token),
       body: JSON.stringify({ activityId }),
@@ -120,7 +143,7 @@ export async function markNotificationsAsRead(userId: string, id: string) {
 
 export async function getConfiguration(token: string) {
   try {
-    return await fetch(`${baseUrl}/api/user`, {
+    return await fetchWithTimeout(`${baseUrl}/api/user`, {
       method: "GET",
       headers: buildHeaders(token),
     }).then((response) => response.json());
@@ -131,7 +154,7 @@ export async function getConfiguration(token: string) {
 
 export async function saveConfiguration(token: string, data: any) {
   try {
-    return await fetch(`${baseUrl}/api/user`, {
+    return await fetchWithTimeout(`${baseUrl}/api/user`, {
       method: "POST",
       headers: buildHeaders(token),
       body: JSON.stringify(data),
@@ -143,7 +166,7 @@ export async function saveConfiguration(token: string, data: any) {
 
 export async function completeSession(token: string, data: any) {
   try {
-    return await fetch(`${baseUrl}/api/workout/complete`, {
+    return await fetchWithTimeout(`${baseUrl}/api/workout/complete`, {
       method: "POST",
       headers: buildHeaders(token),
       body: JSON.stringify(data),
@@ -155,7 +178,7 @@ export async function completeSession(token: string, data: any) {
 
 export async function getUserStats(token: string) {
   try {
-    return await fetch(`${baseUrl}/api/workout/complete`, {
+    return await fetchWithTimeout(`${baseUrl}/api/workout/complete`, {
       method: "GET",
       headers: buildHeaders(token),
     });

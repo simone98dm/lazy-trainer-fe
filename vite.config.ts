@@ -27,11 +27,7 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
-        cleanupOutdatedCaches: false,
-        sourcemap: true,
         offlineGoogleAnalytics: true,
-        clientsClaim: true,
-        skipWaiting: true,
       },
       includeAssets: [
         "favicon.ico",

@@ -32,10 +32,10 @@ declare module "@vue/runtime-core" {
     PlaceholderList: typeof import("./components/Placeholder/PlaceholderList.vue")["default"];
     RouterLink: typeof import("vue-router")["RouterLink"];
     RouterView: typeof import("vue-router")["RouterView"];
-    SessionForm: typeof import("./components/SessionForm/SessionForm.vue")["default"];
-    Switch: typeof import("./components/Switch/Switch.vue")["default"];
-    TimePicker: typeof import("./components/TimePicker/TimePicker.vue")["default"];
-    TimerSpinner: typeof import("./components/TimerSpinner/TimerSpinner.vue")["default"];
-    TimeSelector: typeof import("./components/TimeSelector/TimeSelector.vue")["default"];
+    SessionForm: typeof import("./components/Organisms/SessionForm/SessionForm.vue")["default"];
+    Switch: typeof import("./components/Atoms/Switch/Switch.vue")["default"];
+    TimePicker: typeof import("./components/Molecules/TimePicker/TimePicker.vue")["default"];
+    TimerSpinner: typeof import("./components/Molecules/TimerSpinner/TimerSpinner.vue")["default"];
+    TimeSelector: typeof import("./components/Molecules/TimeSelector/TimeSelector.vue")["default"];
   }
 }

@@ -14,6 +14,7 @@ import {
   getUserStats,
   sendToTrainer,
 } from "~/helpers/http";
+import { ICompletion } from "~/models/Completion";
 
 function generateBlankPlan(): IPlan {
   return {
@@ -28,13 +29,7 @@ export const useActivityStore = defineStore("activity", {
   state: () => ({
     plan: undefined as IPlan | undefined,
     duplicateActivities: undefined as IActivity[] | undefined,
-    completionDates: undefined as
-      | {
-          userId: string;
-          userName?: string;
-          completion: string[];
-        }[]
-      | undefined,
+    completionDates: undefined as ICompletion[] | undefined,
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
@@ -67,32 +62,32 @@ export const useActivityStore = defineStore("activity", {
       }
       return missingDays;
     },
-    getCompletedWorkouts(state) {
+    getCompletedWorkouts(state): ICompletion[] | undefined {
       return state.completionDates;
     },
   },
   actions: {
-    restoreSession() {
+    async restoreSession() {
       const userStore = useUserStore();
       if (userStore.isLogged) {
         if (!this.plan) {
-          const storage = getStorage<IPlan>("_plan");
+          const storage = await getStorage<IPlan>("_plan");
           if (!storage) {
             try {
-              return getPlan(userStore.token).then((plan) => {
+              return getPlan(userStore.token).then(async (plan) => {
                 if (plan.error) {
                   this.plan = generateBlankPlan();
                 } else {
                   this.plan = plan;
                 }
-                saveStorage("_plan", this.plan);
+                await saveStorage("_plan", this.plan);
               });
             } catch (error) {
               console.error(error);
             }
 
             this.plan = generateBlankPlan();
-            saveStorage("_plan", this.plan);
+            await saveStorage("_plan", this.plan);
           } else {
             this.plan = storage;
             return Promise.resolve(storage);
@@ -156,7 +151,7 @@ export const useActivityStore = defineStore("activity", {
         }
       }
 
-      saveStorage("_plan", this.plan);
+      await saveStorage("_plan", this.plan);
     },
     async removeActivity(sessionId: string, activityId: string) {
       const settingsStore = useSettingStore();
@@ -184,7 +179,7 @@ export const useActivityStore = defineStore("activity", {
         action: DataAction.ACTIVITY_DELETE,
       }).then(() => settingsStore.loading(false));
 
-      saveStorage("_plan", this.plan);
+      await saveStorage("_plan", this.plan);
     },
     async addSession(session: ISession) {
       const settingsStore = useSettingStore();
@@ -232,7 +227,7 @@ export const useActivityStore = defineStore("activity", {
         }).then(() => settingsStore.loading(false));
       }
 
-      saveStorage("_plan", this.plan);
+      await saveStorage("_plan", this.plan);
     },
     async deleteSession(sessionId: string) {
       const settingsStore = useSettingStore();
@@ -250,7 +245,7 @@ export const useActivityStore = defineStore("activity", {
         action: DataAction.SESSION_DELETE,
       }).then(() => settingsStore.loading(false));
 
-      saveStorage("_plan", this.plan);
+      await saveStorage("_plan", this.plan);
     },
     setDuplicateWarmup(activitiesToDuplicate: IActivity[] | undefined) {
       if (activitiesToDuplicate) {
@@ -314,7 +309,7 @@ export const useActivityStore = defineStore("activity", {
             });
           });
 
-          saveStorage("_plan", this.plan);
+          await saveStorage("_plan", this.plan);
 
           const userStore = useUserStore();
           const settingsStore = useSettingStore();
@@ -350,12 +345,14 @@ export const useActivityStore = defineStore("activity", {
           }
           const alradyExists = this.completionDates?.find((x) =>
             checkCompleteDate(
-              x.completion.map((k) => new Date(k)),
+              x.stats.completion.map((k) => new Date(k)),
               d
             )
           );
           if (!alradyExists) {
-            this.completionDates.map((x) => x.completion.push(d.toISOString()));
+            this.completionDates.map((x) =>
+              x.stats.completion.push(d.toISOString())
+            );
           }
         })
         .finally(() => settingsStore.loading(false));
@@ -366,7 +363,7 @@ export const useActivityStore = defineStore("activity", {
       const userStore = useUserStore();
       await getUserStats(userStore.token)
         .then((response) => response?.json())
-        .then((response: { userId: string; completion: string[] }[]) => {
+        .then((response: ICompletion[]) => {
           const userState = useUserStore();
           if (userState.role === Role.TRAINER) {
             this.completionDates = response.flat();

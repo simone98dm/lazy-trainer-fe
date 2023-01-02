@@ -11,6 +11,7 @@ import { customLogger } from "./helpers/logger";
 import VCalendar from "v-calendar";
 import "v-calendar/dist/style.css";
 import { initNotification } from "./utils/supabase";
+import { initializeOffline } from "./helpers/offline";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -38,6 +39,7 @@ app.provide("$logger", customLogger);
 initNotification();
 
 initializeApp(firebaseConfig);
+initializeOffline();
 
 console.log(`Hello fellows devs👋, app version: ${version}`);
 

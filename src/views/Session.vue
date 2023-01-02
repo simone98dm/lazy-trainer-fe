@@ -11,8 +11,8 @@
   const settingsStore = useSettingStore();
   settingsStore.setHeader("Session");
 
-  const { sessionId } = route.params;
-  const session = activityStore.getSession(sessionId as string);
+  const sessionId = route.params.sessionId as string;
+  const session = activityStore.getSession(sessionId);
 
   function cleanDuplicateActivities() {
     activityStore.duplicateActivities = undefined;

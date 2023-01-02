@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { useSettingStore, useUserStore } from "~/stores";
-  import { ref } from "vue";
+  import { ref, watch } from "vue";
+  import { LinkType } from "~/utils";
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
@@ -22,13 +23,9 @@
             planId: client.id,
           },
         }"
+        :key="client.id"
       >
-        <Item
-          icon="person"
-          :name="client.name"
-          :id="client.id"
-          :key="client.id"
-        ></Item>
+        <Item icon="person" :name="client.name" :id="client.id" />
       </Link>
     </div>
   </div>

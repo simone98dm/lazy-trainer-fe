@@ -25,24 +25,18 @@
     });
   }
 
-  function logout() {
+  async function logout() {
     logEvent(getAnalytics(), GaCustomEvents.LOGOUT, {
-      id: userStore.userId,
+      userId: userStore.userId,
     });
-    userStore.logout();
+    await userStore.logout();
   }
 
   function toggleAudio(v: boolean) {
-    logEvent(getAnalytics(), GaCustomEvents.UPDATE_SETTINGS, {
-      settings_name: "audio",
-    });
     settingsStore.toggleAudioEffects(v);
   }
 
   function toggleEasyMode(v: boolean) {
-    logEvent(getAnalytics(), GaCustomEvents.UPDATE_SETTINGS, {
-      settings_name: "easymode",
-    });
     settingsStore.toggleEasyMode(v);
   }
 </script>
@@ -116,31 +110,36 @@
               {{ version }}
             </span>
           </div>
-
-          <div class="flex justify-around">
-            <Link
-              @click="
-                logEvent(getAnalytics(), GaCustomEvents.CLICK, { to: 'author' })
-              "
-              :to="{ name: 'about' }"
-              :full="true"
-              :color="ButtonColor.LIGHT"
-              icon="account_circle"
-              label="Author"
-            />
-            <Link
-              @click="
-                logEvent(getAnalytics(), GaCustomEvents.CLICK, {
-                  to: 'licence',
-                })
-              "
-              :to="{ name: 'license' }"
-              :full="true"
-              :color="ButtonColor.LIGHT"
-              icon="verified_user"
-              label="License"
-            />
-          </div>
+        </div>
+      </div>
+      <div class="m-0 sm:m-6">
+        <div class="flex justify-around">
+          <Link
+            @click="
+              logEvent(getAnalytics(), GaCustomEvents.CLICK, {
+                to: 'author',
+                userId: userStore.userId,
+              })
+            "
+            :to="{ name: 'about' }"
+            :full="true"
+            :color="ButtonColor.TRASPARENT"
+            icon="account_circle"
+            label="Author"
+          />
+          <Link
+            @click="
+              logEvent(getAnalytics(), GaCustomEvents.CLICK, {
+                to: 'licence',
+                userId: userStore.userId,
+              })
+            "
+            :to="{ name: 'license' }"
+            :full="true"
+            :color="ButtonColor.TRASPARENT"
+            icon="verified_user"
+            label="License"
+          />
         </div>
       </div>
     </Card>
@@ -149,7 +148,7 @@
         v-if="!userStore.isTrainer"
         :color="ButtonColor.LIGHT"
         :loading="syncStatus"
-        full="true"
+        :full="true"
         icon="cloud_sync"
         label="Sync data"
         @click="syncProfile"
@@ -158,7 +157,7 @@
     <div class="w-full flex justify-center mb-3">
       <Button
         :color="ButtonColor.PRIMARY"
-        full="true"
+        :full="true"
         icon="logout"
         label="Logout"
         @click="logout"

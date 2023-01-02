@@ -16,6 +16,7 @@ import License from "../views/License.vue";
 import Landing from "../views/Landing.vue";
 import User from "../views/User.vue";
 import Notifications from "~/views/Notifications.vue";
+import PrivacyPolicy from "../views/PrivacyPolicy.vue";
 
 const routes = [
   {
@@ -167,6 +168,17 @@ const routes = [
       title: `Dashboard`,
       empty: false,
       requireAuth: true,
+      requireAdmin: false,
+    },
+  },
+  {
+    path: "/privacy-policy",
+    name: "privacy-policy",
+    component: PrivacyPolicy,
+    meta: {
+      title: `Privacy Policy`,
+      empty: false,
+      requireAuth: false,
       requireAdmin: false,
     },
   },

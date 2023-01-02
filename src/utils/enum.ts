@@ -1,5 +1,6 @@
 export enum LinkType {
   BUTTON,
+  ROUTER,
 }
 
 export enum IconSize {

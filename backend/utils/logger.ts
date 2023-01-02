@@ -2,7 +2,11 @@ import { Logtail } from "@logtail/node";
 import { LogLevel } from "../const";
 const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN || "");
 
-function log(message: string, level: LogLevel = LogLevel.INFO, ...args: any[]) {
+function log(
+  message: unknown,
+  level: LogLevel = LogLevel.INFO,
+  ...args: any[]
+) {
   let logObject: any = JSON.stringify({
     message,
     args: JSON.stringify(args),
@@ -25,12 +29,12 @@ function log(message: string, level: LogLevel = LogLevel.INFO, ...args: any[]) {
 }
 
 export default {
-  warn: (message: string, ...args: any[]) =>
+  warn: (message: unknown, ...args: any[]) =>
     log(message, LogLevel.WARNING, ...args),
-  error: (message: string, ...args: any[]) =>
+  error: (message: unknown, ...args: any[]) =>
     log(message, LogLevel.ERROR, ...args),
-  info: (message: string, ...args: any[]) =>
+  info: (message: unknown, ...args: any[]) =>
     log(message, LogLevel.INFO, ...args),
-  log: (message: string, ...args: any[]) =>
+  log: (message: unknown, ...args: any[]) =>
     log(message, LogLevel.DEBUG, ...args),
 };
