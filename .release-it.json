@@ -8,9 +8,6 @@
     "tag": false,
     "push": true
   },
-  "github": {
-    "release": true
-  },
   "npm": {
     "publish": false
   }
