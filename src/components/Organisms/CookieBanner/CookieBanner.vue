@@ -3,7 +3,7 @@
   import { getStorage, saveStorage } from "~/helpers/storage";
   import { ref } from "vue";
   const cookieName = "cookie-compliance";
-  let status = ref(true);
+  const status = ref(true);
 
   interface CookieAcceptance {
     acceptanceDate: string;

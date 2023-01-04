@@ -1,5 +1,18 @@
 <script setup lang="ts">
-  defineProps(["id", "name", "checked"]);
+  defineProps({
+    id: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    checked: {
+      type: Boolean,
+      required: true,
+    },
+  });
   defineEmits(["toggle"]);
 </script>
 

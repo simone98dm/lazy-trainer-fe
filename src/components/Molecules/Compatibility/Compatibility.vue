@@ -1,7 +1,10 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import { ButtonSize, ButtonColor } from "~/utils";
-  const showBanner = ref(window.location.hostname !== "workout.simone98dm.dev");
+  const showBanner = ref(
+    window.location.hostname !== "workout.simone98dm.dev" &&
+      window.location.hostname !== "localhost"
+  );
 
   function closeBanner() {
     showBanner.value = false;
@@ -13,7 +16,6 @@
 </script>
 
 <template>
-  <!-- show banner with new website -->
   <Modal :show="showBanner" title="We moved to a new home ✈️" @close="closeBanner">
     <template #content>
       <div>

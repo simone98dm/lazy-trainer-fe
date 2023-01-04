@@ -18,14 +18,9 @@
       </p>
     </div>
     <div class="mt-8 flex">
+      <Button class="text-white" icon="login" @click="() => $router.push('/login')" label="Login" />
       <Button
-        class="text-white text-white"
-        icon="login"
-        @click="() => $router.push('/login')"
-        label="Login"
-      />
-      <Button
-        class="text-white text-white ml-4"
+        class="text-white ml-4"
         icon="inventory"
         @click="() => $router.push('/register')"
         label="Register"

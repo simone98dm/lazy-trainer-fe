@@ -1,6 +1,8 @@
+import { IActivity } from "../../src/models/Activity";
+import { ISession } from "../../src/models/Session";
 import { DbTable, DB_NAME } from "../const";
 import { connectToDatabase } from "../drivers/mongodb";
-import { Statistics, User, UserStats } from "../types";
+import { Statistics, UserStats } from "../types";
 import logger from "../utils/logger";
 
 /**
@@ -24,7 +26,7 @@ export async function deleteSession(sessionId: string) {
     .deleteMany({ sessionId: sessionId });
   logger.info(`activities deleted: ${delActivities.deletedCount}`);
 
-  const delSession = await db.collection(DbTable.SESSIONS).deleteOne({ id: sessionId });
+  await db.collection(DbTable.SESSIONS).deleteOne({ id: sessionId });
   logger.info(`deleted session ${sessionId}`);
 }
 
@@ -33,7 +35,7 @@ export async function deleteSession(sessionId: string) {
  * @param sessionId id of the session to update
  * @param data new session configuration
  */
-export async function updateSession(sessionId: string, data: any) {
+export async function updateSession(sessionId: string, data: ISession) {
   if (!sessionId) {
     throw new Error("unable to find session");
   }
@@ -63,7 +65,10 @@ export async function updateSession(sessionId: string, data: any) {
  * @param planId id of plan to attach the new session
  * @param data session configurations
  */
-export async function createSession(planId: string, data: any) {
+export async function createSession(
+  planId: string,
+  data: { id: string; dayOfWeek: number; warmup: IActivity[] | undefined }
+) {
   if (!planId) {
     throw new Error("unable to find the plan");
   }
@@ -96,7 +101,7 @@ export async function createSession(planId: string, data: any) {
   }
 
   if (warmup) {
-    const updatedWarmup = warmup.map((warm: any) => ({
+    const updatedWarmup = warmup.map((warm: IActivity) => ({
       sessionId: id,
       ...warm,
     }));

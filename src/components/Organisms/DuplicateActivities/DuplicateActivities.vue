@@ -27,7 +27,7 @@
     },
   });
 
-  let dayOfWeek = ref(props.dayOfWeek || -1);
+  const dayOfWeek = ref(props.dayOfWeek || -1);
 
   function selectDay(dayIndex: number) {
     dayOfWeek.value = dayIndex;
@@ -68,6 +68,7 @@
         <div class="w-full flex flex-wrap justify-center gap-3">
           <span
             v-for="activity in props.existingForm"
+            :key="activity.id"
             class="bg-purple-600 rounded-lg p-2 text-white"
           >
             {{ activity.name }}

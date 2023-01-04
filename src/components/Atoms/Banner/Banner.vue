@@ -29,7 +29,7 @@
         </p>
         <div class="absolute top-0 right-0 p-4">
           <button @click="$emit('close')">
-            <Icon component="close" class="text-white" />
+            <Icon component="close" custom-class="text-white" />
           </button>
         </div>
       </div>

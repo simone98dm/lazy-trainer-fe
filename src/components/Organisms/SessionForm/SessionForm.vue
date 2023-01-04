@@ -2,7 +2,7 @@
   import { PropType, ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { ISession } from "~/models/Session";
-  import { ButtonColor, getDayOfTheWeek, days } from "~/utils";
+  import { ButtonColor, getDayOfTheWeek } from "~/utils";
   import { useActivityStore, useUserStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
 
@@ -18,9 +18,9 @@
       default: -1,
     },
     existingForm: {
-      type: Object as PropType<IActivity>,
+      type: Object as PropType<IActivity | undefined>,
       required: false,
-      default: false,
+      default: undefined,
     },
   });
   const emits = defineEmits(["save", "remove"]);
@@ -30,11 +30,11 @@
 
   const uuid = uuidv4();
 
-  let currentDayOfWeek = ref(props.dayOfWeek || -1);
-  let dayOfWeek = ref(props.dayOfWeek || -1);
-  let id = ref(props.id || uuid);
-  let activityList = ref(undefined as any[] | undefined);
-  let warmupList = ref(undefined as any[] | undefined);
+  const currentDayOfWeek = ref(props.dayOfWeek || -1);
+  const dayOfWeek = ref(props.dayOfWeek || -1);
+  const id = ref(props.id || uuid);
+  const activityList = ref(undefined as IActivity[] | undefined);
+  const warmupList = ref(undefined as IActivity[] | undefined);
 
   if (id.value) {
     warmupList.value = activityStore.getWarmUpActivities(id.value);
@@ -62,7 +62,7 @@
   }
 
   function isNew() {
-    return !Boolean(props.id);
+    return !props.id;
   }
 
   function remove() {
@@ -87,7 +87,7 @@
     activityStore.moveActivity(id.value, listActivities, isWarmup);
   }
 
-  let showDuplicateModal = ref(false);
+  const showDuplicateModal = ref(false);
   function duplicateActivities(activities: IActivity[]) {
     activityStore.setDuplicateWarmup(activities);
     showDuplicateModal.value = true;
@@ -104,8 +104,8 @@
     <Card>
       <form class="w-full" @submit.prevent>
         <div>
-          <h1 v-if="isNew()" class="mb-3 text-4xl mb-6">Create a new day session:</h1>
-          <h1 v-else class="mb-3 text-4xl mb-6">
+          <h1 v-if="isNew()" class="text-4xl mb-6">Create a new day session:</h1>
+          <h1 v-else class="text-4xl mb-6">
             Edit
             <strong>{{ getDayOfTheWeek(currentDayOfWeek) }}</strong> session:
           </h1>

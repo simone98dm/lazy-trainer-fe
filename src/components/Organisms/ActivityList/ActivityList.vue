@@ -3,7 +3,6 @@
   import draggable from "vuedraggable";
   import { ButtonColor, GaCustomEvents, LinkType } from "~/utils";
   import { getAnalytics, logEvent } from "@firebase/analytics";
-  import { ref } from "vue";
   import { IActivity } from "~/models/Activity";
 
   const props = defineProps({
@@ -59,9 +58,8 @@
     logEvent(getAnalytics(), GaCustomEvents.RUN_ACTIVITY);
     emits("run");
   }
-  const showList = ref(props.opened ?? true);
 
-  function moveItem(evt: any) {
+  function moveItem() {
     emits("move", props.activities, props.isWarmup);
   }
 </script>
@@ -75,7 +73,7 @@
       <Button
         v-if="props.enableRun"
         id="run-timer"
-        :color="ButtonColor.PRIMARY"
+        :color="ButtonColor.SUCCESS"
         icon="play_arrow"
         :type="LinkType.BUTTON"
         :circular="true"
@@ -118,7 +116,7 @@
             :no-card="props.compatList"
             :allow-delete="props.allowDelete"
             @delete="$emit('delete', $event)"
-            class="mx-2"
+            custom-class="mx-2"
           >
             <template #actions>
               <div>
@@ -147,7 +145,7 @@
         :description="activity.description"
         :time="Number(activity.time)"
         :reps="Number(activity.reps)"
-        class="mx-2"
+        custom-class="mx-2"
         @delete="$emit('delete-activity', activity)"
       />
     </div>

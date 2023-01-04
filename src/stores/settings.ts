@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { getConfiguration, saveConfiguration } from "~/helpers/http";
-import { getStorage, saveStorage } from "~/helpers/storage";
-import { SettingStorage } from "~/utils";
+import { saveStorage } from "~/helpers/storage";
 import { useUserStore } from "./user";
 
 export const useSettingStore = defineStore("settings", {

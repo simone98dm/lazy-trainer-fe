@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import { useRouter } from "vue-router";
-  import { ICustomSession, ISession } from "~/models/Session";
+  import { ICustomSession } from "~/models/Session";
   import { useActivityStore, useTimerStore, useUserStore } from "~/stores";
-  import { LinkType, ButtonColor, getDayOfTheWeek } from "~/utils";
+  import { ButtonColor, LinkType } from "~/utils";
+
   const user = useUserStore();
   const activityStore = useActivityStore();
   const props = defineProps({
@@ -17,8 +18,8 @@
   });
   const router = useRouter();
 
-  function isDayActivity(activity: any) {
-    return activity.dayOfWeek === new Date().getDay() - 1;
+  function isDayActivity(dayOfWeek: number) {
+    return dayOfWeek === new Date().getDay() - 1;
   }
 
   function runWorkout(sessionId: string) {
@@ -41,7 +42,7 @@
 </script>
 
 <template>
-  <PlaceholderList v-if="props.loading"></PlaceholderList>
+  <PlaceholderList v-if="props.loading" />
   <div v-else>
     <div v-if="props.list && props.list.length > 0" class="mb-6" id="sessions">
       <Item
@@ -50,23 +51,25 @@
         :description="item.description"
         :key="item.id"
         :id="item.id"
-        :highlight="!user.isTrainer && isDayActivity(item) ? 'Today session' : ''"
+        :highlight="!user.isTrainer && isDayActivity(item.dayOfWeek) ? 'Today session' : ''"
         :class="'cursor-pointer'"
         @click="() => router.push({ name: 'details', params: { sessionId: item.id } })"
       >
         <template #actions>
-          <Button
-            v-if="!user.isTrainer && isDayActivity(item.id) && hasActivities(item.id)"
-            :full="true"
-            :label="'Start'"
-            :icon="'play_arrow'"
-            :color="ButtonColor.PRIMARY"
-            @click.stop="runWorkout(item.id)"
-          />
+          <div>
+            <Button
+              v-if="!user.isTrainer && isDayActivity(item.dayOfWeek) && hasActivities(item.id)"
+              :icon="'play_arrow'"
+              :color="ButtonColor.SUCCESS"
+              :circular="true"
+              @click.stop="runWorkout(item.id)"
+              class="float-right"
+            />
+          </div>
         </template>
       </Item>
     </div>
-    <ErrorBanner v-else text="No sessions found"></ErrorBanner>
+    <ErrorBanner v-else text="No sessions found" />
   </div>
   <Link
     v-if="

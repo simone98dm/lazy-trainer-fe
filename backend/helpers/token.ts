@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { SECRET_KEY } from "../const";
 import { ITokenPayload } from "../../src/models/User";
+import { VercelRequest } from "@vercel/node";
 
 /**
  * Verify token and return ITokenPayload interface
@@ -23,7 +24,7 @@ export function verifyToken(token: string): ITokenPayload | undefined {
   return undefined;
 }
 
-export function validateUser(request: any) {
+export function validateUser(request: VercelRequest) {
   const bearer = extractTokenFromRequest(request);
   if (!bearer) {
     throw new Error("Token not found");
@@ -37,12 +38,12 @@ export function validateUser(request: any) {
   return isValid;
 }
 
-export async function signToken(payload: any) {
+export async function signToken(payload: ITokenPayload) {
   return await jwt.sign(payload, SECRET_KEY, {
     expiresIn: "3d",
   });
 }
 
-export function extractTokenFromRequest(request: any): string {
+export function extractTokenFromRequest(request: VercelRequest): string {
   return request.headers.authorization?.split(" ")[1] ?? "";
 }
