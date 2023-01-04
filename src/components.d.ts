@@ -14,6 +14,7 @@ declare module "@vue/runtime-core" {
     Button: typeof import("./components/Atoms/Button/Button.vue")["default"];
     Calendar: typeof import("./components/Organisms/Calendar/Calendar.vue")["default"];
     Card: typeof import("./components/Atoms/Card/Card.vue")["default"];
+    Compatibility: typeof import("./components/Molecules/Compatibility/Compatibility.vue")["default"];
     CookieBanner: typeof import("./components/Organisms/CookieBanner/CookieBanner.vue")["default"];
     Dropdown: typeof import("./components/Molecules/Dropdown/Dropdown.vue")["default"];
     DuplicateActivities: typeof import("./components/Organisms/DuplicateActivities/DuplicateActivities.vue")["default"];

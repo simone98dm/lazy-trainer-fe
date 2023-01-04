@@ -27,6 +27,7 @@
     <Footer v-if="!isLogin() && !hideDecoration()" />
   </div>
   <GlobalLoading />
+  <Compatibility />
 </template>
 
 <style>
