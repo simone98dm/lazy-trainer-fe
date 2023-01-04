@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { PropType, ref } from "vue";
+  import { computed, PropType, ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { ISession } from "~/models/Session";
   import { ButtonColor, getDayOfTheWeek, days } from "~/utils";
@@ -33,8 +33,8 @@
   let currentDayOfWeek = ref(props.dayOfWeek || -1);
   let dayOfWeek = ref(props.dayOfWeek || -1);
   let id = ref(props.id || uuid);
-  let activityList = ref(undefined as any[] | undefined);
-  let warmupList = ref(undefined as any[] | undefined);
+  let activityList = ref(undefined as IActivity[] | undefined);
+  let warmupList = ref(undefined as IActivity[] | undefined);
 
   if (id.value) {
     warmupList.value = activityStore.getWarmUpActivities(id.value);
@@ -61,12 +61,12 @@
     emits("save", session);
   }
 
-  function isNew() {
+  const isNew = computed(() => {
     return !Boolean(props.id);
-  }
+  });
 
   function remove() {
-    if (!isNew()) {
+    if (!isNew) {
       emits("remove", props.id);
     }
   }
@@ -104,106 +104,100 @@
 
 <template>
   <div class="flex justify-center w-full">
-    <Card>
-      <form class="w-full" @submit.prevent>
-        <div>
-          <h1 v-if="isNew()" class="mb-3 text-4xl mb-6">
-            Create a new day session:
-          </h1>
-          <h1 v-else class="mb-3 text-4xl mb-6">
-            Edit
-            <strong>{{ getDayOfTheWeek(currentDayOfWeek) }}</strong> session:
-          </h1>
-
-          <span class="text-2xl">
-            {{
-              activityStore.getMissingDays.length <= 0
-                ? "No days available"
-                : isNew()
-                ? "Select day to this session"
-                : "Move this session to:"
-            }}
-          </span>
-          <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6 mt-3">
-            <button
-              v-for="day in activityStore.getMissingDays"
-              :key="day"
-              :class="[
-                {
-                  'bg-indigo-600 text-slate-50':
-                    isDaySelected(day) && !userStore.isTrainer,
-                },
-                {
-                  'bg-purple-600 text-slate-50':
-                    isDaySelected(day) && userStore.isTrainer,
-                },
-                { 'bg-gray-200 text-grey-50': !isDaySelected(day) },
-                'w-full duration-200 rounded-full px-4 py-2 ',
-              ]"
-              @click="() => selectDay(day)"
-            >
-              {{ getDayOfTheWeek(day) }}
-            </button>
-          </div>
+    <form class="w-full" @submit.prevent>
+      <Card
+        :title="
+          isNew
+            ? 'Create a new day session'
+            : `Edit ${getDayOfTheWeek(currentDayOfWeek)} session`
+        "
+      >
+        <hr />
+        <span class="text-2xl">
+          {{
+            activityStore.getMissingDays.length <= 0
+              ? "No days available"
+              : isNew
+              ? "Select day to this session"
+              : "Move this session to:"
+          }}
+        </span>
+        <div class="flex xl:flex-row flex-col justify-center gap-3 mb-6 mt-3">
+          <button
+            v-for="day in activityStore.getMissingDays"
+            :key="day"
+            :class="[
+              {
+                'bg-indigo-600 text-slate-50':
+                  isDaySelected(day) && !userStore.isTrainer,
+              },
+              {
+                'bg-purple-600 text-slate-50':
+                  isDaySelected(day) && userStore.isTrainer,
+              },
+              { 'bg-gray-200 text-grey-50': !isDaySelected(day) },
+              'w-full duration-200 rounded-full px-4 py-2 ',
+            ]"
+            @click="() => selectDay(day)"
+          >
+            {{ getDayOfTheWeek(day) }}
+          </button>
         </div>
-        <div class="w-full px-3 mb-6" v-if="!isNew()">
-          <div class="flex flex-col justify-center">
-            <div class="my-4">
-              <ActivityList
-                title="Warmup"
-                no-found-message="No warmup activities found"
-                :activities="warmupList"
-                :is-warmup="true"
-                :session-id="id"
-                :allow-drag="true"
-                :allow-delete="true"
-                :enable-run="false"
-                :enable-duplicate="true"
-                :compat-list="false"
-                @move="sortActivities"
-                @duplicate="duplicateActivities"
-                @delete="removeActivity"
-              />
-            </div>
-            <hr />
-            <div class="my-4">
-              <ActivityList
-                title="Activities"
-                no-found-message="No activities found"
-                :activities="activityList"
-                :session-id="id"
-                :allow-drag="true"
-                :allow-delete="true"
-                :enable-run="false"
-                :enable-duplicate="true"
-                :compat-list="false"
-                @move="sortActivities"
-                @duplicate="duplicateActivities"
-                @delete="removeActivity"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
-          <Button
-            v-if="dayOfWeek !== -1"
-            :full="true"
-            :icon="!isNew() ? 'save' : 'add'"
-            :label="!isNew() ? 'Save' : 'Create'"
-            :color="ButtonColor.SUCCESS"
-            @click="save"
-          />
-          <Button
-            :full="true"
-            v-if="!isNew()"
-            icon="delete"
-            :color="ButtonColor.DANGER"
-            label="Delete"
-            @click="remove"
+        <Button
+          v-if="dayOfWeek !== -1"
+          :icon="!isNew ? 'save' : 'add'"
+          :label="!isNew ? 'Save this session' : 'Create new session'"
+          :color="ButtonColor.SUCCESS"
+          @click="save"
+          class="float-right"
+        />
+        <Button
+          v-if="!isNew"
+          icon="delete"
+          :color="ButtonColor.DANGER"
+          label="Delete this session"
+          @click="remove"
+          class="float-right"
+        />
+      </Card>
+      <div class="flex flex-col xl:flex-row justify-between my-6" v-if="!isNew">
+        <div class="px-4 w-full xl:border-r-2 border-slate-200">
+          <ActivityList
+            title="Warmup"
+            no-found-message="No warmup activities found"
+            :activities="warmupList"
+            :is-warmup="true"
+            :session-id="id"
+            :allow-drag="true"
+            :allow-edit="true"
+            :allow-delete="true"
+            :enable-run="false"
+            :enable-duplicate="true"
+            :compat-list="false"
+            @move="sortActivities"
+            @duplicate="duplicateActivities"
+            @delete="removeActivity"
           />
         </div>
-      </form>
-    </Card>
+        <div class="px-4 w-full xl:border-l-2 border-slate-200">
+          <ActivityList
+            title="Activities"
+            no-found-message="No activities found"
+            :activities="activityList"
+            :session-id="id"
+            :allow-drag="true"
+            :allow-edit="true"
+            :allow-delete="true"
+            :enable-run="false"
+            :enable-duplicate="true"
+            :compat-list="false"
+            @move="sortActivities"
+            @duplicate="duplicateActivities"
+            @delete="removeActivity"
+          />
+        </div>
+      </div>
+    </form>
     <DuplicateActivities
       :show="showDuplicateModal"
       :day-of-week="dayOfWeek"

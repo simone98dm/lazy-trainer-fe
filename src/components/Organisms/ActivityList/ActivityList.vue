@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores";
   import draggable from "vuedraggable";
-  import { ButtonColor, GaCustomEvents, LinkType } from "~/utils";
+  import { ButtonColor, ButtonSize, GaCustomEvents, LinkType } from "~/utils";
   import { getAnalytics, logEvent } from "@firebase/analytics";
   import { ref } from "vue";
   import { IActivity } from "~/models/Activity";
@@ -9,46 +9,62 @@
   const props = defineProps({
     activities: {
       type: Array<IActivity>,
+      required: false,
       default: () => [],
     },
     sessionId: {
       type: String,
+      required: false,
       default: "",
     },
     isWarmup: {
       type: Boolean,
+      required: false,
       default: false,
     },
     allowDrag: {
       type: Boolean,
+      required: false,
       default: false,
     },
     allowDelete: {
       type: Boolean,
+      required: false,
+      default: false,
+    },
+    allowEdit: {
+      type: Boolean,
+      required: false,
       default: false,
     },
     title: {
       type: String,
+      required: false,
       default: "",
     },
     enableRun: {
       type: Boolean,
+      required: false,
       default: false,
     },
     enableDuplicate: {
       type: Boolean,
+      required: false,
       default: false,
     },
     noFoundMessage: {
       type: String,
+      required: false,
       default: "No activities found",
     },
     opened: {
       type: Boolean,
+      required: false,
       default: true,
     },
     compatList: {
       type: Boolean,
+      required: false,
       default: false,
     },
   });
@@ -59,7 +75,6 @@
     logEvent(getAnalytics(), GaCustomEvents.RUN_ACTIVITY);
     emits("run");
   }
-  const showList = ref(props.opened ?? true);
 
   function moveItem(evt: any) {
     emits("move", props.activities, props.isWarmup);
@@ -99,12 +114,6 @@
         label="Duplicate"
         @click="emits('duplicate', props.activities)"
       />
-      <!-- <Button
-        :color="ButtonColor.TRASPARENT"
-        :icon="showList ? 'expand_more' : 'expand_less'"
-        circular="true"
-        @click="showList = !showList"
-      /> -->
     </div>
     <draggable
       v-if="allowDrag"
@@ -114,42 +123,52 @@
       @end="moveItem"
     >
       <template #item="{ element }">
-        <Link
-          :to="{
-            name: 'activity',
-            params: {
-              sessionId: props.sessionId,
-              activityId: element.id,
-            },
-          }"
+        <Item
+          :id="element.id"
+          :name="element.name"
+          :description="element.description"
+          :time="Number(element.time)"
+          :reps="Number(element.reps)"
+          :request-change="element.requestChange"
+          :no-card="props.compatList"
+          :allow-delete="props.allowDelete"
+          @delete="$emit('delete', $event)"
+          class="w-full"
         >
-          <Item
-            :id="element.id"
-            :name="element.name"
-            :description="element.description"
-            :time="Number(element.time)"
-            :reps="Number(element.reps)"
-            :request-change="element.requestChange"
-            :no-card="props.compatList"
-            :allow-delete="props.allowDelete"
-            @delete="$emit('delete', $event)"
-            class="mx-2"
-          >
-            <template #actions>
-              <div>
-                <Button
-                  v-if="props.allowDelete"
-                  id="delete-activity"
-                  :color="ButtonColor.DANGER"
-                  icon="delete"
-                  class="float-right ml-2"
-                  :circular="true"
-                  @click.prevent="$emit('delete', element.id)"
-                />
-              </div>
-            </template>
-          </Item>
-        </Link>
+          <template #actions>
+            <div>
+              <Button
+                v-if="props.allowDelete"
+                id="delete-activity"
+                :color="ButtonColor.DANGER"
+                icon="delete"
+                class="float-right ml-2"
+                label="Delete activity"
+                :circular="true"
+                :size="ButtonSize.SMALL"
+                @click.prevent="$emit('delete', element.id)"
+              />
+              <Link
+                v-if="props.allowEdit"
+                id="delete-activity"
+                :color="ButtonColor.PRIMARY"
+                icon="edit"
+                class="float-right ml-2"
+                label="Edit activity"
+                :circular="true"
+                :size="ButtonSize.SMALL"
+                :type="LinkType.BUTTON"
+                :to="{
+                  name: 'activity',
+                  params: {
+                    sessionId: props.sessionId,
+                    activityId: element.id,
+                  },
+                }"
+              />
+            </div>
+          </template>
+        </Item>
       </template>
     </draggable>
     <div v-else>
@@ -162,7 +181,6 @@
         :description="activity.description"
         :time="Number(activity.time)"
         :reps="Number(activity.reps)"
-        class="mx-2"
         @delete="$emit('delete-activity', activity)"
       />
     </div>

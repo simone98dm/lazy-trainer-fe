@@ -1,21 +1,26 @@
 <script setup lang="ts">
   import { RouterLink } from "vue-router";
-  import { ButtonColor, LinkType } from "~/utils";
+  import { ButtonColor, ButtonSize, LinkType } from "~/utils";
 
-  const props = defineProps({
+  defineProps({
     to: {
       type: Object,
       required: true,
+    },
+    type: {
+      type: Number,
+      required: false,
+      default: LinkType.ROUTER,
     },
     full: {
       type: Boolean,
       required: false,
       default: false,
     },
-    type: {
+    size: {
       type: Number,
       required: false,
-      default: LinkType.ROUTER,
+      default: ButtonSize.MEDIUM,
     },
     label: {
       type: String,
@@ -32,6 +37,16 @@
       required: false,
       default: "",
     },
+    loading: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    circular: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   });
 </script>
 
@@ -43,19 +58,16 @@
       :label="label"
       :color="color"
       :icon="icon"
+      :circular="circular"
+      :class="class"
+      :loading="loading"
+      :size="size"
     />
     <div v-else>
-      <Icon
-        v-if="props.icon"
-        :component="props.icon"
-        class="float-left inline"
-      />
+      <Icon v-if="icon" :component="icon" class="float-left inline" />
       <slot />
-      <span
-        v-if="props.label"
-        class="ml-2 float-left inline text-md sm:text-sm"
-      >
-        {{ props.label }}
+      <span v-if="label" class="ml-2 float-left inline text-md sm:text-sm">
+        {{ label }}
       </span>
     </div>
   </router-link>

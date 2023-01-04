@@ -5,6 +5,16 @@
       required: false,
       default: "medium",
     },
+    title: {
+      type: String,
+      required: false,
+      default: undefined,
+    },
+    description: {
+      type: String,
+      required: false,
+      default: undefined,
+    },
   });
 </script>
 
@@ -20,6 +30,10 @@
       },
     ]"
   >
+    <h1 class="text-slate-800 font-bold text-4xl" v-if="title">{{ title }}</h1>
+    <h3 class="text-slate-400 font-bolder text-2xl" v-if="description">
+      {{ description }}
+    </h3>
     <slot />
   </div>
 </template>

@@ -137,9 +137,7 @@
 </script>
 <template>
   <div class="mb-6">
-    <BackButton
-      @click="router.push({ name: 'details', params: { id: sessionId } })"
-    />
+    <BackButton @click="router.back()" />
   </div>
   <div class="max-w-screen-lg mx-auto">
     <ActivityForm
