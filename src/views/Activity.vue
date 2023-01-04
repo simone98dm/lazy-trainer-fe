@@ -2,12 +2,7 @@
   import { useRoute, useRouter } from "vue-router";
   import { useActivityStore, useSettingStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
-  import {
-    ButtonColor,
-    DeepPartial,
-    GaCustomEvents,
-    MAX_ACTIIVITY_FORM,
-  } from "~/utils";
+  import { ButtonColor, DeepPartial, GaCustomEvents, MAX_ACTIIVITY_FORM } from "~/utils";
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { getAnalytics, logEvent } from "@firebase/analytics";
@@ -30,9 +25,7 @@
   let multiActivities = ref([] as IActivity[]);
 
   if (activityId) {
-    const existingActivity = session?.activities.find(
-      (act) => act.id === activityId
-    );
+    const existingActivity = session?.activities.find((act) => act.id === activityId);
     if (existingActivity) {
       multiActivities.value.push(existingActivity);
     }
@@ -78,9 +71,7 @@
       logEvent(getAnalytics(), GaCustomEvents.REMOVE_ACTIVITY);
       redirectToList();
     } else {
-      multiActivities.value = multiActivities.value.filter(
-        (act) => act.id !== activityId
-      );
+      multiActivities.value = multiActivities.value.filter((act) => act.id !== activityId);
     }
   }
 
@@ -89,9 +80,7 @@
     if (!activityId) {
       multiActivities.value.push(activity);
     } else {
-      const index = multiActivities.value.findIndex(
-        (act) => act.id === activityId
-      );
+      const index = multiActivities.value.findIndex((act) => act.id === activityId);
       if (index !== -1) {
         multiActivities.value[index] = activity;
       } else {
@@ -137,9 +126,7 @@
 </script>
 <template>
   <div class="mb-6">
-    <BackButton
-      @click="router.push({ name: 'details', params: { id: sessionId } })"
-    />
+    <BackButton @click="router.push({ name: 'details', params: { id: sessionId } })" />
   </div>
   <div class="max-w-screen-lg mx-auto">
     <ActivityForm
@@ -160,9 +147,7 @@
       @remove="removeActivity"
     />
 
-    <div
-      class="w-full flex flex-col sm:flex-row w-full px-6 justify-between gap-3 mb-6"
-    >
+    <div class="w-full flex flex-col sm:flex-row w-full px-6 justify-between gap-3 mb-6">
       <div class="flex gap-2">
         <Button
           v-if="!settingsStore.isGlobalLoading"
@@ -186,9 +171,7 @@
           :label="`Repeat for ${repeatFor} times`"
           :color="ButtonColor.PRIMARY"
           icon="replay"
-          @click="
-            () => (repeatFor < 10 ? (repeatFor += 1) : (repeatFor = repeatFor))
-          "
+          @click="() => (repeatFor < 10 ? (repeatFor += 1) : (repeatFor = repeatFor))"
         />
         <Button
           v-if="!settingsStore.isGlobalLoading && repeatFor > 1"
@@ -196,9 +179,7 @@
           :label="`Decrease repeat count`"
           :color="ButtonColor.LIGHT"
           icon="remove"
-          @click="
-            () => (repeatFor > 1 ? (repeatFor -= 1) : (repeatFor = repeatFor))
-          "
+          @click="() => (repeatFor > 1 ? (repeatFor -= 1) : (repeatFor = repeatFor))"
         />
       </div>
       <div>

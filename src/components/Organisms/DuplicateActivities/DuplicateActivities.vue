@@ -62,8 +62,8 @@
           </button>
         </div>
         <p class="mb-6">
-          You are about to duplicate the warmup from the other session. The
-          follwing activities will be duplicate
+          You are about to duplicate the warmup from the other session. The follwing activities will
+          be duplicate
         </p>
         <div class="w-full flex flex-wrap justify-center gap-3">
           <span

@@ -2,11 +2,7 @@ import { IPlan } from "../../src/models/Plan";
 import { ISession } from "../../src/models/Session";
 import { Activity, Plan, Session, UserStats } from "../types";
 
-export function mapRawToPlans(
-  plan: Plan,
-  sessions: Session[],
-  activities: Activity[]
-): IPlan {
+export function mapRawToPlans(plan: Plan, sessions: Session[], activities: Activity[]): IPlan {
   return {
     name: plan.name,
     id: plan.id,
@@ -15,10 +11,7 @@ export function mapRawToPlans(
   };
 }
 
-export function mapRawToSession(
-  sessions: Session[],
-  activities: Activity[]
-): ISession[] {
+export function mapRawToSession(sessions: Session[], activities: Activity[]): ISession[] {
   const parsedSessions: ISession[] = [];
   for (const session of sessions) {
     const filteredExtensions = activities

@@ -113,16 +113,10 @@
         </p>
       </div>
       <div>
-        <h4
-          v-if="props.time"
-          class="font-bold text-5xl sm:text-4xl text-slate-600"
-        >
+        <h4 v-if="props.time" class="font-bold text-5xl sm:text-4xl text-slate-600">
           {{ millisToMinutesAndSeconds(props.time) }}
         </h4>
-        <h4
-          v-else-if="props.reps"
-          class="font-bold text-5xl sm:text-4xl text-slate-600"
-        >
+        <h4 v-else-if="props.reps" class="font-bold text-5xl sm:text-4xl text-slate-600">
           {{ props.reps }}r
         </h4>
       </div>
@@ -135,9 +129,7 @@
       {{ itemDescription }}
     </p>
 
-    <p v-if="props.requestChange" class="text-red-600">
-      Client request to change this activity
-    </p>
+    <p v-if="props.requestChange" class="text-red-600">Client request to change this activity</p>
     <slot class="mt-3" name="actions"></slot>
   </div>
 </template>

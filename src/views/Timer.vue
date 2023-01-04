@@ -11,12 +11,7 @@
     logOptions,
   } from "~/utils";
   import { IActivity } from "~/models/Activity";
-  import {
-    useTimerStore,
-    useSettingStore,
-    useUserStore,
-    useActivityStore,
-  } from "~/stores";
+  import { useTimerStore, useSettingStore, useUserStore, useActivityStore } from "~/stores";
   const $log = inject("$logger") as logOptions;
 
   const route = useRoute();
@@ -47,9 +42,7 @@
 
   onBeforeRouteLeave(() => {
     if (timerStore.hasNextActivity) {
-      const answer = confirm(
-        "Do you really want to leave? You will lose your progress."
-      );
+      const answer = confirm("Do you really want to leave? You will lose your progress.");
       if (!answer) {
         return false;
       }
@@ -76,10 +69,7 @@
     }
   }
 
-  function getActivity(
-    activities: IActivity[],
-    activityId: string
-  ): TimerActivity {
+  function getActivity(activities: IActivity[], activityId: string): TimerActivity {
     let obj: TimerActivity;
     if (!activityId && activities.length > 0) {
       obj = { firstActivity: activities[0], secondActivity: undefined };
@@ -89,8 +79,7 @@
       return obj;
     }
 
-    const firstActivityIndex =
-      activities?.findIndex((act) => act.id === activityId) ?? undefined;
+    const firstActivityIndex = activities?.findIndex((act) => act.id === activityId) ?? undefined;
     const secondActivityIndex = firstActivityIndex + 1;
 
     const firstActivity = activities[firstActivityIndex];
@@ -120,15 +109,12 @@
 
   function calculateTimeFraction() {
     const rawTimeFraction = timeLeft.value / TIME_LIMIT.value;
-    const raw =
-      rawTimeFraction - (1 / TIME_LIMIT.value) * (1 - rawTimeFraction);
+    const raw = rawTimeFraction - (1 / TIME_LIMIT.value) * (1 - rawTimeFraction);
     return raw;
   }
 
   function setCircleDasharray() {
-    const circleDasharray = `${(
-      calculateTimeFraction() * FULL_DASH_ARRAY
-    ).toFixed(0)} 283`;
+    const circleDasharray = `${(calculateTimeFraction() * FULL_DASH_ARRAY).toFixed(0)} 283`;
     strokeDasharray.value = circleDasharray;
   }
 
@@ -281,15 +267,9 @@
                 : 'play_circle'
               : 'skip_next'
           "
-          :color="
-            timerStore.isRunning ? ButtonColor.DANGER : ButtonColor.PRIMARY
-          "
+          :color="timerStore.isRunning ? ButtonColor.DANGER : ButtonColor.PRIMARY"
           :label="
-            timerStore.isTimerBasedActivity
-              ? timerStore.isRunning
-                ? 'Stop'
-                : 'Play'
-              : 'Next'
+            timerStore.isTimerBasedActivity ? (timerStore.isRunning ? 'Stop' : 'Play') : 'Next'
           "
           :full="true"
           @click="toggleTimer"
@@ -305,10 +285,7 @@
         />
       </div>
     </div>
-    <div
-      class="text-center mb-3"
-      v-if="timerStore.getCurrentActivity?.requestChange"
-    >
+    <div class="text-center mb-3" v-if="timerStore.getCurrentActivity?.requestChange">
       <p class="text-red-600">Change request sended, wait for changes...</p>
     </div>
     <div class="text-center text-slate-500 mb-3">

@@ -45,9 +45,7 @@
   const buttonColor = computed(() => {
     switch ((props.color as ButtonColor) ?? ButtonColor.PRIMARY) {
       case ButtonColor.PRIMARY:
-        return !user.isTrainer
-          ? "bg-indigo-600 hover:bg-indigo-500 text-gray-100"
-          : "";
+        return !user.isTrainer ? "bg-indigo-600 hover:bg-indigo-500 text-gray-100" : "";
       case ButtonColor.DANGER:
         return "bg-red-600 hover:bg-red-500 text-gray-100";
       case ButtonColor.DARK:
@@ -79,15 +77,13 @@
       { 'w-full': props.full ?? false },
       {
         'bg-purple-600 hover:bg-purple-500 text-gray-100':
-          (!props.color || props.color === ButtonColor.PRIMARY) &&
-          user.isTrainer,
+          (!props.color || props.color === ButtonColor.PRIMARY) && user.isTrainer,
       },
       {
         'shadow-lg': props.color !== ButtonColor.TRASPARENT,
       },
       {
-        'py-4 md:py-3 px-4 md:px-8 text-sm':
-          !props.size || props.size === ButtonSize.MEDIUM,
+        'py-4 md:py-3 px-4 md:px-8 text-sm': !props.size || props.size === ButtonSize.MEDIUM,
       },
       {
         'py-2 md:py-1 px-2 md:px-4 text-xs': props.size === ButtonSize.SMALL,
@@ -101,15 +97,8 @@
   >
     <Loading v-if="props.loading" :small="true"></Loading>
     <div v-else class="flex justify-center items-center">
-      <Icon
-        v-if="props.icon"
-        :component="props.icon"
-        class="float-left inline"
-      />
-      <span
-        :class="['ml-2 float-left sm:inline', { hidden: !props.full }]"
-        v-if="props.label"
-      >
+      <Icon v-if="props.icon" :component="props.icon" class="float-left inline" />
+      <span :class="['ml-2 float-left sm:inline', { hidden: !props.full }]" v-if="props.label">
         {{ props.label }}
       </span>
     </div>

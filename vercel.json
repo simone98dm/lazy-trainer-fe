@@ -1,10 +1,5 @@
 {
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/"
-    }
-  ],
+  "rewrites": [],
   "headers": [
     {
       "source": "/api/(.*)",

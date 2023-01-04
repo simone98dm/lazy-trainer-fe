@@ -40,10 +40,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         logger.warn("User not found", {
           username,
         });
-        return commonResponse.notFound(
-          response,
-          "username or password not valid"
-        );
+        return commonResponse.notFound(response, "username or password not valid");
       }
 
       // check if passwords are matching
@@ -52,10 +49,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         logger.warn("Password not match", LogLevel.WARNING, {
           username,
         });
-        return commonResponse.notFound(
-          response,
-          "username or password not valid"
-        );
+        return commonResponse.notFound(response, "username or password not valid");
       }
 
       // sign token

@@ -1,12 +1,7 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from "vue-router";
   import { ButtonColor, getDayOfTheWeek, LinkType } from "~/utils";
-  import {
-    useUserStore,
-    useTimerStore,
-    useSettingStore,
-    useActivityStore,
-  } from "~/stores";
+  import { useUserStore, useTimerStore, useSettingStore, useActivityStore } from "~/stores";
   import { ref } from "vue";
 
   const route = useRoute();
@@ -37,11 +32,8 @@
     router.push({ name: "timer", params: { sessionId } });
   }
   function canUserCreateActivity() {
-    const freeActivitySlot =
-      activityStore.getSessionActivities(sessionId)?.length ?? 100;
-    return (
-      (userStore.isTrainer || userStore.isSelfMadeMan) && freeActivitySlot < 100
-    );
+    const freeActivitySlot = activityStore.getSessionActivities(sessionId)?.length ?? 100;
+    return (userStore.isTrainer || userStore.isSelfMadeMan) && freeActivitySlot < 100;
   }
 </script>
 <template>
@@ -56,10 +48,7 @@
     />
   </div>
   <div class="max-w-screen-lg mx-auto">
-    <div
-      class="flex mb-6 gap-2"
-      v-if="userStore.isTrainer || userStore.isSelfMadeMan"
-    >
+    <div class="flex mb-6 gap-2" v-if="userStore.isTrainer || userStore.isSelfMadeMan">
       <Link
         id="edit-session"
         :to="{ name: 'session', params: { sessionId } }"

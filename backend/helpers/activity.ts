@@ -108,10 +108,7 @@ export async function sortActivities(data: { id: string; order: number }[]) {
     client
       .db(DB_NAME)
       .collection(DbTable.ACTIVITIES)
-      .findOneAndUpdate(
-        { id: activity.id },
-        { $set: { order: activity.order } }
-      )
+      .findOneAndUpdate({ id: activity.id }, { $set: { order: activity.order } })
       .then((result) => {
         if (result.ok === 0) {
           throw new Error("unable to update activity");

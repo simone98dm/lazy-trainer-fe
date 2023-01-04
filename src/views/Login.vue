@@ -69,10 +69,7 @@
 
 <template>
   <div class="flex justify-center">
-    <form
-      class="bg-white rounded-lg shadow-md p-6 w-full max-w-screen-lg"
-      @submit.prevent
-    >
+    <form class="bg-white rounded-lg shadow-md p-6 w-full max-w-screen-lg" @submit.prevent>
       <div class="text-center">
         <h1 class="mb-3 text-4xl font-bold">Login</h1>
       </div>

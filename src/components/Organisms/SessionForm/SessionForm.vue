@@ -93,10 +93,7 @@
     showDuplicateModal.value = true;
   }
 
-  function duplicateSession(param: {
-    dayOfWeek: number;
-    activities: IActivity[];
-  }) {
+  function duplicateSession(param: { dayOfWeek: number; activities: IActivity[] }) {
     showDuplicateModal.value = false;
     save(param.dayOfWeek, param.activities);
   }
@@ -107,9 +104,7 @@
     <Card>
       <form class="w-full" @submit.prevent>
         <div>
-          <h1 v-if="isNew()" class="mb-3 text-4xl mb-6">
-            Create a new day session:
-          </h1>
+          <h1 v-if="isNew()" class="mb-3 text-4xl mb-6">Create a new day session:</h1>
           <h1 v-else class="mb-3 text-4xl mb-6">
             Edit
             <strong>{{ getDayOfTheWeek(currentDayOfWeek) }}</strong> session:
@@ -130,12 +125,10 @@
               :key="day"
               :class="[
                 {
-                  'bg-indigo-600 text-slate-50':
-                    isDaySelected(day) && !userStore.isTrainer,
+                  'bg-indigo-600 text-slate-50': isDaySelected(day) && !userStore.isTrainer,
                 },
                 {
-                  'bg-purple-600 text-slate-50':
-                    isDaySelected(day) && userStore.isTrainer,
+                  'bg-purple-600 text-slate-50': isDaySelected(day) && userStore.isTrainer,
                 },
                 { 'bg-gray-200 text-grey-50': !isDaySelected(day) },
                 'w-full duration-200 rounded-full px-4 py-2 ',

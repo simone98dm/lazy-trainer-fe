@@ -96,18 +96,12 @@
             stroke-width="1.8"
             class="right-sparks"
           >
-            <path
-              d="M23.684 5.789L30 1.158"
-              transform="matrix(0 -1 -1 0 318 170)"
-            />
+            <path d="M23.684 5.789L30 1.158" transform="matrix(0 -1 -1 0 318 170)" />
             <path
               d="M0 5.789L6.316 1.158"
               transform="matrix(0 -1 -1 0 318 170) matrix(-1 0 0 1 6.316 0)"
             />
-            <path
-              d="M15.789 4.632L15.789 0"
-              transform="matrix(0 -1 -1 0 318 170)"
-            />
+            <path d="M15.789 4.632L15.789 0" transform="matrix(0 -1 -1 0 318 170)" />
           </g>
           <path
             fill="#4B4B62"

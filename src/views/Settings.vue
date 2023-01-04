@@ -47,17 +47,13 @@
       <div class="m-0 sm:m-6">
         <h1 class="text-xl font-bold mb-3">Profile</h1>
         <div class="w-full pt-3 px-3">
-          <div
-            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg"
-          >
+          <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg">
             Username
             <span class="font-bold">
               {{ userStore.username }}
             </span>
           </div>
-          <div
-            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg"
-          >
+          <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg">
             Role
             <span class="font-bold">
               {{ RoleName[userStore.role as Role] }}
@@ -78,9 +74,7 @@
       <div class="m-0 sm:m-6">
         <h1 class="text-xl font-bold mb-3">Preferences</h1>
         <div class="w-full pt-3 px-3">
-          <div
-            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg"
-          >
+          <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg">
             Disable audio
             <Switch
               id="disableAudio"
@@ -90,9 +84,7 @@
             />
           </div>
 
-          <div
-            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg"
-          >
+          <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg">
             Easy mode
             <Switch
               id="easyMode"
@@ -102,9 +94,7 @@
             />
           </div>
 
-          <div
-            class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg"
-          >
+          <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg">
             App version
             <span class="font-bold">
               {{ version }}

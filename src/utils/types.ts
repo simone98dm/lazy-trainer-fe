@@ -18,7 +18,4 @@ export type SettingStorage = {
   easyMode: boolean;
 };
 
-export type logOptions = (
-  message: string,
-  type?: "info" | "error" | "warn"
-) => void;
+export type logOptions = (message: string, type?: "info" | "error" | "warn") => void;

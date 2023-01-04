@@ -45,16 +45,9 @@
       :icon="icon"
     />
     <div v-else>
-      <Icon
-        v-if="props.icon"
-        :component="props.icon"
-        class="float-left inline"
-      />
+      <Icon v-if="props.icon" :component="props.icon" class="float-left inline" />
       <slot />
-      <span
-        v-if="props.label"
-        class="ml-2 float-left inline text-md sm:text-sm"
-      >
+      <span v-if="props.label" class="ml-2 float-left inline text-md sm:text-sm">
         {{ props.label }}
       </span>
     </div>

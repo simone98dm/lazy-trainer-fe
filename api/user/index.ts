@@ -1,10 +1,6 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { validateUser } from "../../backend/helpers/token";
-import {
-  getTrainer,
-  getUserConfiguration,
-  saveConfiguration,
-} from "../../backend/helpers/user";
+import { getTrainer, getUserConfiguration, saveConfiguration } from "../../backend/helpers/user";
 import { commonResponse } from "../../backend/utils/http";
 import logger from "../../backend/utils/logger";
 

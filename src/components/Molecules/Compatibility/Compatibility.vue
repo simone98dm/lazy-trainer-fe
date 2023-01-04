@@ -4,7 +4,9 @@
   import { ButtonSize, ButtonColor } from "~/utils";
   const userStore = useUserStore();
 
-  const showBanner = ref(userStore.isLogged && window.location.hostname !== "workout.simone98dm.dev");
+  const showBanner = ref(
+    userStore.isLogged && window.location.hostname !== "workout.simone98dm.dev"
+  );
 
   function closeBanner() {
     showBanner.value = false;
@@ -21,12 +23,17 @@
     <template #content>
       <div>
         <h1 class="text-xl">
-          Hey <span class="text-indigo-600 font-mono">{{ userStore.username }}</span
+          Hey
+          <span class="text-indigo-600 font-mono">{{ userStore.username }}</span
           >!
         </h1>
         <p class="text-lg">It has been a crazy year, and a lot of new things happened ✨</p>
-        <p class="text-lg">I'm always happy to bring new feature to you, for this reason we moved to a new place!</p>
-        <p class="text-lg">Click on the <span class="text-green-600">Show</span> button and install the new app</p>
+        <p class="text-lg">
+          I'm always happy to bring new feature to you, for this reason we moved to a new place!
+        </p>
+        <p class="text-lg">
+          Click on the <span class="text-green-600">Show</span> button and install the new app
+        </p>
         <p class="text-lg">We are happy to have you and see you there!</p>
       </div>
     </template>

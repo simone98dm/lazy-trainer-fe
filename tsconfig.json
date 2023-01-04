@@ -19,13 +19,7 @@
     },
     "types": []
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "meta.ts"
-  ],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "meta.ts"],
   "references": [
     {
       "path": "./tsconfig.node.json"

@@ -48,9 +48,7 @@ export const useActivityStore = defineStore("activity", {
       return state.plan?.sessions.find((session) => session.id === sessionId);
     },
     getWeek(state) {
-      return state.plan?.sessions.sort((x, y) =>
-        x.dayOfWeek < y.dayOfWeek ? -1 : 1
-      );
+      return state.plan?.sessions.sort((x, y) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1));
     },
     getMissingDays(state) {
       const days = state.plan?.sessions.map((item) => item.dayOfWeek);
@@ -113,14 +111,11 @@ export const useActivityStore = defineStore("activity", {
         this.plan = generateBlankPlan();
       }
 
-      const index =
-        this.plan.sessions.findIndex((obj) => obj.id === sessionId) ?? -1;
+      const index = this.plan.sessions.findIndex((obj) => obj.id === sessionId) ?? -1;
       if (index >= 0) {
         if (activity.id) {
           const existingActivity =
-            this.plan?.sessions[index].activities.findIndex(
-              (act) => act.id === activity.id
-            ) ?? -1;
+            this.plan?.sessions[index].activities.findIndex((act) => act.id === activity.id) ?? -1;
           if (existingActivity >= 0) {
             this.plan.sessions[index].activities[existingActivity] = activity;
 
@@ -194,9 +189,7 @@ export const useActivityStore = defineStore("activity", {
         this.plan = generateBlankPlan();
       }
 
-      const existingIndex = this.plan.sessions.findIndex(
-        (s) => s.id === session.id
-      );
+      const existingIndex = this.plan.sessions.findIndex((s) => s.id === session.id);
 
       if (existingIndex < 0) {
         if (!this.getMissingDays.includes(session.dayOfWeek)) {
@@ -268,9 +261,7 @@ export const useActivityStore = defineStore("activity", {
         })
         .then((plan) =>
           plan.sessions
-            .sort((x: ISession, y: ISession) =>
-              x.dayOfWeek < y.dayOfWeek ? -1 : 1
-            )
+            .sort((x: ISession, y: ISession) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1))
             .map(parseSessions)
         );
     },
@@ -284,9 +275,7 @@ export const useActivityStore = defineStore("activity", {
       }
 
       if (this.plan) {
-        const sessionIndex = this.plan.sessions.findIndex(
-          (session) => session.id === sessionId
-        );
+        const sessionIndex = this.plan.sessions.findIndex((session) => session.id === sessionId);
         if (sessionIndex >= 0) {
           const activities = this.plan.sessions[sessionIndex].activities;
 
@@ -350,9 +339,7 @@ export const useActivityStore = defineStore("activity", {
             )
           );
           if (!alradyExists) {
-            this.completionDates.map((x) =>
-              x.stats.completion.push(d.toISOString())
-            );
+            this.completionDates.map((x) => x.stats.completion.push(d.toISOString()));
           }
         })
         .finally(() => settingsStore.loading(false));

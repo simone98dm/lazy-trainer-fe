@@ -50,21 +50,13 @@
         :description="item.description"
         :key="item.id"
         :id="item.id"
-        :highlight="
-          !user.isTrainer && isDayActivity(item) ? 'Today session' : ''
-        "
+        :highlight="!user.isTrainer && isDayActivity(item) ? 'Today session' : ''"
         :class="'cursor-pointer'"
-        @click="
-          () => router.push({ name: 'details', params: { sessionId: item.id } })
-        "
+        @click="() => router.push({ name: 'details', params: { sessionId: item.id } })"
       >
         <template #actions>
           <Button
-            v-if="
-              !user.isTrainer &&
-              isDayActivity(item.id) &&
-              hasActivities(item.id)
-            "
+            v-if="!user.isTrainer && isDayActivity(item.id) && hasActivities(item.id)"
             :full="true"
             :label="'Start'"
             :icon="'play_arrow'"

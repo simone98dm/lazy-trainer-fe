@@ -68,14 +68,8 @@
 
 <template>
   <div v-if="props.activities && props.activities.length > 0">
-    <div
-      v-if="props.activities.length > 0"
-      class="flex items-center justify-between gap-2"
-    >
-      <h4
-        v-if="props.title"
-        class="text-4xl sm:text-5xl font-bold mr-auto text-black"
-      >
+    <div v-if="props.activities.length > 0" class="flex items-center justify-between gap-2">
+      <h4 v-if="props.title" class="text-4xl sm:text-5xl font-bold mr-auto text-black">
         {{ props.title }}
       </h4>
       <Button
@@ -90,10 +84,7 @@
       />
       <Button
         id="duplicate-warmup"
-        v-if="
-          (userStore.isTrainer || userStore.isSelfMadeMan) &&
-          props.enableDuplicate
-        "
+        v-if="(userStore.isTrainer || userStore.isSelfMadeMan) && props.enableDuplicate"
         :color="ButtonColor.LIGHT"
         icon="content_copy"
         label="Duplicate"
@@ -106,13 +97,7 @@
         @click="showList = !showList"
       /> -->
     </div>
-    <draggable
-      v-if="allowDrag"
-      class="mt-4"
-      :list="props.activities"
-      item-key="id"
-      @end="moveItem"
-    >
+    <draggable v-if="allowDrag" class="mt-4" :list="props.activities" item-key="id" @end="moveItem">
       <template #item="{ element }">
         <Link
           :to="{

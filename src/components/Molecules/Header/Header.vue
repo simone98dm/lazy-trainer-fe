@@ -18,9 +18,7 @@
       <div class="text-center">
         <h3
           class="text-3xl font-semibold"
-          @click="
-            logEvent(getAnalytics(), GaCustomEvents.CLICK, { to: 'page title' })
-          "
+          @click="logEvent(getAnalytics(), GaCustomEvents.CLICK, { to: 'page title' })"
         >
           {{ settingsStore.getHeaderText }}
         </h3>

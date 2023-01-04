@@ -72,10 +72,7 @@ export const useTimerStore = defineStore("timer", {
       const userStore = useUserStore();
       settingsStore.loading(true);
 
-      return await requestActivityChange(
-        userStore.token,
-        this.currentActivity?.id ?? ""
-      )
+      return await requestActivityChange(userStore.token, this.currentActivity?.id ?? "")
         .then(() => {
           const activity = useActivityStore();
           const ca = this.currentActivity;

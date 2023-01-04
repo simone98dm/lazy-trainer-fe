@@ -7,9 +7,5 @@ export async function getTrainerPlans(id: string) {
   if (!client) {
     throw new Error("mongoClient is null");
   }
-  return await client
-    .db(DB_NAME)
-    .collection<Plan>(DbTable.PLANS)
-    .find({ trainerId: id })
-    .toArray();
+  return await client.db(DB_NAME).collection<Plan>(DbTable.PLANS).find({ trainerId: id }).toArray();
 }

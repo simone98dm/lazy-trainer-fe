@@ -11,6 +11,7 @@
     "test:e2e": "npx cypress open",
     "mock": " node ./local/index.js",
     "prepare": "husky install",
+    "lint": "prettier -w . ",
     "gource": "gource -f -s 1 -a 1 --key --max-files 0 --disable-progress",
     "release:patch": "release-it -- patch --ci ",
     "release:minor": "release-it -- minor --ci ",

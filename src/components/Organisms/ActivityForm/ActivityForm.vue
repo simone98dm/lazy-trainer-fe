@@ -75,9 +75,7 @@
   let videoUrl = ref(props.videoUrl || "");
   let videoUrlError = computed(() => videoUrl.value.length > 8);
 
-  let isTimeBasedActivity = ref(
-    (Boolean(props.time !== 0) && Boolean(props.reps === 0)) ?? false
-  );
+  let isTimeBasedActivity = ref((Boolean(props.time !== 0) && Boolean(props.reps === 0)) ?? false);
 
   function update() {
     const activity: IActivity = {
@@ -142,12 +140,8 @@
         </div>
 
         <div class="w-full px-3 mb-6">
-          <label class="font-bold mb-2" for="activityType">
-            Activity based type
-          </label>
-          <div
-            class="flex flex-col sm:flex-row justify-around align-center my-2"
-          >
+          <label class="font-bold mb-2" for="activityType"> Activity based type </label>
+          <div class="flex flex-col sm:flex-row justify-around align-center my-2">
             <div
               class="w-full sm:w-fit sm:w-64 flex justify-between shadow rounded-full h-12 flex p-1 mb-3"
             >
@@ -156,12 +150,10 @@
                 :class="[
                   'flex items-center w-fit rounded-full h-10 transition-all px-10',
                   {
-                    'bg-indigo-600 text-white shadow':
-                      isTimeBasedActivity && !user.isTrainer,
+                    'bg-indigo-600 text-white shadow': isTimeBasedActivity && !user.isTrainer,
                   },
                   {
-                    'bg-purple-600 text-white shadow':
-                      isTimeBasedActivity && user.isTrainer,
+                    'bg-purple-600 text-white shadow': isTimeBasedActivity && user.isTrainer,
                   },
                 ]"
                 @click="() => (isTimeBasedActivity = true)"
@@ -173,12 +165,10 @@
                 :class="[
                   'flex items-center w-fit rounded-full h-10 transition-all px-10',
                   {
-                    'bg-indigo-600 text-white shadow':
-                      !isTimeBasedActivity && !user.isTrainer,
+                    'bg-indigo-600 text-white shadow': !isTimeBasedActivity && !user.isTrainer,
                   },
                   {
-                    'bg-purple-600 text-white shadow':
-                      !isTimeBasedActivity && user.isTrainer,
+                    'bg-purple-600 text-white shadow': !isTimeBasedActivity && user.isTrainer,
                   },
                 ]"
                 @click="() => (isTimeBasedActivity = false)"

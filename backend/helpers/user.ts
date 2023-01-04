@@ -25,9 +25,7 @@ export async function getUser(username: string) {
   }
 
   const db = client.db(DB_NAME);
-  const user = await db
-    .collection<User>(DbTable.USERS)
-    .findOne({ name: username });
+  const user = await db.collection<User>(DbTable.USERS).findOne({ name: username });
 
   return user;
 }
@@ -44,19 +42,13 @@ export async function requestActivityChange(activityId: string) {
     .findOneAndUpdate({ id: activityId }, { $set: { requestChange: true } });
 }
 
-export async function getMappedPlan(searchFor: {
-  id?: string;
-  ownerId?: string;
-}) {
+export async function getMappedPlan(searchFor: { id?: string; ownerId?: string }) {
   const client = await connectToDatabase();
   if (!client) {
     throw new Error("mongoClient is null");
   }
 
-  const plan = await client
-    .db(DB_NAME)
-    .collection<Plan>(DbTable.PLANS)
-    .findOne(searchFor);
+  const plan = await client.db(DB_NAME).collection<Plan>(DbTable.PLANS).findOne(searchFor);
 
   if (!plan) {
     logger.warn("Trainer try to look for user plan", {
@@ -87,10 +79,7 @@ export async function getTrainer(trainerId: string) {
     throw new Error("mongoClient is null");
   }
 
-  return await client
-    .db(DB_NAME)
-    .collection<User>(DbTable.USERS)
-    .findOne({ id: trainerId });
+  return await client.db(DB_NAME).collection<User>(DbTable.USERS).findOne({ id: trainerId });
 }
 
 export async function getUserConfiguration(id: string) {
@@ -99,10 +88,7 @@ export async function getUserConfiguration(id: string) {
     throw new Error("mongoClient is null");
   }
 
-  const result = await client
-    .db(DB_NAME)
-    .collection<User>(DbTable.USERS)
-    .findOne({ id: id });
+  const result = await client.db(DB_NAME).collection<User>(DbTable.USERS).findOne({ id: id });
 
   if (!result?.configurations) {
     return {
@@ -138,10 +124,7 @@ export async function getStats(userId: string) {
     throw new Error("mongoClient is null");
   }
 
-  const user = await client
-    .db(DB_NAME)
-    .collection<User>(DbTable.USERS)
-    .findOne({ id: userId });
+  const user = await client.db(DB_NAME).collection<User>(DbTable.USERS).findOne({ id: userId });
 
   if (!user) {
     return null;

@@ -7,11 +7,7 @@ import {
   sortActivities,
   updateActivity,
 } from "../../backend/helpers/activity";
-import {
-  createSession,
-  deleteSession,
-  updateSession,
-} from "../../backend/helpers/session";
+import { createSession, deleteSession, updateSession } from "../../backend/helpers/session";
 import { verifyUser } from "../../backend/helpers/user";
 import logger from "../../backend/utils/logger";
 import { commonResponse } from "../../backend/utils/http";
