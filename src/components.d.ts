@@ -16,10 +16,10 @@ declare module "@vue/runtime-core" {
     Card: typeof import("./components/Atoms/Card/Card.vue")["default"];
     Compatibility: typeof import("./components/Molecules/Compatibility/Compatibility.vue")["default"];
     CookieBanner: typeof import("./components/Organisms/CookieBanner/CookieBanner.vue")["default"];
+    CustomCalendar: typeof import("./components/Organisms/CustomCalendar/CustomCalendar.vue")["default"];
     Dropdown: typeof import("./components/Molecules/Dropdown/Dropdown.vue")["default"];
     DuplicateActivities: typeof import("./components/Organisms/DuplicateActivities/DuplicateActivities.vue")["default"];
     ErrorBanner: typeof import("./components/Molecules/ErrorBanner/ErrorBanner.vue")["default"];
-    Flow: typeof import("./components/Organisms/Flow/Flow.vue")["default"];
     Footer: typeof import("./components/Molecules/Footer/Footer.vue")["default"];
     GlobalLoading: typeof import("./components/Organisms/GlobalLoading/GlobalLoading.vue")["default"];
     Header: typeof import("./components/Molecules/Header/Header.vue")["default"];
@@ -40,5 +40,6 @@ declare module "@vue/runtime-core" {
     TimePicker: typeof import("./components/Molecules/TimePicker/TimePicker.vue")["default"];
     TimerSpinner: typeof import("./components/Molecules/TimerSpinner/TimerSpinner.vue")["default"];
     TimeSelector: typeof import("./components/Molecules/TimeSelector/TimeSelector.vue")["default"];
+    UserFlow: typeof import("./components/Organisms/UserFlow/UserFlow.vue")["default"];
   }
 }

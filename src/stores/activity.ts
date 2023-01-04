@@ -4,7 +4,7 @@ import { IPlan } from "~/models/Plan";
 import { ISession } from "~/models/Session";
 import { defineStore } from "pinia";
 import { IActivity } from "~/models/Activity";
-import { DataAction, parseSessions, Role } from "~/utils";
+import { DataAction, OrderRequest, parseSessions, Role } from "~/utils";
 import { getStorage, saveStorage } from "~/helpers/storage";
 import { v4 as uuid } from "uuid";
 import {
@@ -198,23 +198,25 @@ export const useActivityStore = defineStore("activity", {
 
         this.plan.sessions.push(session);
 
+        const data = {
+          id: session.id,
+          dayOfWeek: session.dayOfWeek,
+          warmup: session.activities,
+        };
         await sendToTrainer(userStore.token, {
-          data: {
-            id: session.id,
-            dayOfWeek: session.dayOfWeek,
-            warmup: session.activities,
-          },
+          data,
           planId: this.plan.id,
           action: DataAction.SESSION_CREATE,
         }).then(() => settingsStore.loading(false));
       } else {
         this.plan.sessions[existingIndex].dayOfWeek = session.dayOfWeek;
 
+        const data = {
+          id: session.id,
+          dayOfWeek: session.dayOfWeek,
+        };
         await sendToTrainer(userStore.token, {
-          data: {
-            id: session.id,
-            dayOfWeek: session.dayOfWeek,
-          },
+          data,
           sessionId: session.id,
           action: DataAction.SESSION_UPDATE,
         }).then(() => settingsStore.loading(false));
@@ -303,13 +305,18 @@ export const useActivityStore = defineStore("activity", {
           const userStore = useUserStore();
           const settingsStore = useSettingStore();
           settingsStore.loading(true);
+
+          const data = [
+            ...this.plan.sessions[sessionIndex].activities.map(
+              (item) =>
+                ({
+                  id: item.id,
+                  order: item.order,
+                } as OrderRequest)
+            ),
+          ];
           await sendToTrainer(userStore.token, {
-            data: [
-              ...this.plan.sessions[sessionIndex].activities.map((item) => ({
-                id: item.id,
-                order: item.order,
-              })),
-            ],
+            data,
             action: DataAction.ACTIVITY_SORT,
           }).finally(() => settingsStore.loading(false));
         }

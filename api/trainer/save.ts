@@ -18,7 +18,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
   }
 
   try {
-    const { id, name, role } = validateUser(request);
+    const { id, role } = validateUser(request);
 
     if (role === Role.NORMAL) {
       throw new Error("User is not a trainer");

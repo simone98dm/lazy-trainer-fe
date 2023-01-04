@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router";
-  const route = useRoute();
+  const r = useRoute();
 
   function isLogin() {
-    return route.name === "login";
+    return r.name === "login";
   }
 
   function hideDecoration() {
-    return route.meta.empty;
+    return r.meta.empty;
   }
 </script>
 

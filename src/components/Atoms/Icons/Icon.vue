@@ -4,7 +4,7 @@
       type: String,
       required: true,
     },
-    class: {
+    customClass: {
       type: String,
       required: false,
       default: "",
@@ -13,5 +13,5 @@
 </script>
 
 <template>
-  <span :class="`material-icons-outlined ${props.class}`">{{ component }}</span>
+  <span :class="`material-icons-outlined ${props.customClass}`">{{ component }}</span>
 </template>

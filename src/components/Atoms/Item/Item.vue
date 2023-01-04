@@ -42,7 +42,7 @@
       required: false,
       default: "",
     },
-    class: {
+    customClass: {
       type: String,
       required: false,
       default: "",
@@ -61,7 +61,7 @@
 
   const showFullDescription = ref(false);
   const itemDescription = computed(() => {
-    if (props.description && !showFullDescription) {
+    if (props.description && !showFullDescription.value) {
       return props.description.substring(0, 100);
     }
     return props.description;
@@ -69,7 +69,7 @@
 
   function millisToMinutesAndSeconds(millis: number) {
     const minutes: number = Math.floor(millis / 60000);
-    const seconds: number = Number(((millis % 60000) / 1000).toFixed(0));
+    const seconds = Number(((millis % 60000) / 1000).toFixed(0));
     if (minutes === 0) {
       return `${(seconds < 10 ? "0" : "") + seconds}"`;
     }
@@ -85,7 +85,7 @@
       { 'border-b-2 border-dashed mt-3': noCard },
       { 'bg-white': !props.highlight },
       { 'bg-orange-200 border-2 border-orange-300': props.highlight },
-      props.class,
+      props.customClass,
     ]"
     @click="showFullDescription = !showFullDescription"
   >
@@ -96,7 +96,7 @@
         </p>
         <Icon
           v-if="props.icon"
-          class="pr-2 hidden sm:block flex-left inline"
+          custom-class="pr-2 sm:block flex-left inline"
           :component="props.icon"
         />
         <h4

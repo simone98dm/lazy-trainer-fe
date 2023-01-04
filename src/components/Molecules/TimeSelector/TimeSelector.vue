@@ -11,12 +11,12 @@
   });
   const emits = defineEmits(["timeSelected"]);
 
-  let showModal = ref(false);
-  let seletedText = computed(
+  const showModal = ref(false);
+  const seletedText = computed(
     () => `${selectedTime.value.minutes} min, ${selectedTime.value.seconds} sec`
   );
 
-  let selectedTime = ref({
+  const selectedTime = ref({
     minutes: 0,
     seconds: 0,
   });

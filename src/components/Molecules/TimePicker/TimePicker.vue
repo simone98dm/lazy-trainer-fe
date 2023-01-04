@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed, ref, watch } from "vue";
   defineProps({
-    class: {
+    customClass: {
       type: String,
       required: false,
       default: "",
@@ -24,8 +24,8 @@
         selectedSeconds.value <= 9 ? `0${selectedSeconds.value}` : selectedSeconds.value
       }`
   );
-  let selectedMinutes = ref(0);
-  let selectedSeconds = ref(0);
+  const selectedMinutes = ref(0);
+  const selectedSeconds = ref(0);
 
   function selectElement(selection: { minutes?: number; seconds?: number }) {
     const { minutes, seconds } = selection;

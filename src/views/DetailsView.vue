@@ -3,6 +3,7 @@
   import { ButtonColor, getDayOfTheWeek, LinkType } from "~/utils";
   import { useUserStore, useTimerStore, useSettingStore, useActivityStore } from "~/stores";
   import { ref } from "vue";
+  import { IActivity } from "~/models/Activity";
 
   const route = useRoute();
   const router = useRouter();
@@ -12,11 +13,11 @@
   const timerStore = useTimerStore();
 
   const sessionId = route.params.sessionId as string;
-  let session = activityStore.getSession(sessionId);
+  const session = activityStore.getSession(sessionId);
   settingsStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
 
-  let activityList = ref(undefined as any[] | undefined);
-  let warmupList = ref(undefined as any[] | undefined);
+  const activityList = ref(undefined as IActivity[] | undefined);
+  const warmupList = ref(undefined as IActivity[] | undefined);
 
   if (sessionId) {
     warmupList.value = activityStore.getWarmUpActivities(sessionId);

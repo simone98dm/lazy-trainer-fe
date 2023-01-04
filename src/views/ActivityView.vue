@@ -14,7 +14,7 @@
 
   const { sessionId, activityId } = route.params;
   const session = activityStore.getSession(sessionId as string);
-  let repeatFor = ref(1);
+  const repeatFor = ref(1);
 
   settingsStore.setHeader("Activity");
 
@@ -22,7 +22,7 @@
     router.back();
   }
 
-  let multiActivities = ref([] as IActivity[]);
+  const multiActivities = ref([] as IActivity[]);
 
   if (activityId) {
     const existingActivity = session?.activities.find((act) => act.id === activityId);
@@ -75,7 +75,7 @@
     }
   }
 
-  function updateActivity(a: any) {
+  function updateActivity(a: { activityId?: string; activity: IActivity }) {
     const { activityId, activity } = a;
     if (!activityId) {
       multiActivities.value.push(activity);
@@ -147,7 +147,7 @@
       @remove="removeActivity"
     />
 
-    <div class="w-full flex flex-col sm:flex-row w-full px-6 justify-between gap-3 mb-6">
+    <div class="w-full flex flex-col sm:flex-row px-6 justify-between gap-3 mb-6">
       <div class="flex gap-2">
         <Button
           v-if="!settingsStore.isGlobalLoading"

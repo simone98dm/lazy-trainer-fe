@@ -18,8 +18,10 @@
       },
     ]"
   >
-    <span class="text-green-500 opacity-75 top-1/2 my-0 mx-auto block relative w-0 h-0">
-      <Loading></Loading>
+    <span
+      class="text-green-500 opacity-75 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    >
+      <Loading />
     </span>
   </div>
 </template>

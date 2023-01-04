@@ -130,7 +130,7 @@ export async function getStats(userId: string) {
     return null;
   }
 
-  let userStats: UserStats[] = [];
+  const userStats: UserStats[] = [];
   if (Number(user.role) === 1) {
     // is trainer
     const plans = await client
@@ -160,7 +160,7 @@ export async function getStats(userId: string) {
       }))
     );
   } else {
-    let userStat = await client
+    const userStat = await client
       .db(DB_NAME)
       .collection<UserStats>(DbTable.STATS)
       .findOne({ userId: userId });

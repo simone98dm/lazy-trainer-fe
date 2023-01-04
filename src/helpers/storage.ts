@@ -3,7 +3,7 @@ import { get, set, clear, createStore } from "idb-keyval";
 
 const customStore = createStore("lazy-trainer-db", "lazy-trainer-store");
 
-export async function saveStorage(name: string, data: any) {
+export async function saveStorage(name: string, data: unknown) {
   try {
     const s = JSON.stringify(data);
     localStorage.setItem(name, s);

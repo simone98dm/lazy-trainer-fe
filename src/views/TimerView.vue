@@ -23,14 +23,14 @@
 
   settingsStore.setHeader("Timer");
 
-  let timerInterval: any = null;
+  let timerInterval: number;
   let timePassed = 0;
-  let TIME_LIMIT = ref(0);
-  let timeLeft = ref(TIME_LIMIT.value);
+  const TIME_LIMIT = ref(0);
+  const timeLeft = ref(TIME_LIMIT.value);
 
-  let remainingPathColor = ref(COLOR_CODES.info.color);
-  let strokeDasharray = ref(`283`);
-  let baseTimerLabel = ref(formatTime(timeLeft.value));
+  const remainingPathColor = ref(COLOR_CODES.info.color);
+  const strokeDasharray = ref(`283`);
+  const baseTimerLabel = ref(formatTime(timeLeft.value));
 
   const { sessionId, activityId } = route.params;
 
@@ -94,7 +94,7 @@
 
   function formatTime(time: number): string {
     const minutes = Math.floor(time / 60);
-    let seconds = time % 60;
+    const seconds = time % 60;
     return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
   }
 

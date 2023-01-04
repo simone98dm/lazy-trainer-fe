@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { IUserResponse } from "../models/User";
 import { Role } from "../utils";
 import { getGroups, signIn, userInfo, verifyUser } from "../helpers/http";
 import { clearStorage, getStorage, saveStorage } from "~/helpers/storage";
@@ -87,7 +86,7 @@ export const useUserStore = defineStore("user", {
       location.href = "/";
     },
     async retrieveClients() {
-      return getGroups(this.token, this.userId);
+      return await getGroups(this.token, this.userId);
     },
   },
 });

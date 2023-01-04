@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import { useRoute, useRouter } from "vue-router";
-  import { ICustomSession, ISession } from "~/models/Session";
+  import { ICustomSession } from "~/models/Session";
   import { parseSessions } from "~/utils";
   import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
 
@@ -61,6 +61,6 @@
         {{ options.subtitle }}
       </h4>
     </div>
-    <Flow v-if="!options.block" :list="sessions" :loading="isLoading"></Flow>
+    <UserFlow v-if="!options.block" :list="sessions" :loading="isLoading" />
   </div>
 </template>

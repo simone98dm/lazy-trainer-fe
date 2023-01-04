@@ -1,5 +1,3 @@
-import cypress from "cypress";
-
 describe("Login", () => {
   beforeEach(() => {
     cy.intercept("POST", "/api/auth/sign").as("login");
