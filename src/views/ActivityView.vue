@@ -128,7 +128,7 @@
   <div class="mb-6">
     <BackButton @click="router.push({ name: 'details', params: { id: sessionId } })" />
   </div>
-  <div class="max-w-screen-lg mx-auto">
+  <div class="max-w-screen-xl mx-auto">
     <ActivityForm
       v-for="(act, i) in multiActivities"
       :key="act.id"

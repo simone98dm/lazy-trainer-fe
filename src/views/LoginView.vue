@@ -4,6 +4,7 @@
   import { useRouter } from "vue-router";
   import { useUserStore, useSettingStore } from "~/stores";
   import { ButtonColor, GaCustomEvents, logOptions } from "~/utils";
+  import workout from "~/assets/workout-1.jpg";
 
   const $log = inject("$logger") as logOptions;
 
@@ -68,50 +69,59 @@
 </script>
 
 <template>
-  <div class="flex justify-center">
-    <form class="bg-white rounded-lg shadow-md p-6 w-full max-w-screen-lg" @submit.prevent>
-      <div class="text-center">
-        <h1 class="mb-3 text-4xl font-bold">Login</h1>
+  <div class="py-6">
+    <div
+      class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto lg:max-w-screen-xl"
+      style="height: 30rem"
+    >
+      <div
+        class="hidden lg:block lg:w-1/2 bg-cover"
+        :style="{ backgroundImage: `url(${workout})`, backgroundPosition: 'center' }"
+      ></div>
+      <div class="w-full p-8 lg:w-1/2">
+        <h2 class="text-2xl font-semibold text-gray-700 text-center">Welcome back!</h2>
+        <div class="mt-8">
+          <Input
+            error="'Username is required'"
+            name="usernameField"
+            id="username"
+            :disabled="false"
+            :has-error="usernameError"
+            label="Username"
+            @change="(v: string) => (username = v)"
+            @keyup.enter="submit"
+          />
+        </div>
+        <div class="mt-4">
+          <Input
+            error="'Password is required'"
+            name="passwordField"
+            id="password"
+            type="password"
+            :disabled="false"
+            :has-error="passwordError"
+            label="Password"
+            @change="(v: string) => (password = v)"
+            @keyup.enter="submit"
+          />
+        </div>
+        <div class="mt-4">
+          <div class="text-center mb-6">
+            <span v-if="error" class="font-bold text-red-500">{{ error }}</span>
+          </div>
+        </div>
+        <div class="mt-8">
+          <Button
+            :loading="isLoading"
+            :color="ButtonColor.PRIMARY"
+            :disabled="isLoading"
+            label="Login"
+            icon="login"
+            :full="true"
+            @click="submit"
+          />
+        </div>
       </div>
-      <div class="flex flex-wrap mb-3">
-        <Input
-          error="'Username is required'"
-          name="usernameField"
-          id="username"
-          :disabled="false"
-          :has-error="usernameError"
-          label="Username"
-          @change="(v: string) => (username = v)"
-          @keyup.enter="submit"
-        />
-      </div>
-      <div class="flex flex-wrap mb-3">
-        <Input
-          error="'Password is required'"
-          name="passwordField"
-          id="password"
-          type="password"
-          :disabled="false"
-          :has-error="passwordError"
-          label="Password"
-          @change="(v: string) => (password = v)"
-          @keyup.enter="submit"
-        />
-      </div>
-      <div class="text-center mb-6">
-        <span v-if="error" class="font-bold text-red-500">{{ error }}</span>
-      </div>
-      <div class="flex justify-center">
-        <Button
-          :loading="isLoading"
-          :color="ButtonColor.PRIMARY"
-          :disabled="isLoading"
-          label="Login"
-          icon="login"
-          :full="true"
-          @click="submit"
-        />
-      </div>
-    </form>
+    </div>
   </div>
 </template>

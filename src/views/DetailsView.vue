@@ -48,7 +48,7 @@
       "
     />
   </div>
-  <div class="max-w-screen-lg mx-auto">
+  <div class="max-w-screen-xl mx-auto">
     <div class="flex mb-6 gap-2" v-if="userStore.isTrainer || userStore.isSelfMadeMan">
       <Link
         id="edit-session"

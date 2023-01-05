@@ -57,7 +57,7 @@
   <div class="mb-6">
     <BackButton @click="backPage" />
   </div>
-  <div class="flex xl:flex-col flex-wrap justify-center max-w-screen-lg mx-auto">
+  <div class="flex xl:flex-col flex-wrap justify-center max-w-screen-xl mx-auto">
     <SessionForm
       @save="addSession"
       @remove="deleteSession"
