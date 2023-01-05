@@ -5,7 +5,7 @@ import { useUserStore } from "./user";
 
 export const useSettingStore = defineStore("settings", {
   state: () => ({
-    headerText: "Trainer",
+    headerText: "Lazy Trainer",
     globalLoading: false,
     audioDisabled: false,
     easyMode: false,

@@ -43,16 +43,16 @@
 
 <template>
   <PlaceholderList v-if="props.loading" />
-  <div v-else>
-    <div v-if="props.list && props.list.length > 0" class="mb-6" id="sessions">
+  <div v-else class="mb-6" id="sessions">
+    <div v-if="props.list && props.list.length > 0" class="flex flex-col xl:flex-row w-full">
       <Item
         v-for="item in props.list"
+        :key="item.id"
         :name="item.name"
         :description="item.description"
-        :key="item.id"
         :id="item.id"
         :highlight="!user.isTrainer && isDayActivity(item.dayOfWeek) ? 'Today session' : ''"
-        :class="'cursor-pointer'"
+        class="cursor-pointer w-full mx-2"
         @click="() => router.push({ name: 'details', params: { sessionId: item.id } })"
       >
         <template #actions>

@@ -42,7 +42,7 @@
 </script>
 
 <template>
-  <div class="flex flex-col justify-center max-w-screen-lg mx-auto">
+  <div class="flex flex-col justify-center max-w-screen-xl mx-auto">
     <Card>
       <div class="m-0 sm:m-6">
         <h1 class="text-xl font-bold mb-3">Profile</h1>

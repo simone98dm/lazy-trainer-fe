@@ -15,7 +15,7 @@
   <div class="mb-3">
     <BackButton @click="router.push('/settings')"></BackButton>
   </div>
-  <div class="mx-auto text-center max-w-screen-lg">
+  <div class="mx-auto text-center max-w-screen-xl">
     <div class="mb-6 bg-white shadow rounded-xl p-5">
       <img
         src="https://avatars.githubusercontent.com/u/17797267?v=4"

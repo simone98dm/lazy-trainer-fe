@@ -10,7 +10,7 @@
   <div class="mb-3">
     <BackButton @click="router.push('/settings')"></BackButton>
   </div>
-  <div class="shadow p-5 rounded-xl mb-6 bg-white max-w-screen-lg mx-auto">
+  <div class="shadow p-5 rounded-xl mb-6 bg-white max-w-screen-xl mx-auto">
     <pre>
 MIT License
 

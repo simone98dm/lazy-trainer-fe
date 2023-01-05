@@ -54,7 +54,7 @@
 </script>
 
 <template>
-  <div class="max-w-screen-lg mx-auto">
+  <div class="max-w-screen-xl mx-auto">
     <div :class="options.style">
       <h1 class="mb-3 text-3xl font-bold">{{ options.title }}</h1>
       <h4 class="mb-3 text-xl text-slate-600 font-bold">
