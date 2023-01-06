@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from "vue-router";
-  import { useActivityStore, useSettingStore } from "~/stores";
+  import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
   import { ButtonColor, DeepPartial, GaCustomEvents, MAX_ACTIIVITY_FORM } from "~/utils";
   import { ref } from "vue";
@@ -11,6 +11,7 @@
   const router = useRouter();
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
+  const { isTrainer } = useUserStore();
 
   const { sessionId, activityId } = route.params;
   const session = activityStore.getSession(sessionId as string);
@@ -153,7 +154,7 @@
           v-if="!settingsStore.isGlobalLoading"
           id="concat-rest-activity"
           label="Add 15 sec rest"
-          :color="ButtonColor.PRIMARY"
+          :color="isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
           icon="self_improvement"
           @click="() => addActivityForm(restActivityTemplate)"
         />
@@ -161,7 +162,7 @@
           v-if="!settingsStore.isGlobalLoading"
           id="concat-activity"
           label="Concat"
-          :color="ButtonColor.PRIMARY"
+          :color="isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
           icon="exposure_plus_1"
           @click="addActivityForm"
         />
@@ -169,7 +170,7 @@
           v-if="!settingsStore.isGlobalLoading"
           id="increase-activity-count"
           :label="`Repeat for ${repeatFor} times`"
-          :color="ButtonColor.PRIMARY"
+          :color="isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
           icon="replay"
           @click="() => (repeatFor < 10 ? (repeatFor += 1) : (repeatFor = repeatFor))"
         />

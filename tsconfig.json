@@ -17,7 +17,7 @@
       "~/*": ["src/*"],
       "*": ["types/*.d.ts"]
     },
-    "types": []
+    "types": ["@types/node"]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "meta.ts"],
   "references": [

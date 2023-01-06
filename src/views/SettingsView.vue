@@ -146,7 +146,7 @@
     </div>
     <div class="w-full flex justify-center mb-3">
       <Button
-        :color="ButtonColor.PRIMARY"
+        :color="userStore.isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
         :full="true"
         icon="logout"
         label="Logout"

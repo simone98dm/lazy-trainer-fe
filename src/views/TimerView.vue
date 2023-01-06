@@ -23,7 +23,7 @@
 
   settingsStore.setHeader("Timer");
 
-  let timerInterval: number;
+  let timerInterval: any;
   let timePassed = 0;
   const TIME_LIMIT = ref(0);
   const timeLeft = ref(TIME_LIMIT.value);

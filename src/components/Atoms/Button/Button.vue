@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { computed } from "vue";
-  import { useUserStore } from "~/stores";
   import { ButtonColor, ButtonSize } from "~/utils";
   const props = defineProps({
     full: {
@@ -40,12 +39,13 @@
     },
   });
   const emit = defineEmits(["click"]);
-  const user = useUserStore();
 
   const buttonColor = computed(() => {
     switch ((props.color as ButtonColor) ?? ButtonColor.PRIMARY) {
+      case ButtonColor.PURPLE:
+        return "bg-purple-600 hover:bg-purple-500 text-gray-100";
       case ButtonColor.PRIMARY:
-        return !user.isTrainer ? "bg-indigo-600 hover:bg-indigo-500 text-gray-100" : "";
+        return "bg-indigo-600 hover:bg-indigo-500 text-gray-100";
       case ButtonColor.DANGER:
         return "bg-red-600 hover:bg-red-500 text-gray-100";
       case ButtonColor.DARK:
@@ -75,10 +75,6 @@
       { 'rounded-full': circular },
       { 'rounded-lg': !circular },
       { 'w-full': props.full ?? false },
-      {
-        'bg-purple-600 hover:bg-purple-500 text-gray-100':
-          (!props.color || props.color === ButtonColor.PRIMARY) && user.isTrainer,
-      },
       {
         'shadow-lg': props.color !== ButtonColor.TRASPARENT,
       },
