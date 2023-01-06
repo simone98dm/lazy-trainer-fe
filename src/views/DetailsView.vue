@@ -54,6 +54,7 @@
         id="edit-session"
         :to="{ name: 'session', params: { sessionId } }"
         label="Edit"
+        :color="userStore.isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
         :type="LinkType.BUTTON"
         icon="edit"
       />

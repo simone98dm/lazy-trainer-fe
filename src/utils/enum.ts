@@ -17,6 +17,7 @@ export enum ButtonColor {
   WARNING,
   SUCCESS,
   TRASPARENT,
+  PURPLE,
 }
 
 export enum ButtonSize {

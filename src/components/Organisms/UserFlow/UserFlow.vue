@@ -4,7 +4,7 @@
   import { useActivityStore, useTimerStore, useUserStore } from "~/stores";
   import { ButtonColor, LinkType } from "~/utils";
 
-  const user = useUserStore();
+  const userStore = useUserStore();
   const activityStore = useActivityStore();
   const props = defineProps({
     list: {
@@ -51,14 +51,14 @@
         :name="item.name"
         :description="item.description"
         :id="item.id"
-        :highlight="!user.isTrainer && isDayActivity(item.dayOfWeek) ? 'Today session' : ''"
+        :highlight="!userStore.isTrainer && isDayActivity(item.dayOfWeek) ? 'Today session' : ''"
         class="cursor-pointer w-full mx-2"
         @click="() => router.push({ name: 'details', params: { sessionId: item.id } })"
       >
         <template #actions>
           <div>
             <Button
-              v-if="!user.isTrainer && isDayActivity(item.dayOfWeek) && hasActivities(item.id)"
+              v-if="!userStore.isTrainer && isDayActivity(item.dayOfWeek) && hasActivities(item.id)"
               :icon="'play_arrow'"
               :color="ButtonColor.SUCCESS"
               :circular="true"
@@ -74,11 +74,12 @@
   <Link
     v-if="
       !props.loading &&
-      (user.isTrainer || user.isSelfMadeMan) &&
+      (userStore.isTrainer || userStore.isSelfMadeMan) &&
       activityStore.getMissingDays.length > 0
     "
     icon="add"
     :full="true"
+    :color="userStore.isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
     :to="{ name: 'session' }"
     :type="LinkType.BUTTON"
     label="Add day activities"
