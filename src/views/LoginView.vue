@@ -71,8 +71,7 @@
 <template>
   <div class="py-6">
     <div
-      class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto lg:max-w-screen-xl"
-      style="height: 30rem"
+      class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto lg:max-w-screen-xl h-[500px] lg:h-[700px]"
     >
       <div
         class="hidden lg:block lg:w-1/2 bg-cover"
