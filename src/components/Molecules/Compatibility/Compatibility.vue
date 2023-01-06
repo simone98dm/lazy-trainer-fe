@@ -2,7 +2,8 @@
   import { ref } from "vue";
   import { ButtonSize, ButtonColor } from "~/utils";
   const showBanner = ref(
-    window.location.hostname.includes(".simone98dm.dev") && window.location.hostname !== "localhost"
+    !window.location.hostname.includes(".simone98dm.dev") &&
+      window.location.hostname !== "localhost"
   );
 
   function closeBanner() {
