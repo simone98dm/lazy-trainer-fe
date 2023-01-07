@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { LogLevel } from "../../backend/const";
 import { signToken, validateUser } from "../../backend/helpers/token";
 import { getUser } from "../../backend/helpers/user";
 import logger from "../../backend/utils/logger";
 import { commonResponse } from "../../backend/utils/http";
+import { LogLevel } from "../../backend/const";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -46,7 +46,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       // check if passwords are matching
       const passwordMatch = await bcrypt.compare(password, user.hashPassword);
       if (!passwordMatch) {
-        logger.warn("Password not match", LogLevel.WARNING, {
+        logger.warn("Password not match", {
           username,
         });
         return commonResponse.notFound(response, "username or password not valid");
@@ -68,7 +68,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       throw new Error("Method not allowed");
     }
   } catch (error) {
-    logger.error(error, LogLevel.ERROR, {
+    logger.error(error, {
       token: request.headers.authorization,
       method: request.method,
       path: request.url,

@@ -12,8 +12,8 @@ export enum DbTable {
 }
 
 export enum LogLevel {
-  INFO = "Info",
-  ERROR = "Error",
-  WARNING = "Warning",
-  DEBUG = "Debug",
+  INFO = "info",
+  ERROR = "error",
+  WARNING = "warning",
+  DEBUG = "debug",
 }
