@@ -1,16 +1,9 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import {
   commonResponse,
-  createActivity,
-  createSession,
-  DataAction,
-  deleteActivity,
-  deleteSession,
   logger,
   Role,
-  sortActivities,
-  updateActivity,
-  updateSession,
+  saveChanges,
   validateUser,
   verifyUser,
 } from "../../backend/index";
@@ -33,31 +26,8 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     }
 
     const { activityId, sessionId, planId, action, data } = request.body;
-    switch (action) {
-      case DataAction.SESSION_CREATE:
-        await createSession(planId, data);
-        break;
-      case DataAction.SESSION_DELETE:
-        await deleteSession(sessionId);
-        break;
-      case DataAction.SESSION_UPDATE:
-        await updateSession(sessionId, data);
-        break;
-      case DataAction.ACTIVITY_CREATE:
-        await createActivity(sessionId, data);
-        break;
-      case DataAction.ACTIVITY_DELETE:
-        await deleteActivity(activityId);
-        break;
-      case DataAction.ACTIVITY_UPDATE:
-        await updateActivity(activityId, data);
-        break;
-      case DataAction.ACTIVITY_SORT:
-        await sortActivities(data);
-        break;
-      default:
-        throw new Error("action not recognized");
-    }
+
+    await saveChanges(action, sessionId, activityId, planId, data);
 
     return commonResponse.ok(response);
   } catch (error) {

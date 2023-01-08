@@ -2,12 +2,20 @@ import {
   Activity,
   Config,
   connectToDatabase,
+  createActivity,
+  createSession,
+  DataAction,
   DbTable,
   DB_NAME,
+  deleteActivity,
+  deleteSession,
   logger,
   mapRawToPlans,
   Plan,
   Session,
+  sortActivities,
+  updateActivity,
+  updateSession,
   User,
   UserStats,
 } from "../index";
@@ -179,4 +187,38 @@ export async function getStats(userId: string) {
   }
 
   return userStats;
+}
+
+export async function saveChanges(
+  action: DataAction,
+  sessionId: string,
+  activityId: string,
+  planId: string,
+  data: any
+) {
+  switch (action) {
+    case DataAction.SESSION_CREATE:
+      await createSession(planId, data);
+      break;
+    case DataAction.SESSION_DELETE:
+      await deleteSession(sessionId);
+      break;
+    case DataAction.SESSION_UPDATE:
+      await updateSession(sessionId, data);
+      break;
+    case DataAction.ACTIVITY_CREATE:
+      await createActivity(sessionId, data);
+      break;
+    case DataAction.ACTIVITY_DELETE:
+      await deleteActivity(activityId);
+      break;
+    case DataAction.ACTIVITY_UPDATE:
+      await updateActivity(activityId, data);
+      break;
+    case DataAction.ACTIVITY_SORT:
+      await sortActivities(data);
+      break;
+    default:
+      throw new Error("action not recognized");
+  }
 }
