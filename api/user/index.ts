@@ -5,7 +5,7 @@ import {
   logger,
   saveConfiguration,
   validateUser,
-} from "../../backend";
+} from "../../backend/index";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {

@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { commonResponse, validateUser, logger, getTrainerPlans } from "../../backend";
+import { commonResponse, validateUser, logger, getTrainerPlans } from "../../backend/index";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {

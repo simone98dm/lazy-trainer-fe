@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { commonResponse, signToken, validateUser, logger, getUser } from "../../backend";
+import { commonResponse, signToken, validateUser, logger, getUser } from "../../backend/index";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
