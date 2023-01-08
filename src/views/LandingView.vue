@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import workoutImage from "~/assets/workout.jpg";
-  import { ButtonColor, ButtonSize, LinkType } from "~/utils";
+  import { ButtonColor, LinkType } from "~/utils";
 </script>
 
 <template>
