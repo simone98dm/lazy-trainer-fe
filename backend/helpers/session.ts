@@ -7,7 +7,7 @@ import {
   logger,
   Statistics,
   UserStats,
-} from "..";
+} from "../index";
 
 /**
  * Delete a session

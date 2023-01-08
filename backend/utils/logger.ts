@@ -1,5 +1,5 @@
 import { Logtail } from "@logtail/node";
-import { LogLevel } from "..";
+import { LogLevel } from "../index";
 const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN || "");
 
 function log(message: unknown, level: LogLevel = LogLevel.INFO, ...args: unknown[]) {

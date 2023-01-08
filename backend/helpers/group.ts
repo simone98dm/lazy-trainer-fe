@@ -1,4 +1,4 @@
-import { connectToDatabase, DbTable, DB_NAME, Plan } from "..";
+import { connectToDatabase, DbTable, DB_NAME, Plan } from "../index";
 
 export async function getTrainerPlans(id: string) {
   const client = await connectToDatabase();

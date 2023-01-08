@@ -1,4 +1,4 @@
-import { connectToDatabase, DbTable, DB_NAME, IActivity, logger } from "..";
+import { connectToDatabase, DbTable, DB_NAME, IActivity, logger } from "../index";
 
 /**
  * Delete an activity

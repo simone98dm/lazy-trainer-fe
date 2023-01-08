@@ -1,4 +1,4 @@
-import { Activity, IPlan, ISession, Plan, Session } from "..";
+import { Activity, IPlan, ISession, Plan, Session } from "../index";
 
 export function mapRawToPlans(plan: Plan, sessions: Session[], activities: Activity[]): IPlan {
   return {

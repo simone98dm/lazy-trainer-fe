@@ -96,14 +96,8 @@
     "vue-tsc": "^0.40.4"
   },
   "lint-staged": {
-    "**/*": [
-      "prettier --write --ignore-unknown",
-      "git add"
-    ],
-    "*.{ts,vue}": [
-      "eslint --fix",
-      "git add"
-    ]
+    "**/*": "prettier --write --ignore-unknown",
+    "*.{ts,vue}": "eslint --fix"
   },
   "auto-changelog": {
     "output": "CHANGELOG.md",

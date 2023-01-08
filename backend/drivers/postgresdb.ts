@@ -1,5 +1,5 @@
 import postgres from "postgres";
-import { uri } from "..";
+import { uri } from "../index";
 
 const options = {};
 

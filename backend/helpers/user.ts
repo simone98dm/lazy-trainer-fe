@@ -10,7 +10,7 @@ import {
   Session,
   User,
   UserStats,
-} from "..";
+} from "../index";
 
 export async function verifyUser(id?: string) {
   if (!id) {
