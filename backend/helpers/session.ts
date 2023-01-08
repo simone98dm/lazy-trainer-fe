@@ -1,9 +1,13 @@
-import { IActivity } from "../../src/models/Activity";
-import { ISession } from "../../src/models/Session";
-import { DbTable, DB_NAME } from "../const";
-import { connectToDatabase } from "../drivers/mongodb";
-import { Statistics, UserStats } from "../types";
-import logger from "../utils/logger";
+import {
+  connectToDatabase,
+  DbTable,
+  DB_NAME,
+  IActivity,
+  ISession,
+  logger,
+  Statistics,
+  UserStats,
+} from "..";
 
 /**
  * Delete a session

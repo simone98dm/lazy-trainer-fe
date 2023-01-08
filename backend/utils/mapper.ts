@@ -1,6 +1,4 @@
-import { IPlan } from "../../src/models/Plan";
-import { ISession } from "../../src/models/Session";
-import { Activity, Plan, Session } from "../types";
+import { Activity, IPlan, ISession, Plan, Session } from "..";
 
 export function mapRawToPlans(plan: Plan, sessions: Session[], activities: Activity[]): IPlan {
   return {

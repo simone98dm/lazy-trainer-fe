@@ -1,17 +1,13 @@
 import bcrypt from "bcrypt";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { signToken, validateUser } from "../../backend/helpers/token";
-import { getUser } from "../../backend/helpers/user";
-import logger from "../../backend/utils/logger";
-import { commonResponse } from "../../backend/utils/http";
-import { LogLevel } from "../../backend/const";
+import { commonResponse, signToken, validateUser, logger, getUser } from "../../backend";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
     if (request.method === "GET") {
       // renew or signout user from FE
       if (!request.headers.authorization) {
-        logger.warn("User try to renew without token", LogLevel.WARNING);
+        logger.warn("User try to renew without token");
         return commonResponse.badRequest(response, "Bearer token is missing");
       }
 

@@ -1,16 +1,19 @@
-import { DataAction, Role } from "./../../src/utils/enum";
 import { VercelRequest, VercelResponse } from "@vercel/node";
-import { validateUser } from "../../backend/helpers/token";
 import {
+  commonResponse,
   createActivity,
+  createSession,
+  DataAction,
   deleteActivity,
+  deleteSession,
+  logger,
+  Role,
   sortActivities,
   updateActivity,
-} from "../../backend/helpers/activity";
-import { createSession, deleteSession, updateSession } from "../../backend/helpers/session";
-import { verifyUser } from "../../backend/helpers/user";
-import logger from "../../backend/utils/logger";
-import { commonResponse } from "../../backend/utils/http";
+  updateSession,
+  validateUser,
+  verifyUser,
+} from "../../backend";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method !== "POST") {

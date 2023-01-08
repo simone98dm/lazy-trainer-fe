@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { uri } from "../const";
+import { uri } from "..";
 
 const options = {};
 

@@ -1,5 +1,5 @@
 import { Logtail } from "@logtail/node";
-import { LogLevel } from "../const";
+import { LogLevel } from "..";
 const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN || "");
 
 function log(message: unknown, level: LogLevel = LogLevel.INFO, ...args: unknown[]) {
@@ -24,9 +24,9 @@ function log(message: unknown, level: LogLevel = LogLevel.INFO, ...args: unknown
   }
 }
 
-export default {
+export const logger = {
   warn: (message: unknown, ...args: unknown[]) => log(message, LogLevel.WARNING, ...args),
   error: (message: unknown, ...args: unknown[]) => log(message, LogLevel.ERROR, ...args),
   info: (message: unknown, ...args: unknown[]) => log(message, LogLevel.INFO, ...args),
-  log: (message: unknown, ...args: unknown[]) => log(message, LogLevel.DEBUG, ...args),
+  debug: (message: unknown, ...args: unknown[]) => log(message, LogLevel.DEBUG, ...args),
 };

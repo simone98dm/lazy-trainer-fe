@@ -1,6 +1,4 @@
-import { DbTable, DB_NAME } from "../const";
-import { connectToDatabase } from "../drivers/mongodb";
-import { Plan } from "../types";
+import { connectToDatabase, DbTable, DB_NAME, Plan } from "..";
 
 export async function getTrainerPlans(id: string) {
   const client = await connectToDatabase();

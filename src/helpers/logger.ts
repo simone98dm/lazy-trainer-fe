@@ -17,7 +17,7 @@ export const customLogger = () => {
         logger.info(message);
         break;
       default:
-        logger.log(message);
+        logger.debug(message);
         break;
     }
   };

@@ -1,5 +1,16 @@
 {
   "name": "lazy-trainer-frontend",
+  "author": {
+    "email": "simone.dalmas@outlook.it",
+    "name": "simone98dm",
+    "url": "https://workout.simone98dm.dev"
+  },
+  "description": "Lazy Trainer is a web application that allows you to create and manage your workouts and exercises. It is also possible to create and manage your own training plans.",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:simone98dm/lazy-trainer-fe.git"
+  },
+  "license": "MIT",
   "private": true,
   "version": "1.66.3",
   "type": "module",
@@ -85,8 +96,14 @@
     "vue-tsc": "^0.40.4"
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown",
-    "*.{ts,vue}": "eslint --fix"
+    "**/*": [
+      "prettier --write --ignore-unknown",
+      "git add"
+    ],
+    "*.{ts,vue}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "auto-changelog": {
     "output": "CHANGELOG.md",

@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
-import { SECRET_KEY } from "../const";
-import { ITokenPayload } from "../../src/models/User";
 import { VercelRequest } from "@vercel/node";
+import { ITokenPayload, SECRET_KEY } from "..";
 
 /**
  * Verify token and return ITokenPayload interface

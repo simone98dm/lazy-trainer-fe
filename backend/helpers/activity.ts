@@ -1,7 +1,4 @@
-import { IActivity } from "../../src/models/Activity";
-import { DbTable, DB_NAME } from "../const";
-import { connectToDatabase } from "../drivers/mongodb";
-import logger from "../utils/logger";
+import { connectToDatabase, DbTable, DB_NAME, IActivity, logger } from "..";
 
 /**
  * Delete an activity

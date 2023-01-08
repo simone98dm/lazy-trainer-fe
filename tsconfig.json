@@ -11,14 +11,13 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM"],
-    "baseUrl": ".",
     "skipLibCheck": true,
+    "baseUrl": ".",
     "paths": {
       "~/*": ["src/*"],
-      "*": ["types/*.d.ts"],
-      "#be/*": ["./backend/*"]
+      "*": ["types/*.d.ts"]
     },
-    "types": ["@types/node"]
+    "types": []
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "meta.ts"],
   "references": [
@@ -26,5 +25,5 @@
       "path": "./tsconfig.node.json"
     }
   ],
-  "exclude": ["src/main/test/cypress", "node_modules"]
+  "exclude": ["src/main/test/cypress"]
 }
