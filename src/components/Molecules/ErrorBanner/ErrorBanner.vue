@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  const props = defineProps({
+  defineProps({
     text: {
       type: String,
       required: true,
@@ -9,6 +9,6 @@
 
 <template>
   <h1 class="text-xl font-bold text-red-600 rounded-xl p-4 text-center uppercase mb-6">
-    {{ props.text }}
+    {{ text }}
   </h1>
 </template>

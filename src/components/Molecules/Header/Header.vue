@@ -2,16 +2,16 @@
   import { getAnalytics, logEvent } from "@firebase/analytics";
   import { useSettingStore, useUserStore } from "~/stores";
   import { GaCustomEvents } from "~/utils";
-  const settingsStore = useSettingStore();
-  const userStore = useUserStore();
+  const { getHeaderText } = useSettingStore();
+  const { isTrainer } = useUserStore();
 </script>
 
 <template>
   <div
     :class="[
       'w-full rounded-b-xl p-5 text-white',
-      { 'bg-indigo-600': !userStore.isTrainer },
-      { 'bg-purple-600': userStore.isTrainer },
+      { 'bg-indigo-600': !isTrainer },
+      { 'bg-purple-600': isTrainer },
     ]"
   >
     <div>
@@ -20,7 +20,7 @@
           class="text-3xl font-semibold"
           @click="logEvent(getAnalytics(), GaCustomEvents.CLICK, { to: 'page title' })"
         >
-          {{ settingsStore.getHeaderText }}
+          {{ getHeaderText }}
         </h3>
       </div>
     </div>

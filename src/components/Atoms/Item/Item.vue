@@ -68,6 +68,10 @@
   });
 
   function millisToMinutesAndSeconds(millis: number) {
+    if (!millis) {
+      return "0'00";
+    }
+
     const minutes: number = Math.floor(millis / 60000);
     const seconds = Number(((millis % 60000) / 1000).toFixed(0));
     if (minutes === 0) {
@@ -105,18 +109,27 @@
             { 'font-semibold': props.description },
             { 'font-bold': !props.description },
           ]"
+          name="item-name"
         >
           {{ props.name }}
         </h4>
-        <p class="text-xs text-slate-600 my-2">
+        <p class="text-xs text-slate-600 my-2" name="item-caption">
           {{ props.caption }}
         </p>
       </div>
       <div>
-        <h4 v-if="props.time" class="font-bold text-5xl sm:text-4xl text-slate-600">
+        <h4
+          v-if="props.time"
+          class="font-bold text-5xl sm:text-4xl text-slate-600"
+          name="item-time"
+        >
           {{ millisToMinutesAndSeconds(props.time) }}
         </h4>
-        <h4 v-else-if="props.reps" class="font-bold text-5xl sm:text-4xl text-slate-600">
+        <h4
+          v-else-if="props.reps"
+          class="font-bold text-5xl sm:text-4xl text-slate-600"
+          name="item-reps"
+        >
           {{ props.reps }}r
         </h4>
       </div>
@@ -125,11 +138,14 @@
     <p
       v-if="props.description"
       class="text-sm text-slate-600 truncate whitespace-nowrap overflow-hidden"
+      name="item-description"
     >
       {{ itemDescription }}
     </p>
 
-    <p v-if="props.requestChange" class="text-red-600">Client request to change this activity</p>
+    <p v-if="props.requestChange" class="text-red-600" name="item-request-changes">
+      Client request to change this activity
+    </p>
     <slot class="mt-3" name="actions"></slot>
   </div>
 </template>

@@ -1,8 +1,10 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import {
-  commonResponse,
   getUserConfiguration,
+  internalServerError,
   logger,
+  notFound,
+  ok,
   saveConfiguration,
   validateUser,
 } from "../../backend/index";
@@ -12,7 +14,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     const { id } = validateUser(request);
     if (request.method === "GET") {
       const data = await getUserConfiguration(id);
-      return commonResponse.ok(response, data);
+      return ok(response, data);
     } else if (request.method === "POST") {
       const result = await saveConfiguration(id, request.body);
       if (!result) {
@@ -20,10 +22,10 @@ export default async (request: VercelRequest, response: VercelResponse) => {
           id,
           options: request.body,
         });
-        return commonResponse.notFound(response, "User not found");
+        return notFound(response, "User not found");
       }
 
-      return commonResponse.ok(response);
+      return ok(response);
     }
   } catch (error) {
     logger.error(error, {
@@ -31,6 +33,6 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       method: request.method,
       path: request.url,
     });
-    return commonResponse.internalServerError(response, "something went wrong");
+    return internalServerError(response, "something went wrong");
   }
 };

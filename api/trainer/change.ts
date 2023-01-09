@@ -1,5 +1,11 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { commonResponse, logger, requestActivityChange, validateUser } from "../../backend/index";
+import {
+  internalServerError,
+  logger,
+  ok,
+  requestActivityChange,
+  validateUser,
+} from "../../backend/index";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -18,13 +24,13 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       userId: isValid.id,
       activityId,
     });
-    return commonResponse.ok(response);
+    return ok(response);
   } catch (error) {
     logger.error(error, {
       token: request.headers.authorization,
       method: request.method,
       path: request.url,
     });
-    return commonResponse.internalServerError(response, "something went wrong");
+    return internalServerError(response, "something went wrong");
   }
 };

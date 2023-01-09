@@ -1,7 +1,9 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import {
-  commonResponse,
+  badRequest,
+  internalServerError,
   logger,
+  ok,
   Role,
   saveChanges,
   validateUser,
@@ -10,7 +12,7 @@ import {
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   if (request.method !== "POST") {
-    return commonResponse.badRequest(response);
+    return badRequest(response);
   }
 
   try {
@@ -29,13 +31,13 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
     await saveChanges(action, sessionId, activityId, planId, data);
 
-    return commonResponse.ok(response);
+    return ok(response);
   } catch (error) {
     logger.error(error, {
       token: request.headers.authorization,
       method: request.method,
       path: request.url,
     });
-    return commonResponse.internalServerError(response, "something went wrong");
+    return internalServerError(response, "something went wrong");
   }
 };
