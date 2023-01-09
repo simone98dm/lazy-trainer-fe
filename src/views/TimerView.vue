@@ -11,7 +11,7 @@
     logOptions,
   } from "~/utils";
   import { IActivity } from "~/models/Activity";
-  import { useTimerStore, useSettingStore, useUserStore, useActivityStore } from "~/stores";
+  import { useTimerStore, useSettingStore, useUserStore, useActivityStore } from "~/store";
   const $log = inject("$logger") as logOptions;
 
   const route = useRoute();

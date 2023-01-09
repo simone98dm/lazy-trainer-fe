@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useUserStore } from "~/stores";
+  import { useUserStore } from "~/store";
   import draggable from "vuedraggable";
   import { ButtonColor, GaCustomEvents, LinkType } from "~/utils";
   import { getAnalytics, logEvent } from "@firebase/analytics";

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useRouter } from "vue-router";
   import { ICustomSession } from "~/models/Session";
-  import { useActivityStore, useTimerStore, useUserStore } from "~/stores";
+  import { useActivityStore, useTimerStore, useUserStore } from "~/store";
   import { ButtonColor, LinkType } from "~/utils";
 
   const userStore = useUserStore();

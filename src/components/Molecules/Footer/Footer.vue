@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useUserStore } from "~/stores";
+  import { useUserStore } from "~/store";
   import { useRoute } from "vue-router";
   const route = useRoute();
   const { isTrainer } = useUserStore();

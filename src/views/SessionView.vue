@@ -2,7 +2,7 @@
   import { getAnalytics, logEvent } from "@firebase/analytics";
   import { useRoute, useRouter } from "vue-router";
   import { ISession } from "~/models/Session";
-  import { useActivityStore, useSettingStore } from "~/stores";
+  import { useActivityStore, useSettingStore } from "~/store";
   import { GaCustomEvents } from "~/utils";
 
   const router = useRouter();

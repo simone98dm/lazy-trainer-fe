@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from "vue-router";
   import { ButtonColor, getDayOfTheWeek, LinkType } from "~/utils";
-  import { useUserStore, useTimerStore, useSettingStore, useActivityStore } from "~/stores";
+  import { useUserStore, useTimerStore, useSettingStore, useActivityStore } from "~/store";
   import { ref } from "vue";
   import { IActivity } from "~/models/Activity";
 

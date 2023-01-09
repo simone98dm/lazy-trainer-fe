@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { getAnalytics, logEvent } from "@firebase/analytics";
-  import { useSettingStore, useUserStore } from "~/stores";
+  import { useSettingStore, useUserStore } from "~/store";
   import { GaCustomEvents } from "~/utils";
   const { getHeaderText } = useSettingStore();
   const { isTrainer } = useUserStore();

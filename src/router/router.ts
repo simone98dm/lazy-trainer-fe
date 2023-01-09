@@ -1,21 +1,21 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useUserStore } from "../stores/user";
-import { Role } from "../utils/enum";
+import { useUserStore } from "~/store/user";
+import { Role } from "~/utils/enum";
 
-import Home from "../views/HomeView.vue";
-import Details from "../views/DetailsView.vue";
-import Activity from "../views/ActivityView.vue";
-import Timer from "../views/TimerView.vue";
-import Session from "../views/SessionView.vue";
-import Login from "../views/LoginView.vue";
-import Settings from "../views/SettingsView.vue";
-import Group from "../views/GroupView.vue";
-import NotFound from "../views/NotFoundView.vue";
-import About from "../views/AboutView.vue";
-import License from "../views/LicenseView.vue";
-import Landing from "../views/LandingView.vue";
-import User from "../views/UserView.vue";
-import PrivacyPolicy from "../views/PrivacyPolicyView.vue";
+import Home from "~/views/HomeView.vue";
+import Details from "~/views/DetailsView.vue";
+import Activity from "~/views/ActivityView.vue";
+import Timer from "~/views/TimerView.vue";
+import Session from "~/views/SessionView.vue";
+import Login from "~/views/LoginView.vue";
+import Settings from "~/views/SettingsView.vue";
+import Group from "~/views/GroupView.vue";
+import NotFound from "~/views/NotFoundView.vue";
+import About from "~/views/AboutView.vue";
+import License from "~/views/LicenseView.vue";
+import Landing from "~/views/LandingView.vue";
+import User from "~/views/UserView.vue";
+import PrivacyPolicy from "~/views/PrivacyPolicyView.vue";
 
 const routes = [
   {
