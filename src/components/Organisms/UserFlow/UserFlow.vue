@@ -52,7 +52,7 @@
         :description="item.description"
         :id="item.id"
         :highlight="!userStore.isTrainer && isDayActivity(item.dayOfWeek) ? 'Today session' : ''"
-        class="cursor-pointer w-full mx-2"
+        class="cursor-pointer w-full xl:mx-2"
         @click="() => router.push({ name: 'details', params: { sessionId: item.id } })"
       >
         <template #actions>
