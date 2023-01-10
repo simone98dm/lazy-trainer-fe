@@ -166,3 +166,26 @@ export async function getUserStats(token: string) {
     log(JSON.stringify(error), "error");
   }
 }
+
+export async function verifyRegistrationToken(token: string) {
+  try {
+    return await fetchWithTimeout(`${baseUrl}/api/auth/sign`, {
+      method: "PUT",
+      headers: buildHeaders(token),
+    });
+  } catch (error) {
+    log(JSON.stringify(error), "error");
+  }
+}
+
+export async function signUpUser(token: string, username: string, password: string) {
+  try {
+    return await fetchWithTimeout(`${baseUrl}/api/auth/sign`, {
+      method: "PUT",
+      headers: buildHeaders(token),
+      body: JSON.stringify({ username, password }),
+    });
+  } catch (error) {
+    log(JSON.stringify(error), "error");
+  }
+}

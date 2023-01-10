@@ -1,3 +1,5 @@
+import { hash } from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
 import {
   Activity,
   Config,
@@ -221,4 +223,45 @@ export async function saveChanges(
     default:
       throw new Error("action not recognized");
   }
+}
+
+export async function signUpUser(username: string, password: string, role: number) {
+  if (!username) {
+    throw new Error("Username not provided");
+  }
+  if (!password) {
+    throw new Error("Password not provided");
+  }
+
+  const hashPassword = await hash(password, 12);
+
+  const id = uuidv4();
+  const user = {
+    hashPassword,
+    username,
+    id,
+    role,
+  };
+
+  const client = await connectToDatabase();
+  if (!client) {
+    throw new Error("mongoClient is null");
+  }
+
+  const userResult = await client.db(DB_NAME).collection(DbTable.USERS).insertOne(user);
+
+  if (!userResult.insertedId) {
+    return false;
+  }
+
+  const plan = {
+    ownerId: id,
+    id: uuidv4(),
+    name: `${username}'s plan`,
+    trainerId: "",
+  };
+
+  const planResult = await client.db(DB_NAME).collection(DbTable.PLANS).insertOne(plan);
+
+  return Boolean(planResult.insertedId);
 }

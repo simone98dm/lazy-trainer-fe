@@ -16,6 +16,7 @@ import License from "~/views/LicenseView.vue";
 import Landing from "~/views/LandingView.vue";
 import User from "~/views/UserView.vue";
 import PrivacyPolicy from "~/views/PrivacyPolicyView.vue";
+import SignUp from "~/views/SignUp.vue";
 
 const routes = [
   {
@@ -166,6 +167,17 @@ const routes = [
     component: PrivacyPolicy,
     meta: {
       title: `Privacy Policy`,
+      empty: false,
+      requireAuth: false,
+      requireAdmin: false,
+    },
+  },
+  {
+    path: "/signup",
+    name: "signup",
+    component: SignUp,
+    meta: {
+      title: `Sign Up`,
       empty: false,
       requireAuth: false,
       requireAdmin: false,

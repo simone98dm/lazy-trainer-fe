@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import type { VercelRequest, VercelResponse } from "@vercel/node";
+import jwt from "jsonwebtoken";
 import {
   signToken,
   validateUser,
@@ -9,6 +10,8 @@ import {
   ok,
   notFound,
   badRequest,
+  SECRET_KEY,
+  signUpUser,
 } from "../../backend/index";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
@@ -69,6 +72,21 @@ export default async (request: VercelRequest, response: VercelResponse) => {
         role: Number(user.role),
         token,
       });
+    } else if (request.method === "PUT") {
+      const token = request.headers.authorization?.split(" ")[1];
+      if (!token) {
+        throw new Error("Token not provided");
+      }
+
+      const signup = jwt.verify(token, SECRET_KEY) as { step: number; timestamp: string };
+
+      if (signup.step == 1) {
+        const newToken = jwt.sign({ step: 2 }, SECRET_KEY);
+        return ok(response, { token: newToken });
+      } else if (signup.step == 2) {
+        const { username, password, role } = request.body;
+        await signUpUser(username, password, role);
+      }
     } else {
       throw new Error("Method not allowed");
     }
