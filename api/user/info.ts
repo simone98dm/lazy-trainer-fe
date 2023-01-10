@@ -1,5 +1,12 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { commonResponse, getTrainer, logger, validateUser } from "../../backend/index";
+import {
+  getTrainer,
+  internalServerError,
+  logger,
+  notFound,
+  ok,
+  validateUser,
+} from "../../backend/index";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -14,10 +21,10 @@ export default async (request: VercelRequest, response: VercelResponse) => {
 
     if (!result) {
       logger.warn("Trainer not found", { trainerId });
-      return commonResponse.notFound(response, "trainer not found");
+      return notFound(response, "trainer not found");
     }
 
-    return commonResponse.ok(response, {
+    return ok(response, {
       id: result.id,
       name: result.name,
     });
@@ -27,7 +34,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       method: request.method,
       path: request.url,
     });
-    return commonResponse.internalServerError(response, {
+    return internalServerError(response, {
       error: "something went wrong",
     });
   }

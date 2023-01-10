@@ -2,7 +2,7 @@
   import { getAnalytics, logEvent } from "@firebase/analytics";
   import { inject, ref, watch } from "vue";
   import { useRouter } from "vue-router";
-  import { useUserStore, useSettingStore } from "~/stores";
+  import { useUserStore, useSettingStore } from "~/store";
   import { ButtonColor, GaCustomEvents, logOptions } from "~/utils";
   import workout from "~/assets/workout-1.jpg";
 

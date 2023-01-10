@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useSettingStore, useUserStore } from "~/stores";
+  import { useSettingStore, useUserStore } from "~/store";
   import github from "~/assets/github.svg";
   import linkedin from "~/assets/linkedin.svg";
   import { useRouter } from "vue-router";

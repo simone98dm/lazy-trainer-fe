@@ -91,7 +91,7 @@
     type="button"
     @click="emit('click', $event)"
   >
-    <Loading v-if="props.loading" :small="true"></Loading>
+    <Loading v-if="props.loading" :color="color" :small="true"></Loading>
     <div v-else class="flex justify-center items-center">
       <Icon v-if="props.icon" :component="props.icon" custom-class="float-left inline" />
       <span :class="['ml-2 float-left sm:inline', { hidden: !props.full }]" v-if="props.label">

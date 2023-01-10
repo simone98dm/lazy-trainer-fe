@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ButtonColor, GaCustomEvents, Role, RoleName } from "~/utils";
-  import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
+  import { useActivityStore, useSettingStore, useUserStore } from "~/store";
   import { ref } from "vue";
   import { version } from "../../package.json";
   import { getAnalytics, logEvent } from "@firebase/analytics";
@@ -67,7 +67,11 @@
             <span class="font-bold" v-if="userStore.getTrainer">
               {{ userStore.getTrainer.name }}
             </span>
-            <Loading v-else :small="true"></Loading>
+            <Loading
+              v-else
+              :small="true"
+              :color="userStore.isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
+            ></Loading>
           </div>
         </div>
       </div>

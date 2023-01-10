@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useUserStore } from "~/stores";
+  import { useUserStore } from "~/store";
   import draggable from "vuedraggable";
   import { ButtonColor, GaCustomEvents, LinkType } from "~/utils";
   import { getAnalytics, logEvent } from "@firebase/analytics";
@@ -116,7 +116,6 @@
             :no-card="props.compatList"
             :allow-delete="props.allowDelete"
             @delete="$emit('delete', $event)"
-            custom-class="mx-2"
           >
             <template #actions>
               <div>
@@ -145,7 +144,6 @@
         :description="activity.description"
         :time="Number(activity.time)"
         :reps="Number(activity.reps)"
-        custom-class="mx-2"
         @delete="$emit('delete-activity', activity)"
       />
     </div>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useRoute, useRouter } from "vue-router";
-  import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
+  import { useActivityStore, useSettingStore, useUserStore } from "~/store";
   import { IActivity } from "~/models/Activity";
   import { ButtonColor, DeepPartial, GaCustomEvents, MAX_ACTIIVITY_FORM } from "~/utils";
   import { ref } from "vue";

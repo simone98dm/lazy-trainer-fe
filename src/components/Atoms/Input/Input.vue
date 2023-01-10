@@ -28,7 +28,7 @@
     type: {
       type: String,
       required: false,
-      default: "",
+      default: "text",
     },
     hasError: {
       type: Boolean,
@@ -47,7 +47,7 @@
 <template>
   <label
     :class="['font-bold mb-2', { 'text-red-600': hasError }, { 'text-gray-800': !hasError }]"
-    for="activityName"
+    :for="name"
   >
     {{ label }}
   </label>
@@ -64,7 +64,7 @@
     @click="$emit('click')"
     @keyup="$emit('keyup', $event, (($event.target as any) || undefined)?.value)"
     :disabled="disabled"
-    :type="type ?? 'text'"
+    :type="type"
     autocomplete="off"
   />
   <span v-if="hasError" class="text-red-600">{{ error }}</span>

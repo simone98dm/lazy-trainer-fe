@@ -2,7 +2,7 @@
   import { IActivity } from "~/models/Activity";
   import { computed, ref, watch } from "vue";
   import { v4 as uuidv4 } from "uuid";
-  import { useUserStore } from "~/stores";
+  import { useUserStore } from "~/store";
   import { ButtonColor } from "~/utils";
 
   const props = defineProps({

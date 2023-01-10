@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useSettingStore, useUserStore } from "~/stores";
+  import { useSettingStore, useUserStore } from "~/store";
   import { ref } from "vue";
 
   const settingsStore = useSettingStore();

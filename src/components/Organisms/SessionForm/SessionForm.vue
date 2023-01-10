@@ -3,7 +3,7 @@
   import { v4 as uuidv4 } from "uuid";
   import { ISession } from "~/models/Session";
   import { ButtonColor, getDayOfTheWeek } from "~/utils";
-  import { useActivityStore, useUserStore } from "~/stores";
+  import { useActivityStore, useUserStore } from "~/store";
   import { IActivity } from "~/models/Activity";
 
   const props = defineProps({

@@ -3,7 +3,7 @@
   import { useRoute, useRouter } from "vue-router";
   import { ICustomSession } from "~/models/Session";
   import { parseSessions } from "~/utils";
-  import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
+  import { useActivityStore, useSettingStore, useUserStore } from "~/store";
 
   const isLoading = ref(true);
   let pageOptions = {

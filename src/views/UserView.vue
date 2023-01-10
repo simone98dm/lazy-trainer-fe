@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useActivityStore, useSettingStore } from "~/stores";
+  import { useActivityStore, useSettingStore } from "~/store";
 
   const settingsStore = useSettingStore();
   settingsStore.setHeader("Dashboard");

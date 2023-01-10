@@ -2,7 +2,7 @@
   import { RouterLink } from "vue-router";
   import { ButtonColor, LinkType } from "~/utils";
 
-  const props = defineProps({
+  defineProps({
     to: {
       type: Object,
       required: true,
@@ -45,10 +45,10 @@
       :icon="icon"
     />
     <div v-else>
-      <Icon v-if="props.icon" :component="props.icon" custom-class="float-left inline" />
+      <Icon v-if="icon" :component="icon" custom-class="float-left inline" />
       <slot />
-      <span v-if="props.label" class="ml-2 float-left inline text-md sm:text-sm">
-        {{ props.label }}
+      <span v-if="label" class="ml-2 float-left inline text-md sm:text-sm">
+        {{ label }}
       </span>
     </div>
   </router-link>

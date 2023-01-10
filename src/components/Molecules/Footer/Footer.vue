@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { useUserStore } from "~/stores";
+  import { useUserStore } from "~/store";
   import { useRoute } from "vue-router";
   const route = useRoute();
-  const user = useUserStore();
+  const { isTrainer } = useUserStore();
   const planId = route.query.planId as string;
 </script>
 
@@ -22,7 +22,7 @@
           <Icon component="dashboard" />
         </div>
       </router-link>
-      <router-link v-if="user.isTrainer" to="/group" class="rounded-full p-4">
+      <router-link v-if="isTrainer" to="/group" class="rounded-full p-4">
         <div class="flex justify-center items-center">
           <Icon component="groups" />
         </div>
