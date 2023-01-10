@@ -103,7 +103,7 @@
           </div>
 
           <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg">
-            Dark Mode
+            Dark Mode (Beta)
             <Switch
               id="darkMode"
               name="toggleDarkMode"

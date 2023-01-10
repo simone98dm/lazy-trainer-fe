@@ -76,6 +76,11 @@ export const useSettingStore = defineStore("settings", {
         this.audioDisabled = settings.audioDisabled;
         this.easyMode = settings.easyMode;
         this.darkMode = settings.darkMode;
+        if (this.darkMode) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
       }
     },
   },

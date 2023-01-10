@@ -84,7 +84,7 @@
 <template>
   <div
     :class="[
-      'flex flex-col mb-2 dark:text-slate-200 text-slate-800',
+      'flex flex-col mb-2 dark:text-slate-200 text-slate-600',
       { 'rounded-xl p-4 shadow-lg': !noCard },
       { 'border-b-2 border-dashed mt-3': noCard },
       { 'dark:bg-slate-800 bg-white ': !props.highlight },
