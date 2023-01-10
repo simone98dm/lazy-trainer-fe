@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed, inject, ref } from "vue";
   import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
-  import ding from "~/assets/audio/ding.mp3";
+  import doubleWhistle from "~/assets/audio/double-whistle.mp3";
   import horn from "~/assets/audio/horn.mp3";
   import {
     type TimerActivity,
@@ -145,7 +145,7 @@
 
     const nextActivity = timerStore.getNextActivity;
     if (nextActivity) {
-      playAudio(ding);
+      playAudio(doubleWhistle);
       const activityId = nextActivity.id;
       router.push({
         name: "timer",
