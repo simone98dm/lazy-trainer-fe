@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { computed } from "vue";
+  import { computed, PropType } from "vue";
   import { ButtonColor, ButtonSize } from "~/utils";
   const props = defineProps({
     full: {
@@ -18,7 +18,7 @@
       default: "",
     },
     color: {
-      type: Number,
+      type: Number as PropType<ButtonColor>,
       required: false,
       default: ButtonColor.PRIMARY,
     },

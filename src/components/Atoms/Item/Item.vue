@@ -62,14 +62,14 @@
   const showFullDescription = ref(false);
   const itemDescription = computed(() => {
     if (props.description && !showFullDescription.value) {
-      return props.description.substring(0, 100);
+      return `${props.description.substring(0, 97)}...`;
     }
     return props.description;
   });
 
   function millisToMinutesAndSeconds(millis: number) {
     if (!millis) {
-      return "0'00";
+      return `0'00"`;
     }
 
     const minutes: number = Math.floor(millis / 60000);
