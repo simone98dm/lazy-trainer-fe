@@ -24,6 +24,7 @@ export type logOptions = (message: string, type?: "info" | "error" | "warn") => 
 export type UserConfigurations = {
   audioDisabled: boolean;
   easyMode: boolean;
+  darkMode: boolean;
 };
 
 export type TrainerRequest = {

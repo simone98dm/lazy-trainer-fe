@@ -67,7 +67,7 @@
 <template>
   <div v-if="props.activities && props.activities.length > 0">
     <div v-if="props.activities.length > 0" class="flex items-center justify-between gap-2">
-      <h4 v-if="props.title" class="text-4xl sm:text-5xl font-bold mr-auto text-black">
+      <h4 v-if="props.title" class="text-4xl sm:text-5xl font-bold mr-auto">
         {{ props.title }}
       </h4>
       <Button

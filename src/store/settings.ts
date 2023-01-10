@@ -9,6 +9,7 @@ export const useSettingStore = defineStore("settings", {
     globalLoading: false,
     audioDisabled: false,
     easyMode: false,
+    darkMode: undefined || false,
   }),
   getters: {
     getHeaderText(state) {
@@ -22,6 +23,9 @@ export const useSettingStore = defineStore("settings", {
     },
     isEasyModeEnabled(state) {
       return state.easyMode;
+    },
+    isDarkModeEnabled(state) {
+      return state.darkMode;
     },
   },
   actions: {
@@ -39,17 +43,30 @@ export const useSettingStore = defineStore("settings", {
       this.easyMode = status;
       this.saveSettings();
     },
+    toggleDarkMode(theme?: boolean) {
+      if (theme) {
+        this.darkMode = theme;
+      } else {
+        this.darkMode = !this.darkMode;
+      }
+      if (this.darkMode) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      this.saveSettings();
+    },
     async saveSettings() {
       const userStore = useUserStore();
-      await saveConfiguration(userStore.token, {
-        audioDisabled: this.audioDisabled,
-        easyMode: this.easyMode,
-      });
 
-      await saveStorage("_settings", {
+      const userSettings = {
         audioDisabled: this.audioDisabled,
         easyMode: this.easyMode,
-      });
+        darkMode: this.darkMode,
+      };
+
+      await saveConfiguration(userStore.token, userSettings);
+      await saveStorage("_settings", userSettings);
     },
     async loadSettings() {
       const userStore = useUserStore();
@@ -58,6 +75,12 @@ export const useSettingStore = defineStore("settings", {
       if (settings) {
         this.audioDisabled = settings.audioDisabled;
         this.easyMode = settings.easyMode;
+        this.darkMode = settings.darkMode;
+        if (this.darkMode) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
       }
     },
   },

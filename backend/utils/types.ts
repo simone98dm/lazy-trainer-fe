@@ -34,6 +34,7 @@ export type User = {
 export type Config = {
   audioDisabled: boolean;
   easyMode: boolean;
+  darkMode: boolean;
 };
 
 export type UserStats = {

@@ -176,7 +176,7 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  linkExactActiveClass: "bg-slate-100 text-indigo-600",
+  linkExactActiveClass: "dark:bg-slate-700 bg-slate-100 text-indigo-600 dark:text-indigo-300",
 });
 
 router.beforeEach((to) => {
