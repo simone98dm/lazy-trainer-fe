@@ -11,7 +11,7 @@
 <template>
   <div
     :class="[
-      'rounded-xl shadow-lg mb-2 bg-white w-full',
+      'rounded-xl shadow-lg mb-2 dark:bg-slate-800 bg-white w-full',
       {
         'p-0': padding === 'none',
         'p-2': padding === 'small',

@@ -9,6 +9,7 @@ export const useSettingStore = defineStore("settings", {
     globalLoading: false,
     audioDisabled: false,
     easyMode: false,
+    darkMode: false,
   }),
   getters: {
     getHeaderText(state) {
@@ -22,6 +23,9 @@ export const useSettingStore = defineStore("settings", {
     },
     isEasyModeEnabled(state) {
       return state.easyMode;
+    },
+    isDarkModeEnabled(state) {
+      return state.darkMode;
     },
   },
   actions: {
@@ -38,6 +42,9 @@ export const useSettingStore = defineStore("settings", {
     toggleEasyMode(status: boolean) {
       this.easyMode = status;
       this.saveSettings();
+    },
+    toggleDarkMode() {
+      this.darkMode = !this.darkMode;
     },
     async saveSettings() {
       const userStore = useUserStore();

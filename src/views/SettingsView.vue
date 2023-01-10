@@ -39,6 +39,15 @@
   function toggleEasyMode(v: boolean) {
     settingsStore.toggleEasyMode(v);
   }
+
+  function toggleDarkMode() {
+    settingsStore.toggleDarkMode();
+    if (settingsStore.isDarkModeEnabled) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }
 </script>
 
 <template>
@@ -95,6 +104,16 @@
               name="toggleEasyMode"
               :checked="settingsStore.isEasyModeEnabled"
               @toggle="toggleEasyMode"
+            />
+          </div>
+
+          <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg">
+            Dark Mode
+            <Switch
+              id="darkMode"
+              name="toggleDarkMode"
+              :checked="settingsStore.isDarkModeEnabled"
+              @toggle="toggleDarkMode"
             />
           </div>
 

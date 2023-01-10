@@ -9,10 +9,15 @@
   function hideDecoration() {
     return r.meta.empty;
   }
+  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col">
+  <div class="min-h-screen dark:bg-gray-900 bg-gray-50 flex flex-col">
     <Header v-if="!hideDecoration()" />
     <div class="p-4 w-full lg:w-2/3 md:w-5/6 mx-auto mb-14">
       <router-view v-slot="{ Component, route }">
@@ -31,6 +36,9 @@
 </template>
 
 <style>
+  html.dark {
+    color-scheme: dark;
+  }
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 0.1s ease;
