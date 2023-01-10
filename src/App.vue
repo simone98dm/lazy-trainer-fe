@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router";
+  import { useSettingStore } from "./store";
   const r = useRoute();
 
   function isLogin() {
@@ -9,10 +10,11 @@
   function hideDecoration() {
     return r.meta.empty;
   }
-  if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
+
+  const settingsStore = useSettingStore();
+  if (settingsStore.darkMode) {
+    const theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    settingsStore.toggleDarkMode(theme);
   }
 </script>
 

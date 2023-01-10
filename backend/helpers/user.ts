@@ -122,9 +122,9 @@ export async function saveConfiguration(id: string, options: Config) {
     throw new Error("mongoClient is null");
   }
 
-  const { audioDisabled, easyMode } = options;
+  const { audioDisabled, easyMode, darkMode } = options;
 
-  const configurations = JSON.stringify({ audioDisabled, easyMode });
+  const configurations = JSON.stringify({ audioDisabled, easyMode, darkMode });
 
   const result = await client
     .db(DB_NAME)

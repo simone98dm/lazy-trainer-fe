@@ -42,11 +42,6 @@
 
   function toggleDarkMode() {
     settingsStore.toggleDarkMode();
-    if (settingsStore.isDarkModeEnabled) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
   }
 </script>
 
