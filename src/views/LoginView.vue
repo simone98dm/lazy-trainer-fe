@@ -3,10 +3,10 @@
   import { inject, ref, watch } from "vue";
   import { useRouter } from "vue-router";
   import { useUserStore, useSettingStore } from "~/store";
-  import { ButtonColor, GaCustomEvents, logOptions } from "~/utils";
+  import { ButtonColor, GaCustomEvents, LogOptions } from "~/utils";
   import workout from "~/assets/workout-1.jpg";
 
-  const $log = inject("$logger") as logOptions;
+  const $log = inject("$logger") as LogOptions;
 
   const username = ref("");
   const usernameError = ref(false);

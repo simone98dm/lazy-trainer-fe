@@ -8,11 +8,11 @@
     COLOR_CODES,
     FULL_DASH_ARRAY,
     ButtonColor,
-    logOptions,
+    LogOptions,
   } from "~/utils";
   import { IActivity } from "~/models/Activity";
   import { useTimerStore, useSettingStore, useUserStore, useActivityStore } from "~/store";
-  const $log = inject("$logger") as logOptions;
+  const $log = inject("$logger") as LogOptions;
 
   const route = useRoute();
   const router = useRouter();

@@ -2,7 +2,7 @@
   import { useRoute, useRouter } from "vue-router";
   import { useActivityStore, useSettingStore, useUserStore } from "~/store";
   import { IActivity } from "~/models/Activity";
-  import { ButtonColor, DeepPartial, GaCustomEvents, MAX_ACTIIVITY_FORM } from "~/utils";
+  import { ButtonColor, DeepPartial, GaCustomEvents, MAX_ACTIVITY_FORM } from "~/utils";
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { getAnalytics, logEvent } from "@firebase/analytics";
@@ -98,8 +98,8 @@
   };
 
   function addActivityForm(injectActivity?: DeepPartial<IActivity>) {
-    if (multiActivities.value.length > MAX_ACTIIVITY_FORM) {
-      alert(`You can't add more than ${MAX_ACTIIVITY_FORM} activities at once`);
+    if (multiActivities.value.length > MAX_ACTIVITY_FORM) {
+      alert(`You can't add more than ${MAX_ACTIVITY_FORM} activities at once`);
       return;
     }
 
