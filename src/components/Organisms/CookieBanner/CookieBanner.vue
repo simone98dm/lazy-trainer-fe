@@ -23,7 +23,7 @@
 </script>
 
 <template>
-  <Banner color="success" v-if="!status">
+  <Banner :color="Color.SUCCESS" v-if="!status">
     <template #customContent>
       <div class="flex flex-row justify-between align-middle">
         <div class="text-left text-">

@@ -26,6 +26,7 @@
     "prepare": "husky install",
     "lint": "prettier -w . && eslint --ext .ts,.vue --fix --ignore-path .gitignore .",
     "gource": "gource -f -s 1 -a 1 --key --max-files 0 --disable-progress",
+    "deploy": "vercel deploy --prod",
     "release:patch": "release-it -- patch --ci ",
     "release:minor": "release-it -- minor --ci ",
     "release:major": "release-it -- major --ci "
@@ -63,7 +64,7 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.0",
-    "@vercel/node": "^2.5.18",
+    "@vercel/node": "^2.8.15",
     "@vitejs/plugin-vue": "^3.2.0",
     "@vitest/coverage-c8": "^0.26.3",
     "@vue/eslint-config-prettier": "^7.0.0",
