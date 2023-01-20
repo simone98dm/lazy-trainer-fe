@@ -42,11 +42,6 @@
       required: false,
       default: "",
     },
-    customClass: {
-      type: String,
-      required: false,
-      default: "",
-    },
     caption: {
       type: String,
       required: false,
@@ -92,7 +87,6 @@
         ' border-2 bg-orange-200 border-orange-300 dark:bg-orange-800 dark:border-orange-900':
           props.highlight,
       },
-      props.customClass,
     ]"
     @click="showFullDescription = !showFullDescription"
   >
@@ -101,11 +95,7 @@
         <p v-if="props.highlight" class="italic text-sm">
           {{ props.highlight }}
         </p>
-        <Icon
-          v-if="props.icon"
-          custom-class="pr-2 sm:block flex-left inline"
-          :component="props.icon"
-        />
+        <Icon v-if="props.icon" class="pr-2 sm:block flex-left inline" :component="props.icon" />
         <h4
           :class="[
             'flex-left inline text-3xl sm:text-4xl',

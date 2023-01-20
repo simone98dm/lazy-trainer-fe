@@ -2,7 +2,7 @@
   import { useRoute, useRouter } from "vue-router";
   import { useActivityStore, useSettingStore, useUserStore } from "~/store";
   import { IActivity } from "~/models/Activity";
-  import { ButtonColor, DeepPartial, GaCustomEvents, MAX_ACTIVITY_FORM } from "~/utils";
+  import { Color, DeepPartial, GaCustomEvents, MAX_ACTIVITY_FORM } from "~/utils";
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { getAnalytics, logEvent } from "@firebase/analytics";
@@ -154,7 +154,7 @@
           v-if="!settingsStore.isGlobalLoading"
           id="concat-rest-activity"
           label="Add 15 sec rest"
-          :color="isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
+          :color="isTrainer ? Color.PURPLE : Color.PRIMARY"
           icon="self_improvement"
           @click="() => addActivityForm(restActivityTemplate)"
         />
@@ -162,7 +162,7 @@
           v-if="!settingsStore.isGlobalLoading"
           id="concat-activity"
           label="Concat"
-          :color="isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
+          :color="isTrainer ? Color.PURPLE : Color.PRIMARY"
           icon="exposure_plus_1"
           @click="addActivityForm"
         />
@@ -170,7 +170,7 @@
           v-if="!settingsStore.isGlobalLoading"
           id="increase-activity-count"
           :label="`Repeat for ${repeatFor} times`"
-          :color="isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
+          :color="isTrainer ? Color.PURPLE : Color.PRIMARY"
           icon="replay"
           @click="() => (repeatFor < 10 ? (repeatFor += 1) : (repeatFor = repeatFor))"
         />
@@ -178,7 +178,7 @@
           v-if="!settingsStore.isGlobalLoading && repeatFor > 1"
           id="increase-activity-count"
           :label="`Decrease repeat count`"
-          :color="ButtonColor.LIGHT"
+          :color="Color.LIGHT"
           icon="remove"
           @click="() => (repeatFor > 1 ? (repeatFor -= 1) : (repeatFor = repeatFor))"
         />
@@ -187,7 +187,7 @@
         <Button
           v-if="!settingsStore.isGlobalLoading"
           id="save-activity"
-          :color="ButtonColor.SUCCESS"
+          :color="Color.SUCCESS"
           icon="save"
           :label="!activityId ? 'Create' : 'Save'"
           @click="saveActivity"

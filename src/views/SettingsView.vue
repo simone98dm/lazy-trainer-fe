@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ButtonColor, GaCustomEvents, Role, RoleName } from "~/utils";
+  import { Color, GaCustomEvents, Role, RoleName } from "~/utils";
   import { useActivityStore, useSettingStore, useUserStore } from "~/store";
   import { ref } from "vue";
   import { version } from "../../package.json";
@@ -74,7 +74,7 @@
             <Loading
               v-else
               :small="true"
-              :color="userStore.isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
+              :color="userStore.isTrainer ? Color.PURPLE : Color.PRIMARY"
             ></Loading>
           </div>
         </div>
@@ -131,7 +131,7 @@
             "
             :to="{ name: 'about' }"
             :full="true"
-            :color="ButtonColor.TRASPARENT"
+            :color="Color.TRASPARENT"
             icon="account_circle"
             label="Author"
           />
@@ -144,7 +144,7 @@
             "
             :to="{ name: 'license' }"
             :full="true"
-            :color="ButtonColor.TRASPARENT"
+            :color="Color.TRASPARENT"
             icon="verified_user"
             label="License"
           />
@@ -154,7 +154,7 @@
     <div class="w-full flex justify-center mb-3">
       <Button
         v-if="!userStore.isTrainer"
-        :color="ButtonColor.LIGHT"
+        :color="Color.LIGHT"
         :loading="syncStatus"
         :full="true"
         icon="cloud_sync"
@@ -164,7 +164,7 @@
     </div>
     <div class="w-full flex justify-center mb-3">
       <Button
-        :color="userStore.isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
+        :color="userStore.isTrainer ? Color.PURPLE : Color.PRIMARY"
         :full="true"
         icon="logout"
         label="Logout"

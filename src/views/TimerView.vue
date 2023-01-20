@@ -3,13 +3,7 @@
   import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
   import doubleWhistle from "~/assets/audio/double-whistle.mp3";
   import horn from "~/assets/audio/horn.mp3";
-  import {
-    type TimerActivity,
-    COLOR_CODES,
-    FULL_DASH_ARRAY,
-    ButtonColor,
-    LogOptions,
-  } from "~/utils";
+  import { type TimerActivity, COLOR_CODES, FULL_DASH_ARRAY, Color, LogOptions } from "~/utils";
   import { IActivity } from "~/models/Activity";
   import { useTimerStore, useSettingStore, useUserStore, useActivityStore } from "~/store";
   const $log = inject("$logger") as LogOptions;
@@ -274,7 +268,7 @@
                 : 'play_circle'
               : 'skip_next'
           "
-          :color="timerStore.isRunning ? ButtonColor.DANGER : ButtonColor.PRIMARY"
+          :color="timerStore.isRunning ? Color.DANGER : Color.PRIMARY"
           :label="
             timerStore.isTimerBasedActivity ? (timerStore.isRunning ? 'Stop' : 'Play') : 'Next'
           "
@@ -288,7 +282,7 @@
           label="Skip"
           :full="true"
           @click="skipActivity"
-          :color="ButtonColor.LIGHT"
+          :color="Color.LIGHT"
         />
       </div>
     </div>

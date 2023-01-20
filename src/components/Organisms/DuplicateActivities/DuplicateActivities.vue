@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import { IActivity } from "~/models/Activity";
-  import { ButtonColor, getDayOfTheWeek } from "~/utils";
+  import { Color, getDayOfTheWeek } from "~/utils";
 
   const props = defineProps({
     show: {
@@ -80,14 +80,14 @@
       <Button
         :full="true"
         icon="cancel"
-        :color="ButtonColor.DANGER"
+        :color="Color.DANGER"
         label="Cancel"
         @click="$emit('close')"
       />
       <Button
         :full="true"
         icon="save"
-        :color="ButtonColor.SUCCESS"
+        :color="Color.SUCCESS"
         label="Duplicate"
         @click="
           $emit('duplicate', {

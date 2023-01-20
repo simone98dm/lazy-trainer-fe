@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { ButtonColor } from "~/utils";
+  import { Color } from "~/utils";
 
   const showDropdown = ref(false);
 </script>
@@ -12,7 +12,7 @@
     >
       <Button
         icon="more_vert"
-        :color="ButtonColor.TRASPARENT"
+        :color="Color.TRASPARENT"
         @click="() => (showDropdown = !showDropdown)"
       ></Button>
     </div>

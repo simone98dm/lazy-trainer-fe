@@ -17,7 +17,7 @@
     <div class="flex flex-col items-center justify-center h-full" v-else>
       <div class="flex flex-col items-center justify-center">
         <div class="flex flex-col items-center justify-center">
-          <Icon component="event_busy" custom-class="text-6xl text-gray-500" />
+          <Icon component="event_busy" class="text-6xl text-gray-500" />
           <h3 class="text-2xl text-gray-500 mt-4">No data found</h3>
         </div>
       </div>

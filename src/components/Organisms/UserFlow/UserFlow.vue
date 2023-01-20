@@ -2,7 +2,7 @@
   import { useRouter } from "vue-router";
   import { ICustomSession } from "~/models/Session";
   import { useActivityStore, useTimerStore, useUserStore } from "~/store";
-  import { ButtonColor, LinkType } from "~/utils";
+  import { Color, LinkType } from "~/utils";
 
   const userStore = useUserStore();
   const activityStore = useActivityStore();
@@ -60,7 +60,7 @@
             <Button
               v-if="!userStore.isTrainer && isDayActivity(item.dayOfWeek) && hasActivities(item.id)"
               :icon="'play_arrow'"
-              :color="ButtonColor.SUCCESS"
+              :color="Color.SUCCESS"
               :circular="true"
               @click.stop="runWorkout(item.id)"
               class="float-right"
@@ -79,7 +79,7 @@
     "
     icon="add"
     :full="true"
-    :color="userStore.isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY"
+    :color="userStore.isTrainer ? Color.PURPLE : Color.PRIMARY"
     :to="{ name: 'session' }"
     :type="LinkType.BUTTON"
     label="Add day activities"

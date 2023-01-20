@@ -11,10 +11,8 @@ describe("Icon", () => {
     const wrapper = mount(Icon, {
       props: {
         component: "add",
-        customClass: "text-red-500",
       },
     });
-    expect(wrapper.classes()).toContain("text-red-500");
     expect(wrapper.html()).toContain("add");
   });
 });

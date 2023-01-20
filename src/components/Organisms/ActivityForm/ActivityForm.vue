@@ -3,7 +3,7 @@
   import { computed, ref, watch } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { useUserStore } from "~/store";
-  import { ButtonColor } from "~/utils";
+  import { Color } from "~/utils";
 
   const props = defineProps({
     id: {
@@ -111,7 +111,7 @@
 
         <Button
           id="delete-activity"
-          :color="ButtonColor.DANGER"
+          :color="Color.DANGER"
           icon="delete"
           @click="emits('remove', props.id)"
         />

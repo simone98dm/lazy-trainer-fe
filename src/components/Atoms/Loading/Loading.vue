@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { computed, PropType } from "vue";
-  import { ButtonColor } from "~/utils";
+  import { Color } from "~/utils";
   const props = defineProps({
     small: {
       type: Boolean,
@@ -8,15 +8,15 @@
       default: false,
     },
     color: {
-      type: Number as PropType<ButtonColor>,
+      type: Number as PropType<Color>,
       required: false,
-      default: ButtonColor.PRIMARY,
+      default: Color.PRIMARY,
     },
   });
 
   const loadingColor = computed(() => {
-    switch ((props.color as ButtonColor) ?? ButtonColor.PRIMARY) {
-      case ButtonColor.PURPLE:
+    switch ((props.color as Color) ?? Color.PRIMARY) {
+      case Color.PURPLE:
         return "text-purple-600";
       default:
         return "text-indigo-600";

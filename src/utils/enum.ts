@@ -9,7 +9,7 @@ export enum IconSize {
   SMALL = "icn__small",
 }
 
-export enum ButtonColor {
+export enum Color {
   PRIMARY,
   LIGHT,
   DARK,
@@ -20,7 +20,7 @@ export enum ButtonColor {
   PURPLE,
 }
 
-export enum ButtonSize {
+export enum Size {
   SMALL,
   MEDIUM,
   LARGE,

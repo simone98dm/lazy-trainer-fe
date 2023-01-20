@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import workoutImage from "~/assets/workout.jpg";
-  import { ButtonColor, LinkType } from "~/utils";
+  import { Color, LinkType } from "~/utils";
 </script>
 
 <template>
@@ -25,14 +25,14 @@
       <div class="mt-6 flex items-center justify-center gap-4">
         <Link
           :type="LinkType.BUTTON"
-          :color="ButtonColor.LIGHT"
+          :color="Color.LIGHT"
           icon="login"
           :to="{ name: 'login' }"
           label="Login"
         />
         <Link
           :type="LinkType.BUTTON"
-          :color="ButtonColor.DARK"
+          :color="Color.DARK"
           class="ml-4"
           icon="inventory"
           :to="{ name: 'home' }"

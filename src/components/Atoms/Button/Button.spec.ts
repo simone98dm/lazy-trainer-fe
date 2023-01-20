@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { mount } from "@vue/test-utils";
 import Button from "./Button.vue";
 import { createPinia, setActivePinia } from "pinia";
-import { ButtonColor } from "~/utils";
+import { Color } from "~/utils";
 
 describe("Button", () => {
   beforeEach(() => {
@@ -24,7 +24,7 @@ describe("Button", () => {
     const wrapper = mount(Button, {
       props: {
         label: "Hello World",
-        color: ButtonColor.PURPLE,
+        color: Color.PURPLE,
         full: true,
         circular: true,
       },
@@ -40,7 +40,7 @@ describe("Button", () => {
     const wrapper = mount(Button, {
       props: {
         label: "Hello World",
-        color: ButtonColor.DANGER,
+        color: Color.DANGER,
         full: true,
         circular: true,
       },
@@ -53,7 +53,7 @@ describe("Button", () => {
     const wrapper = mount(Button, {
       props: {
         label: "Hello World",
-        color: ButtonColor.DARK,
+        color: Color.DARK,
         full: true,
         circular: true,
       },
@@ -67,7 +67,7 @@ describe("Button", () => {
     const wrapper = mount(Button, {
       props: {
         label: "Hello World",
-        color: ButtonColor.LIGHT,
+        color: Color.LIGHT,
         full: true,
         circular: true,
       },
@@ -81,7 +81,7 @@ describe("Button", () => {
     const wrapper = mount(Button, {
       props: {
         label: "Hello World",
-        color: ButtonColor.SUCCESS,
+        color: Color.SUCCESS,
         full: true,
         circular: true,
       },
@@ -95,7 +95,7 @@ describe("Button", () => {
     const wrapper = mount(Button, {
       props: {
         label: "Hello World",
-        color: ButtonColor.WARNING,
+        color: Color.WARNING,
         full: true,
         circular: true,
       },
@@ -109,7 +109,7 @@ describe("Button", () => {
     const wrapper = mount(Button, {
       props: {
         label: "Hello World",
-        color: ButtonColor.TRASPARENT,
+        color: Color.TRASPARENT,
         full: true,
         circular: true,
       },
@@ -117,5 +117,22 @@ describe("Button", () => {
 
     expect(wrapper.text()).toContain("Hello World");
     expect(wrapper.classes()).not.toContain("bg-indigo-600");
+  });
+
+  it("renders loading in button", () => {
+    const wrapper = mount(Button, {
+      props: {
+        label: "Hello World",
+        loading: true,
+      },
+    });
+
+    expect(wrapper.text()).not.toContain("Hello World");
+    expect(wrapper.find("loading"));
+  });
+
+  it("renders loading in button", () => {
+    const wrapper = mount(Button);
+    expect(wrapper.text()).not.toContain("Hello World");
   });
 });

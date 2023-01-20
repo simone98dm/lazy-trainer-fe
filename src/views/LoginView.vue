@@ -3,7 +3,7 @@
   import { inject, ref, watch } from "vue";
   import { useRouter } from "vue-router";
   import { useUserStore, useSettingStore } from "~/store";
-  import { ButtonColor, GaCustomEvents, LogOptions } from "~/utils";
+  import { Color, GaCustomEvents, LogOptions } from "~/utils";
   import workout from "~/assets/workout-1.jpg";
 
   const $log = inject("$logger") as LogOptions;
@@ -112,7 +112,7 @@
         <div class="mt-8">
           <Button
             :loading="isLoading"
-            :color="ButtonColor.PRIMARY"
+            :color="Color.PRIMARY"
             :disabled="isLoading"
             label="Login"
             icon="login"

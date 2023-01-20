@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useSettingStore, useUserStore } from "~/store";
-  import { ButtonColor } from "~/utils";
+  import { Color } from "~/utils";
   const settingsStore = useSettingStore();
   const user = useUserStore();
 </script>
@@ -22,7 +22,7 @@
     <span
       class="text-green-500 opacity-75 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
     >
-      <Loading :color="user.isTrainer ? ButtonColor.PURPLE : ButtonColor.PRIMARY" />
+      <Loading :color="user.isTrainer ? Color.PURPLE : Color.PRIMARY" />
     </span>
   </div>
 </template>

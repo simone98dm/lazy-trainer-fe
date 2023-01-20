@@ -2,7 +2,7 @@
   import { PropType, ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { ISession } from "~/models/Session";
-  import { ButtonColor, getDayOfTheWeek } from "~/utils";
+  import { Color, getDayOfTheWeek } from "~/utils";
   import { useActivityStore, useUserStore } from "~/store";
   import { IActivity } from "~/models/Activity";
 
@@ -183,14 +183,14 @@
             :full="true"
             :icon="!isNew() ? 'save' : 'add'"
             :label="!isNew() ? 'Save' : 'Create'"
-            :color="ButtonColor.SUCCESS"
+            :color="Color.SUCCESS"
             @click="save"
           />
           <Button
             :full="true"
             v-if="!isNew()"
             icon="delete"
-            :color="ButtonColor.DANGER"
+            :color="Color.DANGER"
             label="Delete"
             @click="remove"
           />

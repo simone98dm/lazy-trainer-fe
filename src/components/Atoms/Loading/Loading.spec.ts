@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { mount } from "@vue/test-utils";
 import Loading from "./Loading.vue";
-import { ButtonColor } from "~/utils";
+import { Color } from "~/utils";
 
 describe("Loading", () => {
   it("renders correctly", () => {
@@ -13,7 +13,7 @@ describe("Loading", () => {
   it("renders correctly", () => {
     const wrapper = mount(Loading, {
       props: {
-        color: ButtonColor.PURPLE,
+        color: Color.PURPLE,
         small: true,
       },
     });

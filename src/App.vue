@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router";
   import { useSettingStore } from "./store";
+  import { Color } from "~/utils";
   const r = useRoute();
 
   function isLogin() {
@@ -31,6 +32,7 @@
       </router-view>
     </div>
     <!-- <CookieBanner /> -->
+    <Banner :color="Color.DANGER" text="Hello, World!"></Banner>
     <Footer v-if="!isLogin() && !hideDecoration()" />
   </div>
   <GlobalLoading />

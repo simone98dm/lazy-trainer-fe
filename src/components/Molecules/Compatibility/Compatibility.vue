@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { ButtonSize, ButtonColor } from "~/utils";
+  import { Size, Color } from "~/utils";
   const showBanner = ref(
     !window.location.hostname.includes(".simone98dm.dev") &&
       window.location.hostname !== "localhost"
@@ -34,8 +34,8 @@
       <Button
         label="Show"
         icon="arrow_forward"
-        :size="ButtonSize.MEDIUM"
-        :color="ButtonColor.SUCCESS"
+        :size="Size.MEDIUM"
+        :color="Color.SUCCESS"
         @click="openLink"
       />
     </template>
