@@ -18,10 +18,6 @@ The features currently available are:
 - ⏱ keep track of the times for the activities to be performed
 - 🤝 trainer association
 
-## Goals
-
-The project aims to be a tool that can be used by anyone who wants to improve their physical acitivity. The project is not intended to be a replacement for a personal trainer it help him/her to get in touch with you, but rather a tool that can be used to improve the physical activity of those who are not particularly lazy🤓.
-
 ## Changelog
 
 The changelog is available [here](CHANGELOG.md).
@@ -34,19 +30,19 @@ Before you need a MongoDB Atlas account and a Vercel account.
 npm run vercel:dev
 ```
 
-## Run tests
+### Run tests
 
 ```bash
 npm run test
 ```
 
-## Run build
+### Run build
 
 ```bash
 npm run build
 ```
 
-## Release
+### Release
 
 ```bash
 npm run release
