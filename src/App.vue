@@ -32,7 +32,6 @@
       </router-view>
     </div>
     <!-- <CookieBanner /> -->
-    <Banner :color="Color.DANGER" text="Hello, World!"></Banner>
     <Footer v-if="!isLogin() && !hideDecoration()" />
   </div>
   <GlobalLoading />
