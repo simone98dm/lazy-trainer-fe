@@ -30,19 +30,19 @@ Before you need a MongoDB Atlas account and a Vercel account.
 npm run vercel:dev
 ```
 
-## Run tests
+### Run tests
 
 ```bash
 npm run test
 ```
 
-## Run build
+### Run build
 
 ```bash
 npm run build
 ```
 
-## Release
+### Release
 
 ```bash
 npm run release
