@@ -2,8 +2,8 @@
   import { IActivity } from "~/models/Activity";
   import { computed, ref, watch } from "vue";
   import { v4 as uuidv4 } from "uuid";
-  import { useUserStore } from "~/stores";
-  import { ButtonColor } from "~/utils";
+  import { useUserStore } from "~/store";
+  import { Color } from "~/utils";
 
   const props = defineProps({
     id: {
@@ -55,27 +55,27 @@
   const user = useUserStore();
   const uuid = uuidv4();
 
-  let id = ref(props.id || uuid);
-  let name = ref(props.name || "");
-  let nameError = computed(() => name.value === "" && name.value.length < 20);
+  const id = ref(props.id || uuid);
+  const name = ref(props.name || "");
+  const nameError = computed(() => name.value === "" && name.value.length < 20);
 
-  let description = ref(props.description || "");
-  let descriptionError = computed(() => description.value.length > 100);
+  const description = ref(props.description || "");
+  const descriptionError = computed(() => description.value.length > 100);
 
-  let time = ref(props.time / 1000 || 0);
-  let timeError = computed(() => time.value <= 0 && time.value > 3600);
+  const time = ref(props.time / 1000 || 0);
+  const timeError = computed(() => time.value <= 0 && time.value > 3600);
 
-  let reps = ref(props.reps || 0);
-  let repsError = computed(() => reps.value <= 0 && reps.value > 100);
+  const reps = ref(props.reps || 0);
+  const repsError = computed(() => reps.value <= 0 && reps.value > 100);
 
-  let warmup = ref(props.warmup || false);
+  const warmup = ref(props.warmup || false);
 
-  let order = ref(props.order || 0);
+  const order = ref(props.order || 0);
 
-  let videoUrl = ref(props.videoUrl || "");
-  let videoUrlError = computed(() => videoUrl.value.length > 8);
+  const videoUrl = ref(props.videoUrl || "");
+  const videoUrlError = computed(() => videoUrl.value.length > 8);
 
-  let isTimeBasedActivity = ref(
+  const isTimeBasedActivity = ref(
     (Boolean(props.time !== 0) && Boolean(props.reps === 0)) ?? false
   );
 
@@ -111,7 +111,7 @@
 
         <Button
           id="delete-activity"
-          :color="ButtonColor.DANGER"
+          :color="Color.DANGER"
           icon="delete"
           @click="emits('remove', props.id)"
         />
@@ -142,26 +142,18 @@
         </div>
 
         <div class="w-full px-3 mb-6">
-          <label class="font-bold mb-2" for="activityType">
-            Activity based type
-          </label>
-          <div
-            class="flex flex-col sm:flex-row justify-around align-center my-2"
-          >
-            <div
-              class="w-full sm:w-fit sm:w-64 flex justify-between shadow rounded-full h-12 flex p-1 mb-3"
-            >
+          <label class="font-bold mb-2" for="activityType"> Activity based type </label>
+          <div class="flex flex-col sm:flex-row justify-around align-center my-2">
+            <div class="w-full sm:w-64 justify-between shadow rounded-full h-12 flex p-1 mb-3">
               <button
                 id="time-based-activity"
                 :class="[
                   'flex items-center w-fit rounded-full h-10 transition-all px-10',
                   {
-                    'bg-indigo-600 text-white shadow':
-                      isTimeBasedActivity && !user.isTrainer,
+                    'bg-indigo-600 text-white shadow': isTimeBasedActivity && !user.isTrainer,
                   },
                   {
-                    'bg-purple-600 text-white shadow':
-                      isTimeBasedActivity && user.isTrainer,
+                    'bg-purple-600 text-white shadow': isTimeBasedActivity && user.isTrainer,
                   },
                 ]"
                 @click="() => (isTimeBasedActivity = true)"
@@ -173,12 +165,10 @@
                 :class="[
                   'flex items-center w-fit rounded-full h-10 transition-all px-10',
                   {
-                    'bg-indigo-600 text-white shadow':
-                      !isTimeBasedActivity && !user.isTrainer,
+                    'bg-indigo-600 text-white shadow': !isTimeBasedActivity && !user.isTrainer,
                   },
                   {
-                    'bg-purple-600 text-white shadow':
-                      !isTimeBasedActivity && user.isTrainer,
+                    'bg-purple-600 text-white shadow': !isTimeBasedActivity && user.isTrainer,
                   },
                 ]"
                 @click="() => (isTimeBasedActivity = false)"

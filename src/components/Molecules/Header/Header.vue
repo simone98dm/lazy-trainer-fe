@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { getAnalytics, logEvent } from "@firebase/analytics";
-  import { useSettingStore, useUserStore } from "~/stores";
+  import { useSettingStore, useUserStore } from "~/store";
   import { GaCustomEvents } from "~/utils";
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
@@ -18,9 +18,7 @@
       <div class="text-center">
         <h3
           class="text-3xl font-semibold"
-          @click="
-            logEvent(getAnalytics(), GaCustomEvents.CLICK, { to: 'page title' })
-          "
+          @click="logEvent(getAnalytics(), GaCustomEvents.CLICK, { to: 'page title' })"
         >
           {{ settingsStore.getHeaderText }}
         </h3>

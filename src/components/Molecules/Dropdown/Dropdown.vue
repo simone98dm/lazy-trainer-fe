@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { ButtonColor } from "~/utils";
+  import { Color } from "~/utils";
 
-  let showDropdown = ref(false);
+  const showDropdown = ref(false);
 </script>
 
 <template>
@@ -12,13 +12,13 @@
     >
       <Button
         icon="more_vert"
-        :color="ButtonColor.TRASPARENT"
+        :color="Color.TRASPARENT"
         @click="() => (showDropdown = !showDropdown)"
       ></Button>
     </div>
     <div
       v-if="showDropdown"
-      class="absolute right-0 w-fit mt-2 origin-top-right rounded-md shadow-lg -mt-2"
+      class="absolute right-0 w-fit origin-top-right rounded-md shadow-lg -mt-2"
     >
       <div class="p-2 bg-white rounded-md shadow">
         <slot />

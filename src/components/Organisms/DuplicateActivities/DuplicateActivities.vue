@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import { IActivity } from "~/models/Activity";
-  import { ButtonColor, getDayOfTheWeek } from "~/utils";
+  import { Color, getDayOfTheWeek } from "~/utils";
 
   const props = defineProps({
     show: {
@@ -27,7 +27,7 @@
     },
   });
 
-  let dayOfWeek = ref(props.dayOfWeek || -1);
+  const dayOfWeek = ref(props.dayOfWeek || -1);
 
   function selectDay(dayIndex: number) {
     dayOfWeek.value = dayIndex;
@@ -62,12 +62,13 @@
           </button>
         </div>
         <p class="mb-6">
-          You are about to duplicate the warmup from the other session. The
-          follwing activities will be duplicate
+          You are about to duplicate the warmup from the other session. The follwing activities will
+          be duplicate
         </p>
         <div class="w-full flex flex-wrap justify-center gap-3">
           <span
             v-for="activity in props.existingForm"
+            :key="activity.id"
             class="bg-purple-600 rounded-lg p-2 text-white"
           >
             {{ activity.name }}
@@ -79,14 +80,14 @@
       <Button
         :full="true"
         icon="cancel"
-        :color="ButtonColor.DANGER"
+        :color="Color.DANGER"
         label="Cancel"
         @click="$emit('close')"
       />
       <Button
         :full="true"
         icon="save"
-        :color="ButtonColor.SUCCESS"
+        :color="Color.SUCCESS"
         label="Duplicate"
         @click="
           $emit('duplicate', {

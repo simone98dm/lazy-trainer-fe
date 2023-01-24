@@ -1,15 +1,16 @@
-import { DbTable, DB_NAME } from "../const";
-import { connectToDatabase } from "../drivers/mongodb";
-import { Plan } from "../types";
+import { connectToDatabase, DbTable, DB_NAME, Plan } from "../index";
 
 export async function getTrainerPlans(id: string) {
   const client = await connectToDatabase();
   if (!client) {
     throw new Error("mongoClient is null");
   }
-  return await client
+
+  const plans = await client
     .db(DB_NAME)
     .collection<Plan>(DbTable.PLANS)
     .find({ trainerId: id })
     .toArray();
+
+  return plans;
 }

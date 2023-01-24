@@ -1,13 +1,27 @@
 <script setup lang="ts">
-  import { useUserStore } from "~/stores";
+  import { computed, PropType } from "vue";
+  import { Color } from "~/utils";
   const props = defineProps({
     small: {
       type: Boolean,
       required: false,
       default: false,
     },
+    color: {
+      type: Number as PropType<Color>,
+      required: false,
+      default: Color.PRIMARY,
+    },
   });
-  const user = useUserStore();
+
+  const loadingColor = computed(() => {
+    switch ((props.color as Color) ?? Color.PRIMARY) {
+      case Color.PURPLE:
+        return "text-purple-600";
+      default:
+        return "text-indigo-600";
+    }
+  });
 </script>
 
 <template>
@@ -16,8 +30,7 @@
       aria-hidden="true"
       :class="[
         'mr-2 animate-spin fill-slate-300',
-        { 'text-indigo-600': !user.isTrainer },
-        { 'text-violet-600': user.isTrainer },
+        loadingColor,
         { 'w-16 h-16': !props.small },
         { 'w-6 h-6': props.small },
       ]"

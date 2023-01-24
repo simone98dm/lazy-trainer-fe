@@ -1,9 +1,8 @@
 <script setup lang="ts">
-  import { useUserStore } from "~/stores";
+  import { useUserStore } from "~/store";
   import draggable from "vuedraggable";
-  import { ButtonColor, ButtonSize, GaCustomEvents, LinkType } from "~/utils";
+  import { Color, GaCustomEvents, LinkType, Size } from "~/utils";
   import { getAnalytics, logEvent } from "@firebase/analytics";
-  import { ref } from "vue";
   import { IActivity } from "~/models/Activity";
 
   const props = defineProps({
@@ -76,27 +75,21 @@
     emits("run");
   }
 
-  function moveItem(evt: any) {
+  function moveItem() {
     emits("move", props.activities, props.isWarmup);
   }
 </script>
 
 <template>
   <div v-if="props.activities && props.activities.length > 0">
-    <div
-      v-if="props.activities.length > 0"
-      class="flex items-center justify-between gap-2"
-    >
-      <h4
-        v-if="props.title"
-        class="text-4xl sm:text-5xl font-bold mr-auto text-black"
-      >
+    <div v-if="props.activities.length > 0" class="flex items-center justify-between gap-2">
+      <h4 v-if="props.title" class="text-4xl sm:text-5xl font-bold mr-auto">
         {{ props.title }}
       </h4>
       <Button
         v-if="props.enableRun"
         id="run-timer"
-        :color="ButtonColor.PRIMARY"
+        :color="Color.SUCCESS"
         icon="play_arrow"
         :type="LinkType.BUTTON"
         :circular="true"
@@ -105,23 +98,14 @@
       />
       <Button
         id="duplicate-warmup"
-        v-if="
-          (userStore.isTrainer || userStore.isSelfMadeMan) &&
-          props.enableDuplicate
-        "
-        :color="ButtonColor.LIGHT"
+        v-if="(userStore.isTrainer || userStore.isSelfMadeMan) && props.enableDuplicate"
+        :color="Color.LIGHT"
         icon="content_copy"
         label="Duplicate"
         @click="emits('duplicate', props.activities)"
       />
     </div>
-    <draggable
-      v-if="allowDrag"
-      class="mt-4"
-      :list="props.activities"
-      item-key="id"
-      @end="moveItem"
-    >
+    <draggable v-if="allowDrag" class="mt-4" :list="props.activities" item-key="id" @end="moveItem">
       <template #item="{ element }">
         <Item
           :id="element.id"
@@ -140,23 +124,23 @@
               <Button
                 v-if="props.allowDelete"
                 id="delete-activity"
-                :color="ButtonColor.DANGER"
+                :color="Color.DANGER"
                 icon="delete"
                 class="float-right ml-2"
                 label="Delete activity"
                 :circular="true"
-                :size="ButtonSize.SMALL"
+                :size="Size.SMALL"
                 @click.prevent="$emit('delete', element.id)"
               />
               <Link
                 v-if="props.allowEdit"
                 id="delete-activity"
-                :color="ButtonColor.PRIMARY"
+                :color="Color.PRIMARY"
                 icon="edit"
                 class="float-right ml-2"
                 label="Edit activity"
                 :circular="true"
-                :size="ButtonSize.SMALL"
+                :size="Size.SMALL"
                 :type="LinkType.BUTTON"
                 :to="{
                   name: 'activity',

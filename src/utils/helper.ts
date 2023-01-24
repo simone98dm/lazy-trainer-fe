@@ -1,5 +1,4 @@
 import { ICustomSession, ISession } from "./../models/Session";
-import { getDayOfTheWeek } from "./dates";
 
 export function parseSessions(session: ISession): ICustomSession {
   return {
@@ -9,4 +8,11 @@ export function parseSessions(session: ISession): ICustomSession {
     }`,
     name: getDayOfTheWeek(session.dayOfWeek),
   };
+}
+
+export const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+export function getDayOfTheWeek(day?: number) {
+  const dayName = days[day ?? 0];
+  return dayName;
 }

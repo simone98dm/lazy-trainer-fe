@@ -1,4 +1,4 @@
-import { baseUrl } from "~/utils";
+import { baseUrl, TrainerRequest, UserConfigurations } from "~/utils";
 import log from "./logger";
 
 const buildHeaders = (token: string) => ({
@@ -8,9 +8,9 @@ const buildHeaders = (token: string) => ({
 
 interface RequestOptions {
   timeout?: number;
-  method: any;
-  headers?: any;
-  body?: any;
+  method: string;
+  headers?: HeadersInit;
+  body?: BodyInit;
 }
 
 async function fetchWithTimeout(url: string, options: RequestOptions) {
@@ -26,7 +26,7 @@ async function fetchWithTimeout(url: string, options: RequestOptions) {
   return response;
 }
 
-export async function sendToTrainer(token: string, body: any) {
+export async function sendToTrainer(token: string, body: TrainerRequest) {
   try {
     await fetchWithTimeout(`${baseUrl}/api/trainer/save`, {
       method: "POST",
@@ -76,13 +76,10 @@ export async function verifyUser(token: string) {
 
 export async function userInfo(token: string, trainerId: string) {
   try {
-    return await fetchWithTimeout(
-      `${baseUrl}/api/user/info?user=${trainerId}`,
-      {
-        method: "GET",
-        headers: buildHeaders(token),
-      }
-    ).then((response) => response.json());
+    return await fetchWithTimeout(`${baseUrl}/api/user/info?user=${trainerId}`, {
+      method: "GET",
+      headers: buildHeaders(token),
+    }).then((response) => response.json());
   } catch (error) {
     log(JSON.stringify(error), "error");
   }
@@ -135,7 +132,7 @@ export async function getConfiguration(token: string) {
   }
 }
 
-export async function saveConfiguration(token: string, data: any) {
+export async function saveConfiguration(token: string, data: UserConfigurations) {
   try {
     return await fetchWithTimeout(`${baseUrl}/api/user`, {
       method: "POST",
@@ -147,7 +144,7 @@ export async function saveConfiguration(token: string, data: any) {
   }
 }
 
-export async function completeSession(token: string, data: any) {
+export async function completeSession(token: string, data: { sessionId: string }) {
   try {
     return await fetchWithTimeout(`${baseUrl}/api/workout/complete`, {
       method: "POST",

@@ -1,8 +1,12 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { validateUser } from "../../backend/helpers/token";
-import { getMappedPlan } from "../../backend/helpers/user";
-import { commonResponse } from "../../backend/utils/http";
-import logger from "../../backend/utils/logger";
+import {
+  getMappedPlan,
+  internalServerError,
+  logger,
+  notFound,
+  ok,
+  validateUser,
+} from "../../backend/index";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -16,12 +20,12 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     const result = await getMappedPlan({ id: id });
 
     if (result) {
-      return commonResponse.ok(response, result);
+      return ok(response, result);
     } else {
       logger.warn("Trainer try to look for user plan", {
         userId: id,
       });
-      return commonResponse.notFound(response, "plan not found");
+      return notFound(response, "plan not found");
     }
   } catch (error) {
     logger.error(error, {
@@ -29,6 +33,6 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       method: request.method,
       path: request.url,
     });
-    return commonResponse.internalServerError(response, "something went wrong");
+    return internalServerError(response, "something went wrong");
   }
 };

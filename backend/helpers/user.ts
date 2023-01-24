@@ -1,8 +1,24 @@
-import { DbTable, DB_NAME } from "../const";
-import { connectToDatabase } from "../drivers/mongodb";
-import { Activity, Config, Plan, Session, User, UserStats } from "../types";
-import logger from "../utils/logger";
-import { mapRawToPlans } from "../utils/mapper";
+import {
+  Activity,
+  Config,
+  connectToDatabase,
+  createActivity,
+  createSession,
+  DataAction,
+  DbTable,
+  DB_NAME,
+  deleteActivity,
+  deleteSession,
+  logger,
+  mapRawToPlans,
+  Plan,
+  Session,
+  sortActivities,
+  updateActivity,
+  updateSession,
+  User,
+  UserStats,
+} from "../index";
 
 export async function verifyUser(id?: string) {
   if (!id) {
@@ -25,9 +41,7 @@ export async function getUser(username: string) {
   }
 
   const db = client.db(DB_NAME);
-  const user = await db
-    .collection<User>(DbTable.USERS)
-    .findOne({ name: username });
+  const user = await db.collection<User>(DbTable.USERS).findOne({ name: username });
 
   return user;
 }
@@ -44,19 +58,13 @@ export async function requestActivityChange(activityId: string) {
     .findOneAndUpdate({ id: activityId }, { $set: { requestChange: true } });
 }
 
-export async function getMappedPlan(searchFor: {
-  id?: string;
-  ownerId?: string;
-}) {
+export async function getMappedPlan(searchFor: { id?: string; ownerId?: string }) {
   const client = await connectToDatabase();
   if (!client) {
     throw new Error("mongoClient is null");
   }
 
-  const plan = await client
-    .db(DB_NAME)
-    .collection<Plan>(DbTable.PLANS)
-    .findOne(searchFor);
+  const plan = await client.db(DB_NAME).collection<Plan>(DbTable.PLANS).findOne(searchFor);
 
   if (!plan) {
     logger.warn("Trainer try to look for user plan", {
@@ -87,10 +95,7 @@ export async function getTrainer(trainerId: string) {
     throw new Error("mongoClient is null");
   }
 
-  return await client
-    .db(DB_NAME)
-    .collection<User>(DbTable.USERS)
-    .findOne({ id: trainerId });
+  return await client.db(DB_NAME).collection<User>(DbTable.USERS).findOne({ id: trainerId });
 }
 
 export async function getUserConfiguration(id: string) {
@@ -99,10 +104,7 @@ export async function getUserConfiguration(id: string) {
     throw new Error("mongoClient is null");
   }
 
-  const result = await client
-    .db(DB_NAME)
-    .collection<User>(DbTable.USERS)
-    .findOne({ id: id });
+  const result = await client.db(DB_NAME).collection<User>(DbTable.USERS).findOne({ id: id });
 
   if (!result?.configurations) {
     return {
@@ -120,9 +122,9 @@ export async function saveConfiguration(id: string, options: Config) {
     throw new Error("mongoClient is null");
   }
 
-  const { audioDisabled, easyMode } = options;
+  const { audioDisabled, easyMode, darkMode } = options;
 
-  const configurations = JSON.stringify({ audioDisabled, easyMode });
+  const configurations = JSON.stringify({ audioDisabled, easyMode, darkMode });
 
   const result = await client
     .db(DB_NAME)
@@ -138,16 +140,13 @@ export async function getStats(userId: string) {
     throw new Error("mongoClient is null");
   }
 
-  const user = await client
-    .db(DB_NAME)
-    .collection<User>(DbTable.USERS)
-    .findOne({ id: userId });
+  const user = await client.db(DB_NAME).collection<User>(DbTable.USERS).findOne({ id: userId });
 
   if (!user) {
     return null;
   }
 
-  let userStats: UserStats[] = [];
+  const userStats: UserStats[] = [];
   if (Number(user.role) === 1) {
     // is trainer
     const plans = await client
@@ -177,7 +176,7 @@ export async function getStats(userId: string) {
       }))
     );
   } else {
-    let userStat = await client
+    const userStat = await client
       .db(DB_NAME)
       .collection<UserStats>(DbTable.STATS)
       .findOne({ userId: userId });
@@ -188,4 +187,38 @@ export async function getStats(userId: string) {
   }
 
   return userStats;
+}
+
+export async function saveChanges(
+  action: DataAction,
+  sessionId: string,
+  activityId: string,
+  planId: string,
+  data: any
+) {
+  switch (action) {
+    case DataAction.SESSION_CREATE:
+      await createSession(planId, data);
+      break;
+    case DataAction.SESSION_DELETE:
+      await deleteSession(sessionId);
+      break;
+    case DataAction.SESSION_UPDATE:
+      await updateSession(sessionId, data);
+      break;
+    case DataAction.ACTIVITY_CREATE:
+      await createActivity(sessionId, data);
+      break;
+    case DataAction.ACTIVITY_DELETE:
+      await deleteActivity(activityId);
+      break;
+    case DataAction.ACTIVITY_UPDATE:
+      await updateActivity(activityId, data);
+      break;
+    case DataAction.ACTIVITY_SORT:
+      await sortActivities(data);
+      break;
+    default:
+      throw new Error("action not recognized");
+  }
 }

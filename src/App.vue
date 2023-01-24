@@ -1,18 +1,26 @@
 <script setup lang="ts">
   import { useRoute } from "vue-router";
-  const route = useRoute();
+  import { useSettingStore } from "./store";
+  import { Color } from "~/utils";
+  const r = useRoute();
 
   function isLogin() {
-    return route.name === "login";
+    return r.name === "login";
   }
 
   function hideDecoration() {
-    return route.meta.empty;
+    return r.meta.empty;
+  }
+
+  const settingsStore = useSettingStore();
+  if (settingsStore.darkMode) {
+    const theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    settingsStore.toggleDarkMode(theme);
   }
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col">
+  <div class="min-h-screen dark:bg-gray-900 bg-gray-50 flex flex-col">
     <Header v-if="!hideDecoration()" />
     <div class="p-4 w-full lg:w-2/3 md:w-5/6 mx-auto mb-14">
       <router-view v-slot="{ Component, route }">
@@ -27,9 +35,13 @@
     <Footer v-if="!isLogin() && !hideDecoration()" />
   </div>
   <GlobalLoading />
+  <Compatibility />
 </template>
 
 <style>
+  html.dark {
+    color-scheme: dark;
+  }
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 0.1s ease;

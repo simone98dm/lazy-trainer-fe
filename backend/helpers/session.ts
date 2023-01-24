@@ -1,7 +1,13 @@
-import { DbTable, DB_NAME } from "../const";
-import { connectToDatabase } from "../drivers/mongodb";
-import { Statistics, User, UserStats } from "../types";
-import logger from "../utils/logger";
+import {
+  connectToDatabase,
+  DbTable,
+  DB_NAME,
+  IActivity,
+  ISession,
+  logger,
+  Statistics,
+  UserStats,
+} from "../index";
 
 /**
  * Delete a session
@@ -24,9 +30,7 @@ export async function deleteSession(sessionId: string) {
     .deleteMany({ sessionId: sessionId });
   logger.info(`activities deleted: ${delActivities.deletedCount}`);
 
-  const delSession = await db
-    .collection(DbTable.SESSIONS)
-    .deleteOne({ id: sessionId });
+  await db.collection(DbTable.SESSIONS).deleteOne({ id: sessionId });
   logger.info(`deleted session ${sessionId}`);
 }
 
@@ -35,7 +39,7 @@ export async function deleteSession(sessionId: string) {
  * @param sessionId id of the session to update
  * @param data new session configuration
  */
-export async function updateSession(sessionId: string, data: any) {
+export async function updateSession(sessionId: string, data: ISession) {
   if (!sessionId) {
     throw new Error("unable to find session");
   }
@@ -51,10 +55,7 @@ export async function updateSession(sessionId: string, data: any) {
   const result = await client
     .db(DB_NAME)
     .collection(DbTable.SESSIONS)
-    .findOneAndUpdate(
-      { id: sessionId },
-      { $set: { dayOfWeek: data.dayOfWeek } }
-    );
+    .findOneAndUpdate({ id: sessionId }, { $set: { dayOfWeek: data.dayOfWeek } });
 
   if (result.ok !== 1) {
     throw new Error("unable to update session");
@@ -68,7 +69,10 @@ export async function updateSession(sessionId: string, data: any) {
  * @param planId id of plan to attach the new session
  * @param data session configurations
  */
-export async function createSession(planId: string, data: any) {
+export async function createSession(
+  planId: string,
+  data: { id: string; dayOfWeek: number; warmup: IActivity[] | undefined }
+) {
   if (!planId) {
     throw new Error("unable to find the plan");
   }
@@ -101,14 +105,12 @@ export async function createSession(planId: string, data: any) {
   }
 
   if (warmup) {
-    const updatedWarmup = warmup.map((warm: any) => ({
+    const updatedWarmup = warmup.map((warm: IActivity) => ({
       sessionId: id,
       ...warm,
     }));
     if (updatedWarmup.length > 0) {
-      const result = await db
-        .collection(DbTable.ACTIVITIES)
-        .insertMany(updatedWarmup);
+      const result = await db.collection(DbTable.ACTIVITIES).insertMany(updatedWarmup);
 
       if (result.insertedCount < updatedWarmup.length) {
         throw new Error("unable to insert warmup");
@@ -161,11 +163,7 @@ export async function markSessionAsComplete(userId: string, sessionId: string) {
 
   const result = await db
     .collection(DbTable.STATS)
-    .findOneAndUpdate(
-      { userId: userId },
-      { $set: { stats: { completion } } },
-      { upsert: true }
-    );
+    .findOneAndUpdate({ userId: userId }, { $set: { stats: { completion } } }, { upsert: true });
 
   if (result.ok !== 1) {
     throw new Error("unable to update completion");

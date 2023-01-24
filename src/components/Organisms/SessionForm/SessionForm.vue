@@ -2,8 +2,8 @@
   import { computed, PropType, ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { ISession } from "~/models/Session";
-  import { ButtonColor, getDayOfTheWeek, days } from "~/utils";
-  import { useActivityStore, useUserStore } from "~/stores";
+  import { Color, getDayOfTheWeek } from "~/utils";
+  import { useActivityStore, useUserStore } from "~/store";
   import { IActivity } from "~/models/Activity";
 
   const props = defineProps({
@@ -18,7 +18,7 @@
       default: -1,
     },
     existingForm: {
-      type: Object as PropType<IActivity>,
+      type: Object as PropType<IActivity | undefined>,
       required: false,
       default: undefined,
     },
@@ -30,11 +30,11 @@
 
   const uuid = uuidv4();
 
-  let currentDayOfWeek = ref(props.dayOfWeek || -1);
-  let dayOfWeek = ref(props.dayOfWeek || -1);
-  let id = ref(props.id || uuid);
-  let activityList = ref(undefined as IActivity[] | undefined);
-  let warmupList = ref(undefined as IActivity[] | undefined);
+  const currentDayOfWeek = ref(props.dayOfWeek || -1);
+  const dayOfWeek = ref(props.dayOfWeek || -1);
+  const id = ref(props.id || uuid);
+  const activityList = ref(undefined as IActivity[] | undefined);
+  const warmupList = ref(undefined as IActivity[] | undefined);
 
   if (id.value) {
     warmupList.value = activityStore.getWarmUpActivities(id.value);
@@ -62,11 +62,11 @@
   }
 
   const isNew = computed(() => {
-    return !Boolean(props.id);
+    return !props.id;
   });
 
   function remove() {
-    if (!isNew) {
+    if (!isNew.value) {
       emits("remove", props.id);
     }
   }
@@ -87,16 +87,13 @@
     activityStore.moveActivity(id.value, listActivities, isWarmup);
   }
 
-  let showDuplicateModal = ref(false);
+  const showDuplicateModal = ref(false);
   function duplicateActivities(activities: IActivity[]) {
     activityStore.setDuplicateWarmup(activities);
     showDuplicateModal.value = true;
   }
 
-  function duplicateSession(param: {
-    dayOfWeek: number;
-    activities: IActivity[];
-  }) {
+  function duplicateSession(param: { dayOfWeek: number; activities: IActivity[] }) {
     showDuplicateModal.value = false;
     save(param.dayOfWeek, param.activities);
   }
@@ -107,9 +104,7 @@
     <form class="w-full" @submit.prevent>
       <Card
         :title="
-          isNew
-            ? 'Create a new day session'
-            : `Edit ${getDayOfTheWeek(currentDayOfWeek)} session`
+          isNew ? 'Create a new day session' : `Edit ${getDayOfTheWeek(currentDayOfWeek)} session`
         "
       >
         <hr />
@@ -128,12 +123,10 @@
             :key="day"
             :class="[
               {
-                'bg-indigo-600 text-slate-50':
-                  isDaySelected(day) && !userStore.isTrainer,
+                'bg-indigo-600 text-slate-50': isDaySelected(day) && !userStore.isTrainer,
               },
               {
-                'bg-purple-600 text-slate-50':
-                  isDaySelected(day) && userStore.isTrainer,
+                'bg-purple-600 text-slate-50': isDaySelected(day) && userStore.isTrainer,
               },
               { 'bg-gray-200 text-grey-50': !isDaySelected(day) },
               'w-full duration-200 rounded-full px-4 py-2 ',
@@ -147,14 +140,14 @@
           v-if="dayOfWeek !== -1"
           :icon="!isNew ? 'save' : 'add'"
           :label="!isNew ? 'Save this session' : 'Create new session'"
-          :color="ButtonColor.SUCCESS"
+          :color="Color.SUCCESS"
           @click="save"
           class="float-right"
         />
         <Button
           v-if="!isNew"
           icon="delete"
-          :color="ButtonColor.DANGER"
+          :color="Color.DANGER"
           label="Delete this session"
           @click="remove"
           class="float-right"

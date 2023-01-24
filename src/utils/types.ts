@@ -1,4 +1,5 @@
 import { IActivity } from "../models/Activity";
+import { DataAction } from "./enum";
 
 export type TimerActivity =
   | {
@@ -18,7 +19,29 @@ export type SettingStorage = {
   easyMode: boolean;
 };
 
-export type logOptions = (
-  message: string,
-  type?: "info" | "error" | "warn"
-) => void;
+export type LogOptions = (message: string, type?: "info" | "error" | "warn") => void;
+
+export type UserConfigurations = {
+  audioDisabled: boolean;
+  easyMode: boolean;
+  darkMode: boolean;
+};
+
+export type TrainerRequest = {
+  data?: IActivity | SessionRequest | OrderRequest[];
+  activityId?: string;
+  sessionId?: string;
+  planId?: string;
+  action: DataAction;
+};
+
+export type SessionRequest = {
+  id: string;
+  dayOfWeek: number;
+  warmup?: IActivity[];
+};
+
+export type OrderRequest = {
+  id: string;
+  order: number;
+};

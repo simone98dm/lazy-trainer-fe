@@ -1,6 +1,4 @@
-import { DbTable, DB_NAME } from "../const";
-import { connectToDatabase } from "../drivers/mongodb";
-import logger from "../utils/logger";
+import { connectToDatabase, DbTable, DB_NAME, IActivity, logger } from "../index";
 
 /**
  * Delete an activity
@@ -32,7 +30,7 @@ export async function deleteActivity(activityId: string) {
  * @param activityId id of activity to update
  * @param data new activity configurations
  */
-export async function updateActivity(activityId: string, data: any) {
+export async function updateActivity(activityId: string, data: IActivity) {
   if (!activityId) {
     throw new Error("unable to find session");
   }
@@ -73,7 +71,7 @@ export async function updateActivity(activityId: string, data: any) {
  * @param sessionId session to attach the new activity
  * @param data new activity configuration
  */
-export async function createActivity(sessionId: string, data: any) {
+export async function createActivity(sessionId: string, data: IActivity) {
   if (!sessionId) {
     throw new Error("unable to find the plan");
   }
@@ -108,10 +106,7 @@ export async function sortActivities(data: { id: string; order: number }[]) {
     client
       .db(DB_NAME)
       .collection(DbTable.ACTIVITIES)
-      .findOneAndUpdate(
-        { id: activity.id },
-        { $set: { order: activity.order } }
-      )
+      .findOneAndUpdate({ id: activity.id }, { $set: { order: activity.order } })
       .then((result) => {
         if (result.ok === 0) {
           throw new Error("unable to update activity");

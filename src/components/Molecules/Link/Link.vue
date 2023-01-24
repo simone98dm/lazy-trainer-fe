@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { RouterLink } from "vue-router";
-  import { ButtonColor, ButtonSize, LinkType } from "~/utils";
+  import { Color, Size, LinkType } from "~/utils";
 
   defineProps({
     to: {
@@ -20,7 +20,7 @@
     size: {
       type: Number,
       required: false,
-      default: ButtonSize.MEDIUM,
+      default: Size.MEDIUM,
     },
     label: {
       type: String,
@@ -30,7 +30,7 @@
     color: {
       type: Number,
       required: false,
-      default: ButtonColor.PRIMARY,
+      default: Color.PRIMARY,
     },
     icon: {
       type: String,
@@ -59,7 +59,6 @@
       :color="color"
       :icon="icon"
       :circular="circular"
-      :class="class"
       :loading="loading"
       :size="size"
     />

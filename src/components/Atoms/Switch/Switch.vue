@@ -1,5 +1,19 @@
 <script setup lang="ts">
-  defineProps(["id", "name", "checked"]);
+  defineProps({
+    id: {
+      type: String,
+      required: true,
+    },
+    name: {
+      type: String,
+      required: true,
+    },
+    checked: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  });
   defineEmits(["toggle"]);
 </script>
 
@@ -12,9 +26,7 @@
         :id="id"
         :name="name"
         :checked="checked"
-        @change="
-          $emit('toggle', (($event.target as any) || undefined)?.checked)
-        "
+        @change="$emit('toggle', (($event.target as any) || undefined)?.checked)"
       />
       <div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
       <div

@@ -1,7 +1,6 @@
 <script setup lang="ts">
-  import { computed } from "vue";
-  import { useUserStore } from "~/stores";
-  import { ButtonColor, ButtonSize } from "~/utils";
+  import { computed, PropType } from "vue";
+  import { Color, Size } from "~/utils";
   const props = defineProps({
     full: {
       type: Boolean,
@@ -9,9 +8,9 @@
       default: false,
     },
     size: {
-      type: Number,
+      type: Number as PropType<Size>,
       required: false,
-      default: ButtonSize.MEDIUM,
+      default: Size.MEDIUM,
     },
     label: {
       type: String,
@@ -19,9 +18,9 @@
       default: "",
     },
     color: {
-      type: Number,
+      type: Number as PropType<Color>,
       required: false,
-      default: ButtonColor.PRIMARY,
+      default: Color.PRIMARY,
     },
     icon: {
       type: String,
@@ -40,25 +39,22 @@
     },
   });
   const emit = defineEmits(["click"]);
-  const user = useUserStore();
 
   const buttonColor = computed(() => {
-    switch ((props.color as ButtonColor) ?? ButtonColor.PRIMARY) {
-      case ButtonColor.PRIMARY:
-        return !user.isTrainer
-          ? "bg-indigo-600 hover:bg-indigo-500 text-gray-100"
-          : "";
-      case ButtonColor.DANGER:
+    switch (props.color) {
+      case Color.PURPLE:
+        return "bg-purple-600 hover:bg-purple-500 text-gray-100";
+      case Color.DANGER:
         return "bg-red-600 hover:bg-red-500 text-gray-100";
-      case ButtonColor.DARK:
+      case Color.DARK:
         return "bg-slate-800 hover:bg-slate-500 text-gray-100";
-      case ButtonColor.LIGHT:
+      case Color.LIGHT:
         return "bg-white hover:bg-slate-100 text-black";
-      case ButtonColor.SUCCESS:
+      case Color.SUCCESS:
         return "bg-green-600 hover:bg-green-400 text-gray-100";
-      case ButtonColor.WARNING:
+      case Color.WARNING:
         return "bg-yellow-600 hover:bg-yellow-500 text-gray-100";
-      case ButtonColor.TRASPARENT:
+      case Color.TRASPARENT:
         return "hover:bg-slate-50 text-black";
       default:
         return "bg-indigo-600 hover:bg-indigo-500 text-gray-100";
@@ -78,38 +74,25 @@
       { 'rounded-lg': !circular },
       { 'w-full': props.full ?? false },
       {
-        'bg-purple-600 hover:bg-purple-500 text-gray-100':
-          (!props.color || props.color === ButtonColor.PRIMARY) &&
-          user.isTrainer,
+        'shadow-lg': props.color !== Color.TRASPARENT,
       },
       {
-        'shadow-lg': props.color !== ButtonColor.TRASPARENT,
+        'py-4 md:py-3 px-4 md:px-8 text-sm': !props.size || props.size === Size.MEDIUM,
       },
       {
-        'py-4 md:py-3 px-4 md:px-8 text-sm':
-          !props.size || props.size === ButtonSize.MEDIUM,
+        'py-2 md:py-1 px-2 md:px-4 text-xs': props.size === Size.SMALL,
       },
       {
-        'py-2 md:py-1 px-2 md:px-4 text-xs': props.size === ButtonSize.SMALL,
-      },
-      {
-        'py-6 md:py-5 px-6 md:px-10 text-xl': props.size === ButtonSize.LARGE,
+        'py-6 md:py-5 px-6 md:px-10 text-xl': props.size === Size.LARGE,
       },
     ]"
     type="button"
     @click="emit('click', $event)"
   >
-    <Loading v-if="props.loading" :small="true"></Loading>
+    <Loading v-if="props.loading" :color="color" :small="true"></Loading>
     <div v-else class="flex justify-center items-center">
-      <Icon
-        v-if="props.icon"
-        :component="props.icon"
-        class="float-left inline"
-      />
-      <span
-        :class="['ml-2 float-left sm:inline', { hidden: !props.full }]"
-        v-if="props.label"
-      >
+      <Icon v-if="props.icon" :component="props.icon" class="float-left inline" />
+      <span :class="['ml-2 float-left sm:inline', { hidden: !props.full }]" v-if="props.label">
         {{ props.label }}
       </span>
     </div>

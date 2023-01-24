@@ -1,8 +1,12 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { validateUser } from "../../backend/helpers/token";
-import logger from "../../backend/utils/logger";
-import { commonResponse } from "../../backend/utils/http";
-import { getTrainerPlans } from "../../backend/helpers/group";
+import {
+  validateUser,
+  logger,
+  getTrainerPlans,
+  badRequest,
+  internalServerError,
+  ok,
+} from "../../backend/index";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -13,7 +17,7 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     const isValid = validateUser(request);
     const { id } = request.body;
     if (!id) {
-      return commonResponse.badRequest(response, "id not provided");
+      return badRequest(response, "id not provided");
     }
 
     const plans = await getTrainerPlans(isValid.id);
@@ -22,13 +26,13 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       trainer: isValid,
       groupId: id,
     });
-    return commonResponse.ok(response, plans);
+    return ok(response, plans);
   } catch (error) {
     logger.error(error, {
       token: request.headers.authorization,
       method: request.method,
       path: request.url,
     });
-    return commonResponse.internalServerError(response, "something went wrong");
+    return internalServerError(response, "something went wrong");
   }
 };

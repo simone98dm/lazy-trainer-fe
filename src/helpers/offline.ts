@@ -1,4 +1,4 @@
-import { useUserStore } from "~/stores";
+import { useUserStore } from "~/store";
 import log from "./logger";
 
 function handleConnection() {
