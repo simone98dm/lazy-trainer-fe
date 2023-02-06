@@ -19,7 +19,7 @@
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "vercel:dev": "vercel dev",
-    "test:unit": "vitest --config vitest.config.ts --dom",
+    "test:unit": "vitest run --config vitest.config.ts --dom",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "npx cypress open",
     "mock": " node ./local/index.js",
