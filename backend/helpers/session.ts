@@ -1,7 +1,8 @@
-import { DbTable, DB_NAME } from "../const";
-import { connectToDatabase, pool } from "../drivers/postgresdb";
-import { Statistics, User, UserStats } from "../types";
-import logger from "../utils/logger";
+import { DbTable } from "../utils/const";
+import { pool } from "../drivers/postgresdb";
+import { Statistics, UserStats } from "../utils/types";
+import { logger } from "../utils/logger";
+import { IActivity, ISession } from "../utils/interface";
 
 /**
  * Delete a session
@@ -13,15 +14,12 @@ export async function deleteSession(sessionId: string) {
   }
 
   const client = await pool.connect();
-  const { rows } = await client.query(
-    `DELETE FROM ${DbTable.ACTIVITIES} WHERE sessionid = $1;`,
-    [sessionId]
-  );
-  logger.info(`activities deleted: ${rows.length}`);
-
-  await client.query(`DELETE FROM ${DbTable.SESSIONS} WHERE id = $1;`, [
+  const { rows } = await client.query(`DELETE FROM ${DbTable.ACTIVITIES} WHERE sessionid = $1;`, [
     sessionId,
   ]);
+  logger.info(`activities deleted: ${rows.length}`);
+
+  await client.query(`DELETE FROM ${DbTable.SESSIONS} WHERE id = $1;`, [sessionId]);
   logger.info(`deleted session ${sessionId}`);
 }
 
@@ -30,7 +28,7 @@ export async function deleteSession(sessionId: string) {
  * @param sessionId id of the session to update
  * @param data new session configuration
  */
-export async function updateSession(sessionId: string, data: any) {
+export async function updateSession(sessionId: string, data: ISession) {
   if (!sessionId) {
     throw new Error("unable to find session");
   }
@@ -59,7 +57,10 @@ export async function updateSession(sessionId: string, data: any) {
  * @param planId id of plan to attach the new session
  * @param data session configurations
  */
-export async function createSession(planId: string, data: any) {
+export async function createSession(
+  planId: string,
+  data: { id: string; dayOfWeek: number; warmup: IActivity[] | undefined }
+) {
   if (!planId) {
     throw new Error("unable to find the plan");
   }
@@ -91,22 +92,15 @@ export async function createSession(planId: string, data: any) {
   }
 
   if (warmup) {
-    const updatedWarmup = warmup.map((warm: any) => ({
+    const updatedWarmup = warmup.map((warm: IActivity) => ({
       sessionId: id,
       ...warm,
     }));
     if (updatedWarmup.length > 0) {
       updatedWarmup.forEach(async (warm: any) => {
-        const { rows, rowCount } = await client.query(
+        const { rowCount } = await client.query(
           `INSERT INTO ${DbTable.ACTIVITIES} (id, sessionid, name, duration, type, order) VALUES ($1, $2, $3, $4, $5, $6);`,
-          [
-            warm.id,
-            warm.sessionId,
-            warm.name,
-            warm.duration,
-            warm.type,
-            warm.order,
-          ]
+          [warm.id, warm.sessionId, warm.name, warm.duration, warm.type, warm.order]
         );
         if (rowCount < updatedWarmup.length) {
           throw new Error("unable to insert warmup");
@@ -127,10 +121,9 @@ export async function markSessionAsComplete(userId: string, sessionId: string) {
   }
 
   const client = await pool.connect();
-  let existing = await client.query(
-    `SELECT stats FROM ${DbTable.STATS} WHERE userid = $1;`,
-    [userId]
-  );
+  const existing = await client.query(`SELECT stats FROM ${DbTable.STATS} WHERE userid = $1;`, [
+    userId,
+  ]);
   let existingStats: UserStats | null = null;
   if (!existing.rows || !existing.rows[0].stats) {
     existingStats = {

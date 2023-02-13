@@ -1,7 +1,10 @@
 import { Role } from "./enum";
+
 export const FULL_DASH_ARRAY = 283;
 export const WARNING_THRESHOLD = 10;
 export const ALERT_THRESHOLD = 5;
+export const baseUrl = "";
+export const MAX_ACTIVITY_FORM = 10;
 
 export const COLOR_CODES = {
   info: {
@@ -22,11 +25,6 @@ export const RoleName: { [role in Role]: string } = {
   [Role.TRAINER]: "Trainer",
   [Role.SELFMADE]: "Self Made",
 };
-
-// export const baseUrl = import.meta.env.DEV ? "http://localhost:3001" : "";
-export const baseUrl = "";
-
-export const MAX_ACTIIVITY_FORM = 10;
 
 export const GaCustomEvents = {
   LOGIN: "login",

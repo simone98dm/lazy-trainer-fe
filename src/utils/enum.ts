@@ -1,5 +1,6 @@
 export enum LinkType {
   BUTTON,
+  ROUTER,
 }
 
 export enum IconSize {
@@ -8,7 +9,7 @@ export enum IconSize {
   SMALL = "icn__small",
 }
 
-export enum ButtonColor {
+export enum Color {
   PRIMARY,
   LIGHT,
   DARK,
@@ -16,9 +17,10 @@ export enum ButtonColor {
   WARNING,
   SUCCESS,
   TRASPARENT,
+  PURPLE,
 }
 
-export enum ButtonSize {
+export enum Size {
   SMALL,
   MEDIUM,
   LARGE,

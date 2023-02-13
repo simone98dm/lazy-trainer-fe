@@ -10,6 +10,7 @@ import "material-icons/iconfont/material-icons.css";
 import { customLogger } from "./helpers/logger";
 import VCalendar from "v-calendar";
 import "v-calendar/dist/style.css";
+import { initializeOffline } from "./helpers/offline";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APIKEY,
@@ -35,6 +36,7 @@ app.use(VCalendar, {});
 app.provide("$logger", customLogger);
 
 initializeApp(firebaseConfig);
+initializeOffline();
 
 console.log(`Hello fellows devs👋, app version: ${version}`);
 

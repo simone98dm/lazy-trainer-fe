@@ -1,9 +1,12 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { markSessionAsComplete } from "../../backend/helpers/session";
-import { validateUser } from "../../backend/helpers/token";
-import { getStats } from "../../backend/helpers/user";
-import { commonResponse } from "../../backend/utils/http";
-import logger from "../../backend/utils/logger";
+import {
+  getStats,
+  internalServerError,
+  logger,
+  markSessionAsComplete,
+  ok,
+  validateUser,
+} from "../../backend/index";
 
 export default async (request: VercelRequest, response: VercelResponse) => {
   try {
@@ -11,10 +14,10 @@ export default async (request: VercelRequest, response: VercelResponse) => {
     if (request.method === "POST") {
       const { sessionId } = request.body;
       await markSessionAsComplete(id, sessionId);
-      return commonResponse.ok(response);
+      return ok(response);
     } else if (request.method === "GET") {
       const stats = await getStats(id);
-      return commonResponse.ok(response, stats);
+      return ok(response, stats);
     } else {
       throw new Error("Method not allowed");
     }
@@ -24,6 +27,6 @@ export default async (request: VercelRequest, response: VercelResponse) => {
       method: request.method,
       path: request.url,
     });
-    return commonResponse.internalServerError(response, "something went wrong");
+    return internalServerError(response, "something went wrong");
   }
 };

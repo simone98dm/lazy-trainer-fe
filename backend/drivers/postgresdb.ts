@@ -1,5 +1,4 @@
-import { Client, ClientConfig, Pool } from "pg";
-import { uri } from "../const";
+import { ClientConfig, Pool } from "pg";
 
 const options: ClientConfig = {
   user: process.env.VITE_SUPABASE_USERNAME,

@@ -1,7 +1,7 @@
-import { DbTable, DB_NAME } from "../const";
+import { DbTable } from "../utils/const";
 import { pool } from "../drivers/postgresdb";
-import { Activity, Config, Plan, Session, User, UserStats } from "../types";
-import logger from "../utils/logger";
+import { Activity, Config, Plan, Session, User, UserStats } from "../utils/types";
+import { logger } from "../utils/logger";
 import { mapRawToPlans } from "../utils/mapper";
 import { getActivities } from "./activity";
 import datasource from "../drivers";
@@ -40,10 +40,7 @@ export async function requestActivityChange(activityId: string) {
   return result.affected > 0;
 }
 
-export async function getMappedPlan(searchFor: {
-  id?: string;
-  ownerId?: string;
-}) {
+export async function getMappedPlan(searchFor: { id?: string; ownerId?: string }) {
   const p = await datasource
     .createQueryBuilder()
     .select()
@@ -69,7 +66,7 @@ export async function getMappedPlan(searchFor: {
     const { rows } = await getActivities(id);
     return rows;
   });
-  const act: Activity[] = [].concat.apply([], activities);
+  const act: Activity[] = [...activities];
   const pp = await mapDtoToPlan(p);
   const ss = s.map(async (l) => await mapDtoToSession(l));
   return mapRawToPlans(pp, ss, act);
@@ -107,9 +104,9 @@ export async function getUserConfiguration(id: string) {
 }
 
 export async function saveConfiguration(id: string, options: Config) {
-  const { audioDisabled, easyMode } = options;
+  const { audioDisabled, easyMode, darkMode } = options;
 
-  const configurations = JSON.stringify({ audioDisabled, easyMode });
+  const configurations = JSON.stringify({ audioDisabled, easyMode, darkMode });
 
   const client = await pool.connect();
   const { rowCount } = await client.query(
@@ -130,7 +127,7 @@ export async function getStats(userId: string) {
     return null;
   }
 
-  let userStats: UserStats[] = [];
+  const userStats: UserStats[] = [];
   if (Number(user.role) === 1) {
     const plans = await client.query(
       `SELECT id, name, trainerid, ownerid FROM ${DbTable.PLANS} WHERE trainerid = $1`,
@@ -153,7 +150,7 @@ export async function getStats(userId: string) {
       }))
     );
   } else {
-    let userStat = await client.query(
+    const userStat = await client.query(
       `SELECT id, userid, stats FROM ${DbTable.STATS} WHERE userid = $1`,
       [userId]
     );

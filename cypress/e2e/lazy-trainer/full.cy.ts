@@ -1,5 +1,3 @@
-import cypress from "cypress";
-
 describe("Login", () => {
   beforeEach(() => {
     cy.intercept("POST", "/api/auth/sign").as("login");
@@ -50,9 +48,7 @@ describe("Dashboard normal user", () => {
 
   it("allow click on session", () => {
     cy.get("#sessions").children().first().click();
-    cy.get("#warmup-activities")
-      .children()
-      .should("have.length.greaterThan", 0);
+    cy.get("#warmup-activities").children().should("have.length.greaterThan", 0);
 
     cy.get("#list-activities").children().should("have.length.greaterThan", 0);
   });
@@ -61,9 +57,7 @@ describe("Dashboard normal user", () => {
     cy.get("#sessions").children().first().click();
     cy.get("#run-timer").click();
     cy.get(".back__button").click();
-    cy.get("#warmup-activities")
-      .children()
-      .should("have.length.greaterThan", 0);
+    cy.get("#warmup-activities").children().should("have.length.greaterThan", 0);
 
     cy.get("#list-activities").children().should("have.length.greaterThan", 0);
   });
@@ -103,10 +97,7 @@ describe("Dashboard trainer user", () => {
     cy.get("#toggle").click();
     cy.get("#save-activity").click();
 
-    cy.get("#warmup-activities")
-      .children()
-      .contains("Foo")
-      .should("have.length", 1);
+    cy.get("#warmup-activities").children().contains("Foo").should("have.length", 1);
     cy.get("#warmup-activities").children().contains("Foo").click();
     cy.get("#delete-activity").click();
   });
@@ -121,10 +112,7 @@ describe("Dashboard trainer user", () => {
     cy.get("input[name='activityType']").type("3");
     cy.get("#save-activity").click();
 
-    cy.get("#list-activities")
-      .children()
-      .contains("Demo")
-      .should("have.length", 1);
+    cy.get("#list-activities").children().contains("Demo").should("have.length", 1);
     cy.get("#list-activities").children().contains("Demo").click();
     cy.get("#delete-activity").click();
   });

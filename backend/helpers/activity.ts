@@ -1,7 +1,8 @@
-import { DbTable, DB_NAME } from "../const";
+import { DbTable } from "../utils/const";
 import { pool } from "../drivers/postgresdb";
-import { Activity } from "../types";
-import logger from "../utils/logger";
+import { Activity } from "../utils/types";
+import { logger } from "../utils/logger";
+import { IActivity } from "../utils/interface";
 
 /**
  * Delete an activity
@@ -13,10 +14,9 @@ export async function deleteActivity(activityId: string) {
   }
 
   const client = await pool.connect();
-  const { rows } = await client.query(
-    `DELETE FROM ${DbTable.ACTIVITIES} WHERE id = $1;`,
-    [activityId]
-  );
+  const { rows } = await client.query(`DELETE FROM ${DbTable.ACTIVITIES} WHERE id = $1;`, [
+    activityId,
+  ]);
 
   if (rows.length === 0) {
     throw new Error("unable to delete activity");
@@ -30,7 +30,7 @@ export async function deleteActivity(activityId: string) {
  * @param activityId id of activity to update
  * @param data new activity configurations
  */
-export async function updateActivity(activityId: string, data: any) {
+export async function updateActivity(activityId: string, data: IActivity) {
   if (!activityId) {
     throw new Error("unable to find session");
   }
@@ -72,7 +72,7 @@ export async function updateActivity(activityId: string, data: any) {
  * @param sessionId session to attach the new activity
  * @param data new activity configuration
  */
-export async function createActivity(sessionId: string, data: any) {
+export async function createActivity(sessionId: string, data: IActivity) {
   if (!sessionId) {
     throw new Error("unable to find the plan");
   }
@@ -121,10 +121,10 @@ export async function getActivities(sessionId: string) {
 export async function sortActivities(data: { id: string; order: number }[]) {
   const client = await pool.connect();
   const promises = data.map((activity) =>
-    client.query(
-      `UPDATE ${DbTable.ACTIVITIES} SET order_index = $1 WHERE id = $2;`,
-      [activity.order, activity.id]
-    )
+    client.query(`UPDATE ${DbTable.ACTIVITIES} SET order_index = $1 WHERE id = $2;`, [
+      activity.order,
+      activity.id,
+    ])
   );
 
   await Promise.all(promises);

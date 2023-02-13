@@ -27,18 +27,9 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       workbox: {
-        cleanupOutdatedCaches: false,
-        sourcemap: true,
         offlineGoogleAnalytics: true,
-        clientsClaim: true,
-        skipWaiting: true,
       },
-      includeAssets: [
-        "favicon.ico",
-        "apple-touch-icon.png",
-        "masked-icon.svg",
-        "assets/*",
-      ],
+      includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg", "assets/*"],
       manifest: {
         name: app.name,
         short_name: app.shortName,
@@ -72,10 +63,7 @@ export default defineConfig({
     }),
     VitePluginFonts({
       google: {
-        families: [
-          "Lato:wght@400;500;600;700;800",
-          "Inter:wght@400;500;600;700;800",
-        ],
+        families: ["Lato:wght@400;500;600;700;800", "Inter:wght@400;500;600;700;800"],
       },
     }),
   ],

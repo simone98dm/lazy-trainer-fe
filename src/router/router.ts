@@ -1,20 +1,21 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useUserStore } from "../stores/user";
-import { Role } from "../utils/enum";
+import { useUserStore } from "~/store/user";
+import { Role } from "~/utils/enum";
 
-import Home from "../views/Home.vue";
-import Details from "../views/Details.vue";
-import Activity from "../views/Activity.vue";
-import Timer from "../views/Timer.vue";
-import Session from "../views/Session.vue";
-import Login from "../views/Login.vue";
-import Settings from "../views/Settings.vue";
-import Group from "../views/Group.vue";
-import NotFound from "../views/NotFound.vue";
-import About from "../views/About.vue";
-import License from "../views/License.vue";
-import Landing from "../views/Landing.vue";
-import User from "../views/User.vue";
+import Home from "~/views/HomeView.vue";
+import Details from "~/views/DetailsView.vue";
+import Activity from "~/views/ActivityView.vue";
+import Timer from "~/views/TimerView.vue";
+import Session from "~/views/SessionView.vue";
+import Login from "~/views/LoginView.vue";
+import Settings from "~/views/SettingsView.vue";
+import Group from "~/views/GroupView.vue";
+import NotFound from "~/views/NotFoundView.vue";
+import About from "~/views/AboutView.vue";
+import License from "~/views/LicenseView.vue";
+import Landing from "~/views/LandingView.vue";
+import User from "~/views/UserView.vue";
+import PrivacyPolicy from "~/views/PrivacyPolicyView.vue";
 
 const routes = [
   {
@@ -159,12 +160,23 @@ const routes = [
       requireAdmin: false,
     },
   },
+  {
+    path: "/privacy-policy",
+    name: "privacy-policy",
+    component: PrivacyPolicy,
+    meta: {
+      title: `Privacy Policy`,
+      empty: false,
+      requireAuth: false,
+      requireAdmin: false,
+    },
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  linkExactActiveClass: "bg-slate-100 text-indigo-600",
+  linkExactActiveClass: "dark:bg-slate-700 bg-slate-100 text-indigo-600 dark:text-indigo-300",
 });
 
 router.beforeEach((to) => {
