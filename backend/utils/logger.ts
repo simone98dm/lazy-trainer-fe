@@ -1,8 +1,14 @@
-import { Logtail } from "@logtail/node";
 import { LogLevel } from "../index";
-const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN || "");
+import { Environment } from "../utils/const";
 
 function log(message: unknown, level: LogLevel = LogLevel.INFO, ...args: unknown[]) {
+  if (
+    process.env.DEPLOY_ENV === Environment.PROD &&
+    (LogLevel.ERROR === level || LogLevel.WARNING === level)
+  ) {
+    return;
+  }
+
   const logObject: string = JSON.stringify({
     message,
     args: JSON.stringify(args),
@@ -10,16 +16,16 @@ function log(message: unknown, level: LogLevel = LogLevel.INFO, ...args: unknown
 
   switch (level) {
     case LogLevel.INFO:
-      logtail.info(logObject);
+      console.info(logObject);
       break;
     case LogLevel.ERROR:
-      logtail.error(logObject);
+      console.error(logObject);
       break;
     case LogLevel.WARNING:
-      logtail.warn(logObject);
+      console.warn(logObject);
       break;
     default:
-      logtail.log(logObject);
+      console.log(logObject);
       break;
   }
 }

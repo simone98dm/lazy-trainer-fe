@@ -1,7 +1,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { initializeApp } from "firebase/app";
-import Hotjar from "vue-hotjar";
+import hotjar from "vue-hotjar";
 import App from "./App.vue";
 import router from "./router/router";
 import { version } from "../package.json";
@@ -27,7 +27,7 @@ const pinia = createPinia();
 const app = createApp(App);
 app.use(pinia);
 app.use(router);
-app.use(Hotjar, {
+app.use(hotjar, {
   id: import.meta.env.VITE_HOTJARKEY,
   isProduction: true,
   snippetVersion: 6,

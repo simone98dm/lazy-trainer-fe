@@ -17,3 +17,8 @@ export enum LogLevel {
   WARNING = "warning",
   DEBUG = "debug",
 }
+
+export const Environment = {
+  PROD: "prod",
+  DEV: "dev",
+};
