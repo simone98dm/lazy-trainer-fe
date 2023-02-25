@@ -3,7 +3,6 @@
   import { ICustomSession } from "~/models/Session";
   import { useActivityStore, useTimerStore, useUserStore } from "~/store";
   import { Color, LinkType } from "~/utils";
-  // import Icon1 from "~/assets/svg/fitness_stats_sht6.svg";
   import Icon1 from "~/assets/svg/working_out_re_nhkg.svg";
   import Icon2 from "~/assets/svg/fitness_tracker_3033.svg";
   import Icon3 from "~/assets/svg/healthy_habit_m1a9.svg";
@@ -11,8 +10,10 @@
   import Icon5 from "~/assets/svg/personal_trainer_re_cnua.svg";
   import Icon6 from "~/assets/svg/pilates_ftsd.svg";
   import Icon7 from "~/assets/svg/runner_start_x-0-uu.svg";
+  import Icon8 from "~/assets/svg/fitness_stats_sht6.svg";
+  import { IActivity } from "~/models/Activity";
 
-  const icons = [Icon1, Icon2, Icon3, Icon4, Icon5, Icon6, Icon7];
+  const icons = [Icon1, Icon2, Icon3, Icon4, Icon5, Icon6, Icon7, Icon8];
 
   const userStore = useUserStore();
   const activityStore = useActivityStore();
@@ -28,7 +29,7 @@
   });
   const router = useRouter();
 
-  function isDayActivity(dayOfWeek: number) {
+  function isToday(dayOfWeek: number): boolean {
     return dayOfWeek === new Date().getDay() - 1;
   }
 
@@ -44,10 +45,16 @@
     router.push({ name: "timer", params: { sessionId } });
   }
 
-  function hasActivities(sessionId: string) {
+  function hasActivities(sessionId: string): boolean {
     const warmupList = activityStore.getWarmUpActivities(sessionId);
     const activityList = activityStore.getSessionActivities(sessionId);
-    return (warmupList?.length ?? 0 > 0) || (activityList?.length ?? 0 > 0);
+    const a = (warmupList?.length ?? 0) > 0;
+    const b = (activityList?.length ?? 0) > 0;
+    return a || b;
+  }
+
+  function showButton(item: ICustomSession): boolean {
+    return !userStore.isTrainer && isToday(item.dayOfWeek) && hasActivities(item.id);
   }
 </script>
 
@@ -61,7 +68,7 @@
         :name="item.name"
         :description="item.description"
         :id="item.id"
-        :highlight="!userStore.isTrainer && isDayActivity(item.dayOfWeek) ? 'Today session' : ''"
+        :highlight="!userStore.isTrainer && isToday(item.dayOfWeek) ? 'Today session' : ''"
         class="cursor-pointer w-full xl:mx-2"
         @click="() => router.push({ name: 'details', params: { sessionId: item.id } })"
       >
@@ -71,7 +78,7 @@
         <template #actions>
           <div>
             <Button
-              v-if="!userStore.isTrainer && isDayActivity(item.dayOfWeek) && hasActivities(item.id)"
+              v-if="showButton(item)"
               :icon="'play_arrow'"
               :color="Color.SUCCESS"
               :circular="true"
