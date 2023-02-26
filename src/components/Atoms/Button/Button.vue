@@ -51,7 +51,7 @@
       case Color.LIGHT:
         return "bg-white hover:bg-slate-100 text-black";
       case Color.SUCCESS:
-        return "bg-green-600 hover:bg-green-400 text-gray-100";
+        return "bg-green-600 hover:bg-green-500 text-gray-100";
       case Color.WARNING:
         return "bg-yellow-600 hover:bg-yellow-500 text-gray-100";
       case Color.TRASPARENT:
@@ -65,10 +65,7 @@
 <template>
   <button
     :class="[
-      'flex',
-      'justify-center',
-      'items-center',
-      'font-bold',
+      'flex justify-center items-center font-bold hover:drop-shadow-lg transition duration-300 ',
       buttonColor,
       { 'rounded-full': circular },
       { 'rounded-lg': !circular },

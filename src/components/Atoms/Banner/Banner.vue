@@ -50,7 +50,7 @@
         </button>
       </div>
     </div>
-    <slot v-else name="customContent" />
+    <slot v-else></slot>
   </div>
 </template>
 

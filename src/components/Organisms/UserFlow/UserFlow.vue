@@ -60,37 +60,45 @@
 
 <template>
   <PlaceholderList v-if="props.loading" />
-  <div v-else class="mb-6" id="sessions">
-    <div v-if="props.list && props.list.length > 0" class="flex flex-wrap w-full">
-      <Item
-        v-for="(item, i) in props.list"
-        :key="item.id"
-        :name="item.name"
-        :description="item.description"
-        :id="item.id"
-        :highlight="!userStore.isTrainer && isToday(item.dayOfWeek) ? 'Today session' : ''"
-        class="cursor-pointer w-full xl:mx-2"
-        @click="() => router.push({ name: 'details', params: { sessionId: item.id } })"
-      >
-        <template #image>
-          <img :src="icons[i]" class="relative bottom-0 right-0 w-32 float-right" />
-        </template>
-        <template #actions>
-          <div>
-            <Button
-              v-if="showButton(item)"
-              :icon="'play_arrow'"
-              :color="Color.SUCCESS"
-              :circular="true"
-              @click.stop="runWorkout(item.id)"
-              class="float-right"
-            />
-          </div>
-        </template>
-      </Item>
-    </div>
-    <ErrorBanner v-else text="No sessions found" />
+  <div v-else-if="props.list && props.list.length > 0" class="flex flex-wrap w-full mb-6">
+    <Card
+      v-for="(item, i) in props.list"
+      :key="item.id"
+      class="cursor-pointer xl:h-[200px] xl:w-[350px] w-full xl:mx-2"
+      @click="() => router.push({ name: 'details', params: { sessionId: item.id } })"
+    >
+      <img :src="icons[i]" class="relative bottom-0 right-0 w-32 h-32 float-right" />
+      <div class="flex flex-col dark:text-slate-200 text-slate-600">
+        <p v-if="!userStore.isTrainer && isToday(item.dayOfWeek)" class="italic text-sm">
+          {{ !userStore.isTrainer && isToday(item.dayOfWeek) ? "Today session" : "" }}
+        </p>
+        <h4
+          :class="[
+            'font-bold mb-2',
+            { 'font-semibold text-5xl md:text-4xl': item.description },
+            { 'font-bold text-7xl md:text-6xl': !item.description },
+          ]"
+        >
+          {{ item.name }}
+        </h4>
+        <p
+          v-if="item.description"
+          class="text-md md:text-lg truncate whitespace-nowrap overflow-hidden"
+        >
+          {{ item.description }}
+        </p>
+      </div>
+      <Button
+        v-if="showButton(item)"
+        :icon="'play_arrow'"
+        :color="Color.SUCCESS"
+        :circular="true"
+        @click.stop="runWorkout(item.id)"
+        class="float-right"
+      />
+    </Card>
   </div>
+  <ErrorBanner v-else text="No sessions found" />
   <Link
     v-if="
       !props.loading &&

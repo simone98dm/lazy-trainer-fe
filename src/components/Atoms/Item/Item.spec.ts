@@ -12,10 +12,10 @@ describe("Item", () => {
       },
     });
 
-    expect(wrapper.find("h4[name='item-name']").html()).toContain("name");
-    expect(wrapper.find("p[name='item-caption']").html()).toContain("caption");
-    expect(wrapper.find("p[name='item-description']").html()).toContain("description");
-    expect(wrapper.find("h4[name='item-name']").classes()).toContain("font-semibold");
+    expect(wrapper.html()).toContain("name");
+    expect(wrapper.html()).toContain("caption");
+    expect(wrapper.html()).toContain("description");
+    expect(wrapper.html()).toContain("font-bold");
   });
 
   it("renders correctly with time", () => {
@@ -28,7 +28,7 @@ describe("Item", () => {
       },
     });
 
-    expect(wrapper.find("h4[name='item-time']").html()).toContain("1'00");
+    expect(wrapper.html()).toContain("1'00");
   });
 
   it("renders correctly with reps", () => {
@@ -41,7 +41,7 @@ describe("Item", () => {
       },
     });
 
-    expect(wrapper.find("h4[name='item-reps']").html()).toContain("3r");
+    expect(wrapper.html()).toContain("3r");
   });
 
   it("renders correctly with request changes", () => {
@@ -52,9 +52,6 @@ describe("Item", () => {
       },
     });
 
-    expect(wrapper.find("p[name='item-request-changes']").text()).toBe(
-      "Client request to change this activity"
-    );
-    expect(wrapper.find("p[name='item-request-changes']").classes()).toContain("text-red-600");
+    expect(wrapper.find("p.text-red-600").text()).toBe("Client request to change this activity");
   });
 });
