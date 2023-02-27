@@ -65,8 +65,8 @@
 </script>
 
 <template>
-  <div v-if="props.activities && props.activities.length > 0">
-    <div v-if="props.activities.length > 0" class="flex items-center justify-between gap-2">
+  <div v-if="props.activities">
+    <div class="flex items-center justify-between gap-2">
       <h4 v-if="props.title" class="text-4xl sm:text-5xl font-bold mr-auto">
         {{ props.title }}
       </h4>
@@ -88,12 +88,6 @@
         label="Duplicate"
         @click="emits('duplicate', props.activities)"
       />
-      <!-- <Button
-        :color="Color.TRASPARENT"
-        :icon="showList ? 'expand_more' : 'expand_less'"
-        circular="true"
-        @click="showList = !showList"
-      /> -->
     </div>
     <draggable v-if="allowDrag" class="mt-4" :list="props.activities" item-key="id" @end="moveItem">
       <template #item="{ element }">
@@ -118,35 +112,32 @@
             @delete="$emit('delete', $event)"
           >
             <template #actions>
-              <div>
-                <Button
-                  v-if="props.allowDelete"
-                  id="delete-activity"
-                  :color="Color.DANGER"
-                  icon="delete"
-                  class="float-right ml-2"
-                  :circular="true"
-                  @click.prevent="$emit('delete', element.id)"
-                />
-              </div>
+              <Button
+                v-if="props.allowDelete"
+                id="delete-activity"
+                :color="Color.DANGER"
+                icon="delete"
+                class="float-right ml-2"
+                :circular="true"
+                @click.prevent="$emit('delete', element.id)"
+              />
             </template>
           </Item>
         </Link>
       </template>
     </draggable>
-    <div v-else>
-      <Item
-        v-for="activity in props.activities"
-        :id="activity.id"
-        :key="activity.id"
-        :no-card="props.compatList"
-        :name="activity.name"
-        :description="activity.description"
-        :time="Number(activity.time)"
-        :reps="Number(activity.reps)"
-        @delete="$emit('delete-activity', activity)"
-      />
-    </div>
+    <Item
+      v-else
+      v-for="activity in props.activities"
+      :id="activity.id"
+      :key="activity.id"
+      :no-card="props.compatList"
+      :name="activity.name"
+      :description="activity.description"
+      :time="Number(activity.time)"
+      :reps="Number(activity.reps)"
+      @delete="$emit('delete-activity', activity)"
+    />
   </div>
   <ErrorBanner v-else :text="props.noFoundMessage"></ErrorBanner>
 </template>

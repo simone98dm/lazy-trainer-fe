@@ -6,14 +6,12 @@ describe("Item", () => {
   it("renders correctly", () => {
     const wrapper = mount(Item, {
       props: {
-        caption: "caption",
         description: "description",
         name: "name",
       },
     });
 
     expect(wrapper.html()).toContain("name");
-    expect(wrapper.html()).toContain("caption");
     expect(wrapper.html()).toContain("description");
     expect(wrapper.html()).toContain("font-bold");
   });
@@ -21,7 +19,6 @@ describe("Item", () => {
   it("renders correctly with time", () => {
     const wrapper = mount(Item, {
       props: {
-        caption: "caption",
         description: "description",
         name: "name",
         time: 60000,
@@ -34,7 +31,6 @@ describe("Item", () => {
   it("renders correctly with reps", () => {
     const wrapper = mount(Item, {
       props: {
-        caption: "caption",
         description: "description",
         name: "name",
         reps: 3,

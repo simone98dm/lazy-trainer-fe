@@ -11,7 +11,6 @@
   import Icon6 from "~/assets/svg/pilates_ftsd.svg";
   import Icon7 from "~/assets/svg/runner_start_x-0-uu.svg";
   import Icon8 from "~/assets/svg/fitness_stats_sht6.svg";
-  import { IActivity } from "~/models/Activity";
 
   const icons = [Icon1, Icon2, Icon3, Icon4, Icon5, Icon6, Icon7, Icon8];
 
@@ -33,6 +32,22 @@
     return dayOfWeek === new Date().getDay() - 1;
   }
 
+  function hasActivities(sessionId: string): boolean {
+    const warmupList = activityStore.getWarmUpActivities(sessionId);
+    const activityList = activityStore.getSessionActivities(sessionId);
+    const a = (warmupList?.length ?? 0) > 0;
+    const b = (activityList?.length ?? 0) > 0;
+    return a || b;
+  }
+
+  function showButton(item: ICustomSession): boolean {
+    return isHighlightedCard(item) && hasActivities(item.id);
+  }
+
+  function isHighlightedCard(item: ICustomSession): boolean {
+    return !userStore.isTrainer && isToday(item.dayOfWeek);
+  }
+
   function runWorkout(sessionId: string) {
     const warmupList = activityStore.getWarmUpActivities(sessionId);
     const activityList = activityStore.getSessionActivities(sessionId);
@@ -44,18 +59,6 @@
     }
     router.push({ name: "timer", params: { sessionId } });
   }
-
-  function hasActivities(sessionId: string): boolean {
-    const warmupList = activityStore.getWarmUpActivities(sessionId);
-    const activityList = activityStore.getSessionActivities(sessionId);
-    const a = (warmupList?.length ?? 0) > 0;
-    const b = (activityList?.length ?? 0) > 0;
-    return a || b;
-  }
-
-  function showButton(item: ICustomSession): boolean {
-    return !userStore.isTrainer && isToday(item.dayOfWeek) && hasActivities(item.id);
-  }
 </script>
 
 <template>
@@ -65,11 +68,12 @@
       v-for="(item, i) in props.list"
       :key="item.id"
       class="cursor-pointer xl:h-[200px] xl:w-[350px] w-full xl:mx-2"
+      :highlight="isHighlightedCard(item)"
       @click="() => router.push({ name: 'details', params: { sessionId: item.id } })"
     >
       <img :src="icons[i]" class="relative bottom-0 right-0 w-32 h-32 float-right" />
       <div class="flex flex-col dark:text-slate-200 text-slate-600">
-        <p v-if="!userStore.isTrainer && isToday(item.dayOfWeek)" class="italic text-sm">
+        <p v-if="isHighlightedCard(item)" class="italic text-sm">
           {{ !userStore.isTrainer && isToday(item.dayOfWeek) ? "Today session" : "" }}
         </p>
         <h4

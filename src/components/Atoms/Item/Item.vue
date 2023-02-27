@@ -33,11 +33,6 @@
       required: false,
       default: false,
     },
-    caption: {
-      type: String,
-      required: false,
-      default: "",
-    },
   });
 
   const itemDescription = computed(() => {
@@ -55,28 +50,26 @@
     <div :class="['flex justify-between w-full', { 'pr-10': $slots.actions }]">
       <Icon v-if="props.icon" class="pr-2 sm:block flex-left inline" :component="props.icon" />
 
-      <h4
-        :class="[
-          { 'font-semibold text-3xl': props.description },
-          { 'font-bold text-4xl': !props.description },
-        ]"
-      >
-        {{ props.name }}
-      </h4>
-      <p class="text-xs my-2">
-        {{ props.caption }}
-      </p>
+      <div>
+        <h4
+          :class="[
+            { 'font-semibold text-3xl': props.description },
+            { 'font-bold text-4xl': !props.description },
+          ]"
+        >
+          {{ props.name }}
+        </h4>
+        <p v-if="props.description" class="text-sm truncate whitespace-nowrap overflow-hidden">
+          {{ itemDescription }}
+        </p>
+      </div>
 
-      <div class="font-bold text-5xl sm:text-4xl">
+      <div class="font-bold text-5xl">
         <h4 v-if="props.time">
           {{ millisToMinutesAndSeconds(props.time) }}
         </h4>
         <h4 v-else-if="props.reps">{{ props.reps }}r</h4>
       </div>
-
-      <p v-if="props.description" class="text-sm truncate whitespace-nowrap overflow-hidden">
-        {{ itemDescription }}
-      </p>
 
       <p v-if="props.requestChange" class="text-red-600">Client request to change this activity</p>
     </div>
