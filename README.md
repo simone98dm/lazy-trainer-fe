@@ -1,49 +1,42 @@
-# Lazy trainer
+# Nuxt 3 Minimal Starter
 
-Lazy-Trainer, is a web app that simplifies the approach to physical activity for those who are particularly lazy🤓
+Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
-Through your account, you will be able to see and interact with your circuit and keep track of individual activities during execution.
+## Setup
 
-Obviously you have to put the tenacity, the resistance and the condition! 💪
-
-The methods of use are 2:
-
-- 🏋️‍♀️Self-taught: creating your own circuit independently.
-- 🤼‍♂️From trainer and trainer: by associating a trainer to your account, you can run the circuit that a trainer has assigned you.
-
-The features currently available are:
-
-- ⛓view your weekly plan
-- 📄 creation of activities in a simple way
-- ⏱ keep track of the times for the activities to be performed
-- 🤝 trainer association
-
-## Changelog
-
-The changelog is available [here](CHANGELOG.md).
-
-## Scripts
-
-Before you need a MongoDB Atlas account and a Vercel account.
+Make sure to install the dependencies:
 
 ```bash
-npm run vercel:dev
+# yarn
+yarn install
+
+# npm
+npm install
+
+# pnpm
+pnpm install
 ```
 
-### Run tests
+## Development Server
+
+Start the development server on http://localhost:3000
 
 ```bash
-npm run test
+npm run dev
 ```
 
-### Run build
+## Production
+
+Build the application for production:
 
 ```bash
 npm run build
 ```
 
-### Release
+Locally preview production build:
 
 ```bash
-npm run release
+npm run preview
 ```
+
+Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
