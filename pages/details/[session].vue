@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { Color, getDayOfTheWeek, LinkType } from "~~/utils";
-  import { useUserStore, useTimerStore, useSettingStore, useActivityStore } from "~~/stores";
+  import { getDayOfTheWeek, LinkType } from "~/utils";
+  import { useUserStore, useTimerStore, useSettingStore, useActivityStore } from "~/stores";
   import { ref } from "vue";
-  import { IActivity } from "~~/models/Activity";
+  import { IActivity } from "~/models/Activity";
 
   const route = useRoute();
   const router = useRouter();
@@ -53,7 +53,7 @@
         id="edit-session"
         :to="{ path: '/session', params: { session: sessionId } }"
         label="Edit"
-        :color="userStore.isTrainer ? Color.PURPLE : Color.PRIMARY"
+        :color="userStore.isTrainer ? 'purple' : 'primary'"
         :type="LinkType.BUTTON"
         icon="edit"
       />
@@ -61,7 +61,7 @@
         v-if="canUserCreateActivity()"
         id="add-activity"
         icon="add"
-        :color="Color.SUCCESS"
+        color="success"
         :to="{ path: '/activity', params: { session: sessionId } }"
         :type="LinkType.BUTTON"
         label="Add"

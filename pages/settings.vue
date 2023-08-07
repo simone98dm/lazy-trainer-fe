@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { Color, GaCustomEvents, Role, RoleName } from "~~/utils";
-  import { useActivityStore, useSettingStore, useUserStore } from "~~/stores";
+  import { GaCustomEvents, Role, RoleName } from "~/utils";
+  import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
   import { ref } from "vue";
-  import { version } from "~~/package.json";
+  import { version } from "~/package.json";
   import { getAnalytics, logEvent } from "@firebase/analytics";
-  import Loading from "~~/components/Atoms/Loading/Loading.vue";
+  import Loading from "~/components/Atoms/Loading/Loading.vue";
 
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
@@ -72,11 +72,7 @@
             <span class="font-bold" v-if="userStore.getTrainer">
               {{ userStore.getTrainer.name }}
             </span>
-            <Loading
-              v-else
-              :small="true"
-              :color="userStore.isTrainer ? Color.PURPLE : Color.PRIMARY"
-            />
+            <Loading v-else :small="true" :color="userStore.isTrainer ? 'purple' : 'primary'" />
           </div>
         </div>
       </div>
@@ -132,7 +128,7 @@
             "
             :to="{ path: '/about' }"
             :full="true"
-            :color="Color.TRASPARENT"
+            color="trasparent"
             icon="account_circle"
             label="Author"
           />
@@ -145,7 +141,7 @@
             "
             :to="{ path: '/license' }"
             :full="true"
-            :color="Color.TRASPARENT"
+            color="trasparent"
             icon="verified_user"
             label="License"
           />
@@ -155,7 +151,7 @@
     <div class="w-full flex justify-center mb-3">
       <BaseButton
         v-if="!userStore.isTrainer"
-        :color="Color.LIGHT"
+        color="light"
         :loading="syncStatus"
         :full="true"
         icon="cloud_sync"
@@ -165,7 +161,7 @@
     </div>
     <div class="w-full flex justify-center mb-3">
       <BaseButton
-        :color="userStore.isTrainer ? Color.PURPLE : Color.PRIMARY"
+        :color="userStore.isTrainer ? 'purple' : 'primary'"
         :full="true"
         icon="logout"
         label="Logout"

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-  import { IActivity } from "~~/models/Activity";
+  import { IActivity } from "~/models/Activity";
   import { computed, ref, watch } from "vue";
   import { v4 as uuidv4 } from "uuid";
-  import { useUserStore } from "~~/stores";
-  import { Color } from "~~/utils";
+  import { useUserStore } from "~/stores";
 
   const props = defineProps({
     id: {
@@ -111,7 +110,7 @@
 
         <BaseButton
           id="delete-activity"
-          :color="Color.DANGER"
+          color="danger"
           icon="delete"
           @click="emits('remove', props.id)"
         />

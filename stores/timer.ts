@@ -1,7 +1,7 @@
 import { useActivityStore } from "./activity";
 import { defineStore } from "pinia";
-import { IActivity } from "~~/models/Activity";
-import { requestActivityChange } from "~~/helpers/http";
+import { IActivity } from "~/models/Activity";
+import { requestActivityChange } from "~/helpers/http";
 import { useSettingStore } from "./settings";
 import { useUserStore } from "./user";
 

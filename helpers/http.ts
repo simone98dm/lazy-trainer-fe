@@ -1,4 +1,4 @@
-import { baseUrl, TrainerRequest, UserConfigurations } from "~~/utils";
+import { baseUrl, TrainerRequest, UserConfigurations } from "~/utils";
 import log from "./logger";
 
 const buildHeaders = (token: string) => ({

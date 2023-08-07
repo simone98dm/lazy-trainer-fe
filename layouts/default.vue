@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import Header from "~~/components/Molecules/Header/Header.vue";
-  import Footer from "~~/components/Molecules/Footer/Footer.vue";
-  import GlobalLoading from "~~/components/Organisms/GlobalLoading/GlobalLoading.vue";
-  import { useSettingStore } from "~~/stores";
+  import Header from "~/components/Molecules/Header/Header.vue";
+  import Footer from "~/components/Molecules/Footer/Footer.vue";
+  import GlobalLoading from "~/components/Organisms/GlobalLoading/GlobalLoading.vue";
+  import { useSettingStore } from "~/stores";
   const r = useRoute();
 
   const isLogin = computed(() => {

@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { getAnalytics, logEvent } from "@firebase/analytics";
-  import { ISession } from "~~/models/Session";
-  import { useActivityStore, useSettingStore } from "~~/stores";
-  import { GaCustomEvents } from "~~/utils";
+  import { ISession } from "~/models/Session";
+  import { useActivityStore, useSettingStore } from "~/stores";
+  import { GaCustomEvents } from "~/utils";
 
   const router = useRouter();
   const route = useRoute();

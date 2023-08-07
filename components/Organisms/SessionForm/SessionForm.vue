@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import { PropType, ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
-  import { ISession } from "~~/models/Session";
-  import { Color, getDayOfTheWeek } from "~~/utils";
-  import { useActivityStore, useUserStore } from "~~/stores";
-  import { IActivity } from "~~/models/Activity";
+  import { ISession } from "~/models/Session";
+  import { getDayOfTheWeek } from "~/utils";
+  import { useActivityStore, useUserStore } from "~/stores";
+  import { IActivity } from "~/models/Activity";
 
   const props = defineProps({
     id: {
@@ -182,14 +182,14 @@
           :full="true"
           :icon="!isNew() ? 'save' : 'add'"
           :label="!isNew() ? 'Save' : 'Create'"
-          :color="Color.SUCCESS"
+          color="success"
           @click="save"
         />
         <BaseButton
           :full="true"
           v-if="!isNew()"
           icon="delete"
-          :color="Color.DANGER"
+          color="danger"
           label="Delete"
           @click="remove"
         />

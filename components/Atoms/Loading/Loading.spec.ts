@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { mount } from "@vue/test-utils";
 import Loading from "./Loading.vue";
-import { Color } from "~~/utils";
+import { Color } from "~/utils";
 
 describe("Loading", () => {
   it("renders correctly", () => {

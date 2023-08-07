@@ -1,11 +1,11 @@
 import { useSettingStore } from "./settings";
 import { useUserStore } from "./user";
-import { IPlan } from "~~/models/Plan";
-import { ISession } from "~~/models/Session";
+import { IPlan } from "~/models/Plan";
+import { ISession } from "~/models/Session";
 import { defineStore } from "pinia";
-import { IActivity } from "~~/models/Activity";
-import { DataAction, OrderRequest, parseSessions, Role } from "~~/utils";
-import { getStorage, saveStorage } from "~~/helpers/storage";
+import { IActivity } from "~/models/Activity";
+import { DataAction, OrderRequest, parseSessions, Role } from "~/utils";
+import { getStorage, saveStorage } from "~/helpers/storage";
 import { v4 as uuid } from "uuid";
 import {
   completeSession,
@@ -13,8 +13,8 @@ import {
   getUserActivities,
   getUserStats,
   sendToTrainer,
-} from "~~/helpers/http";
-import { ICompletion } from "~~/models/Completion";
+} from "~/helpers/http";
+import { ICompletion } from "~/models/Completion";
 
 function generateBlankPlan(): IPlan {
   return {

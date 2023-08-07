@@ -1,6 +1,5 @@
 <script setup lang="ts">
-  import { Color } from "~~/utils";
-  import { getStorage, saveStorage } from "~~/helpers/storage";
+  import { getStorage, saveStorage } from "~/helpers/storage";
   import { ref } from "vue";
   const cookieName = "cookie-compliance";
   const status = ref(true);
@@ -23,19 +22,14 @@
 </script>
 
 <template>
-  <BaseBanner :color="Color.SUCCESS" v-if="!status">
+  <BaseBanner color="success" v-if="!status">
     <template #customContent>
       <div class="flex flex-row justify-between align-middle">
         <div class="text-left text-">
           <h1 class="text-xl font-bold">Hello, world!</h1>
           <p class="text-md">Click here to view the full privacy policy</p>
         </div>
-        <BaseButton
-          :color="Color.SUCCESS"
-          icon="check"
-          label="Got it!"
-          @click="dismissCookieBanner"
-        />
+        <BaseButton color="success" icon="check" label="Got it!" @click="dismissCookieBanner" />
       </div>
     </template>
   </BaseBanner>

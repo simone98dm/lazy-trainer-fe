@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { Color } from "~~/utils";
   import { ref, watch } from "vue";
   import { computed } from "@vue/reactivity";
 
@@ -40,14 +39,14 @@
       </div>
     </template>
     <template #actions>
-      <BaseButton label="Select" @click="showModal = false" icon="check" :color="Color.SUCCESS" />
+      <BaseButton label="Select" @click="showModal = false" icon="check" color="success" />
     </template>
   </BaseModal>
   <div class="ml-2 w-full">
     <BaseButton
-      :color="Color.PRIMARY"
+      color="primary"
       :full="true"
-      :icon="'timer'"
+      icon="timer"
       :label="seletedText"
       @click="() => (showModal = true)"
     />

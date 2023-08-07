@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { CalendarMarker } from "~~/models/CalendarMarker";
-  import { ICompletion } from "~~/models/Completion";
-  import { useUserStore } from "~~/stores";
+  import { CalendarMarker } from "~/models/CalendarMarker";
+  import { ICompletion } from "~/models/Completion";
+  import { useUserStore } from "~/stores";
 
   const props = defineProps({
     completion: {

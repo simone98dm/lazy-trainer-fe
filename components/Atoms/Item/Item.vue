@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { computed } from "vue";
-  import { millisToMinutesAndSeconds } from "~~/utils";
-  import MaterialIcon from "~~/components/Atoms/MaterialIcon/MaterialIcon.vue";
+  import { millisToMinutesAndSeconds } from "~/utils";
+  import MaterialIcon from "~/components/Atoms/MaterialIcon/MaterialIcon.vue";
 
   const props = defineProps({
     name: {

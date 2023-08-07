@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import { useSettingStore, useUserStore } from "~~/stores";
-  import github from "~~/assets/svg/github.svg";
-  import linkedin from "~~/assets/svg/linkedin.svg";
+  import { useSettingStore, useUserStore } from "~/stores";
+  import github from "~/assets/svg/github.svg";
+  import linkedin from "~/assets/svg/linkedin.svg";
   import { logEvent, getAnalytics } from "@firebase/analytics";
   const router = useRouter();
 

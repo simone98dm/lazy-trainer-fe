@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ICustomSession } from "~/models/Session";
   import { useActivityStore, useTimerStore, useUserStore } from "~/stores";
-  import { Color, LinkType } from "~/utils";
+  import { LinkType } from "~/utils";
 
   const props = defineProps({
     list: {
@@ -89,7 +89,7 @@
         <BaseButton
           v-if="showButton(item)"
           :icon="'play_arrow'"
-          :color="Color.SUCCESS"
+          color="success"
           variant="circular"
           @click.stop="runWorkout(item.id)"
           class="float-right"
@@ -106,7 +106,7 @@
     "
     icon="add"
     :full="true"
-    :color="userStore.isTrainer ? Color.PURPLE : Color.PRIMARY"
+    :color="userStore.isTrainer ? 'purple' : 'primary'"
     :to="{ path: '/session' }"
     :type="LinkType.BUTTON"
     label="Add day activities"

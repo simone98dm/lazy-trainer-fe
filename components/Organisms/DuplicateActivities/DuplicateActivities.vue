@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { IActivity } from "~~/models/Activity";
-  import { Color, getDayOfTheWeek } from "~~/utils";
+  import { IActivity } from "~/models/Activity";
+  import { getDayOfTheWeek } from "~/utils";
 
   const props = defineProps({
     show: {
@@ -80,14 +80,14 @@
       <BaseButton
         :full="true"
         icon="cancel"
-        :color="Color.DANGER"
+        color="danger"
         label="Cancel"
         @click="$emit('close')"
       />
       <BaseButton
         :full="true"
         icon="save"
-        :color="Color.SUCCESS"
+        color="success"
         label="Duplicate"
         @click="
           $emit('duplicate', {

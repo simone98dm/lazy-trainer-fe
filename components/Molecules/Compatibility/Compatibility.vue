@@ -1,8 +1,7 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { Size, Color } from "~~/utils";
-  import BaseButton from "~~/components/Atoms/BaseButton/BaseButton.vue";
-  import BaseModal from "~~/components/Molecules/BaseModal/BaseModal.vue";
+  import BaseButton from "~/components/Atoms/BaseButton/BaseButton.vue";
+  import BaseModal from "~/components/Molecules/BaseModal/BaseModal.vue";
 
   const showBanner = ref(
     !window.location.hostname.includes(".simone98dm.dev") &&
@@ -37,8 +36,8 @@
       <BaseButton
         label="Show"
         icon="arrow_forward"
-        :size="Size.MEDIUM"
-        :color="Color.SUCCESS"
+        size="medium"
+        color="success"
         @click="openLink"
       />
     </template>

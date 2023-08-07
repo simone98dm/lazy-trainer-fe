@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import PlaceholderCard from "~~/components/Atoms/Placeholder/PlaceholderCard.vue";
+  import PlaceholderCard from "~/components/Atoms/Placeholder/PlaceholderCard.vue";
 </script>
 <template>
   <div class="mb-6">

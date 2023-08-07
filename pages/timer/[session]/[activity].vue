@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { computed, inject, ref } from "vue";
-  import doubleWhistle from "~~/assets/audio/double-whistle.mp3";
-  import horn from "~~/assets/audio/horn.mp3";
-  import { type TimerActivity, COLOR_CODES, FULL_DASH_ARRAY, Color } from "~~/utils";
-  import { IActivity } from "~~/models/Activity";
-  import { useTimerStore, useSettingStore, useUserStore, useActivityStore } from "~~/stores";
+  import { computed, ref } from "vue";
+  import doubleWhistle from "~/assets/audio/double-whistle.mp3";
+  import horn from "~/assets/audio/horn.mp3";
+  import { type TimerActivity, COLOR_CODES, FULL_DASH_ARRAY } from "~/utils";
+  import { IActivity } from "~/models/Activity";
+  import { useTimerStore, useSettingStore, useUserStore, useActivityStore } from "~/stores";
 
   const route = useRoute();
   const router = useRouter();
@@ -263,7 +263,7 @@
                 : 'play_circle'
               : 'skip_next'
           "
-          :color="timerStore.isRunning ? Color.DANGER : Color.PRIMARY"
+          :color="timerStore.isRunning ? 'danger' : 'primary'"
           :label="
             timerStore.isTimerBasedActivity ? (timerStore.isRunning ? 'Stop' : 'Play') : 'Next'
           "
@@ -277,7 +277,7 @@
           label="Skip"
           :full="true"
           @click="skipActivity"
-          :color="Color.LIGHT"
+          color="light"
         />
       </div>
     </div>

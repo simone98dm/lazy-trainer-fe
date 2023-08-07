@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { Role } from "~~/utils";
-import { getGroups, signIn, userInfo, verifyUser } from "~~/helpers/http";
-import { clearStorage, getStorage, saveStorage } from "~~/helpers/storage";
-import log from "~~/helpers/logger";
+import { Role } from "~/utils";
+import { getGroups, signIn, userInfo, verifyUser } from "~/helpers/http";
+import { clearStorage, getStorage, saveStorage } from "~/helpers/storage";
+import log from "~/helpers/logger";
 
 export const useUserStore = defineStore("user", {
   state: () => ({

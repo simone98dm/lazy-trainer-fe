@@ -1,7 +1,6 @@
 <script setup lang="ts">
-  import { useSettingStore, useUserStore } from "~~/stores";
-  import { Color } from "~~/utils";
-  import Loading from "~~/components/Atoms/Loading/Loading.vue";
+  import { useSettingStore, useUserStore } from "~/stores";
+  import Loading from "~/components/Atoms/Loading/Loading.vue";
 
   const settingsStore = useSettingStore();
   const user = useUserStore();
@@ -24,7 +23,7 @@
     <span
       class="text-green-500 opacity-75 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
     >
-      <Loading :color="user.isTrainer ? Color.PURPLE : Color.PRIMARY" />
+      <Loading :color="user.isTrainer ? 'purple' : 'primary'" />
     </span>
   </div>
 </template>

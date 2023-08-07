@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { useUserStore } from "~~/stores";
+  import { useUserStore } from "~/stores";
   import draggable from "vuedraggable";
-  import { Color, GaCustomEvents, LinkType } from "~~/utils";
+  import { GaCustomEvents, LinkType } from "~/utils";
   import { getAnalytics, logEvent } from "@firebase/analytics";
-  import { IActivity } from "~~/models/Activity";
+  import { IActivity } from "~/models/Activity";
 
   const props = defineProps({
     activities: {
@@ -73,7 +73,7 @@
       <BaseButton
         v-if="props.enableRun"
         id="run-timer"
-        :color="Color.SUCCESS"
+        color="success"
         icon="play_arrow"
         :type="LinkType.BUTTON"
         :circular="true"
@@ -83,7 +83,7 @@
       <BaseButton
         id="duplicate-warmup"
         v-if="(userStore.isTrainer || userStore.isSelfMadeMan) && props.enableDuplicate"
-        :color="Color.LIGHT"
+        color="light"
         icon="content_copy"
         label="Duplicate"
         @click="emits('duplicate', props.activities)"
@@ -115,7 +115,7 @@
               <BaseButton
                 v-if="props.allowDelete"
                 id="delete-activity"
-                :color="Color.DANGER"
+                color="danger"
                 icon="delete"
                 class="float-right ml-2"
                 :circular="true"

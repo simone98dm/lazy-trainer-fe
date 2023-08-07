@@ -1,37 +1,21 @@
 <script setup lang="ts">
-  import { Color, LinkType } from "~~/utils";
-  import MaterialIcon from "~~/components/Atoms/MaterialIcon/MaterialIcon.vue";
+  import { Color, MaterialIcons } from "utils";
+  import MaterialIcon from "~/components/Atoms/MaterialIcon/MaterialIcon.vue";
 
-  defineProps({
-    to: {
-      type: Object,
-      required: true,
-    },
-    full: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    type: {
-      type: Number,
-      required: false,
-      default: LinkType.ROUTER,
-    },
-    label: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    color: {
-      type: Number,
-      required: false,
-      default: Color.PRIMARY,
-    },
-    icon: {
-      type: String,
-      required: false,
-      default: "",
-    },
+  interface ButtonLinkProps {
+    to: any;
+    full: boolean;
+    type: number;
+    label: string;
+    color?: Color;
+    icon?: MaterialIcons;
+  }
+
+  withDefaults(defineProps<ButtonLinkProps>(), {
+    type: LinkType.ROUTER,
+    color: "primary",
+    label: "",
+    full: false,
   });
 </script>
 

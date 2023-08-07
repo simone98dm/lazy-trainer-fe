@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { ICustomSession } from "~~/models/Session";
-  import { parseSessions } from "~~/utils";
-  import { useActivityStore, useSettingStore, useUserStore } from "~~/stores";
+  import { ICustomSession } from "~/models/Session";
+  import { parseSessions } from "~/utils";
+  import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
 
   const isLoading = ref(true);
   let pageOptions = {
@@ -23,7 +23,7 @@
   const route = useRoute();
   const sessions = ref([] as ICustomSession[] | undefined);
 
-  if (userStore.isTrainer && route.params.planId) {
+  if (userStore.isTrainer && route.params.plan) {
     activityStore
       .getUserActivities(route.params.planId as string)
       .then((response) => (sessions.value = response))

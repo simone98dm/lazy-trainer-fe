@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { useSettingStore } from "~~/stores";
+  import { useSettingStore } from "~/stores";
   const router = useRouter();
 
   const settingsStore = useSettingStore();

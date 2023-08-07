@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { useUserStore } from "~~/stores";
-  import MaterialIcon from "~~/components/Atoms/MaterialIcon/MaterialIcon.vue";
+  import { useUserStore } from "~/stores";
+  import MaterialIcon from "~/components/Atoms/MaterialIcon/MaterialIcon.vue";
   const route = useRoute();
   const { isTrainer } = useUserStore();
   const planId = route.query.planId as string;

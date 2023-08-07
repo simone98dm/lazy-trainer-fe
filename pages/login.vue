@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { getAnalytics, logEvent } from "@firebase/analytics";
-  import { inject, ref, watch } from "vue";
-  import { useUserStore, useSettingStore } from "~~/stores";
-  import { Color, GaCustomEvents, LogOptions } from "~~/utils";
-  import workout from "~~/assets/workout-1.jpg";
+  import { ref, watch } from "vue";
+  import { useUserStore, useSettingStore } from "~/stores";
+  import { GaCustomEvents } from "~/utils";
+  import workout from "~/assets/workout-1.jpg";
 
   const username = ref("");
   const usernameError = ref(false);
@@ -106,7 +106,7 @@
         <div class="mt-8">
           <BaseButton
             :loading="isLoading"
-            :color="Color.PRIMARY"
+            color="primary"
             :disabled="isLoading"
             label="Login"
             icon="login"

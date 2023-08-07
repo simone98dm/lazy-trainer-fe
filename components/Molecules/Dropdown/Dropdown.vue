@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { Color } from "~~/utils";
 
   const showDropdown = ref(false);
 </script>
@@ -12,7 +11,7 @@
     >
       <BaseButton
         icon="more_vert"
-        :color="Color.TRASPARENT"
+        color="trasparent"
         @click="() => (showDropdown = !showDropdown)"
       />
     </div>
