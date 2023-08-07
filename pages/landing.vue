@@ -27,7 +27,7 @@
           :type="LinkType.BUTTON"
           color="light"
           icon="login"
-          :to="{ path: '/login' }"
+          :to="{ name: 'login' }"
           label="Login"
         />
         <ButtonLink
@@ -35,7 +35,7 @@
           color="dark"
           class="ml-4"
           icon="inventory"
-          :to="{ path: '/' }"
+          :to="{ name: 'home' }"
           label="Register"
         />
       </div>

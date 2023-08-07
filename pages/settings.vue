@@ -126,7 +126,7 @@
                 userId: userStore.userId,
               })
             "
-            :to="{ path: '/about' }"
+            :to="{ name: 'about' }"
             :full="true"
             color="trasparent"
             icon="account_circle"
@@ -139,7 +139,7 @@
                 userId: userStore.userId,
               })
             "
-            :to="{ path: '/license' }"
+            :to="{ name: 'license' }"
             :full="true"
             color="trasparent"
             icon="verified_user"

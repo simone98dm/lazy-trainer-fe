@@ -58,13 +58,12 @@
     <RouterLink
       v-for="(item, i) in props.list"
       :key="item.id"
-      :to="{ path: 'details', params: { session: item.id } }"
+      :to="{ name: 'details', params: { session: item.id } }"
     >
       <Card
         class="cursor-pointer xl:h-[200px] xl:w-[350px] w-full xl:mx-2"
         :highlight="isHighlightedCard(item)"
       >
-        {{ JSON.stringify({ path: "details", params: { session: item.id } }) }}
         <SvgIcon :name="icons[i]" class="relative bottom-0 right-0 w-32 h-32 float-right" />
         <div class="flex flex-col dark:text-slate-200 text-slate-600">
           <p v-if="isHighlightedCard(item)" class="italic text-sm">
@@ -107,7 +106,7 @@
     icon="add"
     :full="true"
     :color="userStore.isTrainer ? 'purple' : 'primary'"
-    :to="{ path: '/session' }"
+    :to="{ name: 'session' }"
     :type="LinkType.BUTTON"
     label="Add day activities"
   />

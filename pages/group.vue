@@ -17,9 +17,9 @@
       <ButtonLink
         v-for="client in clients"
         :to="{
-          path: '/',
+          name: 'home',
           params: {
-            planId: client.id,
+            plan: client.id,
           },
         }"
         :key="client.id"

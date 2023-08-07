@@ -93,7 +93,7 @@
       <template #item="{ element }">
         <ButtonLink
           :to="{
-            path: '/activity',
+            name: 'activity',
             params: {
               session: props.sessionId,
               activity: element.id,

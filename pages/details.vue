@@ -42,7 +42,7 @@
       @click="
         router.push({
           path: '/',
-          params: { planId: userStore.isTrainer ? activityStore.plan?.id : '' },
+          params: { plan: userStore.isTrainer ? activityStore.plan?.id : '' },
         })
       "
     />
@@ -51,7 +51,7 @@
     <div class="flex mb-6 gap-2" v-if="userStore.isTrainer || userStore.isSelfMadeMan">
       <ButtonLink
         id="edit-session"
-        :to="{ path: '/session', params: { session: sessionId } }"
+        :to="{ path: 'session', params: { session: sessionId } }"
         label="Edit"
         :color="userStore.isTrainer ? 'purple' : 'primary'"
         :type="LinkType.BUTTON"
@@ -62,7 +62,7 @@
         id="add-activity"
         icon="add"
         color="success"
-        :to="{ path: '/activity', params: { session: sessionId } }"
+        :to="{ path: 'activity', params: { session: sessionId } }"
         :type="LinkType.BUTTON"
         label="Add"
       />
