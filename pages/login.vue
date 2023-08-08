@@ -17,7 +17,7 @@
   const settingsStore = useSettingStore();
 
   if (userStore.isLogged) {
-    router.push({ path: "/" });
+    router.push({ name: "home" });
   }
 
   if (!userStore.isLogged) {
@@ -25,7 +25,7 @@
     userStore.verifyStorage().then(() => {
       settingsStore.loading(false);
       if (userStore.isLogged) {
-        router.push({ path: "/" });
+        router.push({ name: "home" });
       }
     });
   }
@@ -40,7 +40,7 @@
         userId: id,
       });
       router.push({
-        path: "/",
+        name: "home",
       });
       return;
     }

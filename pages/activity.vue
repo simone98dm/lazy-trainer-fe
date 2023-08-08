@@ -37,7 +37,7 @@
 
   function redirectToList() {
     router.push({
-      path: "/session",
+      name: "session",
       params: {
         session: sessionId,
       },

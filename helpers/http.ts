@@ -76,7 +76,7 @@ export async function verifyUser(token: string) {
 
 export async function userInfo(token: string, trainerId: string) {
   try {
-    return await fetchWithTimeout(`${baseUrl}/api/user/info?user=${trainerId}`, {
+    return await fetchWithTimeout(`${baseUrl}/api/user?user=${trainerId}`, {
       method: "GET",
       headers: buildHeaders(token),
     }).then((response) => response.json());

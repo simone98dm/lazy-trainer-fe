@@ -23,7 +23,7 @@
       backHomePage();
     } else {
       router.push({
-        path: "/details",
+        name: "details",
         params: { session: sessionId },
       });
     }
@@ -47,8 +47,8 @@
 
   function backHomePage() {
     router.push({
-      path: "/",
-      params: { planId: activityStore.plan?.id },
+      name: "home",
+      params: { plan: activityStore.plan?.id },
     });
   }
 </script>

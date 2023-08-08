@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { Color } from "~/utils";
-  import MaterialIcon from "~/components/Atoms/MaterialIcon/MaterialIcon.vue";
 
   interface BaseBannerProps {
     text?: string;

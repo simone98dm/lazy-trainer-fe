@@ -15,11 +15,11 @@
 <template>
   <div
     :class="[
-      'rounded-xl shadow-lg mb-2 w-full',
+      'rounded-xl shadow-lg mb-2',
       {
         'p-0': padding === 'none',
         'p-2': padding === 'small',
-        'p-4': padding || padding === 'medium',
+        'p-4': padding === 'medium',
         'p-6': padding === 'large',
       },
       {
@@ -27,12 +27,18 @@
           !highlight,
       },
       {
-        'border-2 bg-orange-200 border-orange-300 dark:bg-orange-800 dark:border-orange-900':
+        'border-2 bg-orange-200 border-orange-300 dark:bg-orange-600 dark:border-orange-700':
           highlight,
       },
       { 'dark:bg-slate-800 bg-white': !highlight },
     ]"
   >
-    <slot />
+    <div class="flex flex-col">
+      <slot name="default" />
+
+      <div>
+        <slot name="footer" />
+      </div>
+    </div>
   </div>
 </template>

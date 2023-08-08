@@ -1,39 +1,22 @@
 <script setup lang="ts">
   import { computed } from "vue";
-  import { millisToMinutesAndSeconds } from "~/utils";
-  import MaterialIcon from "~/components/Atoms/MaterialIcon/MaterialIcon.vue";
+  import { MaterialIcons, millisToMinutesAndSeconds } from "~/utils";
 
-  const props = defineProps({
-    name: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    description: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    time: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    reps: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    icon: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    requestChange: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+  interface ItemProps {
+    name?: string;
+    description?: string;
+    time?: number;
+    reps?: number;
+    icon?: MaterialIcons;
+    requestChange?: boolean;
+  }
+
+  const props = withDefaults(defineProps<ItemProps>(), {
+    name: "",
+    description: "",
+    time: 0,
+    reps: 0,
+    requestChange: false,
   });
 
   const itemDescription = computed(() => {
@@ -78,6 +61,6 @@
 
       <p v-if="props.requestChange" class="text-red-600">Client request to change this activity</p>
     </div>
-    <slot name="actions"></slot>
+    <slot name="actions" />
   </div>
 </template>

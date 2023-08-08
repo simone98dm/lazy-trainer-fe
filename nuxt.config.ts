@@ -5,25 +5,19 @@ export default defineNuxtConfig({
   app: {
     head: {
       meta: [...metaTags()],
+      link: [
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
+        { rel: "stylesheet", href: "https://fonts.googleapis.com/icon?family=Material+Icons" },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap",
+        },
+      ],
     },
   },
-  modules: [
-    [
-      "@nuxtjs/google-fonts",
-      {
-        families: {
-          Lato: {
-            wght: [300, 400, 500, 600],
-            ital: [],
-          },
-        },
-      },
-    ],
-    "@nuxtjs/tailwindcss",
-    "@pinia/nuxt",
-    "@nuxtjs/supabase",
-    "@vite-pwa/nuxt",
-  ],
+  css: ["~/assets/style/main.scss"],
+  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@nuxtjs/supabase", "@vite-pwa/nuxt"],
   components: {
     global: true,
     dirs: ["~/components/Atoms", "~/components/Molecules", "~/components/Organisms"],

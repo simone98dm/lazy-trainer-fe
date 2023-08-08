@@ -140,7 +140,7 @@
       playAudio(doubleWhistle);
       const activityId = nextActivity.id;
       router.push({
-        path: "/timer",
+        name: "timer",
         params: {
           session: sessionId,
           activity: activityId,
@@ -154,7 +154,7 @@
       activityStore.completeSession(sessionId as string);
       timerStore.reset();
       router.push({
-        path: "/details",
+        name: "details",
         params: {
           session: sessionId,
         },
@@ -191,7 +191,7 @@
 
   function redirectToActivity() {
     router.push({
-      path: "/details",
+      name: "details",
       params: {
         session: sessionId,
       },

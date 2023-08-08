@@ -49,10 +49,12 @@ export const useSettingStore = defineStore("settings", {
       } else {
         this.darkMode = !this.darkMode;
       }
-      if (this.darkMode) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
+      if (document) {
+        if (this.darkMode) {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
       }
       this.saveSettings();
     },

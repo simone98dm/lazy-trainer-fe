@@ -17,11 +17,11 @@
           <MaterialIcon component="house" />
         </div>
       </RouterLink>
-      <RouterLink to="/dashboard" class="rounded-full p-4">
+      <!-- <RouterLink to="/dashboard" class="rounded-full p-4">
         <div class="flex justify-center items-center">
           <MaterialIcon component="dashboard" />
         </div>
-      </RouterLink>
+      </RouterLink> -->
       <RouterLink v-if="isTrainer" to="/group" class="rounded-full p-4">
         <div class="flex justify-center items-center">
           <MaterialIcon component="groups" />

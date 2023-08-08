@@ -57,5 +57,6 @@
 </script>
 
 <template>
-  <v-calendar is-expanded :attributes="attr" />
+  <h1>WIP😅</h1>
+  <!-- <VCalendar is-expanded :attributes="attr" /> -->
 </template>

@@ -3,8 +3,8 @@
   import { Color } from "~/utils";
 
   interface LoadingProps {
-    small: boolean;
-    color: Color;
+    small?: boolean;
+    color?: Color;
   }
 
   const props = withDefaults(defineProps<LoadingProps>(), {
@@ -13,11 +13,7 @@
   });
 
   const loadingColor = computed(() => {
-    if (props.color === "purple") {
-      return "text-purple-600";
-    }
-
-    return "text-indigo-600";
+    return props.color === "purple" ? "text-purple-600" : "text-indigo-600";
   });
 </script>
 

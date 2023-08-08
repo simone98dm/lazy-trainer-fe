@@ -25,11 +25,11 @@
 
   function runWarmUp() {
     timerStore.setListActivities(warmupList.value);
-    router.push({ path: "/timer", params: { session: sessionId } });
+    router.push({ name: "/timer", params: { session: sessionId } });
   }
   function runActivities() {
     timerStore.setListActivities(activityList.value);
-    router.push({ path: "/timer", params: { session: sessionId } });
+    router.push({ name: "/timer", params: { session: sessionId } });
   }
   function canUserCreateActivity() {
     const freeActivitySlot = activityStore.getSessionActivities(sessionId)?.length ?? 100;
@@ -41,32 +41,13 @@
     <BackButton
       @click="
         router.push({
-          path: '/',
+          name: 'home',
           params: { plan: userStore.isTrainer ? activityStore.plan?.id : '' },
         })
       "
     />
   </div>
   <div class="max-w-screen-xl mx-auto">
-    <div class="flex mb-6 gap-2" v-if="userStore.isTrainer || userStore.isSelfMadeMan">
-      <ButtonLink
-        id="edit-session"
-        :to="{ path: 'session', params: { session: sessionId } }"
-        label="Edit"
-        :color="userStore.isTrainer ? 'purple' : 'primary'"
-        :type="LinkType.BUTTON"
-        icon="edit"
-      />
-      <ButtonLink
-        v-if="canUserCreateActivity()"
-        id="add-activity"
-        icon="add"
-        color="success"
-        :to="{ path: 'activity', params: { session: sessionId } }"
-        :type="LinkType.BUTTON"
-        label="Add"
-      />
-    </div>
     <div class="flex flex-col justify-center">
       <Card id="warmup-activities" padding="medium">
         <ActivityList
@@ -97,6 +78,26 @@
           @run="runActivities"
         />
       </Card>
+    </div>
+
+    <div class="flex mb-6 gap-2" v-if="userStore.isTrainer || userStore.isSelfMadeMan">
+      <ButtonLink
+        id="edit-session"
+        :to="{ name: 'session', params: { session: sessionId } }"
+        label="Edit"
+        :color="userStore.isTrainer ? 'purple' : 'primary'"
+        :type="LinkType.BUTTON"
+        icon="edit"
+      />
+      <ButtonLink
+        v-if="canUserCreateActivity()"
+        id="add-activity"
+        icon="add"
+        color="success"
+        :to="{ name: 'activity', params: { session: sessionId } }"
+        :type="LinkType.BUTTON"
+        label="Add"
+      />
     </div>
   </div>
 </template>

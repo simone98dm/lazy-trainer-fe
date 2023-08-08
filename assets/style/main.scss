@@ -1,0 +1,10 @@
+body {
+  font-family: "Lato", sans-serif;
+}
+
+.floating-button {
+  position: fixed;
+  bottom: 50px;
+  right: 20px;
+  z-index: 9999;
+}

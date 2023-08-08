@@ -48,6 +48,7 @@ export type OrderRequest = {
 
 export type CardSizes = "none" | "small" | "medium" | "large";
 export type ButtonSizes = "none" | "small" | "medium" | "large";
+export type MaterialIconSizes = "small" | "medium" | "large";
 export type Variants = "smooth" | "circular";
 export type MaterialIcons =
   | "house"
@@ -90,3 +91,12 @@ export type Color =
   | "success"
   | "trasparent"
   | "purple";
+export type SvgAvailableIcons =
+  | "working_out_re_nhkg"
+  | "fitness_tracker_3033"
+  | "healthy_habit_m1a9"
+  | "indoor_bike_pwa4"
+  | "personal_trainer_re_cnua"
+  | "pilates_ftsd"
+  | "runner_start_x-0-uu"
+  | "fitness_stats_sht6";

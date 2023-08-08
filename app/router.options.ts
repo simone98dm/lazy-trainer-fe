@@ -8,7 +8,7 @@ const routes = [
   {
     name: "home",
     path: "/:plan?",
-    component: import("~/pages/index.vue"),
+    component: () => import("~/pages/index.vue"),
     meta: {
       title: `Trainer`,
       requireAuth: true,
@@ -18,7 +18,7 @@ const routes = [
   {
     name: "details",
     path: "/details/:session",
-    component: import("~/pages/details.vue"),
+    component: () => import("~/pages/details.vue"),
     meta: {
       title: `Details`,
       requireAuth: true,
@@ -28,7 +28,7 @@ const routes = [
   {
     name: "activity",
     path: "/activity/:session/:activity?",
-    component: import("~/pages/activity.vue"),
+    component: () => import("~/pages/activity.vue"),
     meta: {
       title: `Activities`,
       requireAuth: true,
@@ -38,7 +38,7 @@ const routes = [
   {
     name: "timer",
     path: "/timer/:session/:activity?",
-    component: import("~/pages/timer.vue"),
+    component: () => import("~/pages/timer.vue"),
     meta: {
       title: `Timer`,
       requireAuth: true,
@@ -48,7 +48,7 @@ const routes = [
   {
     name: "session",
     path: "/session/:session?",
-    component: import("~/pages/session.vue"),
+    component: () => import("~/pages/session.vue"),
     meta: {
       title: `Sessions`,
       requireAuth: true,
@@ -58,7 +58,7 @@ const routes = [
   {
     name: "login",
     path: "/login",
-    component: import("~/pages/login.vue"),
+    component: () => import("~/pages/login.vue"),
     meta: {
       title: `Login`,
       requireAuth: false,
@@ -68,7 +68,7 @@ const routes = [
   {
     name: "settings",
     path: "/settings",
-    component: import("~/pages/settings.vue"),
+    component: () => import("~/pages/settings.vue"),
     meta: {
       title: `Settings`,
       requireAuth: true,
@@ -78,7 +78,7 @@ const routes = [
   {
     name: "group",
     path: "/group",
-    component: import("~/pages/group.vue"),
+    component: () => import("~/pages/group.vue"),
     meta: {
       title: `Groups`,
       requireAuth: true,
@@ -88,7 +88,7 @@ const routes = [
   {
     name: "not-found",
     path: "/not-found",
-    component: import("~/pages/notfound.vue"),
+    component: () => import("~/pages/notfound.vue"),
     meta: {
       title: `Not Found`,
       empty: true,
@@ -98,7 +98,7 @@ const routes = [
   },
   {
     path: "/:pathMatch(.*)*",
-    component: import("~/pages/notfound.vue"),
+    component: () => import("~/pages/notfound.vue"),
     meta: {
       requireAuth: false,
       empty: true,
@@ -108,7 +108,7 @@ const routes = [
   {
     name: "about",
     path: "/about",
-    component: import("~/pages/about.vue"),
+    component: () => import("~/pages/about.vue"),
     meta: {
       title: `About`,
       requireAuth: false,
@@ -118,7 +118,7 @@ const routes = [
   {
     name: "license",
     path: "/license",
-    component: import("~/pages/license.vue"),
+    component: () => import("~/pages/license.vue"),
     meta: {
       title: `Licence`,
       requireAuth: false,
@@ -128,7 +128,7 @@ const routes = [
   {
     path: "/home",
     name: "landing",
-    component: import("~/pages/landing.vue"),
+    component: () => import("~/pages/landing.vue"),
     meta: {
       title: `Home`,
       empty: true,
@@ -139,7 +139,7 @@ const routes = [
   {
     path: "/dashboard",
     name: "dashboard",
-    component: import("~/pages/dashboard.vue"),
+    component: () => import("~/pages/dashboard.vue"),
     meta: {
       title: `Dashboard`,
       empty: false,
@@ -150,7 +150,7 @@ const routes = [
   {
     path: "/privacy-policy",
     name: "privacy-policy",
-    component: import("~/pages/privacy-policy.vue"),
+    component: () => import("~/pages/privacy-policy.vue"),
     meta: {
       title: `Privacy Policy`,
       empty: false,

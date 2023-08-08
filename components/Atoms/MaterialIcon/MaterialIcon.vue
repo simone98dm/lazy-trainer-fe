@@ -1,29 +1,37 @@
 <script setup lang="ts">
-  import { MaterialIcons } from "~/utils";
+  import { MaterialIconSizes, MaterialIcons } from "~/utils";
 
   interface MaterialIconProps {
     component: MaterialIcons;
+    size?: MaterialIconSizes;
   }
 
-  defineProps<MaterialIconProps>();
+  withDefaults(defineProps<MaterialIconProps>(), {
+    size: "medium",
+  });
 </script>
 
 <template>
-  <span class="material-icons-outlined">{{ component }}</span>
+  <span
+    :class="[
+      'material-icons',
+      { 'md-18': size === 'small' },
+      { 'md-24': size === 'medium' },
+      { 'md-36': size === 'large' },
+    ]"
+  >
+    {{ component }}
+  </span>
 </template>
 
 <style>
-  .material-icons-outlined {
-    font-family: "Material Symbols Outlined";
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px; /* Preferred icon size */
-    display: inline-block;
-    line-height: 1;
-    text-transform: none;
-    letter-spacing: normal;
-    word-wrap: normal;
-    white-space: nowrap;
-    direction: ltr;
+  .material-icons.md-18 {
+    font-size: 18px;
+  }
+  .material-icons.md-24 {
+    font-size: 24px;
+  }
+  .material-icons.md-36 {
+    font-size: 36px;
   }
 </style>

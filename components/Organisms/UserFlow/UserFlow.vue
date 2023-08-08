@@ -3,20 +3,23 @@
   import { useActivityStore, useTimerStore, useUserStore } from "~/stores";
   import { LinkType } from "~/utils";
 
-  const props = defineProps({
-    list: {
-      type: Array<ICustomSession>,
-      default: () => [],
-    },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
+  interface UserFlowProps {
+    list?: ICustomSession[];
+    loading?: boolean;
+  }
+
+  const props = withDefaults(defineProps<UserFlowProps>(), {
+    loading: false,
   });
 
   const userStore = useUserStore();
   const activityStore = useActivityStore();
   const router = useRouter();
+  const todayActivity = ref<ICustomSession | undefined>();
+
+  todayActivity.value = props.list?.find(
+    (session) => isHighlightedCard(session) && hasActivities(session.id)
+  );
 
   function isToday(dayOfWeek: number): boolean {
     return dayOfWeek === new Date().getDay() - 1;
@@ -32,41 +35,43 @@
     return a || b;
   }
 
-  function showButton(item: ICustomSession): boolean {
-    return isHighlightedCard(item) && hasActivities(item.id);
-  }
-
   function isHighlightedCard(item: ICustomSession): boolean {
     return !userStore.isTrainer && isToday(item.dayOfWeek);
   }
 
-  function runWorkout(sessionId: string) {
-    const warmupList = activityStore.getWarmUpActivities(sessionId);
-    const activityList = activityStore.getSessionActivities(sessionId);
+  function runWorkout() {
+    if (todayActivity.value) {
+      const warmupList = activityStore.getWarmUpActivities(todayActivity.value.id);
+      const activityList = activityStore.getSessionActivities(todayActivity.value.id);
 
-    const timerStore = useTimerStore();
+      const timerStore = useTimerStore();
 
-    timerStore.setListActivities(warmupList && warmupList.length > 0 ? warmupList : activityList);
+      timerStore.setListActivities(warmupList && warmupList.length > 0 ? warmupList : activityList);
 
-    router.push({ path: "/timer", params: { session: sessionId } });
+      router.push({ name: "timer", params: { session: todayActivity.value.id } });
+    }
   }
+
+  const showAddActivityButton = computed(() => {
+    return (
+      !props.loading &&
+      (userStore.isTrainer || userStore.isSelfMadeMan) &&
+      activityStore.getMissingDays.length > 0
+    );
+  });
 </script>
 
 <template>
   <PlaceholderList v-if="props.loading" />
-  <div v-else-if="props.list && props.list.length > 0" class="flex flex-wrap w-full mb-6">
+  <div v-else-if="props.list && props.list.length > 0">
     <RouterLink
-      v-for="(item, i) in props.list"
+      v-for="item in props.list"
       :key="item.id"
       :to="{ name: 'details', params: { session: item.id } }"
     >
-      <Card
-        class="cursor-pointer xl:h-[200px] xl:w-[350px] w-full xl:mx-2"
-        :highlight="isHighlightedCard(item)"
-      >
-        <SvgIcon :name="icons[i]" class="relative bottom-0 right-0 w-32 h-32 float-right" />
-        <div class="flex flex-col dark:text-slate-200 text-slate-600">
-          <p v-if="isHighlightedCard(item)" class="italic text-sm">
+      <Card :highlight="isHighlightedCard(item)">
+        <div class="dark:text-slate-200 text-slate-600">
+          <p v-if="isHighlightedCard(item)" class="text-sm">
             {{ !userStore.isTrainer && isToday(item.dayOfWeek) ? "Today session" : "" }}
           </p>
           <h4
@@ -85,24 +90,20 @@
             {{ item.description }}
           </p>
         </div>
-        <BaseButton
-          v-if="showButton(item)"
-          :icon="'play_arrow'"
-          color="success"
-          variant="circular"
-          @click.stop="runWorkout(item.id)"
-          class="float-right"
-        />
       </Card>
     </RouterLink>
   </div>
   <ErrorBanner v-else text="No sessions found" />
+  <BaseButton
+    v-if="todayActivity"
+    icon="play_arrow"
+    color="success"
+    variant="circular"
+    @click="() => runWorkout()"
+    class="floating-button py-2 px-4"
+  />
   <ButtonLink
-    v-if="
-      !props.loading &&
-      (userStore.isTrainer || userStore.isSelfMadeMan) &&
-      activityStore.getMissingDays.length > 0
-    "
+    v-if="showAddActivityButton"
     icon="add"
     :full="true"
     :color="userStore.isTrainer ? 'purple' : 'primary'"

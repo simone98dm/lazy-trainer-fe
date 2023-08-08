@@ -37,7 +37,7 @@
     activityStore
       .restoreSession()
       .then(() => (sessions.value = activityStore.getWeek?.map(parseSessions)))
-      .catch(() => router.push({ path: "/login" }))
+      .catch(() => router.push({ name: "login" }))
       .finally(() => (isLoading.value = false));
     pageOptions = { ...pageOptions, title: "Your sessions" };
   } else {
@@ -55,8 +55,8 @@
 <template>
   <div class="max-w-screen-xl mx-auto">
     <div :class="options.style">
-      <h1 class="mb-3 text-3xl font-bold">{{ options.title }}</h1>
-      <h4 class="mb-3 text-xl text-slate-600 font-bold">
+      <h1 class="mb-3 text-3xl font-bold dark:text-slate-100">{{ options.title }}</h1>
+      <h4 class="mb-3 text-xl text-slate-600 dark:text-slate-100 font-bold">
         {{ options.subtitle }}
       </h4>
     </div>

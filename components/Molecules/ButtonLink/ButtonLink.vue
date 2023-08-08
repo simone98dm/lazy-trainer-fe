@@ -4,8 +4,8 @@
 
   interface ButtonLinkProps {
     to: any;
-    full: boolean;
-    type: number;
+    full?: boolean;
+    type?: number;
     label: string;
     color?: Color;
     icon?: MaterialIcons;
