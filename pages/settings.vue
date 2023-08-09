@@ -4,7 +4,6 @@
   import { ref } from "vue";
   import { version } from "~/package.json";
   import { getAnalytics, logEvent } from "@firebase/analytics";
-  import Loading from "~/components/Atoms/Loading/Loading.vue";
 
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();

@@ -5,54 +5,44 @@
   import { getAnalytics, logEvent } from "@firebase/analytics";
   import { IActivity } from "~/models/Activity";
 
-  const props = defineProps({
-    activities: {
-      type: Array<IActivity>,
-      default: () => [],
-    },
-    sessionId: {
-      type: String,
-      default: "",
-    },
-    isWarmup: {
-      type: Boolean,
-      default: false,
-    },
-    allowDrag: {
-      type: Boolean,
-      default: false,
-    },
-    allowDelete: {
-      type: Boolean,
-      default: false,
-    },
-    title: {
-      type: String,
-      default: "",
-    },
-    enableRun: {
-      type: Boolean,
-      default: false,
-    },
-    enableDuplicate: {
-      type: Boolean,
-      default: false,
-    },
-    noFoundMessage: {
-      type: String,
-      default: "No activities found",
-    },
-    opened: {
-      type: Boolean,
-      default: true,
-    },
-    compatList: {
-      type: Boolean,
-      default: false,
-    },
+  interface ActivityListProps {
+    activities?: IActivity[];
+    sessionId?: string;
+    isWarmup?: boolean;
+    allowDrag?: boolean;
+    allowDelete?: boolean;
+    title?: string;
+    enableRun?: boolean;
+    enableDuplicate?: boolean;
+    noFoundMessage?: string;
+    opened?: boolean;
+    compatList?: boolean;
+  }
+
+  const props = withDefaults(defineProps<ActivityListProps>(), {
+    sessionId: "",
+    isWarmup: false,
+    allowDrag: false,
+    allowDelete: false,
+    title: "",
+    enableRun: false,
+    enableDuplicate: false,
+    noFoundMessage: "No activities found",
+    opened: true,
+    compatList: false,
   });
+
   const userStore = useUserStore();
-  const emits = defineEmits(["move", "delete", "run", "duplicate"]);
+
+  interface ActivityListEmits {
+    (e: "move", activities: IActivity[] | undefined, isWarmup: boolean): void;
+    (e: "delete", id: string): void;
+    (e: "run"): void;
+    (e: "duplicate", activities: IActivity[] | undefined): void;
+    (e: "delete-activity", activity: IActivity): void;
+  }
+
+  const emits = defineEmits<ActivityListEmits>();
 
   function runWorkout() {
     logEvent(getAnalytics(), GaCustomEvents.RUN_ACTIVITY);
@@ -109,7 +99,6 @@
             :request-change="element.requestChange"
             :no-card="props.compatList"
             :allow-delete="props.allowDelete"
-            @delete="$emit('delete', $event)"
           >
             <template #actions>
               <BaseButton
@@ -119,7 +108,7 @@
                 icon="delete"
                 class="float-right ml-2"
                 :circular="true"
-                @click.prevent="$emit('delete', element.id)"
+                @click.prevent="emits('delete', element.id)"
               />
             </template>
           </Item>
@@ -136,7 +125,7 @@
       :description="activity.description"
       :time="Number(activity.time)"
       :reps="Number(activity.reps)"
-      @delete="$emit('delete-activity', activity)"
+      @delete="emits('delete-activity', activity)"
     />
   </div>
   <ErrorBanner v-else :text="props.noFoundMessage"></ErrorBanner>

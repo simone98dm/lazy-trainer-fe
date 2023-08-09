@@ -1,47 +1,33 @@
 <script setup lang="ts">
-  defineProps({
-    value: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    label: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    error: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    id: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    name: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    type: {
-      type: String,
-      required: false,
-      default: "text",
-    },
-    hasError: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+  interface InputProps {
+    value: string;
+    label: string;
+    error: string;
+    id: string;
+    name: string;
+    type: string;
+    hasError: boolean;
+    disabled: boolean;
+  }
+
+  withDefaults(defineProps<InputProps>(), {
+    value: "",
+    label: "",
+    error: "",
+    id: "",
+    name: "",
+    type: "text",
+    hasError: false,
+    disabled: false,
   });
-  defineEmits(["change", "click", "keyup"]);
+
+  interface InputEmits {
+    (e: "change", data: string): void;
+    (e: "click"): void;
+    (e: "keyup", data: string): void;
+  }
+
+  defineEmits<InputEmits>();
 </script>
 
 <template>

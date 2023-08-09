@@ -20,7 +20,11 @@
     variant: "smooth",
   });
 
-  defineEmits(["click"]);
+  interface BaseButtonEmits {
+    (e: "click"): void;
+  }
+
+  defineEmits<BaseButtonEmits>();
 </script>
 
 <template>

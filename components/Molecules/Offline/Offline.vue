@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import { ref } from "vue";
+
   const isOnline = ref(true);
   const dismissBanner = ref(false);
 </script>
@@ -8,6 +9,6 @@
   <BaseBanner
     v-if="!isOnline && !dismissBanner"
     text="You are currently offline"
-    @close="dismissBanner = true"
+    @close="() => (dismissBanner = true)"
   />
 </template>

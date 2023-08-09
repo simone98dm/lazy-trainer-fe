@@ -4,57 +4,43 @@
   import { v4 as uuidv4 } from "uuid";
   import { useUserStore } from "~/stores";
 
-  const props = defineProps({
-    id: {
-      type: String,
-      default: "",
-    },
-    dayOfWeek: {
-      type: Number,
-      default: 0,
-    },
-    name: {
-      type: String,
-      default: "",
-    },
-    description: {
-      type: String,
-      default: "",
-    },
-    time: {
-      type: Number,
-      default: 0,
-    },
-    warmup: {
-      type: Boolean,
-      default: false,
-    },
-    order: {
-      type: Number,
-      default: 0,
-    },
-    videoUrl: {
-      type: String,
-      default: "",
-    },
-    reps: {
-      type: Number,
-      default: 0,
-    },
-    allowDetele: {
-      type: Boolean,
-      default: true,
-    },
-    i: {
-      type: Number,
-      default: 0,
-    },
-  });
-  const emits = defineEmits(["update", "remove"]);
-  const user = useUserStore();
-  const uuid = uuidv4();
+  interface ActivityFormProps {
+    id?: string;
+    dayOfWeek?: number;
+    name?: string;
+    description?: string;
+    time?: number;
+    warmup?: boolean;
+    order?: number;
+    videoUrl?: string;
+    reps?: number;
+    allowDetele?: boolean;
+    i?: number;
+  }
 
-  const id = ref(props.id || uuid);
+  const props = withDefaults(defineProps<ActivityFormProps>(), {
+    id: "",
+    dayOfWeek: 0,
+    name: "",
+    description: "",
+    time: 0,
+    warmup: false,
+    order: 0,
+    videoUrl: "",
+    reps: 0,
+    allowDetele: true,
+    i: 0,
+  });
+
+  interface ActivityFormEmits {
+    (e: "update", data: { activityId: string; activity: IActivity }): void;
+    (e: "remove", id: string): void;
+  }
+
+  const emits = defineEmits<ActivityFormEmits>();
+  const user = useUserStore();
+
+  const id = ref(props.id || uuidv4());
   const name = ref(props.name || "");
   const nameError = computed(() => name.value === "" && name.value.length < 20);
 
@@ -185,7 +171,7 @@
               <Input
                 v-else
                 :value="`${reps}`"
-                @change="(v: number) => (reps = v)"
+                @change="(data: string) => (reps = Number(data))"
                 id="activityUrl"
                 name="activityUrlField"
                 :has-error="repsError"

@@ -1,20 +1,19 @@
 <script setup lang="ts">
-  defineProps({
-    id: {
-      type: String,
-      required: true,
-    },
-    name: {
-      type: String,
-      required: true,
-    },
-    checked: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+  interface SwitchProps {
+    id: string;
+    name: string;
+    checked?: boolean;
+  }
+
+  withDefaults(defineProps<SwitchProps>(), {
+    checked: false,
   });
-  defineEmits(["toggle"]);
+
+  interface SwitchEmits {
+    (e: "toggle", status: boolean): void;
+  }
+
+  defineEmits<SwitchEmits>();
 </script>
 
 <template>

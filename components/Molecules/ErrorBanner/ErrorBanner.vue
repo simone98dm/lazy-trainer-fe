@@ -1,10 +1,9 @@
 <script setup lang="ts">
-  defineProps({
-    text: {
-      type: String,
-      required: true,
-    },
-  });
+  interface ErrorBannerProps {
+    text: string;
+  }
+
+  defineProps<ErrorBannerProps>();
 </script>
 
 <template>

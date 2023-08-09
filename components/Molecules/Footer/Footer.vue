@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores";
-  import MaterialIcon from "~/components/Atoms/MaterialIcon/MaterialIcon.vue";
-  const route = useRoute();
   const { isTrainer } = useUserStore();
+
+  const route = useRoute();
   const plan = route.query.planId as string;
 </script>
 

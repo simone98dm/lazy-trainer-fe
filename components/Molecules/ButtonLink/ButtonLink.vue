@@ -1,12 +1,11 @@
 <script setup lang="ts">
-  import { Color, MaterialIcons } from "utils";
-  import MaterialIcon from "~/components/Atoms/MaterialIcon/MaterialIcon.vue";
+  import { Color, MaterialIcons, LinkType } from "~/utils";
 
   interface ButtonLinkProps {
     to: any;
     full?: boolean;
-    type?: number;
-    label: string;
+    type?: LinkType;
+    label?: string;
     color?: Color;
     icon?: MaterialIcons;
   }
@@ -14,8 +13,8 @@
   withDefaults(defineProps<ButtonLinkProps>(), {
     type: LinkType.ROUTER,
     color: "primary",
-    label: "",
     full: false,
+    label: "",
   });
 </script>
 

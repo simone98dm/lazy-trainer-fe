@@ -81,7 +81,8 @@ export type MaterialIcons =
   | "check"
   | "timer"
   | "content_copy"
-  | "cancel";
+  | "cancel"
+  | "person";
 export type Color =
   | "primary"
   | "light"

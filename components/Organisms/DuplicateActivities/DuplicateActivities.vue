@@ -39,7 +39,7 @@
 </script>
 
 <template>
-  <BaseModal :show="props.show" title="Duplicate warmup">
+  <BaseModal v-if="props.show" title="Duplicate warmup">
     <template #content>
       <div class="flex flex-col">
         <div class="w-full flex flex-wrap justify-center mb-3">

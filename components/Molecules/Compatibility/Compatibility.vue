@@ -18,7 +18,7 @@
 </script>
 
 <template>
-  <BaseModal :show="showBanner" title="We moved to a new home ✈️" @close="closeBanner">
+  <BaseModal v-if="showBanner" title="We moved to a new home ✈️" @close="closeBanner">
     <template #content>
       <div>
         <h1 class="text-xl">Hey user!</h1>

@@ -1,21 +1,16 @@
 <script setup lang="ts">
-  defineProps({
-    strokeDasharray: {
-      type: String,
-      default: "283",
-    },
-    remainingPathColor: {
-      type: String,
-      default: "green",
-    },
-    baseTimerLabel: {
-      type: String,
-      default: "00:00",
-    },
-    size: {
-      type: String,
-      default: "medium",
-    },
+  interface TimerSpinnerProps {
+    strokeDasharray?: string;
+    remainingPathColor?: string;
+    baseTimerLabel?: string;
+    size?: string;
+  }
+
+  withDefaults(defineProps<TimerSpinnerProps>(), {
+    strokeDasharray: "283",
+    remainingPathColor: "green",
+    baseTimerLabel: "00:00",
+    size: "medium",
   });
 </script>
 

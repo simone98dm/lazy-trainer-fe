@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { useSettingStore, useUserStore } from "~/stores";
-  import Loading from "~/components/Atoms/Loading/Loading.vue";
 
   const settingsStore = useSettingStore();
   const user = useUserStore();

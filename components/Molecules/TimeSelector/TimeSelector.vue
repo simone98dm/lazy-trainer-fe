@@ -2,12 +2,12 @@
   import { ref, watch } from "vue";
   import { computed } from "@vue/reactivity";
 
-  const props = defineProps({
-    time: {
-      type: Number,
-      required: true,
-    },
-  });
+  interface TimeSelectorProps {
+    time: number;
+  }
+
+  const props = defineProps<TimeSelectorProps>();
+
   const emits = defineEmits(["timeSelected"]);
 
   const showModal = ref(false);
@@ -32,7 +32,7 @@
 </script>
 
 <template>
-  <BaseModal :show="showModal" @close="showModal = false" title="Select time" button-text="Select">
+  <BaseModal v-if="showModal" @close="showModal = false" title="Select time" button-text="Select">
     <template #content>
       <div class="w-full">
         <TimePicker @select="(v: any) => (selectedTime = v)" />

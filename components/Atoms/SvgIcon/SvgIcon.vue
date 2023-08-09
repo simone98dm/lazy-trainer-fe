@@ -1,13 +1,12 @@
 <script lang="ts" setup>
   import { SvgAvailableIcons } from "utils";
-  import { defineAsyncComponent, PropType } from "vue";
+  import { defineAsyncComponent } from "vue";
 
-  const props = defineProps({
-    name: {
-      type: String as PropType<SvgAvailableIcons>,
-      required: true,
-    },
-  });
+  interface SvgIconProps {
+    name: SvgAvailableIcons;
+  }
+
+  const props = defineProps<SvgIconProps>();
 
   const icon = defineAsyncComponent(() => import(`../../../assets/svg/${props.name}.svg`));
 </script>

@@ -1,38 +1,36 @@
 <script setup lang="ts">
-  import { PropType, ref } from "vue";
+  import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { ISession } from "~/models/Session";
   import { getDayOfTheWeek } from "~/utils";
   import { useActivityStore, useUserStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
 
-  const props = defineProps({
-    id: {
-      type: String,
-      required: false,
-      default: "",
-    },
-    dayOfWeek: {
-      type: Number,
-      required: false,
-      default: -1,
-    },
-    existingForm: {
-      type: Object as PropType<IActivity | undefined>,
-      required: false,
-      default: undefined,
-    },
+  interface SessionFormProps {
+    id?: string;
+    dayOfWeek?: number;
+    existingForm?: IActivity;
+  }
+
+  const props = withDefaults(defineProps<SessionFormProps>(), {
+    id: "",
+    dayOfWeek: -1,
+    existingForm: undefined,
   });
-  const emits = defineEmits(["save", "remove"]);
+
+  interface SessionFormEmits {
+    (e: "save", session: ISession): void;
+    (e: "remove", id: string): void;
+  }
+
+  const emits = defineEmits<SessionFormEmits>();
 
   const activityStore = useActivityStore();
   const userStore = useUserStore();
 
-  const uuid = uuidv4();
-
   const currentDayOfWeek = ref(props.dayOfWeek || -1);
   const dayOfWeek = ref(props.dayOfWeek || -1);
-  const id = ref(props.id || uuid);
+  const id = ref(props.id || uuidv4());
   const activityList = ref(undefined as IActivity[] | undefined);
   const warmupList = ref(undefined as IActivity[] | undefined);
 
@@ -53,9 +51,9 @@
       session.dayOfWeek = day;
       session.activities = activities;
     } else if (props.existingForm) {
+      session.id = uuidv4();
       session.activities = [];
       session.activities.push(props.existingForm);
-      session.id = uuidv4();
     }
 
     emits("save", session);
@@ -83,12 +81,15 @@
     return dayIndex === dayOfWeek.value;
   }
 
-  function sortActivities(listActivities: IActivity[], isWarmup: boolean) {
-    activityStore.moveActivity(id.value, listActivities, isWarmup);
+  function sortActivities(activities: IActivity[] | undefined, isWarmup: boolean) {
+    if (activities) {
+      activityStore.moveActivity(id.value, activities, isWarmup);
+    }
   }
 
   const showDuplicateModal = ref(false);
-  function duplicateActivities(activities: IActivity[]) {
+
+  function duplicateActivities(activities: IActivity[] | undefined) {
     activityStore.setDuplicateWarmup(activities);
     showDuplicateModal.value = true;
   }
