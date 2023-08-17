@@ -49,25 +49,6 @@
     />
   </div>
   <div class="max-w-screen-xl mx-auto">
-    <div class="flex mb-6 gap-2" v-if="userStore.isTrainer || userStore.isSelfMadeMan">
-      <Link
-        id="edit-session"
-        :to="{ name: 'session', params: { sessionId } }"
-        label="Edit"
-        :color="userStore.isTrainer ? Color.PURPLE : Color.PRIMARY"
-        :type="LinkType.BUTTON"
-        icon="edit"
-      />
-      <Link
-        v-if="canUserCreateActivity()"
-        id="add-activity"
-        icon="add"
-        :color="Color.SUCCESS"
-        :to="{ name: 'activity', params: { sessionId } }"
-        :type="LinkType.BUTTON"
-        label="Add"
-      />
-    </div>
     <div class="flex flex-col justify-center">
       <Card id="warmup-activities" padding="medium">
         <ActivityList
@@ -98,6 +79,25 @@
           @run="runActivities"
         />
       </Card>
+    </div>
+    <div class="flex mb-6 gap-2" v-if="userStore.isTrainer || userStore.isSelfMadeMan">
+      <Link
+        id="edit-session"
+        :to="{ name: 'session', params: { sessionId } }"
+        label="Edit"
+        :color="userStore.isTrainer ? Color.PURPLE : Color.PRIMARY"
+        :type="LinkType.BUTTON"
+        icon="edit"
+      />
+      <Link
+        v-if="canUserCreateActivity()"
+        id="add-activity"
+        icon="add"
+        :color="Color.SUCCESS"
+        :to="{ name: 'activity', params: { sessionId } }"
+        :type="LinkType.BUTTON"
+        label="Add"
+      />
     </div>
   </div>
 </template>

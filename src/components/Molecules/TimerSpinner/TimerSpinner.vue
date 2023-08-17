@@ -26,7 +26,7 @@
         :class="[
           'base-timer xl:w-2/5',
           { 'w-24': size === 'small' },
-          { 'w-4/5': size === 'large' },
+          { 'w-3/5': size === 'large' },
         ]"
       >
         <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">

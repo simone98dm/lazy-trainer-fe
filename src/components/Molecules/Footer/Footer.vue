@@ -17,11 +17,11 @@
           <Icon component="house" />
         </div>
       </router-link>
-      <router-link to="/dashboard" class="rounded-full p-4">
+      <!-- <router-link to="/dashboard" class="rounded-full p-4">
         <div class="flex justify-center items-center">
           <Icon component="dashboard" />
         </div>
-      </router-link>
+      </router-link> -->
       <router-link v-if="isTrainer" to="/group" class="rounded-full p-4">
         <div class="flex justify-center items-center">
           <Icon component="groups" />
