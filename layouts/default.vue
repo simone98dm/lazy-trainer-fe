@@ -18,7 +18,7 @@
 </script>
 
 <template>
-  <div class="min-h-screen dark:bg-gray-900 bg-gray-50 flex flex-col">
+  <div class="min-h-screen dark:bg-gray-900 bg-gray-100 flex flex-col">
     <Header v-if="!hideDecoration" />
     <main class="p-4 w-full lg:w-2/3 md:w-5/6 mx-auto mb-14">
       <slot />

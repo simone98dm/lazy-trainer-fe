@@ -16,7 +16,7 @@ describe("BaseButton", () => {
     });
 
     expect(wrapper.text()).toContain("Hello World");
-    expect(wrapper.classes()).toContain("bg-indigo-600");
+    expect(wrapper.classes()).toContain("bg-green-600");
   });
 
   it.skip("renders correctly purple", () => {
@@ -115,7 +115,7 @@ describe("BaseButton", () => {
     });
 
     expect(wrapper.text()).toContain("Hello World");
-    expect(wrapper.classes()).not.toContain("bg-indigo-600");
+    expect(wrapper.classes()).not.toContain("bg-green-600");
   });
 
   it.skip("renders loading in BaseButton", () => {

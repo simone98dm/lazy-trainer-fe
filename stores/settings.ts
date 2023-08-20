@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { getConfiguration, saveConfiguration } from "~/helpers/http";
+import { saveConfiguration } from "~/helpers/http";
 import { saveStorage } from "~/helpers/storage";
 import { useUserStore } from "./user";
 
@@ -67,17 +67,17 @@ export const useSettingStore = defineStore("settings", {
         darkMode: this.darkMode,
       };
 
-      await saveConfiguration(userStore.token, userSettings);
+      await saveConfiguration(userStore.user.token || "", userSettings);
       await saveStorage("_settings", userSettings);
     },
     async loadSettings() {
       const userStore = useUserStore();
-      const settings = await getConfiguration(userStore.token);
 
-      if (settings) {
-        this.audioDisabled = settings.audioDisabled;
-        this.easyMode = settings.easyMode;
-        this.darkMode = settings.darkMode;
+      if (userStore.user) {
+        this.audioDisabled = userStore.user.configurations?.audioDisabled ?? false;
+        this.easyMode = userStore.user.configurations?.easyMode ?? false;
+        this.darkMode = userStore.user.configurations?.darkMode ?? false;
+
         if (document) {
           if (this.darkMode) {
             document.documentElement.classList.add("dark");

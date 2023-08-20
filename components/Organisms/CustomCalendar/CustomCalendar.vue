@@ -16,7 +16,7 @@
     {
       key: "today",
       highlight: {
-        class: "bg-indigo-500",
+        class: "bg-green-500",
         fillMode: "outline",
       },
       dates: new Date(),
@@ -25,12 +25,12 @@
 
   const colors = [
     "red",
-    "orange",
+    "green",
     "yellow",
     "green",
     "teal",
     "blue",
-    "indigo",
+    "green",
     "purple",
     "pink",
     "gray",

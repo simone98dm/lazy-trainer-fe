@@ -135,7 +135,7 @@
                 :class="[
                   'flex items-center w-fit rounded-full h-10 transition-all px-10',
                   {
-                    'bg-indigo-600 text-white shadow': isTimeBasedActivity && !user.isTrainer,
+                    'bg-green-600 text-white shadow': isTimeBasedActivity && !user.isTrainer,
                   },
                   {
                     'bg-purple-600 text-white shadow': isTimeBasedActivity && user.isTrainer,
@@ -150,7 +150,7 @@
                 :class="[
                   'flex items-center w-fit rounded-full h-10 transition-all px-10',
                   {
-                    'bg-indigo-600 text-white shadow': !isTimeBasedActivity && !user.isTrainer,
+                    'bg-green-600 text-white shadow': !isTimeBasedActivity && !user.isTrainer,
                   },
                   {
                     'bg-purple-600 text-white shadow': !isTimeBasedActivity && user.isTrainer,

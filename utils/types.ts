@@ -43,7 +43,7 @@ export type SessionRequest = {
 
 export type OrderRequest = {
   id: string;
-  order: number;
+  order_index: number;
 };
 
 export type CardSizes = "none" | "small" | "medium" | "large";

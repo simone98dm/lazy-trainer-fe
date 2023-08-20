@@ -1,7 +1,4 @@
-<script setup lang="ts"></script>
-
 <template>
-  <!-- create privacy policy statement -->
   <div class="container">
     <div class="mb-5">
       <h1 class="text-5xl font-bold mb-2">Privacy Policy</h1>

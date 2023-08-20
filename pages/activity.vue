@@ -1,10 +1,9 @@
 <script setup lang="ts">
   import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
   import { IActivity } from "~/models/Activity";
-  import { DeepPartial, GaCustomEvents, MAX_ACTIVITY_FORM } from "~/utils";
+  import { DeepPartial, MAX_ACTIVITY_FORM } from "~/utils";
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
-  import { getAnalytics, logEvent } from "@firebase/analytics";
 
   const route = useRoute();
   const router = useRouter();
@@ -17,8 +16,6 @@
 
   const currentSession = activityStore.getSession(sessionId as string);
   const repeatFor = ref(1);
-
-  settingsStore.setHeader("Activity");
 
   if (!currentSession) {
     router.back();
@@ -58,9 +55,6 @@
       }
     }
     await activityStore.bulkSaveActivities(sessionId as string, multi);
-    logEvent(getAnalytics(), GaCustomEvents.ADD_ACTIVITY, {
-      activity_counter: multiActivities.value.length,
-    });
     redirectToList();
   }
 
@@ -70,7 +64,6 @@
     }
     if (activityId) {
       await activityStore.removeActivity(sessionId as string, activityId);
-      logEvent(getAnalytics(), GaCustomEvents.REMOVE_ACTIVITY);
       redirectToList();
     } else {
       multiActivities.value = multiActivities.value.filter((act) => act.id !== activityId);
@@ -127,23 +120,20 @@
   }
 </script>
 <template>
-  <div class="mb-6">
-    <BackButton @click="router.push({ name: 'details', params: { session: sessionId } })" />
-  </div>
   <div class="max-w-screen-xl mx-auto">
     <ActivityForm
-      v-for="(act, i) in multiActivities"
-      :key="act.id"
+      v-for="(activity, i) in multiActivities"
+      :key="activity.id"
       :i="i"
-      :name="act?.name"
-      :id="act?.id"
-      :description="act?.description"
-      :time="act?.time"
+      :name="activity.name"
+      :id="activity.id"
+      :description="activity.description"
+      :time="activity.time"
       :day-of-week="currentSession?.dayOfWeek"
-      :warmup="act?.warmup"
-      :order="act?.order"
-      :reps="act?.reps"
-      :video-url="act?.videoUrl"
+      :warmup="activity.warmup"
+      :order="activity.order_index"
+      :reps="activity.reps"
+      :video-url="activity.videoUrl"
       :allow-detele="Boolean(activityId)"
       @update="updateActivity"
       @remove="removeActivity"

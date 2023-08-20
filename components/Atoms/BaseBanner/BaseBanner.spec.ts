@@ -11,8 +11,8 @@ describe("BaseBanner", () => {
     });
 
     expect(wrapper.text()).toContain("Hello World");
-    expect(wrapper.classes()).toContain("bg-indigo-300");
-    expect(wrapper.find("icon").classes()).toContain("text-indigo-700");
+    expect(wrapper.classes()).toContain("bg-green-300");
+    expect(wrapper.find("icon").classes()).toContain("text-green-700");
   });
 
   it.skip("renders correctly", () => {
@@ -59,8 +59,8 @@ describe("BaseBanner", () => {
       },
     });
 
-    expect(wrapper.classes()).toContain("bg-indigo-300");
-    expect(wrapper.find("icon").classes()).toContain("text-indigo-700");
+    expect(wrapper.classes()).toContain("bg-green-300");
+    expect(wrapper.find("icon").classes()).toContain("text-green-700");
   });
 
   it.skip("renders correctly", () => {

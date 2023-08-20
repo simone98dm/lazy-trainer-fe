@@ -13,8 +13,6 @@
   const userStore = useUserStore();
   const activityStore = useActivityStore();
 
-  settingsStore.setHeader("Timer");
-
   let timerInterval: any;
   let timePassed = 0;
   const TIME_LIMIT = ref(0);
@@ -210,7 +208,7 @@
 <template>
   <div>
     <div class="flex flex-row justify-between mb-3">
-      <BackButton @click="redirectToActivity"></BackButton>
+      <!-- <BackButton @click="redirectToActivity"></BackButton> -->
       <button
         v-if="
           !timerStore.getCurrentActivity?.requestChange &&

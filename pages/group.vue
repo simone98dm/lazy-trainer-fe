@@ -1,13 +1,12 @@
 <script setup lang="ts">
-  import { useSettingStore, useUserStore } from "~/stores";
+  import { useUserStore } from "~/stores";
   import { ref } from "vue";
+  import { IUser } from "~/models/User";
 
-  const settingsStore = useSettingStore();
   const userStore = useUserStore();
-  settingsStore.setHeader("Your clients");
 
-  const clients = ref(undefined as { id: string; name: string }[] | undefined);
-  userStore.retrieveClients().then((response) => (clients.value = response));
+  const clients = ref([] as IUser[]);
+  clients.value = await userStore.retrieveClients();
 </script>
 
 <template>
@@ -24,7 +23,7 @@
         }"
         :key="client.id"
       >
-        <Item icon="person" :name="client.name" :id="client.id" />
+        <ActivityItem icon="person" :name="client.name" :id="client.id" />
       </ButtonLink>
     </div>
   </div>

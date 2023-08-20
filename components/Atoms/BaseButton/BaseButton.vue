@@ -32,7 +32,7 @@
     :class="[
       'flex justify-center items-center font-bold hover:drop-shadow-lg transition duration-300',
       {
-        'bg-indigo-600 hover:bg-indigo-500 text-gray-100': !color || color === 'primary',
+        'bg-green-600 hover:bg-green-500 text-gray-100': !color || color === 'primary',
       },
       { 'bg-purple-600 hover:bg-purple-500 text-gray-100': color === 'purple' },
       { 'bg-red-600 hover:bg-red-500 text-gray-100': color === 'danger' },

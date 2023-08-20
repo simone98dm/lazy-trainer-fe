@@ -4,9 +4,15 @@ import BackButton from "./BackButton.vue";
 
 describe("BackButton", () => {
   it("emits a click event when the button is clicked", async () => {
-    const wrapper = mount(BackButton);
+    const wrapper = mount(BackButton, {
+      global: {
+        stubs: {
+          MaterialIcon: true,
+        },
+      },
+    });
 
-    await wrapper.find("button").trigger("click");
+    await wrapper.findComponent({ name: "MaterialIcon" }).trigger("click");
 
     expect(wrapper.emitted("click")).toBeTruthy();
   });
@@ -20,14 +26,18 @@ describe("BackButton", () => {
       },
     });
 
-    expect(wrapper.find("button").text()).toContain("Back");
-
     expect(wrapper.findComponent({ name: "MaterialIcon" }).exists()).toBe(true);
   });
 
   it("applies the correct styles", () => {
-    const wrapper = mount(BackButton);
+    const wrapper = mount(BackButton, {
+      global: {
+        stubs: {
+          MaterialIcon: true,
+        },
+      },
+    });
 
-    expect(wrapper.find("button").classes()).toContain("back__button");
+    expect(wrapper.find("material-icon-stub").classes()).toContain("back__button");
   });
 });

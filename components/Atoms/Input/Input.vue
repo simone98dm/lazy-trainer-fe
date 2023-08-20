@@ -1,23 +1,18 @@
 <script setup lang="ts">
   interface InputProps {
-    value: string;
+    value?: string;
     label: string;
-    error: string;
+    error?: string;
     id: string;
     name: string;
-    type: string;
-    hasError: boolean;
-    disabled: boolean;
+    type?: string;
+    disabled?: boolean;
   }
 
-  withDefaults(defineProps<InputProps>(), {
+  const props = withDefaults(defineProps<InputProps>(), {
     value: "",
-    label: "",
     error: "",
-    id: "",
-    name: "",
     type: "text",
-    hasError: false,
     disabled: false,
   });
 
@@ -32,7 +27,11 @@
 
 <template>
   <label
-    :class="['font-bold mb-2', { 'text-red-600': hasError }, { 'text-gray-800': !hasError }]"
+    :class="[
+      'font-bold mb-2',
+      { 'text-red-600': error },
+      { 'text-gray-800 dark:text-gray-400': !error },
+    ]"
     :for="name"
   >
     {{ label }}
@@ -40,18 +39,17 @@
   <input
     :value="value"
     :class="[
-      'appearance-none block w-full bg-white border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:border-indigo-500',
-      { 'border-red-600': hasError },
+      'appearance-none block w-full bg-white dark:bg-slate-900 border border-gray-400 dark:border-gray-700 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:border-green-500',
+      { 'border-red-600': error },
     ]"
     :name="name"
     :id="id"
     @change="$emit('change', (($event.target as any) || undefined)?.value)"
-    @input="$emit('change', (($event.target as any) || undefined)?.value)"
+    @keyup="$emit('change', (($event.target as any) || undefined)?.value)"
     @click="$emit('click')"
-    @keyup="$emit('keyup', $event, (($event.target as any) || undefined)?.value)"
     :disabled="disabled"
     :type="type"
     autocomplete="off"
   />
-  <span v-if="hasError" class="text-red-600">{{ error }}</span>
+  <span v-if="error" class="text-red-600">{{ error }}</span>
 </template>

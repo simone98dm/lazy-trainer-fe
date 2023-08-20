@@ -19,25 +19,28 @@
   settingsStore.setHeader(`Hello ${userStore.getUsername} 👋`);
   settingsStore.loadSettings();
 
-  const router = useRouter();
-  const route = useRoute();
   const sessions = ref([] as ICustomSession[] | undefined);
 
-  if (userStore.isTrainer && route.params.plan) {
-    activityStore
-      .getUserActivities(route.params.planId as string)
-      .then((response) => (sessions.value = response))
-      .finally(() => (isLoading.value = false));
+  // if (userStore.isTrainer && route.params.plan) {
+  //   activityStore
+  //     .getUserActivities(route.params.planId as string)
+  //     .then((response) => (sessions.value = response))
+  //     .finally(() => (isLoading.value = false));
 
-    pageOptions = {
-      ...pageOptions,
-      title: "Clients session",
-    };
-  } else if (!userStore.isTrainer) {
+  //   pageOptions = {
+  //     ...pageOptions,
+  //     title: "Clients session",
+  //   };
+  // } else
+  if (!userStore.isTrainer) {
     activityStore
       .restoreSession()
       .then(() => (sessions.value = activityStore.getWeek?.map(parseSessions)))
-      .catch(() => router.push({ name: "login" }))
+      .then(userStore.fetchUserInfo)
+      .catch(() => {
+        const router = useRouter();
+        router.push({ name: "login" });
+      })
       .finally(() => (isLoading.value = false));
     pageOptions = { ...pageOptions, title: "Your sessions" };
   } else {

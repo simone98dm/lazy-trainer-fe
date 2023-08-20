@@ -1,120 +1,143 @@
 <script setup lang="ts">
-  import { getAnalytics, logEvent } from "@firebase/analytics";
   import { ref, watch } from "vue";
-  import { useUserStore, useSettingStore } from "~/stores";
-  import { GaCustomEvents } from "~/utils";
+  import { useUserStore } from "~/stores";
   import workout from "~/assets/workout-1.jpg";
 
-  const username = ref("");
-  const usernameError = ref(false);
-  const password = ref("");
-  const passwordError = ref(false);
-  const error = ref("");
+  const userStore = useUserStore();
   const router = useRouter();
+
+  const username = ref("");
+  const dirtyUsername = ref(false);
+  const usernameError = computed(() =>
+    username.value === "" && dirtyUsername.value ? "Username not valid" : ""
+  );
+  function updateUsername(u: string) {
+    username.value = u;
+    dirtyUsername.value = true;
+  }
+
+  const password = ref("");
+  const dirtyPassword = ref(false);
+  const passwordError = computed(() =>
+    password.value === "" && dirtyPassword.value ? "Password not valid" : ""
+  );
+  function updatePassword(u: string) {
+    password.value = u;
+    dirtyPassword.value = true;
+  }
+
+  const errorMessage = ref("");
   const isLoading = ref(false);
 
-  const userStore = useUserStore();
-  const settingsStore = useSettingStore();
-
-  if (userStore.isLogged) {
-    router.push({ name: "home" });
-  }
-
-  if (!userStore.isLogged) {
-    settingsStore.loading(true);
-    userStore.verifyStorage().then(() => {
-      settingsStore.loading(false);
-      if (userStore.isLogged) {
-        router.push({ name: "home" });
-      }
-    });
-  }
-
-  async function submit() {
+  async function login() {
     isLoading.value = true;
-    const { id, err } = await userStore.signIn(username.value, password.value);
+
+    const { error } = await userStore.signIn(username.value, password.value);
+
     isLoading.value = false;
 
-    if (id) {
-      logEvent(getAnalytics(), GaCustomEvents.LOGIN, {
-        userId: id,
-      });
-      router.push({
-        name: "home",
-      });
+    if (error) {
+      errorMessage.value = error;
       return;
     }
 
-    if (err) {
-      logEvent(getAnalytics(), GaCustomEvents.LOGIN, {
-        attempt: "failed",
-        err,
-      });
-      error.value = err;
-      return;
-    }
+    router.push({
+      name: "home",
+    });
   }
 
   watch([username, password], () => {
     if (username.value && password.value) {
-      error.value = "";
+      errorMessage.value = "";
     }
   });
 </script>
 
 <template>
-  <div class="py-6">
-    <div
-      class="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto lg:max-w-screen-xl h-[500px] lg:h-[700px]"
-    >
+  <div class="bg-white dark:bg-gray-900 rounded-xl">
+    <div class="flex justify-center sc">
       <div
-        class="hidden lg:block lg:w-1/2 bg-cover"
-        :style="{ backgroundImage: `url(${workout})`, backgroundPosition: 'center' }"
-      ></div>
-      <div class="w-full p-8 lg:w-1/2">
-        <h2 class="text-2xl font-semibold text-gray-700 text-center">Welcome back!</h2>
-        <div class="mt-8">
-          <Input
-            error="'Username is required'"
-            name="usernameField"
-            id="username"
-            :disabled="false"
-            :has-error="usernameError"
-            label="Username"
-            @change="(v: string) => (username = v)"
-            @keyup.enter="submit"
-          />
-        </div>
-        <div class="mt-4">
-          <Input
-            error="'Password is required'"
-            name="passwordField"
-            id="password"
-            type="password"
-            :disabled="false"
-            :has-error="passwordError"
-            label="Password"
-            @change="(v: string) => (password = v)"
-            @keyup.enter="submit"
-          />
-        </div>
-        <div class="mt-4">
-          <div class="text-center mb-6">
-            <span v-if="error" class="font-bold text-red-500">{{ error }}</span>
+        class="hidden bg-cover lg:block lg:w-2/3"
+        :style="{
+          backgroundImage: `url(${workout})`,
+        }"
+      >
+        <div class="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
+          <div>
+            <h2 class="text-4xl font-bold text-white">Lazy Trainer</h2>
+
+            <p class="max-w-xl mt-3 text-gray-300">
+              The web app that simplifies the approach to physical activity for those who are
+              particularly lazy
+            </p>
           </div>
         </div>
-        <div class="mt-8">
-          <BaseButton
-            :loading="isLoading"
-            color="primary"
-            :disabled="isLoading"
-            label="Login"
-            icon="login"
-            :full="true"
-            @click="submit"
-          />
+      </div>
+
+      <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+        <div class="flex-1">
+          <div class="text-center">
+            <h2 class="text-4xl font-bold text-center text-gray-700 dark:text-white">
+              Lazy Trainer
+            </h2>
+
+            <p class="mt-3 text-gray-500 dark:text-gray-300">Sign in to access your account</p>
+          </div>
+
+          <div class="mt-8">
+            <div class="mt-6">
+              <Input
+                name="usernameField"
+                id="username"
+                label="Username"
+                :value="username"
+                :disabled="false"
+                :error="usernameError"
+                @change="updateUsername"
+                @keyup.enter="login"
+              />
+            </div>
+
+            <div class="mt-6">
+              <Input
+                name="passwordField"
+                id="password"
+                label="Password"
+                type="password"
+                :value="password"
+                :disabled="false"
+                :error="passwordError"
+                @change="updatePassword"
+                @keyup.enter="login"
+              />
+            </div>
+
+            <div class="mt-6">
+              <BaseButton
+                :loading="isLoading"
+                color="primary"
+                :disabled="isLoading"
+                label="Login"
+                icon="login"
+                :full="true"
+                @click="login"
+              />
+            </div>
+            <div class="text-center mt-4">
+              <span v-if="errorMessage" class="font-bold text-red-500">{{ errorMessage }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+  body {
+    overflow-y: hidden;
+  }
+  .sc {
+    height: calc(100vh - 2rem) !important;
+  }
+</style>

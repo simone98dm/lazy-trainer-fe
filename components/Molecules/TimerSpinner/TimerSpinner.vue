@@ -88,7 +88,7 @@
     color: rgb(31, 184, 115);
   }
 
-  .base-timer__path-remaining.orange {
+  .base-timer__path-remaining.green {
     color: rgb(192, 133, 25);
   }
 

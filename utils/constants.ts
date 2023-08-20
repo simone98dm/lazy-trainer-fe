@@ -12,7 +12,7 @@ export const COLOR_CODES = {
     color: "green",
   },
   warning: {
-    color: "orange",
+    color: "green",
     threshold: WARNING_THRESHOLD,
   },
   alert: {

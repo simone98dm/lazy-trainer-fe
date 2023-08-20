@@ -27,8 +27,7 @@
           !highlight,
       },
       {
-        'border-2 bg-orange-200 border-orange-300 dark:bg-orange-600 dark:border-orange-700':
-          highlight,
+        'border-2 bg-green-200 border-green-300 dark:bg-green-600 dark:border-green-700': highlight,
       },
       { 'dark:bg-slate-800 bg-white': !highlight },
     ]"

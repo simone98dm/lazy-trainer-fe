@@ -11,6 +11,8 @@
   const userStore = useUserStore();
   const timerStore = useTimerStore();
 
+  await activityStore.restoreSession();
+
   const sessionId = route.params.session as string;
   const session = activityStore.getSession(sessionId);
   settingsStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
@@ -25,11 +27,11 @@
 
   function runWarmUp() {
     timerStore.setListActivities(warmupList.value);
-    router.push({ name: "/timer", params: { session: sessionId } });
+    router.push({ name: "timer", params: { session: sessionId } });
   }
   function runActivities() {
     timerStore.setListActivities(activityList.value);
-    router.push({ name: "/timer", params: { session: sessionId } });
+    router.push({ name: "timer", params: { session: sessionId } });
   }
   function canUserCreateActivity() {
     const freeActivitySlot = activityStore.getSessionActivities(sessionId)?.length ?? 100;
@@ -37,16 +39,6 @@
   }
 </script>
 <template>
-  <div class="mb-6">
-    <BackButton
-      @click="
-        router.push({
-          name: 'home',
-          params: { plan: userStore.isTrainer ? activityStore.plan?.id : '' },
-        })
-      "
-    />
-  </div>
   <div class="max-w-screen-xl mx-auto">
     <div class="flex flex-col justify-center">
       <Card id="warmup-activities" padding="medium">

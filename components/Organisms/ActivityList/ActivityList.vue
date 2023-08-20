@@ -2,7 +2,6 @@
   import { useUserStore } from "~/stores";
   import draggable from "vuedraggable";
   import { GaCustomEvents, LinkType } from "~/utils";
-  import { getAnalytics, logEvent } from "@firebase/analytics";
   import { IActivity } from "~/models/Activity";
 
   interface ActivityListProps {
@@ -45,7 +44,6 @@
   const emits = defineEmits<ActivityListEmits>();
 
   function runWorkout() {
-    logEvent(getAnalytics(), GaCustomEvents.RUN_ACTIVITY);
     emits("run");
   }
 
@@ -57,7 +55,7 @@
 <template>
   <div v-if="props.activities">
     <div class="flex items-center justify-between gap-2">
-      <h4 v-if="props.title" class="text-4xl sm:text-5xl font-bold mr-auto">
+      <h4 v-if="props.title" class="text-5xl font-bold mr-auto">
         {{ props.title }}
       </h4>
       <BaseButton
@@ -66,7 +64,7 @@
         color="success"
         icon="play_arrow"
         :type="LinkType.BUTTON"
-        :circular="true"
+        variant="circular"
         label="Start"
         @click="runWorkout"
       />
@@ -90,7 +88,7 @@
             },
           }"
         >
-          <Item
+          <ActivityItem
             :id="element.id"
             :name="element.name"
             :description="element.description"
@@ -111,15 +109,15 @@
                 @click.prevent="emits('delete', element.id)"
               />
             </template>
-          </Item>
+          </ActivityItem>
         </ButtonLink>
       </template>
     </draggable>
-    <Item
+    <ActivityItem
       v-else
       v-for="activity in props.activities"
-      :id="activity.id"
       :key="activity.id"
+      :id="activity.id"
       :no-card="props.compatList"
       :name="activity.name"
       :description="activity.description"

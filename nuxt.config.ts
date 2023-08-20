@@ -16,6 +16,12 @@ export default defineNuxtConfig({
       ],
     },
   },
+  runtimeConfig: {
+    app: {
+      SUPABASE_URL: process.env.VITE_SUPABASE_URL,
+      SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_KEY,
+    },
+  },
   css: ["~/assets/style/main.scss"],
   modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@nuxtjs/supabase", "@vite-pwa/nuxt"],
   components: {

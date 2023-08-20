@@ -47,10 +47,12 @@
     "vitest": "^0.29.1"
   },
   "dependencies": {
-    "@nuxtjs/supabase": "^0.3.1",
+    "@nuxtjs/supabase": "^1.0.2",
     "@nuxtjs/tailwindcss": "^6.4.1",
     "@pinia/nuxt": "^0.4.7",
     "@popperjs/core": "^2.11.8",
+    "@supabase/supabase-js": "^2.32.0",
+    "@vercel/node": "^2.15.10",
     "@vite-pwa/nuxt": "^0.0.6",
     "@vue/eslint-config-prettier": "^7.1.0",
     "@vue/eslint-config-typescript": "^11.0.3",

@@ -13,7 +13,7 @@
   });
 
   const loadingColor = computed(() => {
-    return props.color === "purple" ? "text-purple-600" : "text-indigo-600";
+    return props.color === "purple" ? "text-purple-600" : "text-green-600";
   });
 </script>
 

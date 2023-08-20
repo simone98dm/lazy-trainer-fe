@@ -12,7 +12,7 @@
     :class="[
       'w-full h-full fixed block top-0 left-0 bg-white opacity-25 z-50',
       {
-        'bg-indigo-600': !user.isTrainer,
+        'bg-green-600': !user.isTrainer,
       },
       {
         'bg-purple-600': user.isTrainer,

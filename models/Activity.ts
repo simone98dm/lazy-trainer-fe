@@ -1,11 +1,11 @@
 export interface IActivity {
   id: string;
-  description: string;
   name: string;
-  time: number;
+  description: string;
+  order_index?: number;
   reps: number;
+  requestChange: boolean;
+  time: number;
   videoUrl?: string;
   warmup: boolean;
-  order?: number;
-  requestChange: boolean;
 }

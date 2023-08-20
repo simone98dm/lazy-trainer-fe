@@ -31,7 +31,7 @@
   <div
     class="flex justify-between mb-2 border-b-2 border-dashed mt-3 dark:text-slate-200 text-slate-600"
   >
-    <div :class="['flex justify-between w-full', { 'pr-10': $slots.actions }]">
+    <div :class="['flex items-center justify-between w-full', { 'pr-10': $slots.actions }]">
       <MaterialIcon
         v-if="props.icon"
         class="pr-2 sm:block flex-left inline"
@@ -41,8 +41,8 @@
       <div>
         <h4
           :class="[
-            { 'font-semibold text-3xl': props.description },
-            { 'font-bold text-4xl': !props.description },
+            { 'font-semibold text-2xl': props.description },
+            { 'font-bold text-3xl': !props.description },
           ]"
         >
           {{ props.name }}

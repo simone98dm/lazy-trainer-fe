@@ -48,7 +48,7 @@
             :key="day"
             :class="[
               {
-                'bg-indigo-600 text-slate-50': isDaySelected(day) && !isTrainer,
+                'bg-green-600 text-slate-50': isDaySelected(day) && !isTrainer,
               },
               {
                 'bg-purple-600 text-slate-50': isDaySelected(day) && isTrainer,

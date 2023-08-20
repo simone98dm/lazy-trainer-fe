@@ -1,9 +1,7 @@
 <script setup lang="ts">
   import { useActivityStore, useSettingStore } from "~/stores";
-  import MaterialIcon from "~/components/Atoms/MaterialIcon/MaterialIcon.vue";
 
   const settingsStore = useSettingStore();
-  settingsStore.setHeader("Dashboard");
   const activityStore = useActivityStore();
   activityStore.retrieveUserStats();
 </script>

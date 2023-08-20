@@ -8,7 +8,7 @@ describe("Loading", () => {
     const wrapper = mount(Loading);
     expect(wrapper.find("svg").classes()).toContain("w-16");
     expect(wrapper.find("svg").classes()).toContain("h-16");
-    expect(wrapper.find("svg").classes()).toContain("text-indigo-600");
+    expect(wrapper.find("svg").classes()).toContain("text-green-600");
   });
   it("renders correctly", () => {
     const wrapper = mount(Loading, {

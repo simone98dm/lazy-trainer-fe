@@ -1,10 +1,6 @@
 import { RouterConfig } from "nuxt/schema";
 
-import { createRouter, createWebHistory } from "vue-router";
-import { Role } from "~/utils/enum";
-import { useUserStore } from "stores";
-
-const routes = [
+export const routes = [
   {
     name: "home",
     path: "/:plan?",
@@ -33,6 +29,7 @@ const routes = [
       title: `Activities`,
       requireAuth: true,
       requireAdmin: false,
+      goto: [],
     },
   },
   {
@@ -63,6 +60,7 @@ const routes = [
       title: `Login`,
       requireAuth: false,
       requireAdmin: false,
+      empty: true,
     },
   },
   {
@@ -80,7 +78,7 @@ const routes = [
     path: "/group",
     component: () => import("~/pages/group.vue"),
     meta: {
-      title: `Groups`,
+      title: `Your clients`,
       requireAuth: true,
       requireAdmin: true,
     },
@@ -103,6 +101,7 @@ const routes = [
       requireAuth: false,
       empty: true,
       requireAdmin: false,
+      goto: [],
     },
   },
   {
@@ -163,21 +162,7 @@ const routes = [
 // const router = createRouter({
 //   routes: routes,
 //   history: createWebHistory(),
-//   linkExactActiveClass: "dark:bg-slate-700 bg-slate-100 text-indigo-600 dark:text-indigo-300",
-// });
-
-// router.beforeEach((to) => {
-//   document.title = `${to.meta.title} • Lazy Trainer`;
-//   if (to.name !== "not-found" && to.name !== "login") {
-//     const userStore = useUserStore();
-//     if (to.meta.requireAuth && !userStore.isLogged) {
-//       return "/login";
-//     }
-
-//     if (to.meta.requireAdmin && userStore.role !== Role.TRAINER) {
-//       return "/not-found";
-//     }
-//   }
+//   linkExactActiveClass: "dark:bg-slate-700 bg-slate-100 text-green-600 dark:text-green-300",
 // });
 
 export default {

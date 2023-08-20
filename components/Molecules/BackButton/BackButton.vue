@@ -1,8 +1,5 @@
 <template>
-  <button @click="$emit('click')" class="back__button dark:text-slate-100 text-slate-900">
-    <MaterialIcon component="arrow_back" />
-    <span class="ml-2"> Back </span>
-  </button>
+  <MaterialIcon component="arrow_back" class="back__button text-slate-100 cursor-pointer" />
 </template>
 
 <style>

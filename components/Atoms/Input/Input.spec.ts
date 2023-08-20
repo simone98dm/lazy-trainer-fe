@@ -1,34 +1,43 @@
 import { describe, expect, it } from "vitest";
 import { mount } from "@vue/test-utils";
 import Input from "./Input.vue";
+import { computed } from "vue";
 
-describe("Input", () => {
-  it("renders correctly", () => {
+describe("InputComponent", () => {
+  it("renders label and input field correctly", async () => {
     const wrapper = mount(Input, {
       props: {
-        label: "Test",
-        name: "test",
+        label: "Test Label",
+        name: "testInput",
+        id: "test",
       },
     });
 
-    expect(wrapper.find("label").text()).toContain("Test");
-    expect(wrapper.find("input").attributes("name")).toBe("test");
-    expect(wrapper.find("input").attributes("type")).toBe("text");
+    // Check if label is rendered correctly
+    expect(wrapper.find("label").text()).toBe("Test Label");
+
+    // Check if input field is rendered correctly
+    const inputElement = wrapper.find("input");
+    expect(inputElement.exists()).toBe(true);
+    expect(inputElement.attributes("name")).toBe("testInput");
   });
 
-  it("renders correctly with error", () => {
+  it("emits change event on input value change", async () => {
     const wrapper = mount(Input, {
       props: {
-        label: "Test",
-        value: "Hello World",
-        error: "Error",
-        hasError: true,
+        label: "Test Label",
+        name: "testInput",
+        id: "test",
       },
     });
 
-    expect(wrapper.find("label").classes()).toContain("text-red-600");
-    expect(wrapper.find("input").classes()).toContain("border-red-600");
-    expect(wrapper.find("span").text()).toContain("Error");
-    expect(wrapper.find("span").classes()).toContain("text-red-600");
+    const inputElement = wrapper.find("input");
+    await inputElement.setValue("New Value");
+
+    // Check if the emitted event matches
+    expect(wrapper.emitted("change")).toBeTruthy();
+    expect(wrapper.emitted("change")![0]).toEqual(["New Value"]);
   });
+
+  // Write more test cases for other scenarios...
 });

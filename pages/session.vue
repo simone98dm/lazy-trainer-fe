@@ -1,14 +1,10 @@
 <script setup lang="ts">
-  import { getAnalytics, logEvent } from "@firebase/analytics";
   import { ISession } from "~/models/Session";
-  import { useActivityStore, useSettingStore } from "~/stores";
-  import { GaCustomEvents } from "~/utils";
+  import { useActivityStore } from "~/stores";
 
   const router = useRouter();
   const route = useRoute();
   const activityStore = useActivityStore();
-  const settingsStore = useSettingStore();
-  settingsStore.setHeader("Session");
 
   const sessionId = route.params.session as string;
   const session = activityStore.getSession(sessionId);
@@ -32,7 +28,6 @@
   async function addSession(session: ISession) {
     await activityStore.addSession(session);
     cleanDuplicateActivities();
-    logEvent(getAnalytics(), GaCustomEvents.ADD_SESSION);
     backHomePage();
   }
 
@@ -41,7 +36,6 @@
       return;
     }
     await activityStore.deleteSession(sessionId);
-    logEvent(getAnalytics(), GaCustomEvents.REMOVE_SESSION);
     backHomePage();
   }
 
@@ -53,9 +47,9 @@
   }
 </script>
 <template>
-  <div class="mb-6">
+  <!-- <div class="mb-6">
     <BackButton @click="backPage" />
-  </div>
+  </div> -->
   <div class="flex xl:flex-col flex-wrap justify-center max-w-screen-xl mx-auto">
     <SessionForm
       @save="addSession"

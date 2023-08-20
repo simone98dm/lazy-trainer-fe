@@ -1,29 +1,27 @@
 import { defineStore } from "pinia";
 import { Role } from "~/utils";
-import { getGroups, signIn, userInfo, verifyUser } from "~/helpers/http";
-import { clearStorage, getStorage, saveStorage } from "~/helpers/storage";
-import log from "~/helpers/logger";
+import { clearStorage } from "~/helpers/storage";
+import { useWorkoutClient } from "~/composable/useWorkoutClient";
+import { IUser } from "~/models/User";
+import { getGroups, userInfo } from "~/helpers/http";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    userId: "",
-    username: "",
-    token: "",
-    role: 0,
-    trainer: undefined as { name: string; id: string } | undefined,
+    user: {} as IUser,
+    trainer: {} as IUser,
   }),
   getters: {
     isLogged: (state) => {
-      return state.token !== "";
+      return state.user !== null;
     },
     getUsername: (state) => {
-      return state.username;
+      return state.user.name;
     },
     isTrainer: (state) => {
-      return state.role === Role.TRAINER;
+      return state.user?.role === Role.TRAINER;
     },
     isSelfMadeMan: (state) => {
-      return state.role === Role.SELFMADE;
+      return state.user?.role === Role.SELFMADE;
     },
     getTrainer: (state) => {
       return state.trainer ?? { name: "" };
@@ -31,62 +29,71 @@ export const useUserStore = defineStore("user", {
   },
   actions: {
     async signIn(username: string, password: string) {
-      return await signIn(username, password)
-        .then(async (response) => {
-          const { token, id, name, role } = response;
-          if (token && id) {
-            this.token = token;
-            this.userId = id;
-            this.username = name;
-            this.role = role as Role;
-
-            await saveStorage("_token", { token });
-            return { id };
-          }
-
-          return { err: response.error };
-        })
-        .catch((err) => {
-          log(err, "error");
-          return { id: undefined, err: "Error" };
+      try {
+        const client = useWorkoutClient();
+        const loginResponse = await client.auth.signInWithPassword({
+          email: username,
+          password: password,
         });
-    },
-    async verifyStorage() {
-      const t = await getStorage<{ token: string }>("_token");
-      if (t) {
-        return await verifyUser(t.token).then(async (response) => {
-          if (response.error) {
-            await this.logout();
-            return;
-          }
 
-          const { token, id, name, role } = response;
+        if (loginResponse.error) {
+          throw new Error(loginResponse.error.message);
+        }
 
-          this.token = token;
-          this.userId = id;
-          this.username = name;
-          this.role = role as Role;
-
-          await saveStorage("_token", { token });
+        await client.auth.setSession({
+          access_token: loginResponse.data.session.access_token,
+          refresh_token: loginResponse.data.session.refresh_token,
         });
+
+        this.user = {
+          ...this.user,
+          token: loginResponse.data.session.access_token,
+          id: loginResponse.data.user.id,
+        };
+
+        await this.fetchUserInfo();
+      } catch (ex) {
+        return {
+          error: ex as string,
+        };
       }
+
+      return { error: "" };
+    },
+    async fetchUserInfo() {
+      const { $user } = useNuxtApp();
+      const client = useWorkoutClient();
+
+      const {
+        data: { user },
+      } = await client.auth.getUser();
+
+      const userResponse = await $user.getUserData(user?.id);
+      const { name, role } = userResponse;
+
+      this.user = { ...this.user, name, role };
+
+      return userResponse;
     },
     async getTrainerInfo(trainerId: string | undefined) {
       if (!trainerId) {
         return;
       }
-      const response = await userInfo(this.token, trainerId);
-
+      const response = await userInfo(this.user.token, trainerId);
       if (response) {
-        this.trainer = response as { id: string; name: string };
+        this.trainer = response;
       }
     },
     async logout() {
+      const client = useWorkoutClient();
+      const router = useRouter();
+
       await clearStorage();
-      location.href = "/";
+      await client.auth.signOut();
+      await router.push({ name: "home" });
     },
     async retrieveClients() {
-      return await getGroups(this.token, this.userId);
+      return await getGroups(this.user.token, this.user.id);
     },
   },
 });

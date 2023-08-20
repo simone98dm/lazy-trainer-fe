@@ -7,10 +7,16 @@ export interface IUser {
   name: string;
   id: string;
   token: string;
+  configurations: {
+    audioDisabled: boolean;
+    easyMode: boolean;
+    darkMode: boolean;
+  };
 }
 
 export interface ITokenPayload {
   id: string;
   name: string;
   role: number;
+  configurations: string;
 }
