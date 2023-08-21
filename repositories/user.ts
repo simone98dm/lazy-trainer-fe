@@ -1,12 +1,12 @@
-import { ITokenPayload } from "~/backend";
+import { User } from "~/models/User";
 import { Repository } from "./common";
 import { useWorkoutClient } from "~/composable/useWorkoutClient";
 
 export interface UserRepository {
-  getUserData(userId: string): Promise<ITokenPayload | null>;
+  getUserData(userId: string): Promise<User | null>;
 }
 
-async function getUserData(userId: string): Promise<ITokenPayload | null> {
+async function getUserData(userId: string): Promise<User | null> {
   const client = useWorkoutClient();
   const userResponse = await client
     .from("users")
@@ -19,7 +19,7 @@ async function getUserData(userId: string): Promise<ITokenPayload | null> {
 
   const [user] = userResponse.data;
 
-  return user as ITokenPayload;
+  return user as User;
 }
 
 export const userRepository: Repository<UserRepository> = {

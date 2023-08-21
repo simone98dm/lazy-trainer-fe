@@ -1,5 +1,4 @@
 import log from "./logger";
-import { get, set, clear, createStore } from "idb-keyval";
 
 export async function saveStorage(name: string, data: unknown) {
   try {

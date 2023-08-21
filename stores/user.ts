@@ -2,13 +2,12 @@ import { defineStore } from "pinia";
 import { Role } from "~/utils";
 import { clearStorage } from "~/helpers/storage";
 import { useWorkoutClient } from "~/composable/useWorkoutClient";
-import { IUser } from "~/models/User";
-import { getGroups, userInfo } from "~/helpers/http";
+import { User } from "~/models/User";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    user: {} as IUser,
-    trainer: {} as IUser,
+    user: {} as User,
+    trainer: {} as User,
   }),
   getters: {
     isLogged: (state) => {

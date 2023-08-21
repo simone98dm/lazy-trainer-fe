@@ -1,4 +1,4 @@
-export interface ICompletion {
+export interface Completion {
   userId: string;
   userName: string;
   stats: {

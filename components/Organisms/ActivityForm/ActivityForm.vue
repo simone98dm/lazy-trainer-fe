@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { IActivity } from "~/models/Activity";
+  import { Activity } from "~/models/Activity";
   import { computed, ref, watch } from "vue";
   import { v4 as uuidv4 } from "uuid";
   import { useUserStore } from "~/stores";
@@ -33,7 +33,7 @@
   });
 
   interface ActivityFormEmits {
-    (e: "update", data: { activityId: string; activity: IActivity }): void;
+    (e: "update", data: { activityId: string; activity: Activity }): void;
     (e: "remove", id: string): void;
   }
 
@@ -65,7 +65,7 @@
   );
 
   function update() {
-    const activity: IActivity = {
+    const activity: Activity = {
       id: id.value,
       name: name.value,
       description: description.value,

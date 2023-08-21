@@ -1,8 +1,8 @@
-export interface IUserResponse {
-  data: IUser;
+export interface UserResponse {
+  data: User;
 }
 
-export interface IUser {
+export interface User {
   role: number;
   name: string;
   id: string;
@@ -12,11 +12,4 @@ export interface IUser {
     easyMode: boolean;
     darkMode: boolean;
   };
-}
-
-export interface ITokenPayload {
-  id: string;
-  name: string;
-  role: number;
-  configurations: string;
 }

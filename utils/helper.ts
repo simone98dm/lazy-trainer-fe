@@ -1,6 +1,8 @@
-import { ICustomSession, ISession } from "./../models/Session";
+import { Plan } from "~/models/Plan";
+import { CustomSession, Session } from "~/models/Session";
+import { v4 as uuid } from "uuid";
 
-export function parseSessions(session: ISession): ICustomSession {
+export function parseSessions(session: Session): CustomSession {
   return {
     ...session,
     description: `${session.activities.length} ${
@@ -28,4 +30,13 @@ export function millisToMinutesAndSeconds(millis: number) {
     return `${(seconds < 10 ? "0" : "") + seconds}"`;
   }
   return `${minutes}'${(seconds < 10 ? "0" : "") + seconds}"`;
+}
+
+export function generateBlankPlan(): Plan {
+  return {
+    id: uuid(),
+    name: "New plan",
+    sessions: [],
+    trainerId: "",
+  };
 }

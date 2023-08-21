@@ -2,10 +2,10 @@
   import { useUserStore } from "~/stores";
   import draggable from "vuedraggable";
   import { GaCustomEvents, LinkType } from "~/utils";
-  import { IActivity } from "~/models/Activity";
+  import { Activity } from "~/models/Activity";
 
   interface ActivityListProps {
-    activities?: IActivity[];
+    activities?: Activity[];
     sessionId?: string;
     isWarmup?: boolean;
     allowDrag?: boolean;
@@ -34,11 +34,11 @@
   const userStore = useUserStore();
 
   interface ActivityListEmits {
-    (e: "move", activities: IActivity[] | undefined, isWarmup: boolean): void;
+    (e: "move", activities: Activity[] | undefined, isWarmup: boolean): void;
     (e: "delete", id: string): void;
     (e: "run"): void;
-    (e: "duplicate", activities: IActivity[] | undefined): void;
-    (e: "delete-activity", activity: IActivity): void;
+    (e: "duplicate", activities: Activity[] | undefined): void;
+    (e: "delete-activity", activity: Activity): void;
   }
 
   const emits = defineEmits<ActivityListEmits>();

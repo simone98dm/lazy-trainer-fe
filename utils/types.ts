@@ -1,10 +1,10 @@
-import { IActivity } from "../models/Activity";
+import { Activity } from "../models/Activity";
 import { DataAction } from "./enum";
 
 export type TimerActivity =
   | {
-      firstActivity: IActivity | undefined;
-      secondActivity: IActivity | undefined;
+      firstActivity: Activity | undefined;
+      secondActivity: Activity | undefined;
     }
   | undefined;
 
@@ -28,7 +28,7 @@ export type UserConfigurations = {
 };
 
 export type TrainerRequest = {
-  data?: IActivity | SessionRequest | OrderRequest[];
+  data?: Activity | SessionRequest | OrderRequest[];
   activityId?: string;
   sessionId?: string;
   planId?: string;
@@ -38,7 +38,7 @@ export type TrainerRequest = {
 export type SessionRequest = {
   id: string;
   dayOfWeek: number;
-  warmup?: IActivity[];
+  warmup?: Activity[];
 };
 
 export type OrderRequest = {

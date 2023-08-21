@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
-  import { ISession } from "~/models/Session";
+  import { Session } from "~/models/Session";
   import { getDayOfTheWeek } from "~/utils";
   import { useActivityStore, useUserStore } from "~/stores";
-  import { IActivity } from "~/models/Activity";
+  import { Activity } from "~/models/Activity";
 
   interface SessionFormProps {
     id?: string;
     dayOfWeek?: number;
-    existingForm?: IActivity;
+    existingForm?: Activity;
   }
 
   const props = withDefaults(defineProps<SessionFormProps>(), {
@@ -19,7 +19,7 @@
   });
 
   interface SessionFormEmits {
-    (e: "save", session: ISession): void;
+    (e: "save", session: Session): void;
     (e: "remove", id: string): void;
   }
 
@@ -31,16 +31,16 @@
   const currentDayOfWeek = ref(props.dayOfWeek || -1);
   const dayOfWeek = ref(props.dayOfWeek || -1);
   const id = ref(props.id || uuidv4());
-  const activityList = ref(undefined as IActivity[] | undefined);
-  const warmupList = ref(undefined as IActivity[] | undefined);
+  const activityList = ref(undefined as Activity[] | undefined);
+  const warmupList = ref(undefined as Activity[] | undefined);
 
   if (id.value) {
     warmupList.value = activityStore.getWarmUpActivities(id.value);
     activityList.value = activityStore.getSessionActivities(id.value);
   }
 
-  function save(day?: number, activities?: IActivity[]) {
-    const session: ISession = {
+  function save(day?: number, activities?: Activity[]) {
+    const session: Session = {
       id: id.value,
       dayOfWeek: dayOfWeek.value,
       activities: [],
@@ -81,7 +81,7 @@
     return dayIndex === dayOfWeek.value;
   }
 
-  function sortActivities(activities: IActivity[] | undefined, isWarmup: boolean) {
+  function sortActivities(activities: Activity[] | undefined, isWarmup: boolean) {
     if (activities) {
       activityStore.moveActivity(id.value, activities, isWarmup);
     }
@@ -89,12 +89,12 @@
 
   const showDuplicateModal = ref(false);
 
-  function duplicateActivities(activities: IActivity[] | undefined) {
+  function duplicateActivities(activities: Activity[] | undefined) {
     activityStore.setDuplicateWarmup(activities);
     showDuplicateModal.value = true;
   }
 
-  function duplicateSession(param: { dayOfWeek: number; activities: IActivity[] }) {
+  function duplicateSession(param: { dayOfWeek: number; activities: Activity[] }) {
     showDuplicateModal.value = false;
     save(param.dayOfWeek, param.activities);
   }

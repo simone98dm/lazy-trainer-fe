@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { saveConfiguration } from "~/helpers/http";
 import { saveStorage } from "~/helpers/storage";
 import { useUserStore } from "./user";
 
@@ -67,7 +66,7 @@ export const useSettingStore = defineStore("settings", {
         darkMode: this.darkMode,
       };
 
-      await saveConfiguration(userStore.user.token || "", userSettings);
+      // await saveConfiguration(userStore.user.token || "", userSettings);
       await saveStorage("_settings", userSettings);
     },
     async loadSettings() {

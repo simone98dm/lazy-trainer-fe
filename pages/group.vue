@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores";
   import { ref } from "vue";
-  import { IUser } from "~/models/User";
+  import { User } from "~/models/User";
 
   const userStore = useUserStore();
 
-  const clients = ref([] as IUser[]);
+  const clients = ref([] as User[]);
   clients.value = await userStore.retrieveClients();
 </script>
 

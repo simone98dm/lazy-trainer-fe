@@ -1,15 +1,15 @@
-import { IActivity } from "./Activity";
+import { Activity } from "./Activity";
 
-export interface ISession {
+export interface Session {
   dayOfWeek: number;
   id: string;
-  activities: IActivity[];
+  activities: Activity[];
 }
 
-export interface ICustomSession {
+export interface CustomSession {
   description: string;
   name: string;
   dayOfWeek: number;
   id: string;
-  activities: IActivity[];
+  activities: Activity[];
 }

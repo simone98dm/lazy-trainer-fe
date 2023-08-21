@@ -2,7 +2,7 @@
   import { getDayOfTheWeek, LinkType } from "~/utils";
   import { useUserStore, useTimerStore, useSettingStore, useActivityStore } from "~/stores";
   import { ref } from "vue";
-  import { IActivity } from "~/models/Activity";
+  import { Activity } from "~/models/Activity";
 
   const route = useRoute();
   const router = useRouter();
@@ -17,8 +17,8 @@
   const session = activityStore.getSession(sessionId);
   settingsStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
 
-  const activityList = ref(undefined as IActivity[] | undefined);
-  const warmupList = ref(undefined as IActivity[] | undefined);
+  const activityList = ref(undefined as Activity[] | undefined);
+  const warmupList = ref(undefined as Activity[] | undefined);
 
   if (sessionId) {
     warmupList.value = activityStore.getWarmUpActivities(sessionId);

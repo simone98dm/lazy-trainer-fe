@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { ICustomSession } from "~/models/Session";
+  import { CustomSession } from "~/models/Session";
   import { parseSessions } from "~/utils";
   import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
 
@@ -19,7 +19,7 @@
   settingsStore.setHeader(`Hello ${userStore.getUsername} 👋`);
   settingsStore.loadSettings();
 
-  const sessions = ref([] as ICustomSession[] | undefined);
+  const sessions = ref([] as CustomSession[] | undefined);
 
   // if (userStore.isTrainer && route.params.plan) {
   //   activityStore

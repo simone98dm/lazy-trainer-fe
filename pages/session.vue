@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ISession } from "~/models/Session";
+  import { Session } from "~/models/Session";
   import { useActivityStore } from "~/stores";
 
   const router = useRouter();
@@ -13,19 +13,19 @@
     activityStore.duplicateActivities = undefined;
   }
 
-  function backPage() {
-    cleanDuplicateActivities();
-    if (!sessionId) {
-      backHomePage();
-    } else {
-      router.push({
-        name: "details",
-        params: { session: sessionId },
-      });
-    }
-  }
+  // function backPage() {
+  //   cleanDuplicateActivities();
+  //   if (!sessionId) {
+  //     backHomePage();
+  //   } else {
+  //     router.push({
+  //       name: "details",
+  //       params: { session: sessionId },
+  //     });
+  //   }
+  // }
 
-  async function addSession(session: ISession) {
+  async function addSession(session: Session) {
     await activityStore.addSession(session);
     cleanDuplicateActivities();
     backHomePage();

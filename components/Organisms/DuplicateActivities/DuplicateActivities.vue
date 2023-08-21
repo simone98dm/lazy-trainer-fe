@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { IActivity } from "~/models/Activity";
+  import { Activity } from "~/models/Activity";
   import { getDayOfTheWeek } from "~/utils";
 
   const props = defineProps({
@@ -14,7 +14,7 @@
       default: -1,
     },
     existingForm: {
-      type: Array<IActivity>,
+      type: Array<Activity>,
       required: true,
     },
     isTrainer: {

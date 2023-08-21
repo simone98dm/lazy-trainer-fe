@@ -3,14 +3,13 @@
   import doubleWhistle from "~/assets/audio/double-whistle.mp3";
   import horn from "~/assets/audio/horn.mp3";
   import { type TimerActivity, COLOR_CODES, FULL_DASH_ARRAY } from "~/utils";
-  import { IActivity } from "~/models/Activity";
+  import { Activity } from "~/models/Activity";
   import { useTimerStore, useSettingStore, useUserStore, useActivityStore } from "~/stores";
 
   const route = useRoute();
   const router = useRouter();
   const settingsStore = useSettingStore();
   const timerStore = useTimerStore();
-  const userStore = useUserStore();
   const activityStore = useActivityStore();
 
   let timerInterval: any;
@@ -19,15 +18,13 @@
   const timeLeft = ref(TIME_LIMIT.value);
 
   const remainingPathColor = ref(COLOR_CODES.info.color);
-  const strokeDasharray = ref(`283`);
+  const strokeDasharray = ref("283");
   const baseTimerLabel = ref(formatTime(timeLeft.value));
 
   const sessionId = route.params.session;
   const activityId = route.params.activity;
 
-  const isNextVideo = computed(() => {
-    return timerStore.getNextActivity?.videoUrl;
-  });
+  // const isNextVideo = computed(() => timerStore.getNextActivity?.videoUrl);
 
   setupTimer(activityId as string);
 
@@ -66,7 +63,7 @@
     }
   }
 
-  function getActivity(activities: IActivity[], activityId: string): TimerActivity {
+  function getActivity(activities: Activity[], activityId: string): TimerActivity {
     let obj: TimerActivity;
     if (!activityId && activities.length > 0) {
       obj = { firstActivity: activities[0], secondActivity: undefined };
@@ -130,7 +127,7 @@
     timePassed = 0;
     timeLeft.value = TIME_LIMIT.value;
     remainingPathColor.value = COLOR_CODES.info.color;
-    strokeDasharray.value = `283`;
+    strokeDasharray.value = "283";
     baseTimerLabel.value = formatTime(timeLeft.value);
 
     const nextActivity = timerStore.getNextActivity;
@@ -187,28 +184,23 @@
     }
   }
 
-  function redirectToActivity() {
-    router.push({
-      name: "details",
-      params: {
-        session: sessionId,
-      },
-    });
-  }
+  // function redirectToActivity() {
+  //   router.push({
+  //     name: "details",
+  //     params: {
+  //       session: sessionId,
+  //     },
+  //   });
+  // }
 
-  async function sendChangeRequest() {
-    await timerStore.requestChange(sessionId as string);
-  }
-
-  function skipActivity() {
-    onTimesUp();
-  }
+  // async function sendChangeRequest() {
+  //   await timerStore.requestChange(sessionId as string);
+  // }
 </script>
 
 <template>
   <div>
-    <div class="flex flex-row justify-between mb-3">
-      <!-- <BackButton @click="redirectToActivity"></BackButton> -->
+    <!-- <div class="flex flex-row justify-between mb-3">
       <button
         v-if="
           !timerStore.getCurrentActivity?.requestChange &&
@@ -219,7 +211,7 @@
       >
         Request change
       </button>
-    </div>
+    </div> -->
     <div v-if="timerStore.getCurrentActivity" class="text-center mb-6">
       Current activity:
       <h1 class="text-4xl font-bold">
@@ -227,22 +219,14 @@
       </h1>
     </div>
 
-    <div
-      v-if="timerStore.isTimerBasedActivity"
-      :class="[
-        'w-full',
-        {
-          'flex flex-col justify-center': isNextVideo,
-        },
-      ]"
-    >
+    <div v-if="timerStore.isTimerBasedActivity" class="w-full">
       <TimerSpinner
         :stroke-dasharray="strokeDasharray"
         :remaining-path-color="remainingPathColor"
         :base-timer-label="baseTimerLabel"
-        :size="isNextVideo ? 'small' : 'large'"
+        size="large"
       />
-      <ImageLoader :src="timerStore.getNextActivity?.videoUrl || ''" />
+      <!-- <ImageLoader :src="timerStore.getNextActivity?.videoUrl || ''" /> -->
     </div>
     <h1 class="flex flex-col text-center my-20 text-pink-600" v-else>
       <span class="text-4xl">Total reps:</span>
@@ -274,14 +258,14 @@
           v-if="settingsStore.isEasyModeEnabled"
           label="Skip"
           :full="true"
-          @click="skipActivity"
+          @click="onTimesUp"
           color="light"
         />
       </div>
     </div>
-    <div class="text-center mb-3" v-if="timerStore.getCurrentActivity?.requestChange">
+    <!-- <div class="text-center mb-3" v-if="timerStore.getCurrentActivity?.requestChange">
       <p class="text-red-600">Change request sended, wait for changes...</p>
-    </div>
+    </div> -->
     <div class="text-center text-slate-500 mb-3">
       Next activty:
       <h1 v-if="timerStore.getNextActivity" class="text-4xl font-bolder">

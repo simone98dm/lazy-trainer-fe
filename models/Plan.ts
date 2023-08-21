@@ -1,8 +1,8 @@
-import { ISession } from "./Session";
+import { Session } from "./Session";
 
-export interface IPlan {
+export interface Plan {
   name: string;
   id: string;
   trainerId?: string;
-  sessions: ISession[];
+  sessions: Session[];
 }

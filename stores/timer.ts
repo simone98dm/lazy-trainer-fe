@@ -1,15 +1,14 @@
 import { useActivityStore } from "./activity";
 import { defineStore } from "pinia";
-import { IActivity } from "~/models/Activity";
-import { requestActivityChange } from "~/helpers/http";
+import { Activity } from "~/models/Activity";
 import { useSettingStore } from "./settings";
 import { useUserStore } from "./user";
 
 export const useTimerStore = defineStore("timer", {
   state: () => ({
-    currentActivity: {} as IActivity | undefined,
-    nextActivity: {} as IActivity | undefined,
-    listActivities: [] as IActivity[],
+    currentActivity: {} as Activity | undefined,
+    nextActivity: {} as Activity | undefined,
+    listActivities: [] as Activity[],
     running: false,
     runningTimer: 0,
   }),
@@ -40,16 +39,16 @@ export const useTimerStore = defineStore("timer", {
     },
   },
   actions: {
-    setListActivities(activities: IActivity[] | undefined) {
+    setListActivities(activities: Activity[] | undefined) {
       if (activities) {
         this.listActivities = activities;
       }
     },
-    setCurrentActivity(activity: IActivity | undefined) {
+    setCurrentActivity(activity: Activity | undefined) {
       this.currentActivity = activity;
       this.runningTimer = activity?.time ?? -1;
     },
-    setNextActivity(activity: IActivity | undefined) {
+    setNextActivity(activity: Activity | undefined) {
       this.nextActivity = activity;
     },
     stop() {

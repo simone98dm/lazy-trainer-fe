@@ -1,16 +1,17 @@
 import { useWorkoutClient } from "~/composable/useWorkoutClient";
 import { Repository } from "./common";
-import { IPlan, ISession } from "~/backend";
-import { IActivity } from "models/Activity";
+import { Activity } from "models/Activity";
+import { Plan } from "~/models/Plan";
+import { Session } from "~/models/Session";
 
 export interface WorkoutRepository {
-  getUserPlan(): Promise<IPlan | undefined>;
-  addActivity(activity: IActivity, sessionId: string): Promise<void>;
+  getUserPlan(): Promise<Plan | undefined>;
+  addActivity(activity: Activity, sessionId: string): Promise<void>;
   removeActivity(activityId: string): Promise<void>;
-  updateActivity(activity: IActivity, activityId: string): Promise<void>;
+  updateActivity(activity: Activity, activityId: string): Promise<void>;
 }
 
-async function getUserPlan(): Promise<IPlan | undefined> {
+async function getUserPlan(): Promise<Plan | undefined> {
   const client = useWorkoutClient();
   const user = useSupabaseUser();
   const planResponse = await client.from("plans").select("id,name").eq("ownerId", user.value.id);
@@ -26,12 +27,12 @@ async function getUserPlan(): Promise<IPlan | undefined> {
     .select("*,activities(*)")
     .eq("planId", plan.id);
 
-  const sessions = mapUserPlan(plan as IPlan, sessionsResponse.data as ISession[]);
+  const sessions = mapUserPlan(plan as Plan, sessionsResponse.data as Session[]);
 
   return sessions;
 }
 
-async function addActivity(activity: IActivity, sessionId: string): Promise<void> {
+async function addActivity(activity: Activity, sessionId: string): Promise<void> {
   const client = useWorkoutClient();
   await client.from("activities").insert(activity).eq("sessionsid", sessionId);
 }
@@ -39,7 +40,7 @@ async function removeActivity(activityId: string): Promise<void> {
   const client = useWorkoutClient();
   await client.from("activities").delete().eq("id", activityId);
 }
-async function updateActivity(activity: IActivity, activityId: string): Promise<void> {
+async function updateActivity(activity: Activity, activityId: string): Promise<void> {
   const client = useWorkoutClient();
   await client.from("activities").update(activity).eq("id", activityId);
 }
@@ -51,7 +52,7 @@ export const workoutRepository: Repository<WorkoutRepository> = {
   updateActivity,
 };
 
-function mapUserPlan(plan: IPlan, sessions: ISession[]): IPlan {
+function mapUserPlan(plan: Plan, sessions: Session[]): Plan {
   return {
     ...plan,
     sessions,

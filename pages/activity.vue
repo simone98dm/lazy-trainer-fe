@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
-  import { IActivity } from "~/models/Activity";
+  import { Activity } from "~/models/Activity";
   import { DeepPartial, MAX_ACTIVITY_FORM } from "~/utils";
   import { ref } from "vue";
   import { v4 as uuidv4 } from "uuid";
@@ -21,7 +21,7 @@
     router.back();
   }
 
-  const multiActivities = ref([] as IActivity[]);
+  const multiActivities = ref([] as Activity[]);
 
   if (activityId) {
     const existingActivity = currentSession?.activities.find((act) => act.id === activityId);
@@ -70,7 +70,7 @@
     }
   }
 
-  function updateActivity(a: { activityId?: string; activity: IActivity }) {
+  function updateActivity(a: { activityId?: string; activity: Activity }) {
     const { activityId, activity } = a;
     if (!activityId) {
       multiActivities.value.push(activity);
@@ -84,14 +84,14 @@
     }
   }
 
-  const restActivityTemplate: DeepPartial<IActivity> = {
+  const restActivityTemplate: DeepPartial<Activity> = {
     name: "Rest",
     description: "Take a break ⏱",
     time: 15000,
     requestChange: false,
   };
 
-  function addActivityForm(injectActivity?: DeepPartial<IActivity>) {
+  function addActivityForm(injectActivity?: DeepPartial<Activity>) {
     if (multiActivities.value.length > MAX_ACTIVITY_FORM) {
       alert(`You can't add more than ${MAX_ACTIVITY_FORM} activities at once`);
       return;
@@ -174,16 +174,14 @@
           @click="() => (repeatFor > 1 ? (repeatFor -= 1) : (repeatFor = repeatFor))"
         />
       </div>
-      <div>
-        <BaseButton
-          v-if="!settingsStore.isGlobalLoading"
-          id="save-activity"
-          color="success"
-          icon="save"
-          :label="!activityId ? 'Create' : 'Save'"
-          @click="saveActivity"
-        />
-      </div>
+      <BaseButton
+        v-if="!settingsStore.isGlobalLoading"
+        id="save-activity"
+        color="success"
+        icon="save"
+        :label="!activityId ? 'Create' : 'Save'"
+        @click="saveActivity"
+      />
     </div>
   </div>
 </template>

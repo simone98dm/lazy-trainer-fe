@@ -1,34 +1,18 @@
 import { useSettingStore } from "./settings";
 import { useUserStore } from "./user";
-import { IPlan } from "~/models/Plan";
-import { ISession } from "~/models/Session";
+import { Plan } from "~/models/Plan";
+import { Session } from "~/models/Session";
 import { defineStore } from "pinia";
-import { IActivity } from "~/models/Activity";
-import { DataAction, OrderRequest, parseSessions, Role } from "~/utils";
+import { Activity } from "~/models/Activity";
+import { DataAction, OrderRequest, Role } from "~/utils";
 import { v4 as uuid } from "uuid";
-import {
-  completeSession,
-  getPlan,
-  getUserActivities,
-  getUserStats,
-  sendToTrainer,
-} from "~/helpers/http";
-import { ICompletion } from "~/models/Completion";
-
-function generateBlankPlan(): IPlan {
-  return {
-    id: uuid(),
-    name: "New plan",
-    sessions: [],
-    trainerId: "",
-  };
-}
+import { Completion } from "~/models/Completion";
 
 export const useActivityStore = defineStore("activity", {
   state: () => ({
-    plan: undefined as IPlan | undefined,
-    duplicateActivities: undefined as IActivity[] | undefined,
-    completionDates: undefined as ICompletion[] | undefined,
+    plan: undefined as Plan | undefined,
+    duplicateActivities: undefined as Activity[] | undefined,
+    completionDates: undefined as Completion[] | undefined,
   }),
   getters: {
     getSessionActivities: (state) => (sessionId: string) => {
@@ -59,7 +43,7 @@ export const useActivityStore = defineStore("activity", {
       }
       return missingDays;
     },
-    getCompletedWorkouts(state): ICompletion[] | undefined {
+    getCompletedWorkouts(state): Completion[] | undefined {
       return state.completionDates;
     },
   },
@@ -75,12 +59,12 @@ export const useActivityStore = defineStore("activity", {
         console.log(error);
       }
     },
-    async bulkSaveActivities(sessionId: string, activities: IActivity[]) {
+    async bulkSaveActivities(sessionId: string, activities: Activity[]) {
       for (const activity of activities) {
         await this.addActivity(sessionId, activity);
       }
     },
-    async addActivity(sessionId: string, activity: IActivity) {
+    async addActivity(sessionId: string, activity: Activity) {
       const settingsStore = useSettingStore();
       const userStore = useUserStore();
       settingsStore.loading(true);
@@ -97,30 +81,30 @@ export const useActivityStore = defineStore("activity", {
           if (existingActivity >= 0) {
             this.plan.sessions[index].activities[existingActivity] = activity;
 
-            await sendToTrainer(userStore.user.token, {
-              data: activity,
-              activityId: activity.id,
-              action: DataAction.ACTIVITY_UPDATE,
-            }).then(() => settingsStore.loading(false));
+            // await sendToTrainer(userStore.user.token, {
+            //   data: activity,
+            //   activityId: activity.id,
+            //   action: DataAction.ACTIVITY_UPDATE,
+            // }).then(() => settingsStore.loading(false));
           } else {
             activity.order_index = this.plan.sessions[index].activities.length;
             this.plan.sessions[index].activities.push(activity);
 
-            await sendToTrainer(userStore.user.token, {
-              data: activity,
-              sessionId,
-              action: DataAction.ACTIVITY_CREATE,
-            }).then(() => settingsStore.loading(false));
+            // await sendToTrainer(userStore.user.token, {
+            //   data: activity,
+            //   sessionId,
+            //   action: DataAction.ACTIVITY_CREATE,
+            // }).then(() => settingsStore.loading(false));
           }
         } else {
           activity.order_index = this.plan.sessions[index].activities.length;
           this.plan.sessions[index].activities.push(activity);
 
-          await sendToTrainer(userStore.user.token, {
-            data: activity,
-            sessionId,
-            action: DataAction.ACTIVITY_CREATE,
-          }).then(() => settingsStore.loading(false));
+          // await sendToTrainer(userStore.user.token, {
+          //   data: activity,
+          //   sessionId,
+          //   action: DataAction.ACTIVITY_CREATE,
+          // }).then(() => settingsStore.loading(false));
         }
       }
     },
@@ -145,12 +129,12 @@ export const useActivityStore = defineStore("activity", {
         }
       }
 
-      await sendToTrainer(userStore.user.token, {
-        activityId,
-        action: DataAction.ACTIVITY_DELETE,
-      }).then(() => settingsStore.loading(false));
+      // await sendToTrainer(userStore.user.token, {
+      //   activityId,
+      //   action: DataAction.ACTIVITY_DELETE,
+      // }).then(() => settingsStore.loading(false));
     },
-    async addSession(session: ISession) {
+    async addSession(session: Session) {
       const settingsStore = useSettingStore();
       const userStore = useUserStore();
       settingsStore.loading(true);
@@ -177,11 +161,11 @@ export const useActivityStore = defineStore("activity", {
           dayOfWeek: session.dayOfWeek,
           warmup: session.activities,
         };
-        await sendToTrainer(userStore.user.token, {
-          data,
-          planId: this.plan.id,
-          action: DataAction.SESSION_CREATE,
-        }).then(() => settingsStore.loading(false));
+        // await sendToTrainer(userStore.user.token, {
+        //   data,
+        //   planId: this.plan.id,
+        //   action: DataAction.SESSION_CREATE,
+        // }).then(() => settingsStore.loading(false));
       } else {
         this.plan.sessions[existingIndex].dayOfWeek = session.dayOfWeek;
 
@@ -189,11 +173,11 @@ export const useActivityStore = defineStore("activity", {
           id: session.id,
           dayOfWeek: session.dayOfWeek,
         };
-        await sendToTrainer(userStore.user.token, {
-          data,
-          sessionId: session.id,
-          action: DataAction.SESSION_UPDATE,
-        }).then(() => settingsStore.loading(false));
+        // await sendToTrainer(userStore.user.token, {
+        //   data,
+        //   sessionId: session.id,
+        //   action: DataAction.SESSION_UPDATE,
+        // }).then(() => settingsStore.loading(false));
       }
     },
     async deleteSession(sessionId: string) {
@@ -207,12 +191,12 @@ export const useActivityStore = defineStore("activity", {
 
       this.plan.sessions = this.plan.sessions.filter((x) => x.id !== sessionId);
 
-      await sendToTrainer(userStore.user.token, {
-        sessionId,
-        action: DataAction.SESSION_DELETE,
-      }).then(() => settingsStore.loading(false));
+      // await sendToTrainer(userStore.user.token, {
+      //   sessionId,
+      //   action: DataAction.SESSION_DELETE,
+      // }).then(() => settingsStore.loading(false));
     },
-    setDuplicateWarmup(activitiesToDuplicate: IActivity[] | undefined) {
+    setDuplicateWarmup(activitiesToDuplicate: Activity[] | undefined) {
       if (activitiesToDuplicate) {
         this.duplicateActivities = activitiesToDuplicate.map((activity) => ({
           ...activity,
@@ -222,24 +206,24 @@ export const useActivityStore = defineStore("activity", {
     },
     async getUserActivities(id: string) {
       const userStore = useUserStore();
-      return await getUserActivities(userStore.user.token, id)
-        .then((plan) => {
-          if (plan.error) {
-            this.plan = generateBlankPlan();
-          } else {
-            this.plan = plan;
-          }
-          return plan;
-        })
-        .then((plan) =>
-          plan.sessions
-            .sort((x: ISession, y: ISession) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1))
-            .map(parseSessions)
-        );
+      // return await getUserActivities(userStore.user.token, id)
+      //   .then((plan) => {
+      //     if (plan.error) {
+      //       this.plan = generateBlankPlan();
+      //     } else {
+      //       this.plan = plan;
+      //     }
+      //     return plan;
+      //   })
+      //   .then((plan) =>
+      //     plan.sessions
+      //       .sort((x: Session, y: Session) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1))
+      //       .map(parseSessions)
+      //   );
     },
     async moveActivity(
       sessionId: string | undefined,
-      listActivities: IActivity[],
+      listActivities: Activity[],
       isWarmup: boolean
     ) {
       if (!sessionId) {
@@ -283,54 +267,54 @@ export const useActivityStore = defineStore("activity", {
                 } as OrderRequest)
             ),
           ];
-          await sendToTrainer(userStore.user.token, {
-            data,
-            action: DataAction.ACTIVITY_SORT,
-          }).finally(() => settingsStore.loading(false));
+          // await sendToTrainer(userStore.user.token, {
+          //   data,
+          //   action: DataAction.ACTIVITY_SORT,
+          // }).finally(() => settingsStore.loading(false));
         }
       }
     },
     async sync() {
       const userStore = useUserStore();
-      this.plan = await getPlan(userStore.user.token);
-      if (!this.plan) {
-        generateBlankPlan();
-      }
+      // this.plan = await getPlan(userStore.user.token);
+      // if (!this.plan) {
+      //   generateBlankPlan();
+      // }
     },
     async completeSession(sessionId: string) {
       const settingsStore = useSettingStore();
       const userStore = useUserStore();
       settingsStore.loading(true);
-      await completeSession(userStore.user.token, { sessionId })
-        .then(() => {
-          const d = new Date();
-          if (!this.completionDates) {
-            this.completionDates = [];
-          }
-          const alradyExists = this.completionDates?.find((x) =>
-            checkCompleteDate(
-              x.stats.completion.map((k) => new Date(k)),
-              d
-            )
-          );
-          if (!alradyExists) {
-            this.completionDates.map((x) => x.stats.completion.push(d.toISOString()));
-          }
-        })
-        .finally(() => settingsStore.loading(false));
+      // await completeSession(userStore.user.token, { sessionId })
+      //   .then(() => {
+      //     const d = new Date();
+      //     if (!this.completionDates) {
+      //       this.completionDates = [];
+      //     }
+      //     const alradyExists = this.completionDates?.find((x) =>
+      //       checkCompleteDate(
+      //         x.stats.completion.map((k) => new Date(k)),
+      //         d
+      //       )
+      //     );
+      //     if (!alradyExists) {
+      //       this.completionDates.map((x) => x.stats.completion.push(d.toISOString()));
+      //     }
+      //   })
+      //   .finally(() => settingsStore.loading(false));
     },
     async retrieveUserStats() {
       const settingsStore = useSettingStore();
       settingsStore.loading(true);
       const userStore = useUserStore();
-      await getUserStats(userStore.user.token)
-        .then((response) => response?.json())
-        .then((completionResponse: ICompletion[]) => {
-          const userState = useUserStore();
-          this.completionDates =
-            userState.user.role === Role.TRAINER ? completionResponse.flat() : completionResponse;
-        })
-        .finally(() => settingsStore.loading(false));
+      // await getUserStats(userStore.user.token)
+      //   .then((response) => response?.json())
+      //   .then((completionResponse: ICompletion[]) => {
+      //     const userState = useUserStore();
+      //     this.completionDates =
+      //       userState.user.role === Role.TRAINER ? completionResponse.flat() : completionResponse;
+      //   })
+      //   .finally(() => settingsStore.loading(false));
     },
   },
 });
