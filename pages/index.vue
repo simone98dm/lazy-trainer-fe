@@ -16,7 +16,6 @@
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
 
-  settingsStore.setHeader(`Hello ${userStore.getUsername} 👋`);
   settingsStore.loadSettings();
 
   const sessions = ref([] as CustomSession[] | undefined);
@@ -36,7 +35,6 @@
     activityStore
       .restoreSession()
       .then(() => (sessions.value = activityStore.getWeek?.map(parseSessions)))
-      .then(userStore.fetchUserInfo)
       .catch(() => {
         const router = useRouter();
         router.push({ name: "login" });

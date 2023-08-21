@@ -6,7 +6,7 @@ export const routes = [
     path: "/:plan?",
     component: () => import("~/pages/index.vue"),
     meta: {
-      title: `Trainer`,
+      title: `Home`,
       requireAuth: true,
       requireAdmin: false,
     },

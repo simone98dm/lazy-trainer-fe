@@ -6,26 +6,24 @@ import { User } from "~/models/User";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    user: {} as User,
-    trainer: {} as User,
+    user: null as User | null,
+    trainer: null as User | null,
   }),
   getters: {
-    isLogged: () => {
-      const user = useSupabaseUser();
-      return user.value !== null;
+    isLogged: (state) => {
+      return state.user !== null;
     },
-    getUsername: () => {
-      const user = useSupabaseUser();
-      return user.value.name;
+    username: (state) => {
+      return state.user?.name;
+    },
+    humanizeRole: (state) => {
+      return RoleName[state.user?.role as Role];
     },
     isTrainer: (state) => {
       return state.user?.role === Role.TRAINER;
     },
     isSelfMadeMan: (state) => {
       return state.user?.role === Role.SELFMADE;
-    },
-    getTrainer: (state) => {
-      return state.trainer ?? { name: "" };
     },
   },
   actions: {
@@ -46,12 +44,6 @@ export const useUserStore = defineStore("user", {
           refresh_token: loginResponse.data.session.refresh_token,
         });
 
-        this.user = {
-          ...this.user,
-          token: loginResponse.data.session.access_token,
-          id: loginResponse.data.user.id,
-        };
-
         await this.fetchUserInfo();
       } catch (ex) {
         return {
@@ -65,14 +57,11 @@ export const useUserStore = defineStore("user", {
       const { $user } = useNuxtApp();
       const client = useWorkoutClient();
 
-      const {
-        data: { user },
-      } = await client.auth.getUser();
+      const { data } = await client.auth.getUser();
+      const userResponse = await $user.getUserData(data.user?.id);
+      const { id, name, role, configurations } = userResponse;
 
-      const userResponse = await $user.getUserData(user?.id);
-      const { name, role } = userResponse;
-
-      this.user = { ...this.user, name, role };
+      this.user = { id, name, role, configurations };
 
       return userResponse;
     },
@@ -97,7 +86,7 @@ export const useUserStore = defineStore("user", {
     },
     async retrieveClients() {
       const { $user } = useNuxtApp();
-      return await $user.getTrainerClients(this.user.id);
+      return await $user.getTrainerClients(this.user?.id);
     },
   },
 });

@@ -68,7 +68,6 @@ export const useSettingStore = defineStore("settings", {
       const { user } = useUserStore();
       await $user.saveConfiguration(user.id, userSettings);
 
-      // await saveConfiguration(userStore.user.token || "", userSettings);
       await saveStorage("_settings", userSettings);
     },
     async loadSettings() {

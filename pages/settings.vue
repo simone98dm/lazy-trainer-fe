@@ -48,13 +48,13 @@
           <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg">
             Username
             <span class="font-bold">
-              {{ userStore.user.name }}
+              {{ userStore.username }}
             </span>
           </div>
           <div class="flex justify-between pb-1 mb-6 border-b-2 border-dotted text-lg">
             Role
             <span class="font-bold">
-              {{ RoleName[userStore.user.role as Role] }}
+              {{ userStore.humanizeRole }}
             </span>
           </div>
           <div
@@ -62,8 +62,8 @@
             v-if="!userStore.isTrainer && !userStore.isSelfMadeMan"
           >
             Trainer
-            <span class="font-bold" v-if="userStore.getTrainer">
-              {{ userStore.getTrainer.name }}
+            <span class="font-bold" v-if="userStore.trainer">
+              {{ userStore.trainer?.name }}
             </span>
             <Loading v-else :small="true" :color="userStore.isTrainer ? 'purple' : 'primary'" />
           </div>
