@@ -58,13 +58,15 @@ export const useSettingStore = defineStore("settings", {
       this.saveSettings();
     },
     async saveSettings() {
-      const userStore = useUserStore();
-
       const userSettings = {
         audioDisabled: this.audioDisabled,
         easyMode: this.easyMode,
         darkMode: this.darkMode,
       };
+
+      const { $user } = useNuxtApp();
+      const { user } = useUserStore();
+      await $user.saveConfiguration(user.id, userSettings);
 
       // await saveConfiguration(userStore.user.token || "", userSettings);
       await saveStorage("_settings", userSettings);

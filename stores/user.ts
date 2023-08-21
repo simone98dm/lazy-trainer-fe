@@ -10,11 +10,13 @@ export const useUserStore = defineStore("user", {
     trainer: {} as User,
   }),
   getters: {
-    isLogged: (state) => {
-      return state.user !== null;
+    isLogged: () => {
+      const user = useSupabaseUser();
+      return user.value !== null;
     },
-    getUsername: (state) => {
-      return state.user.name;
+    getUsername: () => {
+      const user = useSupabaseUser();
+      return user.value.name;
     },
     isTrainer: (state) => {
       return state.user?.role === Role.TRAINER;
@@ -78,7 +80,9 @@ export const useUserStore = defineStore("user", {
       if (!trainerId) {
         return;
       }
-      const response = await userInfo(this.user.token, trainerId);
+      const { $user } = useNuxtApp();
+      const response = await $user.getUserData(trainerId);
+
       if (response) {
         this.trainer = response;
       }
@@ -92,7 +96,8 @@ export const useUserStore = defineStore("user", {
       await router.push({ name: "home" });
     },
     async retrieveClients() {
-      return await getGroups(this.user.token, this.user.id);
+      const { $user } = useNuxtApp();
+      return await $user.getTrainerClients(this.user.id);
     },
   },
 });

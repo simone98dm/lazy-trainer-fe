@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { useUserStore } from "~/stores";
   import draggable from "vuedraggable";
-  import { GaCustomEvents, LinkType } from "~/utils";
+  import { LinkType } from "~/utils";
   import { Activity } from "~/models/Activity";
 
   interface ActivityListProps {
@@ -18,7 +18,7 @@
     compatList?: boolean;
   }
 
-  const props = withDefaults(defineProps<ActivityListProps>(), {
+  withDefaults(defineProps<ActivityListProps>(), {
     sessionId: "",
     isWarmup: false,
     allowDrag: false,
@@ -42,48 +42,46 @@
   }
 
   const emits = defineEmits<ActivityListEmits>();
-
-  function runWorkout() {
-    emits("run");
-  }
-
-  function moveItem() {
-    emits("move", props.activities, props.isWarmup);
-  }
 </script>
 
 <template>
-  <div v-if="props.activities">
+  <div v-if="activities">
     <div class="flex items-center justify-between gap-2">
-      <h4 v-if="props.title" class="text-5xl font-bold mr-auto">
-        {{ props.title }}
+      <h4 v-if="title" class="text-5xl font-bold mr-auto">
+        {{ title }}
       </h4>
       <BaseButton
-        v-if="props.enableRun"
+        v-if="enableRun"
         id="run-timer"
         color="success"
         icon="play_arrow"
         :type="LinkType.BUTTON"
         variant="circular"
         label="Start"
-        @click="runWorkout"
+        @click="emits('run')"
       />
       <BaseButton
         id="duplicate-warmup"
-        v-if="(userStore.isTrainer || userStore.isSelfMadeMan) && props.enableDuplicate"
+        v-if="(userStore.isTrainer || userStore.isSelfMadeMan) && enableDuplicate"
         color="light"
         icon="content_copy"
         label="Duplicate"
-        @click="emits('duplicate', props.activities)"
+        @click="emits('duplicate', activities)"
       />
     </div>
-    <draggable v-if="allowDrag" class="mt-4" :list="props.activities" item-key="id" @end="moveItem">
+    <draggable
+      v-if="allowDrag"
+      class="mt-4"
+      :list="activities"
+      item-key="id"
+      @end="emits('move', activities, isWarmup)"
+    >
       <template #item="{ element }">
         <ButtonLink
           :to="{
             name: 'activity',
             params: {
-              session: props.sessionId,
+              session: sessionId,
               activity: element.id,
             },
           }"
@@ -95,12 +93,12 @@
             :time="Number(element.time)"
             :reps="Number(element.reps)"
             :request-change="element.requestChange"
-            :no-card="props.compatList"
-            :allow-delete="props.allowDelete"
+            :no-card="compatList"
+            :allow-delete="allowDelete"
           >
             <template #actions>
               <BaseButton
-                v-if="props.allowDelete"
+                v-if="allowDelete"
                 id="delete-activity"
                 color="danger"
                 icon="delete"
@@ -115,10 +113,10 @@
     </draggable>
     <ActivityItem
       v-else
-      v-for="activity in props.activities"
+      v-for="activity in activities"
       :key="activity.id"
       :id="activity.id"
-      :no-card="props.compatList"
+      :no-card="compatList"
       :name="activity.name"
       :description="activity.description"
       :time="Number(activity.time)"
@@ -126,5 +124,5 @@
       @delete="emits('delete-activity', activity)"
     />
   </div>
-  <ErrorBanner v-else :text="props.noFoundMessage"></ErrorBanner>
+  <ErrorBanner v-else :text="noFoundMessage"></ErrorBanner>
 </template>

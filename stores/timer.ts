@@ -1,8 +1,6 @@
-import { useActivityStore } from "./activity";
+import { useActivityStore, useSettingStore } from "~/stores";
 import { defineStore } from "pinia";
 import { Activity } from "~/models/Activity";
-import { useSettingStore } from "./settings";
-import { useUserStore } from "./user";
 
 export const useTimerStore = defineStore("timer", {
   state: () => ({
@@ -68,19 +66,18 @@ export const useTimerStore = defineStore("timer", {
     },
     async requestChange(sessionId: string) {
       const settingsStore = useSettingStore();
-      const userStore = useUserStore();
       settingsStore.loading(true);
 
-      return await requestActivityChange(userStore.user.token, this.currentActivity?.id ?? "")
-        .then(() => {
-          const activity = useActivityStore();
-          if (this.currentActivity) {
-            const newActivity = { ...this.currentActivity, requestChange: true };
-            activity.addActivity(sessionId, newActivity);
-            this.setCurrentActivity(newActivity);
-          }
-        })
-        .then(() => settingsStore.loading(false));
+      const { $workout } = useNuxtApp();
+      await $workout.requestActivityChange(this.currentActivity?.id ?? "");
+
+      const activity = useActivityStore();
+      if (this.currentActivity) {
+        const newActivity = { ...this.currentActivity, requestChange: true };
+        activity.addActivity(sessionId, newActivity);
+        this.setCurrentActivity(newActivity);
+      }
+      settingsStore.loading(false);
     },
   },
 });

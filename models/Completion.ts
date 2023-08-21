@@ -1,6 +1,6 @@
 export interface Completion {
   userId: string;
-  userName: string;
+  userName?: string;
   stats: {
     completion: string[];
   };

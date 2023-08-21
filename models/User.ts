@@ -1,3 +1,5 @@
+import { UserConfigurations } from "~/utils";
+
 export interface UserResponse {
   data: User;
 }
@@ -7,9 +9,5 @@ export interface User {
   name: string;
   id: string;
   token: string;
-  configurations: {
-    audioDisabled: boolean;
-    easyMode: boolean;
-    darkMode: boolean;
-  };
+  configurations: UserConfigurations;
 }
