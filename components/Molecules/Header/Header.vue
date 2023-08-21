@@ -3,12 +3,14 @@
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
+  const route = useRoute();
 
   function prevPage() {
     const router = useRouter();
-    const route = useRoute();
     router.push(route.meta.prevPage as string);
   }
+
+  const isDashboard = computed(() => route.name === "home");
 </script>
 
 <template>
@@ -19,7 +21,9 @@
       { 'bg-purple-600': userStore.isTrainer },
     ]"
   >
-    <BackButton @click="prevPage" />
+    <span>
+      <BackButton v-if="!isDashboard" @click="prevPage" />
+    </span>
     <h3 class="text-3xl font-semibold">
       {{ settingsStore.getHeaderText }}
     </h3>
