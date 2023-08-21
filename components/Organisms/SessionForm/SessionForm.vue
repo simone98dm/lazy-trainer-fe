@@ -125,7 +125,7 @@
             :key="day"
             :class="[
               {
-                'bg-green-600 text-slate-50': isDaySelected(day) && !userStore.isTrainer,
+                'bg-emerald-600 text-slate-50': isDaySelected(day) && !userStore.isTrainer,
               },
               {
                 'bg-purple-600 text-slate-50': isDaySelected(day) && userStore.isTrainer,
