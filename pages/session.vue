@@ -10,7 +10,7 @@
   const session = activityStore.getSession(sessionId);
 
   function cleanDuplicateActivities() {
-    activityStore.duplicateActivities = undefined;
+    activityStore.duplicateActivities = null;
   }
 
   // function backPage() {
@@ -47,9 +47,6 @@
   }
 </script>
 <template>
-  <!-- <div class="mb-6">
-    <BackButton @click="backPage" />
-  </div> -->
   <div class="flex xl:flex-col flex-wrap justify-center max-w-screen-xl mx-auto">
     <SessionForm
       @save="addSession"

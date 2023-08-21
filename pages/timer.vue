@@ -24,8 +24,6 @@
   const sessionId = route.params.session;
   const activityId = route.params.activity;
 
-  // const isNextVideo = computed(() => timerStore.getNextActivity?.videoUrl);
-
   setupTimer(activityId as string);
 
   onBeforeRouteLeave(() => {

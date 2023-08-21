@@ -20,19 +20,19 @@
   settingsStore.loadSettings();
 
   const sessions = ref([] as CustomSession[] | undefined);
+  const route = useRoute();
 
-  // if (userStore.isTrainer && route.params.plan) {
-  //   activityStore
-  //     .getUserActivities(route.params.planId as string)
-  //     .then((response) => (sessions.value = response))
-  //     .finally(() => (isLoading.value = false));
+  if (userStore.isTrainer && route.params.plan) {
+    activityStore
+      .getUserActivities(route.params.planId as string)
+      .then((response) => (sessions.value = response))
+      .finally(() => (isLoading.value = false));
 
-  //   pageOptions = {
-  //     ...pageOptions,
-  //     title: "Clients session",
-  //   };
-  // } else
-  if (!userStore.isTrainer) {
+    pageOptions = {
+      ...pageOptions,
+      title: "Clients session",
+    };
+  } else if (!userStore.isTrainer) {
     activityStore
       .restoreSession()
       .then(() => (sessions.value = activityStore.getWeek?.map(parseSessions)))

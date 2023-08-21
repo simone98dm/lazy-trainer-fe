@@ -179,12 +179,14 @@ export const useActivityStore = defineStore("activity", {
     async getUserActivities(planId: string) {
       const { $workout } = useNuxtApp();
       const plan = await $workout.getPlan(planId);
+
       if (plan) {
-        plan.sessions
-          .sort((x: Session, y: Session) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1))
-          .map(parseSessions);
         this.plan = plan;
       }
+
+      return plan?.sessions
+        .sort((x: Session, y: Session) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1))
+        .map(parseSessions);
     },
     async moveActivity(
       sessionId: string | undefined,
