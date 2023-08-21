@@ -4,7 +4,6 @@ import { SvgAvailableIcons } from "./types";
 export const FULL_DASH_ARRAY = 283;
 export const WARNING_THRESHOLD = 10;
 export const ALERT_THRESHOLD = 5;
-export const baseUrl = "http://localhost:3001";
 export const MAX_ACTIVITY_FORM = 10;
 
 export const COLOR_CODES = {
