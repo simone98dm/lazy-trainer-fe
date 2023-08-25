@@ -9,7 +9,6 @@
 
   const sessionId = route.params.session as string;
 
-  const session = activityStore.getSession(sessionId);
   const isNew = computed(() => !sessionId);
   const activityList = ref();
   const warmupList = ref();
@@ -17,8 +16,11 @@
   await activityStore.restoreSession();
 
   if (sessionId) {
-    warmupList.value = activityStore.getWarmUpActivities(sessionId);
-    activityList.value = activityStore.getSessionActivities(sessionId);
+    const session = activityStore.getSession(sessionId);
+    activityStore.setSelectedSession(session);
+
+    warmupList.value = activityStore.selectedSession?.activities.filter((x) => x.warmup);
+    activityList.value = activityStore.selectedSession?.activities.filter((x) => !x.warmup);
   }
 
   function sortActivities(activities: Activity[] | undefined, isWarmup: boolean) {
@@ -37,7 +39,7 @@
     if (!confirm("Are you sure you want to delete this activity?")) {
       return;
     }
-    await activityStore.deleteActivity(sessionId, activityId);
+    await activityStore.deleteActivity(activityId);
   }
   async function deleteSession(sessionId: string) {
     if (!confirm("Are you sure you want to delete this session?")) {
@@ -56,11 +58,11 @@
   >
     <SessionForm
       @save="addSession"
-      @remove="deleteSession"
-      :id="sessionId"
-      :day-of-week="session?.dayOfWeek"
+      @delete="deleteSession"
+      :session="activityStore.selectedSession"
     />
-    <div v-if="!isNew" class="w-full px-3 mb-6">
+
+    <div class="w-full px-3 mb-6">
       <div class="flex flex-col justify-center">
         <div class="my-4">
           <ActivityList

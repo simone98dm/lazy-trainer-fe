@@ -34,7 +34,7 @@
   } else if (!userStore.isTrainer) {
     activityStore
       .restoreSession()
-      .then(() => (sessions.value = activityStore.getWeek?.map(parseSessions)))
+      .then(() => (sessions.value = activityStore.sortedWeek?.map(parseSessions)))
       .catch(() => {
         const router = useRouter();
         router.push({ name: "login" });

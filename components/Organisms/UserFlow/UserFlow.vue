@@ -53,7 +53,7 @@
   }
 
   const showAddActivityButton = computed(
-    () => !props.loading && !userStore.isNormal && activityStore.getMissingDays.length > 0
+    () => !props.loading && !userStore.isNormal && activityStore.missingDays.length > 0
   );
 </script>
 

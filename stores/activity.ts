@@ -33,10 +33,10 @@ export const useActivityStore = defineStore("activity", {
       const activities = state.plan?.sessions.map((x) => x.activities).flat();
       return activities?.find((activity) => activity.id === activityId);
     },
-    getWeek(state) {
+    sortedWeek(state) {
       return state.plan?.sessions.sort((x, y) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1));
     },
-    getMissingDays(state) {
+    missingDays(state) {
       const days = state.plan?.sessions.map((item) => item.dayOfWeek);
       const missingDays = [];
       for (let i = 0; i < 7; i++) {
@@ -52,7 +52,9 @@ export const useActivityStore = defineStore("activity", {
       try {
         const { $workout } = useNuxtApp();
         const user = useSupabaseUser();
-        this.plan = await $workout.getUserPlan(user.value.id);
+        if (user.value) {
+          this.plan = await $workout.getUserPlan(user.value?.id);
+        }
         if (!this.plan) {
           this.plan = generateBlankPlan();
         }
@@ -97,12 +99,15 @@ export const useActivityStore = defineStore("activity", {
         }
       }
     },
-    async deleteActivity(sessionId: string, activityId: string) {
-      const settingsStore = useSettingStore();
-      const { $workout } = useNuxtApp();
-      settingsStore.loading(true);
-      await $workout.deleteActivity(activityId);
-      settingsStore.loading(false);
+    async deleteActivity(activityId?: string) {
+      if (activityId) {
+        const settingsStore = useSettingStore();
+        const { $workout } = useNuxtApp();
+        settingsStore.loading(true);
+        await $workout.deleteActivity(activityId);
+        settingsStore.loading(false);
+      }
+      this.selectedActivity = null;
     },
     async updateActivity(activity: Activity) {
       const settingsStore = useSettingStore();
@@ -111,7 +116,11 @@ export const useActivityStore = defineStore("activity", {
       await $workout.updateActivity(activity, activity.id);
       settingsStore.loading(false);
     },
-    async addSession(session: Session) {
+    async addSession(session: Session | null) {
+      if (!session) {
+        return;
+      }
+
       const settingsStore = useSettingStore();
       const { $workout } = useNuxtApp();
       settingsStore.loading(true);
@@ -127,7 +136,7 @@ export const useActivityStore = defineStore("activity", {
       const existingIndex = this.plan.sessions.findIndex((s) => s.id === session.id);
 
       if (existingIndex < 0) {
-        if (!this.getMissingDays.includes(session.dayOfWeek)) {
+        if (!this.missingDays.includes(session.dayOfWeek)) {
           return;
         }
         this.plan.sessions.push(session);
@@ -145,18 +154,15 @@ export const useActivityStore = defineStore("activity", {
       }
       settingsStore.loading(false);
     },
-    async deleteSession(sessionId: string) {
-      const settingsStore = useSettingStore();
-      const { $workout } = useNuxtApp();
-      settingsStore.loading(true);
-
-      if (!this.plan) {
-        this.plan = generateBlankPlan();
+    async deleteSession(sessionId?: string) {
+      if (sessionId) {
+        const settingsStore = useSettingStore();
+        const { $workout } = useNuxtApp();
+        settingsStore.loading(true);
+        await $workout.deleteSession(sessionId);
+        settingsStore.loading(false);
       }
-
-      this.plan.sessions = this.plan.sessions.filter((x) => x.id !== sessionId);
-      await $workout.deleteSession(sessionId);
-      settingsStore.loading(false);
+      this.selectedSession = null;
     },
     async getUserActivities(planId: string) {
       const { $workout } = useNuxtApp();
@@ -224,7 +230,9 @@ export const useActivityStore = defineStore("activity", {
       settingsStore.loading(true);
       const user = useSupabaseUser();
       const { $workout } = useNuxtApp();
-      await $workout.completeWorkout(user.value.id);
+      if (user.value) {
+        await $workout.completeWorkout(user.value.id);
+      }
       const d = new Date();
       if (!this.completionDates) {
         this.completionDates = [];
@@ -243,21 +251,28 @@ export const useActivityStore = defineStore("activity", {
     async retrieveUserStats() {
       const settingsStore = useSettingStore();
       settingsStore.loading(true);
-      const user = useSupabaseUser();
       const { $workout } = useNuxtApp();
-      this.completionDates = await $workout.getUserStats([user.value.id]);
+      const user = useSupabaseUser();
+      if (user.value) {
+        this.completionDates = await $workout.getUserStats([user.value.id]);
+      }
       settingsStore.loading(false);
     },
-    setSelectedSession(sessionId: string) {
-      this.selectedSession = this.plan?.sessions.find(
-        (session) => session.id === sessionId
-      ) as Session;
+    setSelectedSession(session?: Session) {
+      this.selectedSession = session ?? null;
     },
-    setSelectedActivity(activityId: string) {
-      const activities = this.plan?.sessions.map((x) => x.activities).flat();
-      this.selectedActivity = activities?.find(
-        (activity) => activity.id === activityId
-      ) as Activity;
+    setSelectedActivity(activity?: Activity) {
+      this.selectedActivity = activity ?? null;
+    },
+    updateSessionValue(attribute: keyof Session, value: any) {
+      if (this.selectedSession) {
+        this.selectedSession[attribute] = value;
+      }
+    },
+    updateActivityValue(attribute: keyof Activity, value: any) {
+      if (this.selectedActivity) {
+        this.selectedActivity[attribute] = value;
+      }
     },
   },
 });

@@ -1,89 +1,44 @@
 <script setup lang="ts">
-  import { ref } from "vue";
-  import { v4 as uuidv4 } from "uuid";
   import { Session } from "~/models/Session";
   import { getDayOfTheWeek } from "~/utils";
   import { useActivityStore } from "~/stores";
-  import { Activity } from "~/models/Activity";
 
   interface SessionFormProps {
-    id?: string;
-    dayOfWeek?: number;
-    existingForm?: Activity;
+    session: Session | null;
   }
 
   const props = withDefaults(defineProps<SessionFormProps>(), {
-    id: "",
-    dayOfWeek: -1,
-    existingForm: undefined,
+    session: null,
   });
 
   interface SessionFormEmits {
     (e: "save", session: Session): void;
-    (e: "remove", id: string): void;
+    (e: "delete", id: string): void;
   }
 
-  const emits = defineEmits<SessionFormEmits>();
+  defineEmits<SessionFormEmits>();
 
   const activityStore = useActivityStore();
 
-  const currentDayOfWeek = ref(props.dayOfWeek || -1);
-  const dayOfWeek = ref(props.dayOfWeek || -1);
-  const id = ref(props.id || uuidv4());
-  const isNew = computed(() => !props.id);
+  const isNew = computed(() => !props.session?.id);
 
-  function save(day?: number, activities?: Activity[]) {
-    const session: Session = {
-      id: id.value,
-      dayOfWeek: dayOfWeek.value,
-      activities: [],
-    };
-
-    if (day && activities) {
-      session.id = uuidv4();
-      session.dayOfWeek = day;
-      session.activities = activities;
-    } else if (props.existingForm) {
-      session.id = uuidv4();
-      session.activities = [];
-      session.activities.push(props.existingForm);
-    }
-
-    emits("save", session);
+  function isDaySelected(selectedDay: number) {
+    return props.session?.dayOfWeek === selectedDay;
   }
-  function remove() {
-    if (!isNew) {
-      emits("remove", props.id);
-    }
-  }
-  function selectDay(dayIndex: number) {
-    dayOfWeek.value = dayIndex;
-  }
-  function isDaySelected(dayIndex: number) {
-    return dayIndex === dayOfWeek.value;
-  }
-  const title = computed(() => {
-    if (activityStore.getMissingDays.length <= 0) {
-      return "No days available";
-    }
-    return isNew ? "Select day to this session" : "Move this session to:";
-  });
 </script>
 
 <template>
   <div class="flex justify-center w-full">
     <div class="w-full">
       <div>
-        <h1 v-if="isNew" class="text-4xl mb-6">Create a new day session:</h1>
-        <h1 v-else class="text-4xl mb-6">
-          Edit
-          <strong>{{ getDayOfTheWeek(currentDayOfWeek) }}</strong> session:
-        </h1>
+        <span v-if="isNew" class="text-2xl"> Create new session </span>
+        <span v-else class="text-2xl">
+          Editing session: <strong>{{ getDayOfTheWeek(session?.dayOfWeek) }}</strong>
+        </span>
 
-        <span class="text-2xl"> {{ title }} </span>
         <div class="flex justify-center gap-3 mb-6 mt-3">
           <button
-            v-for="day in activityStore.getMissingDays"
+            v-for="day in activityStore.missingDays"
             :key="day"
             :class="[
               {
@@ -92,7 +47,7 @@
               },
               'w-full duration-200 rounded-full px-4 py-2',
             ]"
-            @click="() => selectDay(day)"
+            @click="() => activityStore.updateSessionValue('dayOfWeek', day)"
           >
             {{ getDayOfTheWeek(day) }}
           </button>
@@ -100,12 +55,12 @@
       </div>
       <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
         <BaseButton
-          v-if="dayOfWeek !== -1"
+          v-if="session?.dayOfWeek !== -1"
           :full="true"
           :icon="!isNew ? 'save' : 'add'"
           :label="!isNew ? 'Save' : 'Create'"
           color="success"
-          @click="save"
+          @click="() => activityStore.addSession(activityStore.selectedSession)"
         />
         <BaseButton
           :full="true"
@@ -113,7 +68,7 @@
           icon="delete"
           color="danger"
           label="Delete"
-          @click="remove"
+          @click="() => (activityStore.selectedSession = null)"
         />
       </div>
     </div>

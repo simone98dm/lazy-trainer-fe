@@ -1,110 +1,54 @@
 <script setup lang="ts">
   import { Activity } from "~/models/Activity";
-  import { computed, ref, watch } from "vue";
-  import { v4 as uuidv4 } from "uuid";
-  import { useUserStore } from "~/stores";
+  import { computed, ref } from "vue";
+  import { useActivityStore, useUserStore } from "~/stores";
+  import { storeToRefs } from "pinia";
 
   interface ActivityFormProps {
-    id?: string;
-    dayOfWeek?: number;
-    name?: string;
-    description?: string;
-    time?: number;
-    warmup?: boolean;
-    order?: number;
-    videoUrl?: string;
-    reps?: number;
-    allowDetele?: boolean;
-    i?: number;
+    activity: Activity | null;
+    allowDelete: boolean;
   }
 
   const props = withDefaults(defineProps<ActivityFormProps>(), {
-    id: "",
-    dayOfWeek: 0,
-    name: "",
-    description: "",
-    time: 0,
-    warmup: false,
-    order: 0,
-    videoUrl: "",
-    reps: 0,
-    allowDetele: true,
-    i: 0,
+    activity: null,
   });
 
-  interface ActivityFormEmits {
-    (e: "update", activity: Activity): void;
-  }
-
-  const emits = defineEmits<ActivityFormEmits>();
   const user = useUserStore();
+  const activityStore = useActivityStore();
+  const { selectedActivity } = storeToRefs(activityStore);
 
-  const id = ref(props.id || uuidv4());
-  const name = ref(props.name || "");
-  const nameError = computed(() => name.value === "" && name.value.length < 20);
-
-  const description = ref(props.description || "");
-  const descriptionError = computed(() => description.value.length > 100);
-
-  const time = ref(props.time / 1000 || 0);
-  const timeError = computed(() => time.value <= 0 && time.value > 3600);
-
-  const reps = ref(props.reps || 0);
-  const repsError = computed(() => reps.value <= 0 && reps.value > 100);
-
-  const warmup = ref(props.warmup || false);
-
-  const order = ref(props.order || 0);
-
-  const videoUrl = ref(props.videoUrl || "");
-  const videoUrlError = computed(() => videoUrl.value.length > 8);
-
-  const isTimeBasedActivity = ref(
-    (Boolean(props.time !== 0) && Boolean(props.reps === 0)) ?? false
+  const nameError = computed(
+    () => selectedActivity.value?.name && selectedActivity.value.name.length < 20
+  );
+  const descriptionError = computed(
+    () => selectedActivity.value?.description && selectedActivity.value?.description.length > 100
+  );
+  const timeError = computed(
+    () =>
+      selectedActivity.value?.time &&
+      selectedActivity.value?.time <= 0 &&
+      selectedActivity.value?.time > 3600
+  );
+  const repsError = computed(
+    () =>
+      selectedActivity.value?.reps &&
+      selectedActivity.value?.reps <= 0 &&
+      selectedActivity.value?.reps > 100
   );
 
-  function update() {
-    const activity: Activity = {
-      id: id.value,
-      name: name.value,
-      description: description.value,
-      time: time.value * 1000,
-      order_index: order.value,
-      warmup: warmup.value,
-      videoUrl: videoUrl.value,
-      requestChange: false,
-      reps: reps.value,
-    };
-    if (isTimeBasedActivity.value) {
-      activity.reps = 0;
-    } else {
-      activity.time = 0;
-    }
-    emits("update", activity);
-  }
-  watch([name, description, time, reps, warmup, order, videoUrl], update);
+  const isTimeBasedActivity = ref(
+    (Boolean(props.activity?.time !== 0) && Boolean(props.activity?.reps === 0)) ?? false
+  );
 </script>
 
 <template>
   <div class="flex justify-center bg-white rounded-lg shadow-md mb-6">
-    <form class="p-6 w-full" @submit.prevent>
-      <div class="flex flex-row justify-between">
-        <h1 class="mb-3 text-2xl font-bold">
-          {{ !props.allowDetele ? "Add new activity:" : "Edit activity:" }}
-        </h1>
-
-        <!-- <BaseButton
-          id="delete-activity"
-          color="danger"
-          icon="delete"
-          @click="emits('remove', props.id)"
-        /> -->
-      </div>
+    <div class="p-6 w-full">
       <div class="flex flex-wrap -mx-3">
         <div class="w-full px-3 mb-6">
           <Input
-            :value="name"
-            @change="(v: string) => (name = v)"
+            :value="selectedActivity?.name"
+            @change="(value: string) => activityStore.updateActivityValue('name', value)"
             id="activityName"
             name="activityNameField"
             label="Activity name*"
@@ -115,8 +59,8 @@
 
         <div class="w-full px-3 mb-6">
           <Input
-            :value="description"
-            @change="(v: string) => (description = v)"
+            :value="selectedActivity?.description"
+            @change="(value: string) => activityStore.updateActivityValue('description', value)"
             id="activityDescription"
             name="activityDescriptionField"
             label="Activity description"
@@ -163,46 +107,60 @@
             <div class="w-full sm:w-fit mb-3">
               <TimeSelector
                 v-if="isTimeBasedActivity"
-                :time="time"
-                @timeSelected="(v: number) => (time = v)"
+                :time="selectedActivity?.time ?? 0 / 1000"
+                @timeSelected="(value: string) => activityStore.updateActivityValue('time', value)"
                 :has-error="timeError"
               />
               <Input
                 v-else
-                :value="`${reps}`"
-                @change="(data: string) => (reps = Number(data))"
-                id="activityUrl"
-                name="activityUrlField"
+                :value="`${selectedActivity?.reps}`"
+                @change="(value: string) =>  activityStore.updateActivityValue('reps', Number(value))"
+                id="activityReps"
+                name="activityRepsField"
                 :has-error="repsError"
                 error="Reps not valid"
               />
             </div>
           </div>
         </div>
-        <div class="w-full md:w-full flex flex-col px-3 mb-6">
+        <!-- <div class="w-full md:w-full flex flex-col px-3 mb-6">
           <Input
-            :value="videoUrl"
-            @change="(v: string) => (videoUrl = v)"
+            :value="selectedActivity?.videoUrl"
+            @change="(value: string) => activityStore.updateActivityValue('videoUrl', value)"
             id="activityUrl"
             name="activityUrlField"
             label="Youtube Video Url (just the video id, es. auBLPXO8Fww)"
             :has-error="videoUrlError"
             error="Video url not valid"
           />
-        </div>
+        </div> -->
         <div class="px-3 mb-6">
-          <label class="tracking-wide" :for="`toggle-${props.i}`">
+          <label class="tracking-wide" :for="`toggle-${props.activity?.id}`">
             <span class="flex-left inline"> Is warm-up? </span>
             <Switch
               class="flex-left inline"
-              :id="`toggle-${props.i}`"
-              :name="`toggleWarmup-${props.i}`"
-              :checked="warmup"
-              @toggle="(v: boolean) => (warmup = v)"
+              :id="`toggle-${props.activity?.id}`"
+              :name="`toggleWarmup-${props.activity?.id}`"
+              :checked="selectedActivity?.warmup"
+              @toggle="(isWarmup: boolean) => activityStore.updateActivityValue('warmup', isWarmup)"
             />
           </label>
         </div>
       </div>
-    </form>
+      <div class="flex gap-3 float-right">
+        <BaseButton
+          id="save-activity"
+          color="primary"
+          icon="save"
+          @click="() => activityStore.setSelectedActivity()"
+        />
+        <BaseButton
+          id="delete-activity"
+          color="danger"
+          icon="delete"
+          @click="() => activityStore.deleteActivity(selectedActivity?.id)"
+        />
+      </div>
+    </div>
   </div>
 </template>

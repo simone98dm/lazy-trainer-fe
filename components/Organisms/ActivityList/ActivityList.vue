@@ -44,10 +44,6 @@
 
   const userStore = useUserStore();
   const activityStore = useActivityStore();
-
-  async function updateActivity(activity: Activity) {
-    await activityStore.updateActivity(activity);
-  }
 </script>
 
 <template>
@@ -121,17 +117,8 @@
     <div v-for="activity in activities" :key="activity.id">
       <ActivityForm
         v-if="activityStore.selectedActivity?.id === activity.id"
-        :name="activityStore.selectedActivity.name"
-        :id="activityStore.selectedActivity.id"
-        :description="activityStore.selectedActivity.description"
-        :time="activityStore.selectedActivity.time"
-        :day-of-week="activityStore.selectedSession?.dayOfWeek"
-        :warmup="activityStore.selectedActivity.warmup"
-        :order="activityStore.selectedActivity.order_index"
-        :reps="activityStore.selectedActivity.reps"
-        :video-url="activityStore.selectedActivity.videoUrl"
-        :allow-detele="Boolean(activityStore.selectedActivity.id)"
-        @update="updateActivity"
+        :activity="activityStore.selectedActivity"
+        :allow-delete="Boolean(activityStore.selectedActivity?.id)"
       />
       <ActivityItem
         v-else
@@ -152,7 +139,7 @@
             icon="delete"
             class="float-right ml-2"
             variant="circular"
-            @click.prevent="() => activityStore.deleteActivity(sessionId, activity.id)"
+            @click.prevent="() => activityStore.deleteActivity(activity.id)"
           />
           <BaseButton
             v-if="allowEdit"
@@ -161,7 +148,7 @@
             icon="edit"
             class="float-right ml-2"
             variant="circular"
-            @click.prevent="() => activityStore.setSelectedActivity(activity.id)"
+            @click.prevent="() => activityStore.setSelectedActivity(activity)"
           />
         </template>
       </ActivityItem>

@@ -58,32 +58,6 @@
     redirectToList();
   }
 
-  async function removeActivity(activityId: string) {
-    if (!confirm("Are you sure you want to delete this activity?")) {
-      return;
-    }
-    if (activityId) {
-      await activityStore.deleteActivity(sessionId as string, activityId);
-      redirectToList();
-    } else {
-      multiActivities.value = multiActivities.value.filter((act) => act.id !== activityId);
-    }
-  }
-
-  function updateActivity(a: { activityId?: string; activity: Activity }) {
-    const { activityId, activity } = a;
-    if (!activityId) {
-      multiActivities.value.push(activity);
-    } else {
-      const index = multiActivities.value.findIndex((act) => act.id === activityId);
-      if (index !== -1) {
-        multiActivities.value[index] = activity;
-      } else {
-        multiActivities.value.push(activity);
-      }
-    }
-  }
-
   const restActivityTemplate: DeepPartial<Activity> = {
     name: "Rest",
     description: "Take a break ⏱",
@@ -122,21 +96,10 @@
 <template>
   <div class="max-w-screen-xl mx-auto">
     <ActivityForm
-      v-for="(activity, i) in multiActivities"
+      v-for="activity in multiActivities"
       :key="activity.id"
-      :i="i"
-      :name="activity.name"
-      :id="activity.id"
-      :description="activity.description"
-      :time="activity.time"
-      :day-of-week="currentSession?.dayOfWeek"
-      :warmup="activity.warmup"
-      :order="activity.order_index"
-      :reps="activity.reps"
-      :video-url="activity.videoUrl"
-      :allow-detele="Boolean(activityId)"
-      @update="updateActivity"
-      @remove="removeActivity"
+      :activity="activityStore.selectedActivity"
+      :allow-delete="Boolean(activityId)"
     />
 
     <div class="w-full flex flex-col sm:flex-row px-6 justify-between gap-3 mb-6">
