@@ -1,8 +1,7 @@
 <script setup lang="ts">
-  import { getDayOfTheWeek, LinkType } from "~/utils";
+  import { getDayOfTheWeek } from "~/utils";
   import { useUserStore, useTimerStore, useSettingStore, useActivityStore } from "~/stores";
   import { ref } from "vue";
-  import { Activity } from "~/models/Activity";
 
   const route = useRoute();
   const router = useRouter();
@@ -17,8 +16,10 @@
   const session = activityStore.getSession(sessionId);
   settingsStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
 
-  const activityList = ref(undefined as Activity[] | undefined);
-  const warmupList = ref(undefined as Activity[] | undefined);
+  activityStore.setSelectedSession(sessionId);
+
+  const activityList = ref();
+  const warmupList = ref();
 
   if (sessionId) {
     warmupList.value = activityStore.getWarmUpActivities(sessionId);
@@ -29,13 +30,10 @@
     timerStore.setListActivities(warmupList.value);
     router.push({ name: "timer", params: { session: sessionId } });
   }
+
   function runActivities() {
     timerStore.setListActivities(activityList.value);
     router.push({ name: "timer", params: { session: sessionId } });
-  }
-  function canUserCreateActivity() {
-    const freeActivitySlot = activityStore.getSessionActivities(sessionId)?.length ?? 100;
-    return (userStore.isTrainer || userStore.isSelfMadeMan) && freeActivitySlot < 100;
   }
 </script>
 <template>
@@ -49,7 +47,6 @@
           :is-warmup="true"
           :session-id="sessionId"
           :enable-run="!userStore.isTrainer"
-          :enable-duplicate="false"
           :allow-drag="false"
           :opened="true"
           :compat-list="true"
@@ -63,33 +60,12 @@
           :activities="activityList"
           :session-id="sessionId"
           :enable-run="!userStore.isTrainer"
-          :enable-duplicate="false"
           :allow-drag="false"
           :opened="false"
           :compat-list="true"
           @run="runActivities"
         />
       </Card>
-    </div>
-
-    <div class="flex mb-6 gap-2" v-if="userStore.isTrainer || userStore.isSelfMadeMan">
-      <ButtonLink
-        id="edit-session"
-        :to="{ name: 'session', params: { session: sessionId } }"
-        label="Edit"
-        :color="userStore.isTrainer ? 'purple' : 'primary'"
-        :type="LinkType.BUTTON"
-        icon="edit"
-      />
-      <ButtonLink
-        v-if="canUserCreateActivity()"
-        id="add-activity"
-        icon="add"
-        color="success"
-        :to="{ name: 'activity', params: { session: sessionId } }"
-        :type="LinkType.BUTTON"
-        label="Add"
-      />
     </div>
   </div>
 </template>

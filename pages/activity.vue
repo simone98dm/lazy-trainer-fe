@@ -34,7 +34,7 @@
 
   function redirectToList() {
     router.push({
-      name: "session",
+      name: "edit",
       params: {
         session: sessionId,
       },
@@ -63,7 +63,7 @@
       return;
     }
     if (activityId) {
-      await activityStore.removeActivity(sessionId as string, activityId);
+      await activityStore.deleteActivity(sessionId as string, activityId);
       redirectToList();
     } else {
       multiActivities.value = multiActivities.value.filter((act) => act.id !== activityId);

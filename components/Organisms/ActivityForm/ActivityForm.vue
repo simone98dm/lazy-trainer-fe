@@ -33,8 +33,7 @@
   });
 
   interface ActivityFormEmits {
-    (e: "update", data: { activityId: string; activity: Activity }): void;
-    (e: "remove", id: string): void;
+    (e: "update", activity: Activity): void;
   }
 
   const emits = defineEmits<ActivityFormEmits>();
@@ -70,7 +69,7 @@
       name: name.value,
       description: description.value,
       time: time.value * 1000,
-      order: order.value,
+      order_index: order.value,
       warmup: warmup.value,
       videoUrl: videoUrl.value,
       requestChange: false,
@@ -81,7 +80,7 @@
     } else {
       activity.time = 0;
     }
-    emits("update", { activityId: id.value, activity });
+    emits("update", activity);
   }
   watch([name, description, time, reps, warmup, order, videoUrl], update);
 </script>
@@ -94,12 +93,12 @@
           {{ !props.allowDetele ? "Add new activity:" : "Edit activity:" }}
         </h1>
 
-        <BaseButton
+        <!-- <BaseButton
           id="delete-activity"
           color="danger"
           icon="delete"
           @click="emits('remove', props.id)"
-        />
+        /> -->
       </div>
       <div class="flex flex-wrap -mx-3">
         <div class="w-full px-3 mb-6">

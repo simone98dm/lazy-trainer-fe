@@ -1,10 +1,11 @@
 <script setup lang="ts">
-  import { ICustomSession } from "~/models/Session";
+  import { CustomSession } from "~/models/Session";
   import { useActivityStore, useTimerStore, useUserStore } from "~/stores";
   import { LinkType } from "~/utils";
+  import { v4 as uuidv4 } from "uuid";
 
   interface UserFlowProps {
-    list?: ICustomSession[];
+    list?: CustomSession[];
     loading?: boolean;
   }
 
@@ -15,10 +16,9 @@
   const userStore = useUserStore();
   const activityStore = useActivityStore();
   const router = useRouter();
-  const todayActivity = ref<ICustomSession | undefined>();
 
-  todayActivity.value = props.list?.find(
-    (session) => isHighlightedCard(session) && hasActivities(session.id)
+  const todayActivity = computed(() =>
+    props.list?.find((session) => isHighlightedCard(session) && hasActivities(session.id))
   );
 
   function isToday(dayOfWeek: number): boolean {
@@ -35,7 +35,7 @@
     return a || b;
   }
 
-  function isHighlightedCard(item: ICustomSession): boolean {
+  function isHighlightedCard(item: CustomSession): boolean {
     return !userStore.isTrainer && isToday(item.dayOfWeek);
   }
 
@@ -52,13 +52,9 @@
     }
   }
 
-  const showAddActivityButton = computed(() => {
-    return (
-      !props.loading &&
-      (userStore.isTrainer || userStore.isSelfMadeMan) &&
-      activityStore.getMissingDays.length > 0
-    );
-  });
+  const showAddActivityButton = computed(
+    () => !props.loading && !userStore.isNormal && activityStore.getMissingDays.length > 0
+  );
 </script>
 
 <template>
@@ -107,7 +103,7 @@
     icon="add"
     :full="true"
     :color="userStore.isTrainer ? 'purple' : 'primary'"
-    :to="{ name: 'session' }"
+    :to="{ name: 'edit', params: { session: uuidv4() } }"
     :type="LinkType.BUTTON"
     label="Add day activities"
   />

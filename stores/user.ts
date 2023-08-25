@@ -25,6 +25,9 @@ export const useUserStore = defineStore("user", {
     isSelfMadeMan: (state) => {
       return state.user?.role === Role.SELFMADE;
     },
+    isNormal: (state) => {
+      return state.user?.role === Role.NORMAL;
+    },
   },
   actions: {
     async signIn(username: string, password: string) {

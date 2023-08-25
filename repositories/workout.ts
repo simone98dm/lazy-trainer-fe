@@ -9,7 +9,6 @@ import { Completion } from "~/models/Completion";
 export interface WorkoutRepository {
   getUserPlan(userId: string): Promise<Plan | null>;
   addActivity(activity: Activity, sessionId: string): Promise<void>;
-  removeActivity(activityId: string): Promise<void>;
   updateActivity(activity: Activity, activityId: string): Promise<void>;
   requestActivityChange(activityId: string): Promise<void>;
   deleteActivity(activityId: string): Promise<void>;
@@ -45,10 +44,6 @@ async function addActivity(activity: Activity, sessionId: string): Promise<void>
   const client = useWorkoutClient();
   await client.from("activities").insert(activity).eq("sessionsid", sessionId);
 }
-async function removeActivity(activityId: string): Promise<void> {
-  const client = useWorkoutClient();
-  await client.from("activities").delete().eq("id", activityId);
-}
 async function updateActivity(activity: Activity, activityId: string): Promise<void> {
   const client = useWorkoutClient();
   await client.from("activities").update(activity).eq("id", activityId);
@@ -63,7 +58,11 @@ async function requestActivityChange(activityId: string) {
 }
 async function addSession(planId: string, session: Session): Promise<void> {
   const client = useWorkoutClient();
-  await client.from("sessions").insert({ ...session, planId });
+  await client.from("sessions").insert({
+    id: session.id,
+    dayOfWeek: session.dayOfWeek,
+    planId,
+  });
   if (session.activities) {
     const promiseActivities = session.activities.map((act) => addActivity(act, session.id));
     await Promise.all(promiseActivities);
@@ -122,7 +121,6 @@ async function getUserStats(userId: string[]): Promise<Completion[] | null> {
 export const workoutRepository: Repository<WorkoutRepository> = {
   getUserPlan,
   addActivity,
-  removeActivity,
   updateActivity,
   deleteActivity,
   requestActivityChange,

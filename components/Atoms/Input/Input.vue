@@ -1,7 +1,7 @@
 <script setup lang="ts">
   interface InputProps {
     value?: string;
-    label: string;
+    label?: string;
     error?: string;
     id: string;
     name: string;
@@ -12,6 +12,7 @@
   const props = withDefaults(defineProps<InputProps>(), {
     value: "",
     error: "",
+    label: "",
     type: "text",
     disabled: false,
   });
@@ -39,7 +40,7 @@
   <input
     :value="value"
     :class="[
-      'appearance-none block w-full bg-white dark:bg-slate-900 border border-gray-400 dark:border-gray-700 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:border-green-500',
+      'appearance-none block w-full bg-gray-100 dark:bg-slate-800 border text-slate-800 dark:text-gray-100 border-gray-400 dark:border-gray-700 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:border-green-500',
       { 'border-red-600': error },
     ]"
     :name="name"

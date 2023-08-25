@@ -43,11 +43,11 @@ export const routes = [
     },
   },
   {
-    name: "session",
-    path: "/session/:session?",
-    component: () => import("~/pages/session.vue"),
+    name: "edit",
+    path: "/edit/:session?",
+    component: () => import("~/pages/edit.vue"),
     meta: {
-      title: `Sessions`,
+      title: `Edit`,
       requireAuth: true,
       requireAdmin: false,
     },

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { useUserStore } from "~/stores";
-  import draggable from "vuedraggable";
+  import { useActivityStore, useUserStore } from "~/stores";
   import { LinkType } from "~/utils";
   import { Activity } from "~/models/Activity";
+  import draggable from "vuedraggable";
 
   interface ActivityListProps {
     activities?: Activity[];
@@ -10,38 +10,44 @@
     isWarmup?: boolean;
     allowDrag?: boolean;
     allowDelete?: boolean;
+    allowAdd?: boolean;
+    allowEdit?: boolean;
     title?: string;
     enableRun?: boolean;
-    enableDuplicate?: boolean;
     noFoundMessage?: string;
     opened?: boolean;
     compatList?: boolean;
   }
 
-  withDefaults(defineProps<ActivityListProps>(), {
+  interface ActivityListEmits {
+    (e: "move", activities: Activity[] | undefined, isWarmup: boolean): void;
+    (e: "delete", id: string): void;
+    (e: "edit", id: string): void;
+    (e: "run"): void;
+    (e: "delete-activity", activity: Activity): void;
+  }
+
+  const props = withDefaults(defineProps<ActivityListProps>(), {
     sessionId: "",
     isWarmup: false,
     allowDrag: false,
     allowDelete: false,
+    allowAdd: false,
+    allowEdit: false,
     title: "",
     enableRun: false,
-    enableDuplicate: false,
     noFoundMessage: "No activities found",
     opened: true,
     compatList: false,
   });
+  const emits = defineEmits<ActivityListEmits>();
 
   const userStore = useUserStore();
+  const activityStore = useActivityStore();
 
-  interface ActivityListEmits {
-    (e: "move", activities: Activity[] | undefined, isWarmup: boolean): void;
-    (e: "delete", id: string): void;
-    (e: "run"): void;
-    (e: "duplicate", activities: Activity[] | undefined): void;
-    (e: "delete-activity", activity: Activity): void;
+  async function updateActivity(activity: Activity) {
+    await activityStore.updateActivity(activity);
   }
-
-  const emits = defineEmits<ActivityListEmits>();
 </script>
 
 <template>
@@ -60,16 +66,8 @@
         label="Start"
         @click="emits('run')"
       />
-      <BaseButton
-        id="duplicate-warmup"
-        v-if="(userStore.isTrainer || userStore.isSelfMadeMan) && enableDuplicate"
-        color="light"
-        icon="content_copy"
-        label="Duplicate"
-        @click="emits('duplicate', activities)"
-      />
     </div>
-    <draggable
+    <!-- <draggable
       v-if="allowDrag"
       class="mt-4"
       :list="activities"
@@ -103,26 +101,83 @@
                 color="danger"
                 icon="delete"
                 class="float-right ml-2"
-                :circular="true"
+                variant="circular"
                 @click.prevent="emits('delete', element.id)"
+              />
+              <BaseButton
+                v-if="allowEdit"
+                id="edit-activity"
+                color="warning"
+                icon="edit"
+                class="float-right ml-2"
+                variant="circular"
+                @click.prevent="() => activityStore.editActivity(element.id)"
               />
             </template>
           </ActivityItem>
         </ButtonLink>
       </template>
-    </draggable>
-    <ActivityItem
-      v-else
-      v-for="activity in activities"
-      :key="activity.id"
-      :id="activity.id"
-      :no-card="compatList"
-      :name="activity.name"
-      :description="activity.description"
-      :time="Number(activity.time)"
-      :reps="Number(activity.reps)"
-      @delete="emits('delete-activity', activity)"
-    />
+    </draggable> -->
+    <div v-for="activity in activities" :key="activity.id">
+      <ActivityForm
+        v-if="activityStore.selectedActivity?.id === activity.id"
+        :name="activityStore.selectedActivity.name"
+        :id="activityStore.selectedActivity.id"
+        :description="activityStore.selectedActivity.description"
+        :time="activityStore.selectedActivity.time"
+        :day-of-week="activityStore.selectedSession?.dayOfWeek"
+        :warmup="activityStore.selectedActivity.warmup"
+        :order="activityStore.selectedActivity.order_index"
+        :reps="activityStore.selectedActivity.reps"
+        :video-url="activityStore.selectedActivity.videoUrl"
+        :allow-detele="Boolean(activityStore.selectedActivity.id)"
+        @update="updateActivity"
+      />
+      <ActivityItem
+        v-else
+        :id="activity.id"
+        :name="activity.name"
+        :description="activity.description"
+        :time="Number(activity.time)"
+        :reps="Number(activity.reps)"
+        :request-change="activity.requestChange"
+        :no-card="compatList"
+        :allow-delete="true"
+      >
+        <template #actions>
+          <BaseButton
+            v-if="allowDelete"
+            id="delete-activity"
+            color="danger"
+            icon="delete"
+            class="float-right ml-2"
+            variant="circular"
+            @click.prevent="() => activityStore.deleteActivity(sessionId, activity.id)"
+          />
+          <BaseButton
+            v-if="allowEdit"
+            id="edit-activity"
+            color="warning"
+            icon="edit"
+            class="float-right ml-2"
+            variant="circular"
+            @click.prevent="() => activityStore.setSelectedActivity(activity.id)"
+          />
+        </template>
+      </ActivityItem>
+    </div>
   </div>
   <ErrorBanner v-else :text="noFoundMessage"></ErrorBanner>
+  <div v-if="!userStore.isNormal" class="flex mb-6 gap-2">
+    <ButtonLink
+      v-if="allowAdd && (activityStore.getSessionActivities(props.sessionId)?.length ?? 100)"
+      id="add-activity"
+      icon="add"
+      :full="true"
+      color="success"
+      :to="{ name: 'activity', params: { session: sessionId } }"
+      :type="LinkType.BUTTON"
+      label="Add"
+    />
+  </div>
 </template>

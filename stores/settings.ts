@@ -66,7 +66,7 @@ export const useSettingStore = defineStore("settings", {
 
       const { $user } = useNuxtApp();
       const { user } = useUserStore();
-      await $user.saveConfiguration(user.id, userSettings);
+      await $user.saveConfiguration(user?.id, userSettings);
 
       await saveStorage("_settings", userSettings);
     },

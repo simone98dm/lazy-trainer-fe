@@ -1,16 +1,16 @@
 <script setup lang="ts">
-  import { useSettingStore, useUserStore } from "~/stores";
+  import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
+  const activityStore = useActivityStore();
   const route = useRoute();
+  const isDashboard = computed(() => route.name === "home");
 
   function prevPage() {
     const router = useRouter();
     router.push(route.meta.prevPage as string);
   }
-
-  const isDashboard = computed(() => route.name === "home");
 </script>
 
 <template>
@@ -27,6 +27,13 @@
     <h3 class="text-3xl font-semibold">
       {{ settingsStore.getHeaderText }}
     </h3>
-    <span></span>
+    <span>
+      <RouterLink
+        v-if="activityStore.selectedSession"
+        :to="{ name: 'edit', params: { session: activityStore.selectedSession?.id } }"
+      >
+        <MaterialIcon component="edit" />
+      </RouterLink>
+    </span>
   </div>
 </template>

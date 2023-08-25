@@ -1,25 +1,14 @@
 <script setup lang="ts">
-  import { Role, RoleName } from "~/utils";
   import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
-  import { ref } from "vue";
   import { version } from "~/package.json";
 
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
 
-  const syncStatus = ref(false);
-
   if (!userStore.isTrainer) {
     const trainerId = activityStore.plan?.trainerId;
     await userStore.getTrainerInfo(trainerId);
-  }
-
-  function syncProfile() {
-    syncStatus.value = true;
-    activityStore.sync().finally(() => {
-      syncStatus.value = false;
-    });
   }
 
   async function logout() {
@@ -129,17 +118,6 @@
         </div>
       </div>
     </Card>
-    <div class="w-full flex justify-center mb-3">
-      <BaseButton
-        v-if="!userStore.isTrainer"
-        color="light"
-        :loading="syncStatus"
-        :full="true"
-        icon="cloud_sync"
-        label="Sync data"
-        @click="syncProfile"
-      />
-    </div>
     <div class="w-full flex justify-center mb-3">
       <BaseButton
         :color="userStore.isTrainer ? 'purple' : 'primary'"
