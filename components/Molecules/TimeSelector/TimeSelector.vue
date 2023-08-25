@@ -4,6 +4,7 @@
 
   interface TimeSelectorProps {
     time: number;
+    error?: string;
   }
 
   const props = defineProps<TimeSelectorProps>();
@@ -51,4 +52,5 @@
       @click="() => (showModal = true)"
     />
   </div>
+  <span v-if="error" class="text-red-600">{{ error }}</span>
 </template>

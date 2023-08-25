@@ -17,27 +17,20 @@
   const activityStore = useActivityStore();
   const { selectedActivity } = storeToRefs(activityStore);
 
-  const nameError = computed(
-    () => selectedActivity.value?.name && selectedActivity.value.name.length < 20
+  const nameError = computed(() => (!selectedActivity.value?.name ? "Name is required" : ""));
+  const descriptionError = computed(() =>
+    selectedActivity.value?.description && selectedActivity.value?.description.length > 100
+      ? "Description is too long"
+      : ""
   );
-  const descriptionError = computed(
-    () => selectedActivity.value?.description && selectedActivity.value?.description.length > 100
-  );
-  const timeError = computed(
-    () =>
-      selectedActivity.value?.time &&
-      selectedActivity.value?.time <= 0 &&
-      selectedActivity.value?.time > 3600
-  );
-  const repsError = computed(
-    () =>
-      selectedActivity.value?.reps &&
-      selectedActivity.value?.reps <= 0 &&
-      selectedActivity.value?.reps > 100
-  );
-
   const isTimeBasedActivity = ref(
     (Boolean(props.activity?.time !== 0) && Boolean(props.activity?.reps === 0)) ?? false
+  );
+  const timeError = computed(() =>
+    isTimeBasedActivity.value && !selectedActivity.value?.time ? "Time is required" : ""
+  );
+  const repsError = computed(() =>
+    !isTimeBasedActivity.value && !selectedActivity.value?.reps ? "Reps are required" : ""
   );
 </script>
 
@@ -51,9 +44,9 @@
             @change="(value: string) => activityStore.updateActivityValue('name', value)"
             id="activityName"
             name="activityNameField"
-            label="Activity name*"
-            :has-error="nameError"
-            error="Name is required"
+            label="Activity name"
+            :required="true"
+            :error="nameError"
           />
         </div>
 
@@ -64,8 +57,7 @@
             id="activityDescription"
             name="activityDescriptionField"
             label="Activity description"
-            :has-error="descriptionError"
-            error="Description is required"
+            :error="descriptionError"
           />
         </div>
 
@@ -107,9 +99,9 @@
             <div class="w-full sm:w-fit mb-3">
               <TimeSelector
                 v-if="isTimeBasedActivity"
-                :time="selectedActivity?.time ?? 0 / 1000"
+                :time="(selectedActivity?.time ?? 0) / 1000"
                 @timeSelected="(value: string) => activityStore.updateActivityValue('time', value)"
-                :has-error="timeError"
+                :error="timeError"
               />
               <Input
                 v-else
@@ -117,8 +109,7 @@
                 @change="(value: string) =>  activityStore.updateActivityValue('reps', Number(value))"
                 id="activityReps"
                 name="activityRepsField"
-                :has-error="repsError"
-                error="Reps not valid"
+                :error="repsError"
               />
             </div>
           </div>
@@ -130,7 +121,7 @@
             id="activityUrl"
             name="activityUrlField"
             label="Youtube Video Url (just the video id, es. auBLPXO8Fww)"
-            :has-error="videoUrlError"
+            :error="videoUrlError"
             error="Video url not valid"
           />
         </div> -->

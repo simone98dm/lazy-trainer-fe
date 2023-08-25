@@ -3,18 +3,20 @@
     value?: string;
     label?: string;
     error?: string;
+    required?: boolean;
     id: string;
     name: string;
     type?: string;
     disabled?: boolean;
   }
 
-  const props = withDefaults(defineProps<InputProps>(), {
+  withDefaults(defineProps<InputProps>(), {
     value: "",
     error: "",
     label: "",
     type: "text",
     disabled: false,
+    required: false,
   });
 
   interface InputEmits {
@@ -36,6 +38,7 @@
     :for="name"
   >
     {{ label }}
+    <span v-if="required" class="text-red-600">*</span>
   </label>
   <input
     :value="value"
