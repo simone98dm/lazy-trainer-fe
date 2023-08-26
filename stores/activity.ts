@@ -14,7 +14,7 @@ export const useActivityStore = defineStore("activity", {
     selectedActivity: null as Activity | null,
   }),
   getters: {
-    getSessionActivities: (state) => (sessionId: string) => {
+    getActivities: (state) => (sessionId: string) => {
       return state.plan?.sessions
         .find((session) => session.id === sessionId)
         ?.activities.filter((item) => !item.warmup)
@@ -49,17 +49,15 @@ export const useActivityStore = defineStore("activity", {
   },
   actions: {
     async restoreSession() {
-      try {
-        const { $workout } = useNuxtApp();
-        const user = useSupabaseUser();
-        if (user.value) {
-          this.plan = await $workout.getUserPlan(user.value?.id);
-        }
-        if (!this.plan) {
-          this.plan = generateBlankPlan();
-        }
-      } catch (error) {
-        console.log(error);
+      const { $workout } = useNuxtApp();
+      const user = useSupabaseUser();
+
+      if (user.value) {
+        this.plan = await $workout.getUserPlan(user.value?.id);
+      }
+
+      if (!this.plan) {
+        this.plan = generateBlankPlan();
       }
     },
     async bulkSaveActivities(sessionId: string, activities: Activity[]) {
@@ -76,14 +74,26 @@ export const useActivityStore = defineStore("activity", {
         this.plan = generateBlankPlan();
       }
 
-      const data = await $workout.addActivity(activity);
+      if (!activity.id) {
+        const data = await $workout.addActivity(activity);
+        if (this.plan) {
+          this.plan = {
+            ...this.plan,
+            sessions: this.plan.sessions.map((session) => {
+              if (session.id === activity.sessionId) {
+                session.activities.push(activity);
+              }
+              return session;
+            }),
+          };
+        }
+        settingsStore.loading(false);
 
-      if (data) {
-        this.plan.sessions.find((x) => x.id === activity.id)?.activities.push(data);
+        return data;
       }
 
       settingsStore.loading(false);
-      return data;
+      return null;
     },
     async deleteActivity(activityId?: string) {
       if (activityId) {
@@ -91,6 +101,19 @@ export const useActivityStore = defineStore("activity", {
         const { $workout } = useNuxtApp();
         settingsStore.loading(true);
         await $workout.deleteActivity(activityId);
+
+        if (this.plan) {
+          this.plan = {
+            ...this.plan,
+            sessions:
+              this.plan?.sessions?.map((session) => ({
+                ...session,
+                activities: [
+                  ...session.activities.filter((activity) => activity.id !== activityId),
+                ],
+              })) ?? [],
+          };
+        }
         settingsStore.loading(false);
       }
       this.selectedActivity = null;

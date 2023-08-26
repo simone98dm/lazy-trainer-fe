@@ -51,11 +51,11 @@
     if (props.isWarmup) {
       order_index = activityStore.getWarmUpActivities?.length + 1;
     } else {
-      order_index = activityStore.getSessionActivities?.length + 1;
+      order_index = activityStore.getActivities?.length + 1;
     }
     const activity: Activity = {
+      name: "New activity",
       description: "",
-      name: "",
       reps: 0,
       requestChange: false,
       warmup: props.isWarmup,
@@ -63,8 +63,7 @@
       order_index,
       sessionId: props.sessionId,
     };
-    const returnActivity = await activityStore.addActivity(activity);
-    activityStore.setSelectedActivity(returnActivity);
+    activityStore.setSelectedActivity(activity);
   }
 </script>
 
@@ -85,7 +84,7 @@
         @click="emits('run')"
       />
     </div>
-    <draggable
+    <!-- <draggable
       v-if="allowDrag"
       class="mt-4"
       :list="activities"
@@ -94,35 +93,65 @@
     >
       <template #item="{ element }">
         <ActivityForm
-          v-if="activityStore.selectedActivity?.id === element.id"
+          v-if="activityStore.selectedActivity"
           :activity="activityStore.selectedActivity"
           :allow-delete="Boolean(activityStore.selectedActivity?.id)"
         />
         <ActivityItem v-else :activity="element">
           <template #actions>
-            <BaseButton
-              v-if="allowDelete"
-              id="delete-activity"
-              color="danger"
-              icon="delete"
-              class="float-right ml-2"
-              variant="circular"
-              @click.prevent="() => activityStore.deleteActivity(element.id)"
-            />
-            <BaseButton
-              v-if="allowEdit"
-              id="edit-activity"
-              color="warning"
-              icon="edit"
-              class="float-right ml-2"
-              variant="circular"
-              @click.prevent="() => activityStore.setSelectedActivity(element)"
-            />
+            <div class="flex m-2">
+              <BaseButton
+                v-if="allowDelete"
+                id="delete-activity"
+                color="danger"
+                icon="delete"
+                class="float-right ml-2"
+                variant="circular"
+                @click.prevent="() => activityStore.deleteActivity(element.id)"
+              />
+              <BaseButton
+                v-if="allowEdit"
+                id="edit-activity"
+                color="warning"
+                icon="edit"
+                class="float-right ml-2"
+                variant="circular"
+                @click.prevent="() => activityStore.setSelectedActivity(element)"
+              />
+            </div>
           </template>
         </ActivityItem>
       </template>
-    </draggable>
-    <ActivityItem v-else v-for="activity in activities" :key="activity.id" :activity="activity" />
+    </draggable> -->
+    <ActivityForm
+      v-if="activityStore.selectedActivity"
+      :activity="activityStore.selectedActivity"
+      :allow-delete="Boolean(activityStore.selectedActivity?.id)"
+    />
+    <ActivityItem v-for="activity in activities" :key="activity.id" :activity="activity">
+      <template #actions>
+        <div class="flex m-2">
+          <BaseButton
+            v-if="allowDelete"
+            id="delete-activity"
+            color="danger"
+            icon="delete"
+            class="float-right ml-2"
+            variant="circular"
+            @click.prevent="() => activityStore.deleteActivity(activity.id)"
+          />
+          <BaseButton
+            v-if="allowEdit"
+            id="edit-activity"
+            color="warning"
+            icon="edit"
+            class="float-right ml-2"
+            variant="circular"
+            @click.prevent="() => activityStore.setSelectedActivity(activity)"
+          />
+        </div>
+      </template>
+    </ActivityItem>
   </div>
   <ErrorBanner v-else :text="noFoundMessage"></ErrorBanner>
   <div v-if="!userStore.isNormal" class="flex mb-6 gap-2">

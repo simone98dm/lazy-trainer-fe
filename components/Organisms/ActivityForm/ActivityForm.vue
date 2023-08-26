@@ -32,6 +32,13 @@
   const repsError = computed(() =>
     !isTimeBasedActivity.value && !selectedActivity.value?.reps ? "Reps are required" : ""
   );
+
+  async function saveActivity() {
+    if (activityStore.selectedActivity) {
+      await activityStore.addActivity(activityStore.selectedActivity);
+      activityStore.setSelectedActivity(null);
+    }
+  }
 </script>
 
 <template>
@@ -139,10 +146,12 @@
         </div>
       </div>
       <div class="flex gap-3 float-right">
+        <BaseButton id="save-activity" color="primary" icon="save" @click="saveActivity" />
         <BaseButton
-          id="save-activity"
-          color="primary"
-          icon="save"
+          v-if="allowDelete"
+          id="remove-activity"
+          color="danger"
+          icon="delete"
           @click="() => activityStore.setSelectedActivity(null)"
         />
       </div>

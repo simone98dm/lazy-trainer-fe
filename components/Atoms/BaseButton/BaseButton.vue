@@ -47,7 +47,7 @@
       { 'rounded-lg': variant === 'smooth' },
       { 'w-full': full ?? false },
       {
-        'shadow-lg': color !== 'trasparent',
+        shadow: color !== 'trasparent',
       },
       {
         'py-4 md:py-3 px-4 md:px-8 text-sm': !size || size === 'medium',
@@ -56,7 +56,7 @@
         'py-2 md:py-1 px-2 md:px-4 text-xs': size === 'small',
       },
       {
-        'py-6 md:py-5 px-6 md:px-10 text-xl': size === 'large',
+        'py-6 md:py-5 px-6 md:px-12 text-xl': size === 'large',
       },
     ]"
     type="button"

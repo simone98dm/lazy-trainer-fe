@@ -53,13 +53,14 @@
           </button>
         </div>
       </div>
-      <div class="w-full flex flex-col sm:flex-row justify-center px-3 gap-3">
+      <div class="flex justify-center gap-3">
         <BaseButton
           v-if="session?.dayOfWeek !== -1"
           :full="true"
           :icon="!isNew ? 'save' : 'add'"
           :label="!isNew ? 'Save' : 'Create'"
           color="success"
+          size="small"
           @click="$emit('save', activityStore.selectedSession)"
         />
         <BaseButton
@@ -68,6 +69,7 @@
           icon="delete"
           color="danger"
           label="Delete"
+          size="small"
           @click="$emit('delete', activityStore.selectedSession)"
         />
       </div>

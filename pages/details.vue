@@ -23,7 +23,7 @@
 
   if (sessionId) {
     warmupList.value = activityStore.getWarmUpActivities(sessionId);
-    activityList.value = activityStore.getSessionActivities(sessionId);
+    activityList.value = activityStore.getActivities(sessionId);
   }
 
   function runWarmUp() {

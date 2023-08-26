@@ -26,7 +26,7 @@
 
   function hasActivities(sessionId: string): boolean {
     const warmupList = activityStore.getWarmUpActivities(sessionId);
-    const activityList = activityStore.getSessionActivities(sessionId);
+    const activityList = activityStore.getActivities(sessionId);
 
     const a = (warmupList?.length ?? 0) > 0;
     const b = (activityList?.length ?? 0) > 0;
@@ -41,7 +41,7 @@
   function runWorkout() {
     if (todayActivity.value) {
       const warmupList = activityStore.getWarmUpActivities(todayActivity.value.id);
-      const activityList = activityStore.getSessionActivities(todayActivity.value.id);
+      const activityList = activityStore.getActivities(todayActivity.value.id);
 
       const timerStore = useTimerStore();
 
