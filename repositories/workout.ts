@@ -8,12 +8,12 @@ import { Completion } from "~/models/Completion";
 
 export interface WorkoutRepository {
   getUserPlan(userId: string): Promise<Plan | null>;
-  addActivity(activity: Activity, sessionId: string): Promise<void>;
+  addActivity(activity: Activity): Promise<Activity | null>;
   updateActivity(activity: Activity, activityId: string): Promise<void>;
   requestActivityChange(activityId: string): Promise<void>;
   deleteActivity(activityId: string): Promise<void>;
-  addSession(planId: string, session: Session): Promise<void>;
-  updateSession(sessionId: string, data: { id: string; dayOfWeek: number }): Promise<void>;
+  addSession(session: Session): Promise<Session | null>;
+  updateSession(session: Session, sessionId: string): Promise<void>;
   deleteSession(sessionId: string): Promise<void>;
   getPlan(planId: string): Promise<Plan | null>;
   sortActivities(request: OrderRequest[]): Promise<void>;
@@ -40,44 +40,55 @@ async function getUserPlan(userId: string): Promise<Plan | null> {
 
   return sessions;
 }
-async function addActivity(activity: Activity, sessionId: string): Promise<void> {
+async function addActivity(activity: Activity): Promise<Activity | null> {
   const client = useWorkoutClient();
-  await client.from("activities").insert(activity).eq("sessionsid", sessionId);
+  const { data } = await client.from("activities").insert(activity).select();
+  if (data) {
+    return data[0] as Activity;
+  }
+  return null;
 }
 async function updateActivity(activity: Activity, activityId: string): Promise<void> {
   const client = useWorkoutClient();
-  await client.from("activities").update(activity).eq("id", activityId);
+  await client.from("activities").update(activity).eq("id", activityId).select();
 }
 async function deleteActivity(activityId: string): Promise<void> {
   const client = useWorkoutClient();
-  await client.from("activities").delete().eq("id", activityId);
+  await client.from("activities").delete().eq("id", activityId).select();
 }
 async function requestActivityChange(activityId: string) {
   const client = useWorkoutClient();
-  await client.from("activities").update({ requestChange: true }).eq("id", activityId);
+  await client.from("activities").update({ requestChange: true }).eq("id", activityId).select();
 }
-async function addSession(planId: string, session: Session): Promise<void> {
+async function addSession(session: Session): Promise<Session | null> {
   const client = useWorkoutClient();
-  await client.from("sessions").insert({
-    id: session.id,
-    dayOfWeek: session.dayOfWeek,
-    planId,
-  });
-  if (session.activities) {
-    const promiseActivities = session.activities.map((act) => addActivity(act, session.id));
-    await Promise.all(promiseActivities);
+  const { data } = await client
+    .from("sessions")
+    .insert({
+      id: session.id,
+      dayOfWeek: session.dayOfWeek,
+      planId: session.planId,
+    })
+    .select();
+
+  if (data) {
+    if (session.activities) {
+      const promiseActivities = session.activities.map((act) => addActivity(act));
+      await Promise.all(promiseActivities);
+    }
+
+    return data[0] as Session;
   }
+  return null;
 }
-async function updateSession(
-  sessionId: string,
-  data: { id: string; dayOfWeek: number }
-): Promise<void> {
+async function updateSession(session: Session, sessionId: string): Promise<void> {
   const client = useWorkoutClient();
-  await client.from("sessions").update(data).eq("id", sessionId);
+  const { dayOfWeek, id, planId } = session;
+  await client.from("sessions").update({ dayOfWeek, id, planId }).eq("id", sessionId).select();
 }
 async function deleteSession(sessionId: string): Promise<void> {
   const client = useWorkoutClient();
-  await client.from("sessions").delete().eq("id", sessionId);
+  await client.from("sessions").delete().eq("id", sessionId).select();
 }
 async function getPlan(planId: string): Promise<Plan | null> {
   const client = useWorkoutClient();

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import { computed, ref } from "vue";
+  import { ref } from "vue";
   import doubleWhistle from "~/assets/audio/double-whistle.mp3";
   import horn from "~/assets/audio/horn.mp3";
   import { type TimerActivity, COLOR_CODES, FULL_DASH_ARRAY } from "~/utils";
   import { Activity } from "~/models/Activity";
-  import { useTimerStore, useSettingStore, useUserStore, useActivityStore } from "~/stores";
+  import { useTimerStore, useSettingStore, useActivityStore } from "~/stores";
 
   const route = useRoute();
   const router = useRouter();
@@ -44,19 +44,21 @@
 
   window.addEventListener("beforeunload", onConfirmRefresh, { capture: true });
 
-  function setupTimer(activityId: string) {
+  function setupTimer(activityId?: string) {
     const activities = timerStore.getListActivities;
 
     if (!activities || activities.length <= 0) {
       router.back();
     } else {
-      const acts: TimerActivity = getActivity(activities, activityId);
-      if (acts) {
-        timerStore.setCurrentActivity(acts.firstActivity);
-        timerStore.setNextActivity(acts.secondActivity);
-        TIME_LIMIT.value = timerStore.currentActivityTimer / 1000;
-        timeLeft.value = TIME_LIMIT.value;
-        baseTimerLabel.value = formatTime(timeLeft.value);
+      if (activityId) {
+        const acts: TimerActivity = getActivity(activities, activityId);
+        if (acts) {
+          timerStore.setCurrentActivity(acts.firstActivity);
+          timerStore.setNextActivity(acts.secondActivity);
+          TIME_LIMIT.value = timerStore.currentActivityTimer / 1000;
+          timeLeft.value = TIME_LIMIT.value;
+          baseTimerLabel.value = formatTime(timeLeft.value);
+        }
       }
     }
   }
@@ -144,7 +146,7 @@
       runTimer();
     } else {
       playAudio(horn);
-      activityStore.completeSession(sessionId as string);
+      activityStore.completeSession();
       timerStore.reset();
       router.push({
         name: "details",

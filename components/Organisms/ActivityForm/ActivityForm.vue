@@ -143,13 +143,7 @@
           id="save-activity"
           color="primary"
           icon="save"
-          @click="() => activityStore.setSelectedActivity()"
-        />
-        <BaseButton
-          id="delete-activity"
-          color="danger"
-          icon="delete"
-          @click="() => activityStore.deleteActivity(selectedActivity?.id)"
+          @click="() => activityStore.setSelectedActivity(null)"
         />
       </div>
     </div>

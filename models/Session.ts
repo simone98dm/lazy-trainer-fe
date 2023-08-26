@@ -3,6 +3,7 @@ import { Activity } from "./Activity";
 export interface Session {
   dayOfWeek: number;
   id: string;
+  planId?: string;
   activities: Activity[];
 }
 

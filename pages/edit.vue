@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { Activity } from "~/models/Activity";
   import { Session } from "~/models/Session";
-  import { useActivityStore, useUserStore } from "~/stores";
+  import { useActivityStore } from "~/stores";
 
   const router = useRouter();
   const route = useRoute();
@@ -9,7 +9,6 @@
 
   const sessionId = route.params.session as string;
 
-  const isNew = computed(() => !sessionId);
   const activityList = ref();
   const warmupList = ref();
 
@@ -17,10 +16,16 @@
 
   if (sessionId) {
     const session = activityStore.getSession(sessionId);
-    activityStore.setSelectedSession(session);
+    activityStore.setSelectedSession(session ?? null);
 
     warmupList.value = activityStore.selectedSession?.activities.filter((x) => x.warmup);
     activityList.value = activityStore.selectedSession?.activities.filter((x) => !x.warmup);
+  } else {
+    activityStore.setSelectedSession({
+      activities: [],
+      dayOfWeek: -1,
+      id: "",
+    });
   }
 
   function sortActivities(activities: Activity[] | undefined, isWarmup: boolean) {
@@ -28,27 +33,37 @@
       activityStore.moveActivity(sessionId, activities, isWarmup);
     }
   }
+
   async function addSession(session: Session) {
-    await activityStore.addSession(session);
-    router.push({
-      name: "home",
-      params: { plan: activityStore.plan?.id },
-    });
+    const returnedSession = await activityStore.addSession(session);
+
+    if (returnedSession) {
+      router.push({
+        name: "edit",
+        params: {
+          session: returnedSession.id,
+        },
+      });
+    }
   }
+
   async function removeActivity(activityId: string) {
     if (!confirm("Are you sure you want to delete this activity?")) {
       return;
     }
+
     await activityStore.deleteActivity(activityId);
   }
-  async function deleteSession(sessionId: string) {
+
+  async function deleteSession(session: Session) {
     if (!confirm("Are you sure you want to delete this session?")) {
       return;
     }
-    await activityStore.deleteSession(sessionId);
+
+    await activityStore.deleteSession(session.id);
+
     router.push({
       name: "home",
-      params: { plan: activityStore.plan?.id },
     });
   }
 </script>
@@ -76,6 +91,7 @@
             :enable-run="false"
             :allow-edit="true"
             :compat-list="false"
+            :allow-add="true"
             @move="sortActivities"
             @delete="removeActivity"
           />
@@ -92,6 +108,7 @@
             :allow-edit="true"
             :enable-run="false"
             :compat-list="false"
+            :allow-add="true"
             @move="sortActivities"
             @delete="removeActivity"
           />

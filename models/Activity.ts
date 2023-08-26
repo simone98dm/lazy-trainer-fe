@@ -1,5 +1,5 @@
 export interface Activity {
-  id: string;
+  id?: string;
   name: string;
   description: string;
   order_index?: number;
@@ -8,4 +8,5 @@ export interface Activity {
   time: number;
   videoUrl?: string;
   warmup: boolean;
+  sessionId?: string;
 }

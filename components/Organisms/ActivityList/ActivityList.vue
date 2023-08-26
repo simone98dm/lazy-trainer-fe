@@ -5,7 +5,7 @@
   import draggable from "vuedraggable";
 
   interface ActivityListProps {
-    activities?: Activity[];
+    activities: Activity[];
     sessionId?: string;
     isWarmup?: boolean;
     allowDrag?: boolean;
@@ -40,10 +40,32 @@
     opened: true,
     compatList: false,
   });
+
   const emits = defineEmits<ActivityListEmits>();
 
   const userStore = useUserStore();
   const activityStore = useActivityStore();
+
+  async function addActivity() {
+    let order_index = 0;
+    if (props.isWarmup) {
+      order_index = activityStore.getWarmUpActivities?.length + 1;
+    } else {
+      order_index = activityStore.getSessionActivities?.length + 1;
+    }
+    const activity: Activity = {
+      description: "",
+      name: "",
+      reps: 0,
+      requestChange: false,
+      warmup: props.isWarmup,
+      time: 0,
+      order_index,
+      sessionId: props.sessionId,
+    };
+    const returnActivity = await activityStore.addActivity(activity);
+    activityStore.setSelectedActivity(returnActivity);
+  }
 </script>
 
 <template>
@@ -63,7 +85,7 @@
         @click="emits('run')"
       />
     </div>
-    <!-- <draggable
+    <draggable
       v-if="allowDrag"
       class="mt-4"
       :list="activities"
@@ -71,100 +93,46 @@
       @end="emits('move', activities, isWarmup)"
     >
       <template #item="{ element }">
-        <ButtonLink
-          :to="{
-            name: 'activity',
-            params: {
-              session: sessionId,
-              activity: element.id,
-            },
-          }"
-        >
-          <ActivityItem
-            :id="element.id"
-            :name="element.name"
-            :description="element.description"
-            :time="Number(element.time)"
-            :reps="Number(element.reps)"
-            :request-change="element.requestChange"
-            :no-card="compatList"
-            :allow-delete="allowDelete"
-          >
-            <template #actions>
-              <BaseButton
-                v-if="allowDelete"
-                id="delete-activity"
-                color="danger"
-                icon="delete"
-                class="float-right ml-2"
-                variant="circular"
-                @click.prevent="emits('delete', element.id)"
-              />
-              <BaseButton
-                v-if="allowEdit"
-                id="edit-activity"
-                color="warning"
-                icon="edit"
-                class="float-right ml-2"
-                variant="circular"
-                @click.prevent="() => activityStore.editActivity(element.id)"
-              />
-            </template>
-          </ActivityItem>
-        </ButtonLink>
+        <ActivityForm
+          v-if="activityStore.selectedActivity?.id === element.id"
+          :activity="activityStore.selectedActivity"
+          :allow-delete="Boolean(activityStore.selectedActivity?.id)"
+        />
+        <ActivityItem v-else :activity="element">
+          <template #actions>
+            <BaseButton
+              v-if="allowDelete"
+              id="delete-activity"
+              color="danger"
+              icon="delete"
+              class="float-right ml-2"
+              variant="circular"
+              @click.prevent="() => activityStore.deleteActivity(element.id)"
+            />
+            <BaseButton
+              v-if="allowEdit"
+              id="edit-activity"
+              color="warning"
+              icon="edit"
+              class="float-right ml-2"
+              variant="circular"
+              @click.prevent="() => activityStore.setSelectedActivity(element)"
+            />
+          </template>
+        </ActivityItem>
       </template>
-    </draggable> -->
-    <div v-for="activity in activities" :key="activity.id">
-      <ActivityForm
-        v-if="activityStore.selectedActivity?.id === activity.id"
-        :activity="activityStore.selectedActivity"
-        :allow-delete="Boolean(activityStore.selectedActivity?.id)"
-      />
-      <ActivityItem
-        v-else
-        :id="activity.id"
-        :name="activity.name"
-        :description="activity.description"
-        :time="Number(activity.time)"
-        :reps="Number(activity.reps)"
-        :request-change="activity.requestChange"
-        :no-card="compatList"
-        :allow-delete="true"
-      >
-        <template #actions>
-          <BaseButton
-            v-if="allowDelete"
-            id="delete-activity"
-            color="danger"
-            icon="delete"
-            class="float-right ml-2"
-            variant="circular"
-            @click.prevent="() => activityStore.deleteActivity(activity.id)"
-          />
-          <BaseButton
-            v-if="allowEdit"
-            id="edit-activity"
-            color="warning"
-            icon="edit"
-            class="float-right ml-2"
-            variant="circular"
-            @click.prevent="() => activityStore.setSelectedActivity(activity)"
-          />
-        </template>
-      </ActivityItem>
-    </div>
+    </draggable>
+    <ActivityItem v-else v-for="activity in activities" :key="activity.id" :activity="activity" />
   </div>
   <ErrorBanner v-else :text="noFoundMessage"></ErrorBanner>
   <div v-if="!userStore.isNormal" class="flex mb-6 gap-2">
-    <ButtonLink
-      v-if="allowAdd && (activityStore.getSessionActivities(props.sessionId)?.length ?? 100)"
+    <BaseButton
+      v-if="allowAdd"
       id="add-activity"
       icon="add"
-      :full="true"
       color="success"
-      :to="{ name: 'activity', params: { session: sessionId } }"
-      :type="LinkType.BUTTON"
       label="Add"
+      @click="addActivity"
     />
   </div>
 </template>

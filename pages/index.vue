@@ -18,13 +18,13 @@
 
   settingsStore.loadSettings();
 
-  const sessions = ref([] as CustomSession[] | undefined);
+  const sessions = ref([] as CustomSession[]);
   const route = useRoute();
 
   if (userStore.isTrainer && route.params.plan) {
     activityStore
       .getUserActivities(route.params.planId as string)
-      .then((response) => (sessions.value = response))
+      .then((response) => (sessions.value = response ?? []))
       .finally(() => (isLoading.value = false));
 
     pageOptions = {
@@ -34,7 +34,7 @@
   } else if (!userStore.isTrainer) {
     activityStore
       .restoreSession()
-      .then(() => (sessions.value = activityStore.sortedWeek?.map(parseSessions)))
+      .then(() => (sessions.value = activityStore.sortedWeek?.map(parseSessions) ?? []))
       .catch(() => {
         const router = useRouter();
         router.push({ name: "login" });

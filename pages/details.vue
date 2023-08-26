@@ -16,7 +16,7 @@
   const session = activityStore.getSession(sessionId);
   settingsStore.setHeader(getDayOfTheWeek(session?.dayOfWeek));
 
-  activityStore.setSelectedSession(session);
+  activityStore.setSelectedSession(session ?? null);
 
   const activityList = ref();
   const warmupList = ref();

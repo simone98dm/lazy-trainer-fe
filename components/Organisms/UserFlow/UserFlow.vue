@@ -2,10 +2,9 @@
   import { CustomSession } from "~/models/Session";
   import { useActivityStore, useTimerStore, useUserStore } from "~/stores";
   import { LinkType } from "~/utils";
-  import { v4 as uuidv4 } from "uuid";
 
   interface UserFlowProps {
-    list?: CustomSession[];
+    list: CustomSession[];
     loading?: boolean;
   }
 
@@ -18,7 +17,7 @@
   const router = useRouter();
 
   const todayActivity = computed(() =>
-    props.list?.find((session) => isHighlightedCard(session) && hasActivities(session.id))
+    props.list.find((session) => isHighlightedCard(session) && hasActivities(session.id))
   );
 
   function isToday(dayOfWeek: number): boolean {
@@ -103,7 +102,7 @@
     icon="add"
     :full="true"
     :color="userStore.isTrainer ? 'purple' : 'primary'"
-    :to="{ name: 'edit', params: { session: uuidv4() } }"
+    :to="{ name: 'edit' }"
     :type="LinkType.BUTTON"
     label="Add day activities"
   />

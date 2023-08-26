@@ -13,7 +13,7 @@
 
   interface SessionFormEmits {
     (e: "save", session: Session): void;
-    (e: "delete", id: string): void;
+    (e: "delete", session: Session): void;
   }
 
   defineEmits<SessionFormEmits>();
@@ -60,7 +60,7 @@
           :icon="!isNew ? 'save' : 'add'"
           :label="!isNew ? 'Save' : 'Create'"
           color="success"
-          @click="() => activityStore.addSession(activityStore.selectedSession)"
+          @click="$emit('save', activityStore.selectedSession)"
         />
         <BaseButton
           :full="true"
@@ -68,7 +68,7 @@
           icon="delete"
           color="danger"
           label="Delete"
-          @click="() => (activityStore.selectedSession = null)"
+          @click="$emit('delete', activityStore.selectedSession)"
         />
       </div>
     </div>

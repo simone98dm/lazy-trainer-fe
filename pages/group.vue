@@ -23,7 +23,6 @@
         }"
         :key="client.id"
       >
-        <ActivityItem icon="person" :name="client.name" :id="client.id" />
       </ButtonLink>
     </div>
   </div>
