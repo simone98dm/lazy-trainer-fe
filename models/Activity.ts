@@ -7,6 +7,6 @@ export interface Activity {
   requestChange: boolean;
   time: number;
   videoUrl?: string;
-  warmup: boolean;
+  warmup?: boolean;
   sessionId?: string;
 }

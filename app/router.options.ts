@@ -29,7 +29,6 @@ export const routes = [
       title: `Activities`,
       requireAuth: true,
       requireAdmin: false,
-      goto: [],
     },
   },
   {
@@ -60,7 +59,8 @@ export const routes = [
       title: `Login`,
       requireAuth: false,
       requireAdmin: false,
-      empty: true,
+      hideHeader: true,
+      hideFooter: true,
     },
   },
   {
@@ -89,7 +89,8 @@ export const routes = [
     component: () => import("~/pages/notfound.vue"),
     meta: {
       title: `Not Found`,
-      empty: true,
+      hideHeader: true,
+      hideFooter: true,
       requireAuth: false,
       requireAdmin: false,
     },
@@ -99,9 +100,9 @@ export const routes = [
     component: () => import("~/pages/notfound.vue"),
     meta: {
       requireAuth: false,
-      empty: true,
+      hideHeader: true,
+      hideFooter: true,
       requireAdmin: false,
-      goto: [],
     },
   },
   {
@@ -130,7 +131,8 @@ export const routes = [
     component: () => import("~/pages/landing.vue"),
     meta: {
       title: `Home`,
-      empty: true,
+      hideHeader: true,
+      hideFooter: true,
       requireAuth: false,
       requireAdmin: false,
     },
@@ -141,7 +143,6 @@ export const routes = [
     component: () => import("~/pages/dashboard.vue"),
     meta: {
       title: `Dashboard`,
-      empty: false,
       requireAuth: true,
       requireAdmin: false,
     },
@@ -152,7 +153,6 @@ export const routes = [
     component: () => import("~/pages/privacy-policy.vue"),
     meta: {
       title: `Privacy Policy`,
-      empty: false,
       requireAuth: false,
       requireAdmin: false,
     },

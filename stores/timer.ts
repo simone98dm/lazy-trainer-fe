@@ -66,7 +66,7 @@ export const useTimerStore = defineStore("timer", {
     },
     async requestChange(sessionId: string) {
       const settingsStore = useSettingStore();
-      settingsStore.loading(true);
+      settingsStore.openLoading();
 
       const { $workout } = useNuxtApp();
       await $workout.requestActivityChange(this.currentActivity?.id ?? "");
@@ -77,7 +77,7 @@ export const useTimerStore = defineStore("timer", {
         activity.addActivity(sessionId, newActivity);
         this.setCurrentActivity(newActivity);
       }
-      settingsStore.loading(false);
+      settingsStore.dismissLoading();
     },
   },
 });

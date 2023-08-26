@@ -40,6 +40,15 @@
   <div class="max-w-screen-xl mx-auto">
     <div class="flex flex-col justify-center">
       <Card id="warmup-activities" padding="medium">
+        <BaseButton
+          v-if="warmupList.length > 0"
+          id="run-timer"
+          color="success"
+          icon="play_arrow"
+          :type="LinkType.BUTTON"
+          label="Start"
+          @click="runWarmUp"
+        />
         <ActivityList
           title="Warmup"
           no-found-message="No warmup activities found"
@@ -50,10 +59,18 @@
           :allow-drag="false"
           :opened="true"
           :compat-list="true"
-          @run="runWarmUp"
         />
       </Card>
       <Card id="list-activities">
+        <BaseButton
+          v-if="activityList.length > 0"
+          id="run-timer"
+          color="success"
+          icon="play_arrow"
+          :type="LinkType.BUTTON"
+          label="Start"
+          @click="runActivities"
+        />
         <ActivityList
           title="Activities"
           no-found-message="No activities found"
@@ -63,7 +80,6 @@
           :allow-drag="false"
           :opened="false"
           :compat-list="true"
-          @run="runActivities"
         />
       </Card>
     </div>

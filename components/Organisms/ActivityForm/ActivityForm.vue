@@ -6,7 +6,6 @@
 
   interface ActivityFormProps {
     activity: Activity | null;
-    allowDelete: boolean;
   }
 
   const props = withDefaults(defineProps<ActivityFormProps>(), {
@@ -34,15 +33,17 @@
   );
 
   async function saveActivity() {
-    if (activityStore.selectedActivity) {
+    if (activityStore.selectedActivity && !activityStore.selectedActivity?.id) {
       await activityStore.addActivity(activityStore.selectedActivity);
-      activityStore.setSelectedActivity(null);
+    } else {
+      await activityStore.updateActivity(activityStore.selectedActivity);
     }
+    activityStore.setSelectedActivity(null);
   }
 </script>
 
 <template>
-  <div class="flex justify-center bg-white rounded-lg shadow-md mb-6">
+  <Card id="activity-form">
     <div class="p-6 w-full">
       <div class="flex flex-wrap -mx-3">
         <div class="w-full px-3 mb-6">
@@ -121,17 +122,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="w-full md:w-full flex flex-col px-3 mb-6">
-          <Input
-            :value="selectedActivity?.videoUrl"
-            @change="(value: string) => activityStore.updateActivityValue('videoUrl', value)"
-            id="activityUrl"
-            name="activityUrlField"
-            label="Youtube Video Url (just the video id, es. auBLPXO8Fww)"
-            :error="videoUrlError"
-            error="Video url not valid"
-          />
-        </div> -->
         <div class="px-3 mb-6">
           <label class="tracking-wide" :for="`toggle-${props.activity?.id}`">
             <span class="flex-left inline"> Is warm-up? </span>
@@ -148,7 +138,6 @@
       <div class="flex gap-3 float-right">
         <BaseButton id="save-activity" color="primary" icon="save" @click="saveActivity" />
         <BaseButton
-          v-if="allowDelete"
           id="remove-activity"
           color="danger"
           icon="delete"
@@ -156,5 +145,5 @@
         />
       </div>
     </div>
-  </div>
+  </Card>
 </template>

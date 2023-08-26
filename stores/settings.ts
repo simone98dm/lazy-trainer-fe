@@ -31,8 +31,11 @@ export const useSettingStore = defineStore("settings", {
     setHeader(text: string) {
       this.headerText = text;
     },
-    loading(status: boolean) {
-      this.globalLoading = status;
+    dismissLoading() {
+      this.globalLoading = false;
+    },
+    openLoading() {
+      this.globalLoading = true;
     },
     toggleAudioEffects(status: boolean) {
       this.audioDisabled = status;

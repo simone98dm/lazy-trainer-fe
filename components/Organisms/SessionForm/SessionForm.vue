@@ -25,6 +25,33 @@
   function isDaySelected(selectedDay: number) {
     return props.session?.dayOfWeek === selectedDay;
   }
+
+  async function saveSession() {
+    if (activityStore.selectedSession && !activityStore.selectedSession.id) {
+      const returnedSession = await activityStore.addSession(activityStore.selectedSession);
+      if (returnedSession) {
+        const router = useRouter();
+        router.push({
+          name: "edit",
+          params: {
+            session: returnedSession.id,
+          },
+        });
+      }
+    } else {
+      await activityStore.updateSession(activityStore.selectedSession);
+    }
+  }
+  async function deleteSession() {
+    if (!confirm("Are you sure you want to delete this session?")) {
+      return;
+    }
+    await activityStore.deleteSession(activityStore.selectedSession?.id);
+    const router = useRouter();
+    router.push({
+      name: "home",
+    });
+  }
 </script>
 
 <template>
@@ -61,7 +88,7 @@
           :label="!isNew ? 'Save' : 'Create'"
           color="success"
           size="small"
-          @click="$emit('save', activityStore.selectedSession)"
+          @click="saveSession"
         />
         <BaseButton
           :full="true"
@@ -70,7 +97,7 @@
           color="danger"
           label="Delete"
           size="small"
-          @click="$emit('delete', activityStore.selectedSession)"
+          @click="deleteSession"
         />
       </div>
     </div>

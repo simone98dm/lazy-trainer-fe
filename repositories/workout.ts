@@ -9,11 +9,11 @@ import { Completion } from "~/models/Completion";
 export interface WorkoutRepository {
   getUserPlan(userId: string): Promise<Plan | null>;
   addActivity(activity: Activity): Promise<Activity | null>;
-  updateActivity(activity: Activity, activityId: string): Promise<void>;
+  updateActivity(activity: Activity, activityId: string): Promise<Activity | null>;
   requestActivityChange(activityId: string): Promise<void>;
   deleteActivity(activityId: string): Promise<void>;
   addSession(session: Session): Promise<Session | null>;
-  updateSession(session: Session, sessionId: string): Promise<void>;
+  updateSession(session: Session): Promise<Session | null>;
   deleteSession(sessionId: string): Promise<void>;
   getPlan(planId: string): Promise<Plan | null>;
   sortActivities(request: OrderRequest[]): Promise<void>;
@@ -48,9 +48,13 @@ async function addActivity(activity: Activity): Promise<Activity | null> {
   }
   return null;
 }
-async function updateActivity(activity: Activity, activityId: string): Promise<void> {
+async function updateActivity(activity: Activity, activityId: string): Promise<Activity | null> {
   const client = useWorkoutClient();
-  await client.from("activities").update(activity).eq("id", activityId).select();
+  const { data } = await client.from("activities").update(activity).eq("id", activityId).select();
+  if (data) {
+    return data[0] as Activity;
+  }
+  return null;
 }
 async function deleteActivity(activityId: string): Promise<void> {
   const client = useWorkoutClient();
@@ -81,10 +85,19 @@ async function addSession(session: Session): Promise<Session | null> {
   }
   return null;
 }
-async function updateSession(session: Session, sessionId: string): Promise<void> {
+async function updateSession(session: Session): Promise<Session | null> {
   const client = useWorkoutClient();
   const { dayOfWeek, id, planId } = session;
-  await client.from("sessions").update({ dayOfWeek, id, planId }).eq("id", sessionId).select();
+  const { data } = await client
+    .from("sessions")
+    .update({ dayOfWeek, planId })
+    .eq("id", id)
+    .select();
+  if (data) {
+    return data[0] as Session;
+  }
+
+  return null;
 }
 async function deleteSession(sessionId: string): Promise<void> {
   const client = useWorkoutClient();

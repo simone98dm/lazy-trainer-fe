@@ -3,7 +3,7 @@ import { Plan } from "~/models/Plan";
 import { Session } from "~/models/Session";
 import { defineStore } from "pinia";
 import { Activity } from "~/models/Activity";
-import { OrderRequest } from "~/utils";
+import { OrderRequest, checkCompleteDate } from "~/utils";
 import { Completion } from "~/models/Completion";
 
 export const useActivityStore = defineStore("activity", {
@@ -32,6 +32,20 @@ export const useActivityStore = defineStore("activity", {
     getActivity: (state) => (activityId: string) => {
       const activities = state.plan?.sessions.map((x) => x.activities).flat();
       return activities?.find((activity) => activity.id === activityId);
+    },
+    getSelectedActivities: (state) => {
+      return (
+        state.selectedSession?.activities
+          .filter((item) => !item.warmup)
+          .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0)) ?? []
+      );
+    },
+    getSelectedWarmUpActivities: (state) => {
+      return (
+        state.selectedSession?.activities
+          .filter((item) => item.warmup)
+          .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0)) ?? []
+      );
     },
     sortedWeek(state) {
       return state.plan?.sessions.sort((x, y) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1));
@@ -68,7 +82,7 @@ export const useActivityStore = defineStore("activity", {
     async addActivity(activity: Activity) {
       const settingsStore = useSettingStore();
       const { $workout } = useNuxtApp();
-      settingsStore.loading(true);
+      settingsStore.openLoading();
 
       if (!this.plan) {
         this.plan = generateBlankPlan();
@@ -76,93 +90,104 @@ export const useActivityStore = defineStore("activity", {
 
       if (!activity.id) {
         const data = await $workout.addActivity(activity);
-        if (this.plan) {
+        if (data) {
           this.plan = {
             ...this.plan,
             sessions: this.plan.sessions.map((session) => {
-              if (session.id === activity.sessionId) {
-                session.activities.push(activity);
+              if (session.id === data.sessionId) {
+                session.activities.push(data);
               }
               return session;
             }),
           };
+          // if (this.selectedSession) {
+          //   this.selectedSession?.activities.push(data);
+          // }
         }
-        settingsStore.loading(false);
-
-        return data;
       }
 
-      settingsStore.loading(false);
-      return null;
+      settingsStore.dismissLoading();
+      this.selectedActivity = null;
     },
     async deleteActivity(activityId?: string) {
-      if (activityId) {
-        const settingsStore = useSettingStore();
-        const { $workout } = useNuxtApp();
-        settingsStore.loading(true);
-        await $workout.deleteActivity(activityId);
+      const settingsStore = useSettingStore();
+      const { $workout } = useNuxtApp();
+      settingsStore.openLoading();
 
+      if (activityId) {
+        await $workout.deleteActivity(activityId);
         if (this.plan) {
           this.plan = {
             ...this.plan,
             sessions:
-              this.plan?.sessions?.map((session) => ({
+              this.plan.sessions.map((session) => ({
                 ...session,
-                activities: [
-                  ...session.activities.filter((activity) => activity.id !== activityId),
-                ],
+                activities: session.activities.filter((activity) => activity.id !== activityId),
               })) ?? [],
           };
+          // if (this.selectedSession) {
+          //   this.selectedSession = {
+          //     ...this.selectedSession,
+          //     activities:
+          //       this.selectedSession?.activities.filter((activity) => activity.id !== activityId) ??
+          //       [],
+          //   };
+          // }
         }
-        settingsStore.loading(false);
       }
+      settingsStore.dismissLoading();
       this.selectedActivity = null;
     },
-    async updateActivity(activity: Activity) {
-      if (activity.id) {
+    async updateActivity(updatedActivity: Activity | null) {
+      if (updatedActivity?.id) {
         const settingsStore = useSettingStore();
         const { $workout } = useNuxtApp();
-        settingsStore.loading(true);
-        await $workout.updateActivity(activity, activity.id);
-        settingsStore.loading(false);
+        settingsStore.openLoading();
+        await $workout.updateActivity(updatedActivity, updatedActivity.id);
+        settingsStore.dismissLoading();
       }
     },
     async addSession(session: Session | null) {
       if (!session) {
-        return;
+        return null;
       }
 
       if (session.dayOfWeek === -1 && session.dayOfWeek >= 7) {
-        return;
-      }
-
-      if (!this.plan) {
-        this.plan = generateBlankPlan();
+        return null;
       }
 
       const settingsStore = useSettingStore();
       const { $workout } = useNuxtApp();
-      settingsStore.loading(true);
+      settingsStore.openLoading();
       const data = await $workout.addSession({ ...session, planId: this.plan?.id });
-      settingsStore.loading(false);
+      if (data) {
+        this.plan?.sessions.push(data);
+      }
+      this.setSelectedSession(data);
+      settingsStore.dismissLoading();
       return data;
     },
     async deleteSession(sessionId?: string) {
       if (sessionId) {
         const settingsStore = useSettingStore();
         const { $workout } = useNuxtApp();
-        settingsStore.loading(true);
+        settingsStore.openLoading();
         await $workout.deleteSession(sessionId);
-        settingsStore.loading(false);
+        if (this.plan) {
+          this.plan.sessions = this.plan.sessions.filter((session) => session.id !== sessionId);
+        }
+        settingsStore.dismissLoading();
       }
       this.selectedSession = null;
     },
-    async updateSession(session: Session) {
+    async updateSession(session: Session | null) {
       const settingsStore = useSettingStore();
       const { $workout } = useNuxtApp();
-      settingsStore.loading(true);
-      await $workout.updateSession(session, session.id);
-      settingsStore.loading(false);
+      settingsStore.openLoading();
+      if (session) {
+        await $workout.updateSession(session);
+      }
+      settingsStore.dismissLoading();
     },
     async getUserActivities(planId: string) {
       const { $workout } = useNuxtApp();
@@ -211,7 +236,7 @@ export const useActivityStore = defineStore("activity", {
 
           const { $workout } = useNuxtApp();
           const settingsStore = useSettingStore();
-          settingsStore.loading(true);
+          settingsStore.openLoading();
 
           const data = this.plan.sessions[sessionIndex].activities.map(
             (item) =>
@@ -221,13 +246,13 @@ export const useActivityStore = defineStore("activity", {
               } as OrderRequest)
           );
           await $workout.sortActivities(data);
-          settingsStore.loading(false);
+          settingsStore.dismissLoading();
         }
       }
     },
     async completeSession() {
       const settingsStore = useSettingStore();
-      settingsStore.loading(true);
+      settingsStore.openLoading();
       const user = useSupabaseUser();
       const { $workout } = useNuxtApp();
       if (user.value) {
@@ -246,17 +271,17 @@ export const useActivityStore = defineStore("activity", {
       if (!alradyExists) {
         this.completionDates.map((x) => x.stats.completion.push(d.toISOString()));
       }
-      settingsStore.loading(false);
+      settingsStore.dismissLoading();
     },
     async retrieveUserStats() {
       const settingsStore = useSettingStore();
-      settingsStore.loading(true);
+      settingsStore.openLoading();
       const { $workout } = useNuxtApp();
       const user = useSupabaseUser();
       if (user.value) {
         this.completionDates = await $workout.getUserStats([user.value.id]);
       }
-      settingsStore.loading(false);
+      settingsStore.dismissLoading();
     },
     setSelectedSession(session: Session | null) {
       this.selectedSession = session;
@@ -264,24 +289,15 @@ export const useActivityStore = defineStore("activity", {
     setSelectedActivity(activity: Activity | null) {
       this.selectedActivity = activity;
     },
-    updateSessionValue(attribute: keyof Session, value: any) {
+    updateSessionValue(attribute: keyof Session, value: unknown) {
       if (this.selectedSession) {
         this.selectedSession[attribute] = value;
       }
     },
-    updateActivityValue(attribute: keyof Activity, value: any) {
+    updateActivityValue(attribute: keyof Activity, value: unknown) {
       if (this.selectedActivity) {
         this.selectedActivity[attribute] = value;
       }
     },
   },
 });
-
-function checkCompleteDate(completionDates: Date[], currentDate: Date) {
-  return completionDates.filter(
-    (date) =>
-      date.getDate() === currentDate.getDate() &&
-      date.getMonth() === currentDate.getMonth() &&
-      date.getFullYear() === currentDate.getFullYear()
-  );
-}

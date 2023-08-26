@@ -1,30 +1,26 @@
 <script setup lang="ts">
   import { Activity } from "~/models/Activity";
-  import { Session } from "~/models/Session";
-  import { useActivityStore } from "~/stores";
+  import { useActivityStore, useUserStore } from "~/stores";
 
-  const router = useRouter();
   const route = useRoute();
   const activityStore = useActivityStore();
+  const userStore = useUserStore();
 
   const sessionId = route.params.session as string;
-
-  const activityList = ref();
-  const warmupList = ref();
 
   await activityStore.restoreSession();
 
   if (sessionId) {
     const session = activityStore.getSession(sessionId);
+    if (!session) {
+      const router = useRouter();
+      router.push({ name: "home" });
+    }
     activityStore.setSelectedSession(session ?? null);
-
-    warmupList.value = activityStore.selectedSession?.activities.filter((x) => x.warmup);
-    activityList.value = activityStore.selectedSession?.activities.filter((x) => !x.warmup);
   } else {
     activityStore.setSelectedSession({
       activities: [],
       dayOfWeek: -1,
-      id: "",
     });
   }
 
@@ -34,36 +30,21 @@
     }
   }
 
-  async function addSession(session: Session) {
-    const returnedSession = await activityStore.addSession(session);
+  async function addActivity() {
+    const activity: Activity = {
+      name: "New activity",
+      description: "",
+      reps: 0,
+      requestChange: false,
+      time: 0,
+      order_index: -1,
+      sessionId: sessionId,
+    };
+    activityStore.setSelectedActivity(activity);
 
-    if (returnedSession) {
-      router.push({
-        name: "edit",
-        params: {
-          session: returnedSession.id,
-        },
-      });
-    }
-  }
-
-  async function removeActivity(activityId: string) {
-    if (!confirm("Are you sure you want to delete this activity?")) {
-      return;
-    }
-
-    await activityStore.deleteActivity(activityId);
-  }
-
-  async function deleteSession(session: Session) {
-    if (!confirm("Are you sure you want to delete this session?")) {
-      return;
-    }
-
-    await activityStore.deleteSession(session.id);
-
-    router.push({
-      name: "home",
+    window?.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
   }
 </script>
@@ -71,10 +52,23 @@
   <div
     class="flex xl:flex-col flex-wrap justify-center max-w-screen-xl mx-auto dark:text-slate-200 text-slate-600"
   >
-    <SessionForm
-      @save="addSession"
-      @delete="deleteSession"
-      :session="activityStore.selectedSession"
+    <SessionForm v-if="activityStore.selectedSession" :session="activityStore.selectedSession" />
+
+    <ActivityForm
+      class="mt-4"
+      v-if="activityStore.selectedActivity"
+      :activity="activityStore.selectedActivity"
+    />
+
+    <BaseButton
+      v-if="!userStore.isNormal && !activityStore.selectedActivity"
+      id="add-activity"
+      icon="add"
+      color="success"
+      label="Add"
+      variant="circular"
+      class="floating-button py-2 px-4"
+      @click="addActivity"
     />
 
     <div class="w-full px-3 mb-6">
@@ -82,8 +76,7 @@
         <div class="my-4">
           <ActivityList
             title="Warmup"
-            no-found-message="No warmup activities found"
-            :activities="warmupList"
+            :activities="activityStore.getSelectedWarmUpActivities"
             :is-warmup="true"
             :session-id="sessionId"
             :allow-drag="true"
@@ -93,15 +86,12 @@
             :compat-list="false"
             :allow-add="true"
             @move="sortActivities"
-            @delete="removeActivity"
           />
         </div>
-        <hr />
         <div class="my-4">
           <ActivityList
             title="Activities"
-            no-found-message="No activities found"
-            :activities="activityList"
+            :activities="activityStore.getSelectedActivities"
             :session-id="sessionId"
             :allow-drag="true"
             :allow-delete="true"
@@ -110,7 +100,6 @@
             :compat-list="false"
             :allow-add="true"
             @move="sortActivities"
-            @delete="removeActivity"
           />
         </div>
       </div>

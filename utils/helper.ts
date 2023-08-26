@@ -40,3 +40,12 @@ export function generateBlankPlan(): Plan {
     trainerId: "",
   };
 }
+
+export function checkCompleteDate(completionDates: Date[], currentDate: Date) {
+  return completionDates.filter(
+    (date) =>
+      date.getDate() === currentDate.getDate() &&
+      date.getMonth() === currentDate.getMonth() &&
+      date.getFullYear() === currentDate.getFullYear()
+  );
+}

@@ -2,7 +2,7 @@ import { Activity } from "./Activity";
 
 export interface Session {
   dayOfWeek: number;
-  id: string;
+  id?: string;
   planId?: string;
   activities: Activity[];
 }
@@ -11,6 +11,6 @@ export interface CustomSession {
   description: string;
   name: string;
   dayOfWeek: number;
-  id: string;
+  id?: string;
   activities: Activity[];
 }

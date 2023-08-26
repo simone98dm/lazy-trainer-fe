@@ -1,16 +1,11 @@
 <script setup lang="ts">
   import { useSettingStore } from "~/stores";
-  const r = useRoute();
 
-  const isLogin = computed(() => {
-    return r.name === "login";
-  });
-
-  const hideDecoration = computed(() => {
-    return r.meta.empty;
-  });
-
+  const route = useRoute();
   const settingsStore = useSettingStore();
+  const isLogin = computed(() => route.name === "login");
+  const hideDecoration = computed(() => route.meta.empty);
+
   if (settingsStore.darkMode) {
     const theme = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
     settingsStore.toggleDarkMode(theme);
@@ -18,7 +13,7 @@
 </script>
 
 <template>
-  <div class="min-h-screen dark:bg-gray-900 bg-gray-100 flex flex-col">
+  <div class="min-h-screen dark:bg-gray-900 bg-gray-100">
     <Header v-if="!hideDecoration" />
     <main class="p-4 w-full lg:w-2/3 md:w-5/6 mx-auto mb-14">
       <slot />

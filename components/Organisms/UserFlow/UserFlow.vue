@@ -17,7 +17,7 @@
   const router = useRouter();
 
   const todayActivity = computed(() =>
-    props.list.find((session) => isHighlightedCard(session) && hasActivities(session.id))
+    props.list.find((session) => isHighlightedCard(session) && hasActivities(session.id ?? ""))
   );
 
   function isToday(dayOfWeek: number): boolean {
@@ -40,8 +40,8 @@
 
   function runWorkout() {
     if (todayActivity.value) {
-      const warmupList = activityStore.getWarmUpActivities(todayActivity.value.id);
-      const activityList = activityStore.getActivities(todayActivity.value.id);
+      const warmupList = activityStore.getWarmUpActivities(todayActivity.value.id ?? "");
+      const activityList = activityStore.getActivities(todayActivity.value.id ?? "");
 
       const timerStore = useTimerStore();
 
@@ -94,7 +94,7 @@
     icon="play_arrow"
     color="success"
     variant="circular"
-    @click="() => runWorkout()"
+    @click="runWorkout"
     class="floating-button py-2 px-4"
   />
   <ButtonLink
