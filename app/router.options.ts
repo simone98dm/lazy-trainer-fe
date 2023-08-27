@@ -33,7 +33,7 @@ export const routes = [
   },
   {
     name: "timer",
-    path: "/timer/:session/:activity?",
+    path: "/timer",
     component: () => import("~/pages/timer.vue"),
     meta: {
       title: `Timer`,

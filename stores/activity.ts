@@ -3,7 +3,7 @@ import { Plan } from "~/models/Plan";
 import { Session } from "~/models/Session";
 import { defineStore } from "pinia";
 import { Activity } from "~/models/Activity";
-import { OrderRequest, checkCompleteDate } from "~/utils";
+import { OrderRequest } from "~/utils";
 import { Completion } from "~/models/Completion";
 
 export const useActivityStore = defineStore("activity", {
@@ -15,50 +15,44 @@ export const useActivityStore = defineStore("activity", {
   }),
   getters: {
     getActivities: (state) => (sessionId: string) => {
-      return state.plan?.sessions
-        .find((session) => session.id === sessionId)
-        ?.activities.filter((item) => !item.warmup)
-        .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
+      return (
+        state.plan?.sessions
+          .find((session) => session.id === sessionId)
+          ?.activities.filter((item) => !item.warmup) ?? []
+      );
     },
     getWarmUpActivities: (state) => (sessionId: string) => {
-      return state.plan?.sessions
-        .find((session) => session.id === sessionId)
-        ?.activities.filter((item) => item.warmup)
-        .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
-    },
-    getSession: (state) => (sessionId: string) => {
-      return state.plan?.sessions.find((session) => session.id === sessionId);
+      return (
+        state.plan?.sessions
+          .find((session) => session.id === sessionId)
+          ?.activities.filter((item) => item.warmup) ?? []
+      );
     },
     getActivity: (state) => (activityId: string) => {
       const activities = state.plan?.sessions.map((x) => x.activities).flat();
-      return activities?.find((activity) => activity.id === activityId);
+      return activities?.find((activity) => activity.id === activityId) ?? [];
     },
     getSelectedActivities: (state) => {
-      return (
-        state.selectedSession?.activities
-          .filter((item) => !item.warmup)
-          .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0)) ?? []
-      );
+      return state.selectedSession?.activities?.filter((item) => !item.warmup) ?? [];
     },
     getSelectedWarmUpActivities: (state) => {
-      return (
-        state.selectedSession?.activities
-          .filter((item) => item.warmup)
-          .sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0)) ?? []
-      );
+      return state.selectedSession?.activities?.filter((item) => item.warmup) ?? [];
     },
     sortedWeek(state) {
       return state.plan?.sessions.sort((x, y) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1));
     },
     missingDays(state) {
-      const days = state.plan?.sessions.map((item) => item.dayOfWeek);
-      const missingDays = [];
-      for (let i = 0; i < 7; i++) {
-        if (!days?.includes(i)) {
-          missingDays.push(i);
+      if (state.plan) {
+        const days = state.plan?.sessions?.map((item) => item.dayOfWeek);
+        const missingDays = [];
+        for (let i = 0; i < 7; i++) {
+          if (!days?.includes(i)) {
+            missingDays.push(i);
+          }
         }
+        return missingDays;
       }
-      return missingDays;
+      return [];
     },
   },
   actions: {
@@ -116,6 +110,7 @@ export const useActivityStore = defineStore("activity", {
 
       if (activityId) {
         await $workout.deleteActivity(activityId);
+
         if (this.plan) {
           this.plan = {
             ...this.plan,
@@ -125,14 +120,14 @@ export const useActivityStore = defineStore("activity", {
                 activities: session.activities.filter((activity) => activity.id !== activityId),
               })) ?? [],
           };
-          // if (this.selectedSession) {
-          //   this.selectedSession = {
-          //     ...this.selectedSession,
-          //     activities:
-          //       this.selectedSession?.activities.filter((activity) => activity.id !== activityId) ??
-          //       [],
-          //   };
-          // }
+          if (this.selectedSession) {
+            this.selectedSession = {
+              ...this.selectedSession,
+              activities:
+                this.selectedSession?.activities.filter((activity) => activity.id !== activityId) ??
+                [],
+            };
+          }
         }
       }
       settingsStore.dismissLoading();
@@ -189,18 +184,6 @@ export const useActivityStore = defineStore("activity", {
       }
       settingsStore.dismissLoading();
     },
-    async getUserActivities(planId: string) {
-      const { $workout } = useNuxtApp();
-      const plan = await $workout.getPlan(planId);
-
-      if (plan) {
-        this.plan = plan;
-      }
-
-      return plan?.sessions
-        .sort((x: Session, y: Session) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1))
-        .map(parseSessions);
-    },
     async moveActivity(
       sessionId: string | undefined,
       listActivities: Activity[],
@@ -250,39 +233,6 @@ export const useActivityStore = defineStore("activity", {
         }
       }
     },
-    async completeSession() {
-      const settingsStore = useSettingStore();
-      settingsStore.openLoading();
-      const user = useSupabaseUser();
-      const { $workout } = useNuxtApp();
-      if (user.value) {
-        await $workout.completeWorkout(user.value.id);
-      }
-      const d = new Date();
-      if (!this.completionDates) {
-        this.completionDates = [];
-      }
-      const alradyExists = this.completionDates?.find((x) =>
-        checkCompleteDate(
-          x.stats.completion.map((k) => new Date(k)),
-          d
-        )
-      );
-      if (!alradyExists) {
-        this.completionDates.map((x) => x.stats.completion.push(d.toISOString()));
-      }
-      settingsStore.dismissLoading();
-    },
-    async retrieveUserStats() {
-      const settingsStore = useSettingStore();
-      settingsStore.openLoading();
-      const { $workout } = useNuxtApp();
-      const user = useSupabaseUser();
-      if (user.value) {
-        this.completionDates = await $workout.getUserStats([user.value.id]);
-      }
-      settingsStore.dismissLoading();
-    },
     setSelectedSession(session: Session | null) {
       this.selectedSession = session;
     },
@@ -298,6 +248,9 @@ export const useActivityStore = defineStore("activity", {
       if (this.selectedActivity) {
         this.selectedActivity[attribute] = value;
       }
+    },
+    getSession(sessionId: string) {
+      return this.plan?.sessions.find((session) => session.id === sessionId) ?? null;
     },
   },
 });

@@ -1,13 +1,12 @@
 <script setup lang="ts">
   import { getDayOfTheWeek } from "~/utils";
-  import { useUserStore, useTimerStore, useSettingStore, useActivityStore } from "~/stores";
+  import { useTimerStore, useSettingStore, useActivityStore } from "~/stores";
   import { ref } from "vue";
 
   const route = useRoute();
   const router = useRouter();
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
-  const userStore = useUserStore();
   const timerStore = useTimerStore();
 
   await activityStore.restoreSession();
@@ -28,12 +27,12 @@
 
   function runWarmUp() {
     timerStore.setListActivities(warmupList.value);
-    router.push({ name: "timer", params: { session: sessionId } });
+    router.push({ name: "timer" });
   }
 
   function runActivities() {
     timerStore.setListActivities(activityList.value);
-    router.push({ name: "timer", params: { session: sessionId } });
+    router.push({ name: "timer" });
   }
 </script>
 <template>
@@ -49,17 +48,7 @@
           label="Start"
           @click="runWarmUp"
         />
-        <ActivityList
-          title="Warmup"
-          no-found-message="No warmup activities found"
-          :activities="warmupList"
-          :is-warmup="true"
-          :session-id="sessionId"
-          :enable-run="!userStore.isTrainer"
-          :allow-drag="false"
-          :opened="true"
-          :compat-list="true"
-        />
+        <ActivityList title="Warmup" :activities="warmupList" :is-warmup="true" />
       </Card>
       <Card id="list-activities">
         <BaseButton
@@ -71,16 +60,7 @@
           label="Start"
           @click="runActivities"
         />
-        <ActivityList
-          title="Activities"
-          no-found-message="No activities found"
-          :activities="activityList"
-          :session-id="sessionId"
-          :enable-run="!userStore.isTrainer"
-          :allow-drag="false"
-          :opened="false"
-          :compat-list="true"
-        />
+        <ActivityList title="Activities" :activities="activityList" />
       </Card>
     </div>
   </div>

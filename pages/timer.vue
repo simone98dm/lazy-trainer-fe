@@ -2,29 +2,24 @@
   import { ref } from "vue";
   import doubleWhistle from "~/assets/audio/double-whistle.mp3";
   import horn from "~/assets/audio/horn.mp3";
-  import { type TimerActivity, COLOR_CODES, FULL_DASH_ARRAY } from "~/utils";
-  import { Activity } from "~/models/Activity";
-  import { useTimerStore, useSettingStore, useActivityStore } from "~/stores";
+  import { COLOR_CODES, FULL_DASH_ARRAY } from "~/utils";
+  import { useTimerStore, useSettingStore } from "~/stores";
 
-  const route = useRoute();
   const router = useRouter();
   const settingsStore = useSettingStore();
   const timerStore = useTimerStore();
-  const activityStore = useActivityStore();
 
   let timerInterval: any;
   let timePassed = 0;
   const TIME_LIMIT = ref(0);
   const timeLeft = ref(TIME_LIMIT.value);
+  let audio = new Audio();
 
   const remainingPathColor = ref(COLOR_CODES.info.color);
   const strokeDasharray = ref("283");
   const baseTimerLabel = ref(formatTime(timeLeft.value));
 
-  const sessionId = route.params.session;
-  const activityId = route.params.activity;
-
-  setupTimer(activityId as string);
+  setupTimer();
 
   onBeforeRouteLeave(() => {
     if (timerStore.hasNextActivity) {
@@ -44,46 +39,29 @@
 
   window.addEventListener("beforeunload", onConfirmRefresh, { capture: true });
 
-  function setupTimer(activityId?: string) {
-    const activities = timerStore.getListActivities;
+  function setupTimer() {
+    let firstActivity = null,
+      secondActivity = null;
 
-    if (!activities || activities.length <= 0) {
-      router.back();
+    if (timerStore.currentActivity && timerStore.nextActivity) {
+      const nextActivityIndex = timerStore.listActivities.findIndex(
+        (activity) => activity.id === timerStore.nextActivity?.id
+      );
+      const secondActivityIndex = nextActivityIndex + 1;
+      firstActivity = timerStore.listActivities[nextActivityIndex];
+      if (secondActivityIndex <= timerStore.listActivities.length) {
+        secondActivity = timerStore.listActivities[secondActivityIndex];
+      }
     } else {
-      if (activityId) {
-        const acts: TimerActivity = getActivity(activities, activityId);
-        if (acts) {
-          timerStore.setCurrentActivity(acts.firstActivity);
-          timerStore.setNextActivity(acts.secondActivity);
-          TIME_LIMIT.value = timerStore.currentActivityTimer / 1000;
-          timeLeft.value = TIME_LIMIT.value;
-          baseTimerLabel.value = formatTime(timeLeft.value);
-        }
-      }
-    }
-  }
-
-  function getActivity(activities: Activity[], activityId: string): TimerActivity {
-    let obj: TimerActivity;
-    if (!activityId && activities.length > 0) {
-      obj = { firstActivity: activities[0], secondActivity: undefined };
-      if (activities.length > 1) {
-        obj = { ...obj, secondActivity: activities[1] };
-      }
-      return obj;
+      firstActivity = timerStore.listActivities[0];
+      secondActivity = timerStore.listActivities[1];
     }
 
-    const firstActivityIndex = activities?.findIndex((act) => act.id === activityId) ?? undefined;
-    const secondActivityIndex = firstActivityIndex + 1;
-
-    const firstActivity = activities[firstActivityIndex];
-    obj = { firstActivity, secondActivity: undefined };
-    if (secondActivityIndex < activities.length) {
-      obj = { ...obj, secondActivity: activities[secondActivityIndex] };
-      return obj;
-    }
-
-    return obj;
+    timerStore.setCurrentActivity(firstActivity);
+    timerStore.setNextActivity(secondActivity);
+    TIME_LIMIT.value = timerStore.runningTimer / 1000;
+    timeLeft.value = TIME_LIMIT.value;
+    baseTimerLabel.value = formatTime(timeLeft.value);
   }
 
   function formatTime(time: number): string {
@@ -112,7 +90,6 @@
     strokeDasharray.value = circleDasharray;
   }
 
-  let audio = new Audio();
   function playAudio(audioSrc: string) {
     if (!settingsStore.audioDisabled) {
       audio.pause();
@@ -130,29 +107,16 @@
     strokeDasharray.value = "283";
     baseTimerLabel.value = formatTime(timeLeft.value);
 
-    const nextActivity = timerStore.getNextActivity;
+    const nextActivity = timerStore.nextActivity;
     if (nextActivity) {
       playAudio(doubleWhistle);
-      const activityId = nextActivity.id;
-      router.push({
-        name: "timer",
-        params: {
-          session: sessionId,
-          activity: activityId,
-        },
-      });
-
-      setupTimer(activityId);
+      setupTimer();
       runTimer();
     } else {
       playAudio(horn);
-      activityStore.completeSession();
       timerStore.reset();
       router.push({
-        name: "details",
-        params: {
-          session: sessionId,
-        },
+        name: "home",
       });
     }
   }
@@ -183,95 +147,62 @@
       onTimesUp();
     }
   }
-
-  // function redirectToActivity() {
-  //   router.push({
-  //     name: "details",
-  //     params: {
-  //       session: sessionId,
-  //     },
-  //   });
-  // }
-
-  // async function sendChangeRequest() {
-  //   await timerStore.requestChange(sessionId as string);
-  // }
 </script>
 
 <template>
-  <div>
-    <!-- <div class="flex flex-row justify-between mb-3">
-      <button
-        v-if="
-          !timerStore.getCurrentActivity?.requestChange &&
-          !(userStore.isTrainer || userStore.isSelfMadeMan)
-        "
-        class="text-red-800 cursor-pointer"
-        @click="sendChangeRequest"
-      >
-        Request change
-      </button>
-    </div> -->
-    <div v-if="timerStore.getCurrentActivity" class="text-center mb-6">
-      Current activity:
-      <h1 class="text-4xl font-bold">
-        {{ timerStore.getCurrentActivity.name }}
-      </h1>
-    </div>
-
-    <div v-if="timerStore.isTimerBasedActivity" class="w-full">
-      <TimerSpinner
-        :stroke-dasharray="strokeDasharray"
-        :remaining-path-color="remainingPathColor"
-        :base-timer-label="baseTimerLabel"
-        size="large"
-      />
-      <!-- <ImageLoader :src="timerStore.getNextActivity?.videoUrl || ''" /> -->
-    </div>
-    <h1 class="flex flex-col text-center my-20 text-pink-600" v-else>
-      <span class="text-4xl">Total reps:</span>
-      <span class="text-9xl font-bold">
-        {{ timerStore.getCurrentActivity?.reps }}
-      </span>
+  <div v-if="timerStore.currentActivity" class="text-center mb-6">
+    Current activity:
+    <h1 class="text-4xl font-bold">
+      {{ timerStore.currentActivity.name }}
     </h1>
+  </div>
 
-    <div class="w-full flex flex-col justify-center mb-3">
-      <div class="mb-3">
-        <BaseButton
-          :icon="
-            timerStore.isTimerBasedActivity
-              ? timerStore.isRunning
-                ? 'stop_circle'
-                : 'play_circle'
-              : 'skip_next'
-          "
-          :color="timerStore.isRunning ? 'danger' : 'primary'"
-          :label="
-            timerStore.isTimerBasedActivity ? (timerStore.isRunning ? 'Stop' : 'Play') : 'Next'
-          "
-          :full="true"
-          @click="toggleTimer"
-        />
-      </div>
-      <div class="mb-3">
-        <BaseButton
-          v-if="settingsStore.isEasyModeEnabled"
-          label="Skip"
-          :full="true"
-          @click="onTimesUp"
-          color="light"
-        />
-      </div>
+  <div v-if="timerStore.isTimerBasedActivity" class="w-full">
+    <TimerSpinner
+      :stroke-dasharray="strokeDasharray"
+      :remaining-path-color="remainingPathColor"
+      :base-timer-label="baseTimerLabel"
+      size="large"
+    />
+  </div>
+  <h1 class="flex flex-col text-center my-20 text-pink-600" v-else>
+    <span class="text-4xl">Total reps:</span>
+    <span class="text-9xl font-bold">
+      {{ timerStore.currentActivity?.reps }}
+    </span>
+  </h1>
+
+  <div class="w-full flex flex-col justify-center mb-3">
+    <div class="mb-3">
+      <BaseButton
+        :icon="
+          timerStore.isTimerBasedActivity
+            ? timerStore.isRunning
+              ? 'stop_circle'
+              : 'play_circle'
+            : 'skip_next'
+        "
+        :color="timerStore.isRunning ? 'danger' : 'primary'"
+        :label="timerStore.isTimerBasedActivity ? (timerStore.isRunning ? 'Stop' : 'Play') : 'Next'"
+        :full="true"
+        @click="toggleTimer"
+      />
     </div>
-    <!-- <div class="text-center mb-3" v-if="timerStore.getCurrentActivity?.requestChange">
-      <p class="text-red-600">Change request sended, wait for changes...</p>
-    </div> -->
-    <div class="text-center text-slate-500 mb-3">
-      Next activty:
-      <h1 v-if="timerStore.getNextActivity" class="text-4xl font-bolder">
-        {{ timerStore.getNextActivity.name }}
-      </h1>
-      <h1 v-else class="text-4xl font-bolder">End of session</h1>
+    <div class="mb-3">
+      <BaseButton
+        v-if="settingsStore.isEasyModeEnabled"
+        label="Skip"
+        :full="true"
+        @click="onTimesUp"
+        color="light"
+      />
     </div>
+  </div>
+  <div class="text-center text-slate-500 mb-3">
+    Next activty:
+    <h1 v-if="timerStore.nextActivity" class="text-4xl font-bolder">
+      {{ timerStore.nextActivity.name }}
+    </h1>
+    <h1 v-else class="text-4xl font-bolder">End of session</h1>
   </div>
 </template>

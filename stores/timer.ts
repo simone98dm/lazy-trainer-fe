@@ -4,8 +4,8 @@ import { Activity } from "~/models/Activity";
 
 export const useTimerStore = defineStore("timer", {
   state: () => ({
-    currentActivity: {} as Activity | undefined,
-    nextActivity: {} as Activity | undefined,
+    currentActivity: null as Activity | null,
+    nextActivity: null as Activity | null,
     listActivities: [] as Activity[],
     running: false,
     runningTimer: 0,
@@ -20,33 +20,21 @@ export const useTimerStore = defineStore("timer", {
       }
       return false;
     },
-    getCurrentActivity(state) {
-      return state.currentActivity;
-    },
-    getNextActivity(state) {
-      return state.nextActivity;
-    },
-    currentActivityTimer(state) {
-      return state.runningTimer;
-    },
-    getListActivities(state) {
-      return state.listActivities;
-    },
     hasNextActivity(state) {
       return state.nextActivity !== undefined;
     },
   },
   actions: {
-    setListActivities(activities: Activity[] | undefined) {
+    setListActivities(activities: Activity[] | null) {
       if (activities) {
         this.listActivities = activities;
       }
     },
-    setCurrentActivity(activity: Activity | undefined) {
+    setCurrentActivity(activity: Activity | null) {
       this.currentActivity = activity;
       this.runningTimer = activity?.time ?? -1;
     },
-    setNextActivity(activity: Activity | undefined) {
+    setNextActivity(activity: Activity | null) {
       this.nextActivity = activity;
     },
     stop() {
@@ -61,8 +49,8 @@ export const useTimerStore = defineStore("timer", {
     reset() {
       this.running = false;
       this.runningTimer = 0;
-      this.currentActivity = undefined;
-      this.nextActivity = undefined;
+      this.currentActivity = null;
+      this.nextActivity = null;
     },
     async requestChange(sessionId: string) {
       const settingsStore = useSettingStore();
@@ -74,7 +62,7 @@ export const useTimerStore = defineStore("timer", {
       const activity = useActivityStore();
       if (this.currentActivity) {
         const newActivity = { ...this.currentActivity, requestChange: true };
-        activity.addActivity(sessionId, newActivity);
+        activity.addActivity(newActivity);
         this.setCurrentActivity(newActivity);
       }
       settingsStore.dismissLoading();

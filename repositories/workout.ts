@@ -36,7 +36,14 @@ async function getUserPlan(userId: string): Promise<Plan | null> {
     .select("*,activities(*)")
     .eq("planId", plan.id);
 
-  const sessions = mapUserPlan(plan as Plan, sessionsResponse.data as Session[]);
+  const orderedData = sessionsResponse.data?.map((session) => {
+    session.activities.sort(
+      (a: Activity, b: Activity) => (a.order_index ?? 0) - (b.order_index ?? 0)
+    );
+    return session;
+  }) as Session[];
+
+  const sessions = mapUserPlan(plan as Plan, orderedData);
 
   return sessions;
 }

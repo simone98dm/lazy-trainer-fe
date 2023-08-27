@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { Activity } from "~/models/Activity";
   import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
 
   const settingsStore = useSettingStore();
@@ -10,6 +11,27 @@
   function prevPage() {
     const router = useRouter();
     router.push(route.meta.prevPage as string);
+  }
+
+  const isDetailPage = computed(() => route.name === "details");
+  const isEditPage = computed(() => route.name === "edit");
+
+  async function addActivity() {
+    const activity: Activity = {
+      name: "New activity",
+      description: "",
+      reps: 0,
+      requestChange: false,
+      time: 0,
+      order_index: -1,
+      sessionId: route.params.session as string,
+    };
+    activityStore.setSelectedActivity(activity);
+
+    window?.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }
 </script>
 
@@ -29,11 +51,19 @@
     </h3>
     <span>
       <RouterLink
-        v-if="activityStore.selectedSession"
+        v-if="isDetailPage"
         :to="{ name: 'edit', params: { session: activityStore.selectedSession?.id } }"
       >
         <MaterialIcon component="edit" />
       </RouterLink>
+
+      <BaseButton
+        v-if="isEditPage && activityStore.selectedSession?.id && !activityStore.selectedActivity"
+        variant="clean"
+        icon="add"
+        size="small"
+        @click="addActivity"
+      />
     </span>
   </div>
 </template>

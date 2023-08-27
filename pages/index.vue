@@ -2,7 +2,7 @@
   import { ref } from "vue";
   import { CustomSession } from "~/models/Session";
   import { parseSessions } from "~/utils";
-  import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
+  import { useActivityStore, useSettingStore } from "~/stores";
 
   const isLoading = ref(true);
   let pageOptions = {
@@ -14,42 +14,20 @@
   const options = ref(pageOptions);
   const activityStore = useActivityStore();
   const settingsStore = useSettingStore();
-  const userStore = useUserStore();
 
   settingsStore.loadSettings();
 
   const sessions = ref([] as CustomSession[]);
-  const route = useRoute();
 
-  if (userStore.isTrainer && route.params.plan) {
-    activityStore
-      .getUserActivities(route.params.planId as string)
-      .then((response) => (sessions.value = response ?? []))
-      .finally(() => (isLoading.value = false));
-
-    pageOptions = {
-      ...pageOptions,
-      title: "Clients session",
-    };
-  } else if (!userStore.isTrainer) {
-    activityStore
-      .restoreSession()
-      .then(() => (sessions.value = activityStore.sortedWeek?.map(parseSessions) ?? []))
-      .catch(() => {
-        const router = useRouter();
-        router.push({ name: "login" });
-      })
-      .finally(() => (isLoading.value = false));
-    pageOptions = { ...pageOptions, title: "Your sessions" };
-  } else {
-    isLoading.value = false;
-    pageOptions = {
-      title: "Welcome",
-      subtitle: "Click on the group icon to view your clients",
-      block: true,
-      style: "text-center mt-10",
-    };
-  }
+  activityStore
+    .restoreSession()
+    .then(() => (sessions.value = activityStore.sortedWeek?.map(parseSessions) ?? []))
+    .catch(() => {
+      const router = useRouter();
+      router.push({ name: "login" });
+    })
+    .finally(() => (isLoading.value = false));
+  pageOptions = { ...pageOptions, title: "Your sessions" };
   options.value = pageOptions;
 </script>
 

@@ -22,13 +22,9 @@
 
   interface ActivityListEmits {
     (e: "move", activities: Activity[] | undefined, isWarmup: boolean): void;
-    (e: "delete", id: string): void;
-    (e: "edit", id: string): void;
-    (e: "run"): void;
-    (e: "delete-activity", activity: Activity): void;
   }
 
-  const emits = defineEmits<ActivityListEmits>();
+  defineEmits<ActivityListEmits>();
 
   const activityStore = useActivityStore();
 
@@ -38,6 +34,10 @@
       top: 0,
       behavior: "smooth",
     });
+  }
+
+  async function deleteActivity(activity: Activity) {
+    await activityStore.deleteActivity(activity.id);
   }
 </script>
 
@@ -53,7 +53,7 @@
       class="mt-4"
       :list="activities"
       item-key="id"
-      @end="emits('move', activities, isWarmup)"
+      @end="$emit('move', activities, isWarmup)"
     >
       <template #item="{ element }">
         <ActivityItem :activity="element">
@@ -65,7 +65,7 @@
               icon="delete"
               class="float-right ml-2"
               variant="circular"
-              @click.prevent="() => activityStore.deleteActivity(element.id)"
+              @click.prevent="() => deleteActivity(element)"
             />
             <BaseButton
               v-if="allowEdit"

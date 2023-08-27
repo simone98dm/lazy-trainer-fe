@@ -1,12 +1,10 @@
 import { Activity } from "../models/Activity";
 import { DataAction } from "./enum";
 
-export type TimerActivity =
-  | {
-      firstActivity: Activity | undefined;
-      secondActivity: Activity | undefined;
-    }
-  | undefined;
+export type TimerActivity = {
+  firstActivity: Activity | null;
+  secondActivity: Activity | null;
+} | null;
 
 export type DeepPartial<T> = T extends object
   ? {
@@ -49,7 +47,7 @@ export type OrderRequest = {
 export type CardSizes = "none" | "small" | "medium" | "large";
 export type ButtonSizes = "none" | "small" | "medium" | "large";
 export type MaterialIconSizes = "small" | "medium" | "large";
-export type Variants = "smooth" | "circular";
+export type ButtonVariants = "smooth" | "circular" | "clean";
 export type MaterialIcons =
   | "house"
   | "arrow_back"

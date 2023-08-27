@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Color, MaterialIcons, ButtonSizes, Variants } from "~/utils";
+  import { Color, MaterialIcons, ButtonSizes, ButtonVariants } from "~/utils";
 
   interface BaseButtonProps {
     full?: boolean;
@@ -8,7 +8,7 @@
     color?: Color;
     icon?: MaterialIcons;
     loading?: boolean;
-    variant?: Variants;
+    variant?: ButtonVariants;
   }
 
   withDefaults(defineProps<BaseButtonProps>(), {
@@ -19,12 +19,6 @@
     loading: false,
     variant: "smooth",
   });
-
-  interface BaseButtonEmits {
-    (e: "click"): void;
-  }
-
-  defineEmits<BaseButtonEmits>();
 </script>
 
 <template>
@@ -45,6 +39,10 @@
       { 'hover:bg-slate-50 text-black': color === 'trasparent' },
       { 'rounded-full': variant === 'circular' },
       { 'rounded-lg': variant === 'smooth' },
+      {
+        'bg-transparent hover:bg-transparent	text-black shadow-none rounded-full':
+          variant === 'clean',
+      },
       { 'w-full': full ?? false },
       {
         shadow: color !== 'trasparent',
@@ -60,7 +58,6 @@
       },
     ]"
     type="button"
-    @click="$emit('click', $event)"
   >
     <Loading v-if="loading" :color="color" :small="true"></Loading>
     <div v-else class="flex justify-center items-center">

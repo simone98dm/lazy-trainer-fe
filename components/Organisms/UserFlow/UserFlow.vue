@@ -44,7 +44,6 @@
       const activityList = activityStore.getActivities(todayActivity.value.id ?? "");
 
       const timerStore = useTimerStore();
-
       timerStore.setListActivities(warmupList && warmupList.length > 0 ? warmupList : activityList);
 
       router.push({ name: "timer", params: { session: todayActivity.value.id } });
@@ -69,19 +68,10 @@
           <p v-if="isHighlightedCard(item)" class="text-sm">
             {{ !userStore.isTrainer && isToday(item.dayOfWeek) ? "Today session" : "" }}
           </p>
-          <h4
-            :class="[
-              'font-bold mb-2',
-              { 'font-semibold text-5xl md:text-4xl': item.description },
-              { 'font-bold text-7xl md:text-6xl': !item.description },
-            ]"
-          >
+          <h4 class="mb-2 font-semibold text-5xl md:text-4xl">
             {{ item.name }}
           </h4>
-          <p
-            v-if="item.description"
-            class="text-md md:text-lg truncate whitespace-nowrap overflow-hidden"
-          >
+          <p class="text-md md:text-lg truncate whitespace-nowrap overflow-hidden">
             {{ item.description }}
           </p>
         </div>
