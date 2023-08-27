@@ -57,6 +57,9 @@ export const useActivityStore = defineStore("activity", {
   },
   actions: {
     async restoreSession() {
+      if (this.plan) {
+        return this.plan;
+      }
       const { $workout } = useNuxtApp();
       const user = useSupabaseUser();
 

@@ -22,16 +22,6 @@ export const routes = [
     },
   },
   {
-    name: "activity",
-    path: "/activity/:session/:activity?",
-    component: () => import("~/pages/activity.vue"),
-    meta: {
-      title: `Activities`,
-      requireAuth: true,
-      requireAdmin: false,
-    },
-  },
-  {
     name: "timer",
     path: "/timer",
     component: () => import("~/pages/timer.vue"),
@@ -71,16 +61,6 @@ export const routes = [
       title: `Settings`,
       requireAuth: true,
       requireAdmin: false,
-    },
-  },
-  {
-    name: "group",
-    path: "/group",
-    component: () => import("~/pages/group.vue"),
-    meta: {
-      title: `Your clients`,
-      requireAuth: true,
-      requireAdmin: true,
     },
   },
   {
@@ -134,16 +114,6 @@ export const routes = [
       hideHeader: true,
       hideFooter: true,
       requireAuth: false,
-      requireAdmin: false,
-    },
-  },
-  {
-    path: "/dashboard",
-    name: "dashboard",
-    component: () => import("~/pages/dashboard.vue"),
-    meta: {
-      title: `Dashboard`,
-      requireAuth: true,
       requireAdmin: false,
     },
   },
