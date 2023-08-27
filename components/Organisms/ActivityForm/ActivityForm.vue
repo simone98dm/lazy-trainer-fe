@@ -31,8 +31,14 @@
   const repsError = computed(() =>
     !isTimeBasedActivity.value && !selectedActivity.value?.reps ? "Reps are required" : ""
   );
+  const formError = computed(
+    () => nameError.value || descriptionError.value || timeError.value || repsError.value
+  );
 
   async function saveActivity() {
+    if (formError.value) {
+      return;
+    }
     if (activityStore.selectedActivity && !activityStore.selectedActivity?.id) {
       await activityStore.addActivity(activityStore.selectedActivity);
     } else {
