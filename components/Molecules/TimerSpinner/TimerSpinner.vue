@@ -38,7 +38,7 @@
         <span
           id="base-timer-label"
           :class="[
-            'base-timer__label text-2xl md:text-7xl lg:text-6xl',
+            'base-timer__label text-2xl md:text-7xl lg:text-6xl dark:text-slate-200 text-slate-600',
             { 'text-2xl': size === 'small' },
             { 'text-6xl': size === 'large' },
           ]"

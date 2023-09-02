@@ -1,5 +1,5 @@
 <template>
-  <div class="shadow p-5 rounded-xl mb-6 bg-white max-w-screen-xl mx-auto">
+  <Card>
     <pre>
 MIT License
 
@@ -24,7 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
   </pre
     >
-  </div>
+  </Card>
 </template>
 
 <style>

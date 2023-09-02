@@ -22,7 +22,7 @@ export default defineNuxtConfig({
       SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_KEY,
     },
   },
-  css: ["~/assets/style/main.scss"],
+  css: ["~/assets/style/main.css"],
   modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@nuxtjs/supabase", "@vite-pwa/nuxt"],
   components: {
     global: true,

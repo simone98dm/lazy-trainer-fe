@@ -9,15 +9,15 @@
   const settingsStore = useSettingStore();
   const timerStore = useTimerStore();
 
-  let timerInterval: any;
-  let timePassed = 0;
   const TIME_LIMIT = ref(0);
   const timeLeft = ref(TIME_LIMIT.value);
-  let audio = new Audio();
-
   const remainingPathColor = ref(COLOR_CODES.info.color);
   const strokeDasharray = ref("283");
   const baseTimerLabel = ref(formatTime(timeLeft.value));
+
+  let timerInterval: any;
+  let timePassed = 0;
+  let audio = new Audio();
 
   setupTimer();
 
@@ -32,12 +32,14 @@
     clearInterval(timerInterval);
   });
 
-  function onConfirmRefresh(event: any) {
-    event.preventDefault();
-    return (event.returnValue = "Are you sure you want to leave the page?");
-  }
-
-  window.addEventListener("beforeunload", onConfirmRefresh, { capture: true });
+  window.addEventListener(
+    "beforeunload",
+    (event: any) => {
+      event.preventDefault();
+      return (event.returnValue = "Are you sure you want to leave the page?");
+    },
+    { capture: true }
+  );
 
   function setupTimer() {
     let firstActivity = null,
@@ -150,7 +152,10 @@
 </script>
 
 <template>
-  <div v-if="timerStore.currentActivity" class="text-center mb-6">
+  <div
+    v-if="timerStore.currentActivity"
+    class="text-center mb-6 dark:text-slate-200 text-slate-600"
+  >
     Current activity:
     <h1 class="text-4xl font-bold">
       {{ timerStore.currentActivity.name }}
@@ -165,9 +170,12 @@
       size="large"
     />
   </div>
-  <h1 class="flex flex-col text-center my-20 text-pink-600" v-else>
-    <span class="text-4xl">Total reps:</span>
-    <span class="text-9xl font-bold">
+  <h1
+    class="flex flex-col text-center my-20 text-pink-600 dark:text-slate-200 text-slate-600"
+    v-else
+  >
+    <span class="text-2xl">Total reps:</span>
+    <span class="text-7xl font-bold">
       {{ timerStore.currentActivity?.reps }}
     </span>
   </h1>
@@ -198,7 +206,7 @@
       />
     </div>
   </div>
-  <div class="text-center text-slate-500 mb-3">
+  <div class="text-center text-slate-500 mb-3 dark:text-slate-500 text-slate-300">
     Next activty:
     <h1 v-if="timerStore.nextActivity" class="text-4xl font-bolder">
       {{ timerStore.nextActivity.name }}

@@ -4,8 +4,8 @@
 </script>
 
 <template>
-  <div class="mx-auto text-center max-w-screen-xl">
-    <div class="mb-6 bg-white shadow rounded-xl p-5">
+  <div class="mx-auto text-center max-w-screen-xl p-5">
+    <Card>
       <img
         src="https://avatars.githubusercontent.com/u/17797267?v=4"
         class="rounded-full w-20 mx-auto mb-6"
@@ -13,8 +13,8 @@
       <p class="text-4xl font-bold mb-6">Hi folks 👋</p>
       <p class="text-4xl font-bolder mb-6">my name is Simone</p>
       <p class="text-xl">I'm a software engineer 👨🏻‍💻 from Italy🇮🇹</p>
-    </div>
-    <div class="mb-6 bg-white shadow rounded-xl p-5">
+    </Card>
+    <Card>
       <p class="text-2xl font-bold">You can find me on</p>
       <div class="flex flex-col">
         <div class="flex justify-center mb-1">
@@ -32,6 +32,6 @@
           />
         </a>
       </div>
-    </div>
+    </Card>
   </div>
 </template>

@@ -111,7 +111,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
   body {
     overflow-y: hidden;
   }
