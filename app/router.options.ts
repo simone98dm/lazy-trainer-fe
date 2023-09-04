@@ -6,7 +6,7 @@ export const routes = [
     path: "/:plan?",
     component: () => import("~/pages/index.vue"),
     meta: {
-      title: `Home`,
+      title: "Home",
       requireAuth: true,
       requireAdmin: false,
     },
@@ -16,7 +16,7 @@ export const routes = [
     path: "/details/:session",
     component: () => import("~/pages/details.vue"),
     meta: {
-      title: `Details`,
+      title: "Details",
       requireAuth: true,
       requireAdmin: false,
     },
@@ -26,7 +26,7 @@ export const routes = [
     path: "/timer",
     component: () => import("~/pages/timer.vue"),
     meta: {
-      title: `Timer`,
+      title: "Timer",
       requireAuth: true,
       requireAdmin: false,
     },
@@ -36,7 +36,7 @@ export const routes = [
     path: "/edit/:session?",
     component: () => import("~/pages/edit.vue"),
     meta: {
-      title: `Edit`,
+      title: "Edit",
       requireAuth: true,
       requireAdmin: false,
     },
@@ -46,7 +46,7 @@ export const routes = [
     path: "/login",
     component: () => import("~/pages/login.vue"),
     meta: {
-      title: `Login`,
+      title: "Login",
       requireAuth: false,
       requireAdmin: false,
       hideHeader: true,
@@ -58,7 +58,7 @@ export const routes = [
     path: "/settings",
     component: () => import("~/pages/settings.vue"),
     meta: {
-      title: `Settings`,
+      title: "Settings",
       requireAuth: true,
       requireAdmin: false,
     },
@@ -68,7 +68,7 @@ export const routes = [
     path: "/not-found",
     component: () => import("~/pages/notfound.vue"),
     meta: {
-      title: `Not Found`,
+      title: "Not Found",
       hideHeader: true,
       hideFooter: true,
       requireAuth: false,
@@ -90,7 +90,7 @@ export const routes = [
     path: "/about",
     component: () => import("~/pages/about.vue"),
     meta: {
-      title: `About`,
+      title: "About",
       requireAuth: false,
       requireAdmin: false,
     },
@@ -100,7 +100,7 @@ export const routes = [
     path: "/license",
     component: () => import("~/pages/license.vue"),
     meta: {
-      title: `Licence`,
+      title: "Licence",
       requireAuth: false,
       requireAdmin: false,
     },
@@ -110,7 +110,7 @@ export const routes = [
     name: "landing",
     component: () => import("~/pages/landing.vue"),
     meta: {
-      title: `Home`,
+      title: "Home",
       hideHeader: true,
       hideFooter: true,
       requireAuth: false,
@@ -122,7 +122,7 @@ export const routes = [
     name: "privacy-policy",
     component: () => import("~/pages/privacy-policy.vue"),
     meta: {
-      title: `Privacy Policy`,
+      title: "Privacy Policy",
       requireAuth: false,
       requireAdmin: false,
     },
