@@ -1,4 +1,4 @@
-import { Activity } from "../models/Activity";
+import type { Activity } from "~/models/Activity";
 import { DataAction } from "./enum";
 
 export type TimerActivity = {

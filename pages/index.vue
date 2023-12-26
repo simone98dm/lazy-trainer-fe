@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { CustomSession } from "~/models/Session";
+  import type { CustomSession } from "~/models/Session";
   import { parseSessions } from "~/utils";
   import { useActivityStore, useSettingStore } from "~/stores";
 

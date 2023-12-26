@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { Role } from "~/utils";
 import { clearStorage } from "~/helpers/storage";
 import { useWorkoutClient } from "~/composable/useWorkoutClient";
-import { User } from "~/models/User";
+import type { User } from "~/models/User";
 
 export const useUserStore = defineStore("user", {
   state: () => ({

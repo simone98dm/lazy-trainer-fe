@@ -1,10 +1,10 @@
-import { useSettingStore } from "~/stores";
-import { Plan } from "~/models/Plan";
-import { Session } from "~/models/Session";
 import { defineStore } from "pinia";
-import { Activity } from "~/models/Activity";
-import { OrderRequest } from "~/utils";
-import { Completion } from "~/models/Completion";
+import { useSettingStore } from "~/stores";
+import type { Plan } from "~/models/Plan";
+import type { Session } from "~/models/Session";
+import type { Activity } from "~/models/Activity";
+import type { OrderRequest } from "~/utils";
+import type { Completion } from "~/models/Completion";
 
 export const useActivityStore = defineStore("activity", {
   state: () => ({

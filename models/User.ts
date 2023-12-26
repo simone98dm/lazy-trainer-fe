@@ -1,4 +1,4 @@
-import { UserConfigurations } from "~/utils";
+import type { UserConfigurations } from "~/utils";
 
 export interface UserResponse {
   data: User;

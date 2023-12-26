@@ -1,6 +1,6 @@
-import { Plan } from "~/models/Plan";
-import { CustomSession, Session } from "~/models/Session";
 import { v4 as uuid } from "uuid";
+import type { Plan } from "~/models/Plan";
+import type { CustomSession, Session } from "~/models/Session";
 
 export function parseSessions(session: Session): CustomSession {
   return {
