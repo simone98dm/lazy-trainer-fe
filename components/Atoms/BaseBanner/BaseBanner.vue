@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Color } from "~/utils";
+  import { type Color } from "~/utils";
 
   interface BaseBannerProps {
     text?: string;

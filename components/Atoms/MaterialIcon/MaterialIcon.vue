@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { MaterialIconSizes, MaterialIcons } from "~/utils";
+  import type { MaterialIconSizes, MaterialIcons } from "~/utils";
 
   interface MaterialIconProps {
     component: MaterialIcons;

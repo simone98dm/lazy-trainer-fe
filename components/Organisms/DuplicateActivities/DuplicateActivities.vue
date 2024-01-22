@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import { Activity } from "~/models/Activity";
+  import { type Activity } from "~/models/Activity";
   import { getDayOfTheWeek } from "~/utils";
 
   const props = defineProps({

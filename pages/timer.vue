@@ -38,7 +38,7 @@
       event.preventDefault();
       return (event.returnValue = "Are you sure you want to leave the page?");
     },
-    { capture: true }
+    { capture: true },
   );
 
   function setupTimer() {
@@ -47,7 +47,7 @@
 
     if (timerStore.currentActivity && timerStore.nextActivity) {
       const nextActivityIndex = timerStore.listActivities.findIndex(
-        (activity) => activity.id === timerStore.nextActivity?.id
+        (activity) => activity.id === timerStore.nextActivity?.id,
       );
       const secondActivityIndex = nextActivityIndex + 1;
       firstActivity = timerStore.listActivities[nextActivityIndex];

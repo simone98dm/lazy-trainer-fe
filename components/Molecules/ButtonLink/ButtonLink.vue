@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Color, MaterialIcons, LinkType } from "~/utils";
+  import { type Color, type MaterialIcons, LinkType } from "~/utils";
 
   interface ButtonLinkProps {
     to: any;

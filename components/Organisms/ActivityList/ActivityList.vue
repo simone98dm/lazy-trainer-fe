@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { useActivityStore } from "~/stores";
-  import { Activity } from "~/models/Activity";
+  import { type Activity } from "~/models/Activity";
   import draggable from "vuedraggable";
 
   interface ActivityListProps {

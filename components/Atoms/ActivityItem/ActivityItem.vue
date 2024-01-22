@@ -1,6 +1,7 @@
 <script setup lang="ts">
-  import { Activity } from "~/models/Activity";
-  import { MaterialIcons, millisToMinutesAndSeconds } from "~/utils";
+  import { type Activity } from "~/models/Activity";
+  import { type MaterialIcons, millisToMinutesAndSeconds } from "~/utils";
+  import { computed } from "vue";
 
   interface ItemProps {
     activity: Activity;

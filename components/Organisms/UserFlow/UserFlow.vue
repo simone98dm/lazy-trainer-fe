@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { CustomSession } from "~/models/Session";
+  import { type CustomSession } from "~/models/Session";
   import { useActivityStore, useTimerStore, useUserStore } from "~/stores";
   import { LinkType } from "~/utils";
 
@@ -17,7 +17,7 @@
   const router = useRouter();
 
   const todayActivity = computed(() =>
-    props.list.find((session) => isHighlightedCard(session) && hasActivities(session.id ?? ""))
+    props.list.find((session) => isHighlightedCard(session) && hasActivities(session.id ?? "")),
   );
 
   function isToday(dayOfWeek: number): boolean {
@@ -51,7 +51,7 @@
   }
 
   const showAddActivityButton = computed(
-    () => !props.loading && !userStore.isNormal && activityStore.missingDays.length > 0
+    () => !props.loading && !userStore.isNormal && activityStore.missingDays.length > 0,
   );
 </script>
 

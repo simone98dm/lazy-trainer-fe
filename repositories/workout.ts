@@ -1,10 +1,10 @@
 import { useWorkoutClient } from "~/composable/useWorkoutClient";
-import { Repository } from "./common";
-import { Activity } from "models/Activity";
-import { Plan } from "~/models/Plan";
-import { Session } from "~/models/Session";
-import { OrderRequest } from "~/utils";
-import { Completion } from "~/models/Completion";
+import { type Repository } from "./common";
+import { type Activity } from "~/models/Activity";
+import { type Plan } from "~/models/Plan";
+import { type Session } from "~/models/Session";
+import { type OrderRequest } from "~/utils";
+import { type Completion } from "~/models/Completion";
 
 export interface WorkoutRepository {
   getUserPlan(userId: string): Promise<Plan | null>;
@@ -38,7 +38,7 @@ async function getUserPlan(userId: string): Promise<Plan | null> {
 
   const orderedData = sessionsResponse.data?.map((session) => {
     session.activities.sort(
-      (a: Activity, b: Activity) => (a.order_index ?? 0) - (b.order_index ?? 0)
+      (a: Activity, b: Activity) => (a.order_index ?? 0) - (b.order_index ?? 0),
     );
     return session;
   }) as Session[];
@@ -122,7 +122,7 @@ async function getPlan(planId: string): Promise<Plan | null> {
 async function sortActivities(request: OrderRequest[]): Promise<void> {
   const client = useWorkoutClient();
   const requestPromise = request.map((r) =>
-    client.from("activities").update({ order_index: r.order_index }).eq("id", r.id)
+    client.from("activities").update({ order_index: r.order_index }).eq("id", r.id),
   );
   await Promise.all(requestPromise);
 }

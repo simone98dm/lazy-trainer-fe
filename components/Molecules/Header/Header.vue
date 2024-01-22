@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Activity } from "~/models/Activity";
+  import { type Activity } from "~/models/Activity";
   import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
 
   const settingsStore = useSettingStore();

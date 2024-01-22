@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Color, MaterialIcons, ButtonSizes, ButtonVariants } from "~/utils";
+  import type { Color, MaterialIcons, ButtonSizes, ButtonVariants } from "~/utils";
 
   interface BaseButtonProps {
     full?: boolean;

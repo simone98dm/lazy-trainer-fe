@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { computed } from "vue";
-  import { Color } from "~/utils";
+  import { type Color } from "~/utils";
 
   interface LoadingProps {
     small?: boolean;

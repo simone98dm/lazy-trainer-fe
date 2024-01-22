@@ -13,7 +13,7 @@
 
   const showModal = ref(false);
   const seletedText = computed(
-    () => `${selectedTime.value.minutes} min, ${selectedTime.value.seconds} sec`
+    () => `${selectedTime.value.minutes} min, ${selectedTime.value.seconds} sec`,
   );
 
   const selectedTime = ref({

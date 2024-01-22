@@ -15,7 +15,7 @@
     () =>
       `${selectedMinutes.value <= 9 ? `0${selectedMinutes.value}` : selectedMinutes.value}:${
         selectedSeconds.value <= 9 ? `0${selectedSeconds.value}` : selectedSeconds.value
-      }`
+      }`,
   );
   const selectedMinutes = ref(0);
   const selectedSeconds = ref(0);
@@ -32,7 +32,7 @@
 
   watch(
     () => [selectedMinutes.value, selectedSeconds.value],
-    ([minutes, seconds]) => emit("select", { minutes, seconds })
+    ([minutes, seconds]) => emit("select", { minutes, seconds }),
   );
 </script>
 

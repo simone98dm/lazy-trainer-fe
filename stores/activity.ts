@@ -92,6 +92,9 @@ export const useActivityStore = defineStore("activity", {
             ...this.plan,
             sessions: this.plan.sessions.map((session) => {
               if (session.id === data.sessionId) {
+                if (!session.activities) {
+                  session.activities = [];
+                }
                 session.activities.push(data);
               }
               return session;
@@ -190,7 +193,7 @@ export const useActivityStore = defineStore("activity", {
     async moveActivity(
       sessionId: string | undefined,
       listActivities: Activity[],
-      isWarmup: boolean
+      isWarmup: boolean,
     ) {
       if (!sessionId) {
         return;
@@ -229,7 +232,7 @@ export const useActivityStore = defineStore("activity", {
               ({
                 id: item.id,
                 order_index: item.order_index,
-              } as OrderRequest)
+              }) as OrderRequest,
           );
           await $workout.sortActivities(data);
           settingsStore.dismissLoading();

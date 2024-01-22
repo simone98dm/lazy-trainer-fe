@@ -1,7 +1,7 @@
-import { User } from "~/models/User";
-import { Repository } from "./common";
+import { type User } from "~/models/User";
+import { type Repository } from "./common";
 import { useWorkoutClient } from "~/composable/useWorkoutClient";
-import { UserConfigurations } from "~/utils";
+import { type UserConfigurations } from "~/utils";
 
 export interface UserRepository {
   getUserData(userId: string): Promise<User | null>;

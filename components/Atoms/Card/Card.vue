@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { CardSizes } from "~/utils";
+  import { type CardSizes } from "~/utils";
 
   interface CardProps {
     padding?: CardSizes;

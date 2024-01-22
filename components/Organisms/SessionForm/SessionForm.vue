@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Session } from "~/models/Session";
+  import { type Session } from "~/models/Session";
   import { getDayOfTheWeek } from "~/utils";
   import { useActivityStore } from "~/stores";
 

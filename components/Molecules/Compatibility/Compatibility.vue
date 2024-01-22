@@ -5,7 +5,7 @@
 
   const showBanner = ref(
     !window.location.hostname.includes(".simone98dm.dev") &&
-      window.location.hostname !== "localhost"
+      window.location.hostname !== "localhost",
   );
 
   function closeBanner() {

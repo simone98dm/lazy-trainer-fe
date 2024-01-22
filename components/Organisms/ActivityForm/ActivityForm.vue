@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Activity } from "~/models/Activity";
+  import { type Activity } from "~/models/Activity";
   import { computed, ref } from "vue";
   import { useActivityStore, useUserStore } from "~/stores";
   import { storeToRefs } from "pinia";
@@ -20,19 +20,19 @@
   const descriptionError = computed(() =>
     selectedActivity.value?.description && selectedActivity.value?.description.length > 100
       ? "Description is too long"
-      : ""
+      : "",
   );
   const isTimeBasedActivity = ref(
-    (Boolean(props.activity?.time !== 0) && Boolean(props.activity?.reps === 0)) ?? false
+    (Boolean(props.activity?.time !== 0) && Boolean(props.activity?.reps === 0)) ?? false,
   );
   const timeError = computed(() =>
-    isTimeBasedActivity.value && !selectedActivity.value?.time ? "Time is required" : ""
+    isTimeBasedActivity.value && !selectedActivity.value?.time ? "Time is required" : "",
   );
   const repsError = computed(() =>
-    !isTimeBasedActivity.value && !selectedActivity.value?.reps ? "Reps are required" : ""
+    !isTimeBasedActivity.value && !selectedActivity.value?.reps ? "Reps are required" : "",
   );
   const formError = computed(
-    () => nameError.value || descriptionError.value || timeError.value || repsError.value
+    () => nameError.value || descriptionError.value || timeError.value || repsError.value,
   );
 
   async function saveActivity() {
@@ -120,7 +120,9 @@
               <Input
                 v-else
                 :value="`${selectedActivity?.reps}`"
-                @change="(value: string) =>  activityStore.updateActivityValue('reps', Number(value))"
+                @change="
+                  (value: string) => activityStore.updateActivityValue('reps', Number(value))
+                "
                 id="activityReps"
                 name="activityRepsField"
                 :error="repsError"

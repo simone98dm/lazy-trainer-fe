@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { SvgAvailableIcons } from "utils";
+  import { type SvgAvailableIcons } from "~/utils";
   import { defineAsyncComponent } from "vue";
 
   interface SvgIconProps {

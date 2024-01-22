@@ -1,11 +1,11 @@
 <script setup lang="ts">
-  import { CalendarMarker } from "~/models/CalendarMarker";
-  import { ICompletion } from "~/models/Completion";
+  import { type CalendarMarker } from "~/models/CalendarMarker";
+  import { type Completion } from "~/models/Completion";
   import { useUserStore } from "~/stores";
 
   const props = defineProps({
     completion: {
-      type: Array<ICompletion>,
+      type: Array<Completion>,
       required: false,
       default: [],
     },
@@ -36,10 +36,10 @@
     "gray",
   ];
   if (props.completion) {
-    props.completion?.forEach((statistics: ICompletion, index: number) => {
+    props.completion?.forEach((statistics: Completion, index: number) => {
       const { userId, userName, stats } = statistics;
       let label = `${userName} complete the workout 🎉`;
-      if (userStore.userId === userId) {
+      if (userStore.user?.id === userId) {
         label = "You have completed this workout";
       }
       stats.completion.forEach((item) => {

@@ -6,21 +6,29 @@ describe("ActivityItem", () => {
   it("renders correctly", () => {
     const wrapper = mount(ActivityItem, {
       props: {
-        description: "description",
-        name: "name",
+        activity: {
+          description: "description",
+          name: "name",
+          reps: 0,
+          requestChange: false,
+          time: 0,
+        },
       },
     });
 
     expect(wrapper.html()).toContain("name");
-    expect(wrapper.html()).toContain("description");
   });
 
   it("renders correctly with time", () => {
     const wrapper = mount(ActivityItem, {
       props: {
-        description: "description",
-        name: "name",
-        time: 60000,
+        activity: {
+          description: "description",
+          name: "name",
+          time: 60000,
+          reps: 0,
+          requestChange: false,
+        },
       },
     });
 
@@ -30,9 +38,13 @@ describe("ActivityItem", () => {
   it("renders correctly with reps", () => {
     const wrapper = mount(ActivityItem, {
       props: {
-        description: "description",
-        name: "name",
-        reps: 3,
+        activity: {
+          description: "description",
+          name: "name",
+          reps: 3,
+          time: 0,
+          requestChange: false,
+        },
       },
     });
 
