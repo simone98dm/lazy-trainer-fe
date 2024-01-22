@@ -5,6 +5,7 @@ import type { Session } from "~/models/Session";
 import type { Activity } from "~/models/Activity";
 import type { OrderRequest } from "~/utils";
 import type { Completion } from "~/models/Completion";
+import { useWorkoutClient } from "~/composable/useWorkoutClient";
 
 export const useActivityStore = defineStore("activity", {
   state: () => ({
@@ -61,10 +62,11 @@ export const useActivityStore = defineStore("activity", {
         return this.plan;
       }
       const { $workout } = useNuxtApp();
-      const user = useSupabaseUser();
+      const client = useWorkoutClient();
+      const user = await client.auth.getUser();
 
-      if (user.value) {
-        this.plan = await $workout.getUserPlan(user.value?.id);
+      if (user.data.user) {
+        this.plan = await $workout.getUserPlan(user.data.user.id);
       }
 
       if (!this.plan) {

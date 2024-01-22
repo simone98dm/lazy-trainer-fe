@@ -17,7 +17,7 @@ export default defineNuxtConfig({
     },
   },
   css: ["~/assets/style/main.css"],
-  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@nuxtjs/supabase", "@vite-pwa/nuxt"],
+  modules: ["@nuxtjs/tailwindcss", "@pinia/nuxt", "@vite-pwa/nuxt"],
   components: {
     global: true,
     dirs: ["~/components/Atoms", "~/components/Molecules", "~/components/Organisms"],
