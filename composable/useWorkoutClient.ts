@@ -1,13 +1,13 @@
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { type Database } from "~/models/database.types";
 
-let supabase: SupabaseClient | null = null;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+let supabase: SupabaseClient<Database> | null = null;
 
 export function useWorkoutClient() {
-  const config = useRuntimeConfig();
-
   if (!supabase) {
-    supabase = createClient<Database>(config.app.SUPABASE_URL, config.app.SUPABASE_ANON_KEY);
+    supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
     console.log("Create new client");
   }
 
