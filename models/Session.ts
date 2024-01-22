@@ -1,4 +1,4 @@
-import { Activity } from "./Activity";
+import type { Activity } from "./Activity";
 
 export interface Session {
   dayOfWeek: number;

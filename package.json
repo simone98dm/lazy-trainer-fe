@@ -19,7 +19,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "vercel:preview": "vercel deploy",
+    "vercel:deploy": "vercel deploy",
     "vercel:run": "vercel dev",
     "postinstall": "nuxt prepare",
     "mock": "npm --prefix mock run start",

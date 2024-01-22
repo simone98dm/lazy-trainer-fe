@@ -1,5 +1,4 @@
 import { Role } from "./enum";
-import { SvgAvailableIcons } from "./types";
 
 export const FULL_DASH_ARRAY = 283;
 export const WARNING_THRESHOLD = 10;

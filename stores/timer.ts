@@ -1,6 +1,6 @@
 import { useActivityStore, useSettingStore } from "~/stores";
 import { defineStore } from "pinia";
-import { Activity } from "~/models/Activity";
+import type { Activity } from "~/models/Activity";
 
 export const useTimerStore = defineStore("timer", {
   state: () => ({
@@ -52,7 +52,7 @@ export const useTimerStore = defineStore("timer", {
       this.currentActivity = null;
       this.nextActivity = null;
     },
-    async requestChange(sessionId: string) {
+    async requestChange() {
       const settingsStore = useSettingStore();
       settingsStore.openLoading();
 

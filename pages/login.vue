@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { ref, watch } from "vue";
   import { useUserStore } from "~/stores";
-  import workout from "~/assets/workout-1.jpg";
 
   const userStore = useUserStore();
   const router = useRouter();
