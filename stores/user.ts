@@ -17,16 +17,16 @@ export const useUserStore = defineStore("user", {
       return state.user?.name;
     },
     humanizeRole: (state) => {
-      return RoleName[state.user?.role as Role];
+      return RoleName[Number(state.user?.role) as Role];
     },
     isTrainer: (state) => {
-      return state.user?.role === Role.TRAINER;
+      return Number(state.user?.role) === Role.TRAINER;
     },
     isSelfMadeMan: (state) => {
-      return state.user?.role === Role.SELFMADE;
+      return Number(state.user?.role) === Role.SELFMADE;
     },
     isNormal: (state) => {
-      return state.user?.role === Role.NORMAL;
+      return Number(state.user?.role) === Role.NORMAL;
     },
   },
   actions: {
@@ -62,11 +62,15 @@ export const useUserStore = defineStore("user", {
 
       const { data } = await client.auth.getUser();
       const userResponse = await $user.getUserData(data.user?.id);
-      const { id, name, role, configurations } = userResponse;
+      if (userResponse) {
+        const { id, name, role, configurations } = userResponse;
 
-      this.user = { id, name, role, configurations };
+        this.user = { id, name, role, configurations };
 
-      return userResponse;
+        return userResponse;
+      }
+
+      return null;
     },
     async getTrainerInfo(trainerId: string | undefined) {
       if (!trainerId) {

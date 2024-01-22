@@ -8,9 +8,6 @@ let supabase: SupabaseClient<Database> | null = null;
 export function useWorkoutClient() {
   if (!supabase) {
     supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
-    console.log("Create new client");
   }
-
-  console.log("Used cached client");
   return supabase;
 }

@@ -19,15 +19,16 @@ async function getUserData(userId: string): Promise<User | null> {
   const userResponse = await client
     .from("users")
     .select("id,name,role,configurations")
-    .eq("id", userId);
+    .eq("id", userId)
+    .single();
 
   if (userResponse.error) {
     return null;
   }
 
-  const [user] = userResponse.data;
+  const user = userResponse.data as User;
 
-  return user as User;
+  return user;
 }
 async function getTrainerClients(userId: string) {
   const client = useWorkoutClient();

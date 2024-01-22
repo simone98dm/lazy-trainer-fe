@@ -5,7 +5,7 @@ export interface UserResponse {
 }
 
 export interface User {
-  role: number;
+  role: string;
   name: string;
   id: string;
   configurations: UserConfigurations;
