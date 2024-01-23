@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { Role } from "~/utils";
-import { clearStorage } from "~/helpers/storage";
+import { clearStorage, saveStorage } from "~/helpers/storage";
 import { useWorkoutClient } from "~/composable/useWorkoutClient";
 import type { User } from "~/models/User";
 
@@ -42,11 +42,6 @@ export const useUserStore = defineStore("user", {
           throw new Error(loginResponse.error.message);
         }
 
-        await client.auth.setSession({
-          access_token: loginResponse.data.session.access_token,
-          refresh_token: loginResponse.data.session.refresh_token,
-        });
-
         await this.fetchUserInfo();
       } catch (ex) {
         return {
@@ -58,19 +53,15 @@ export const useUserStore = defineStore("user", {
     },
     async fetchUserInfo() {
       const { $user } = useNuxtApp();
-      const client = useWorkoutClient();
 
-      const { data } = await client.auth.getUser();
+      const { data } = await useWorkoutClient().auth.getUser();
       const userResponse = await $user.getUserData(data.user?.id);
+
       if (userResponse) {
-        const { id, name, role, configurations } = userResponse;
-
-        this.user = { id, name, role, configurations };
-
-        return userResponse;
+        this.user = userResponse;
       }
 
-      return null;
+      return userResponse;
     },
     async getTrainerInfo(trainerId: string | undefined) {
       if (!trainerId) {

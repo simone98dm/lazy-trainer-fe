@@ -17,6 +17,7 @@
   const { selectedActivity } = storeToRefs(activityStore);
 
   const nameError = computed(() => (!selectedActivity.value?.name ? "Name is required" : ""));
+
   const descriptionError = computed(() =>
     selectedActivity.value?.description && selectedActivity.value?.description.length > 100
       ? "Description is too long"
@@ -25,12 +26,19 @@
   const isTimeBasedActivity = ref(
     (Boolean(props.activity?.time !== 0) && Boolean(props.activity?.reps === 0)) ?? false,
   );
+
   const timeError = computed(() =>
     isTimeBasedActivity.value && !selectedActivity.value?.time ? "Time is required" : "",
   );
+
   const repsError = computed(() =>
     !isTimeBasedActivity.value && !selectedActivity.value?.reps ? "Reps are required" : "",
   );
+
+  const cardTitle = computed(() =>
+    selectedActivity.value?.id ? "Edit activity" : "Create activity",
+  );
+
   const formError = computed(
     () => nameError.value || descriptionError.value || timeError.value || repsError.value,
   );
@@ -39,119 +47,138 @@
     if (formError.value) {
       return;
     }
-    if (activityStore.selectedActivity && !activityStore.selectedActivity?.id) {
-      await activityStore.addActivity(activityStore.selectedActivity);
+    if (selectedActivity.value && selectedActivity.value.id) {
+      await activityStore.addActivity(selectedActivity.value);
     } else {
-      await activityStore.updateActivity(activityStore.selectedActivity);
+      await activityStore.updateActivity(selectedActivity.value);
     }
     activityStore.setSelectedActivity(null);
   }
 </script>
 
 <template>
-  <Card id="activity-form">
-    <div class="p-6 w-full">
-      <div class="flex flex-wrap -mx-3">
-        <div class="w-full px-3 mb-6">
-          <Input
-            :value="selectedActivity?.name"
-            @change="(value: string) => activityStore.updateActivityValue('name', value)"
-            id="activityName"
-            name="activityNameField"
-            label="Activity name"
-            :required="true"
-            :error="nameError"
-          />
-        </div>
+  <BaseModal
+    id="activity-form"
+    :title="cardTitle"
+    @close="() => (activityStore.selectedActivity = null)"
+  >
+    <template #content>
+      <div class="p-6 w-full">
+        <div class="flex flex-wrap -mx-3">
+          <div class="w-full px-3 mb-6">
+            <Input
+              :value="selectedActivity?.name"
+              @change="(value: string) => activityStore.updateActivityValue('name', value)"
+              id="activityName"
+              name="activityNameField"
+              label="Activity name"
+              :required="true"
+              :error="nameError"
+            />
+          </div>
 
-        <div class="w-full px-3 mb-6">
-          <Input
-            :value="selectedActivity?.description"
-            @change="(value: string) => activityStore.updateActivityValue('description', value)"
-            id="activityDescription"
-            name="activityDescriptionField"
-            label="Activity description"
-            :error="descriptionError"
-          />
-        </div>
+          <div class="w-full px-3 mb-6">
+            <Input
+              :value="selectedActivity?.description"
+              @change="(value: string) => activityStore.updateActivityValue('description', value)"
+              id="activityDescription"
+              name="activityDescriptionField"
+              label="Activity description"
+              :error="descriptionError"
+            />
+          </div>
 
-        <div class="w-full px-3 mb-6">
-          <label class="font-bold mb-2" for="activityType"> Activity based type </label>
-          <div class="flex flex-col sm:flex-row justify-around align-center my-2">
-            <div class="w-full sm:w-64 justify-between shadow rounded-full h-12 flex p-1 mb-3">
-              <button
-                id="time-based-activity"
-                :class="[
-                  'flex items-center w-fit rounded-full h-10 transition-all px-10',
-                  {
-                    'bg-emerald-600 text-white shadow': isTimeBasedActivity && !user.isTrainer,
-                  },
-                  {
-                    'bg-purple-600 text-white shadow': isTimeBasedActivity && user.isTrainer,
-                  },
-                ]"
-                @click="() => (isTimeBasedActivity = true)"
-              >
-                Time
-              </button>
-              <button
-                id="reps-based-activity"
-                :class="[
-                  'flex items-center w-fit rounded-full h-10 transition-all px-10',
-                  {
-                    'bg-emerald-600 text-white shadow': !isTimeBasedActivity && !user.isTrainer,
-                  },
-                  {
-                    'bg-purple-600 text-white shadow': !isTimeBasedActivity && user.isTrainer,
-                  },
-                ]"
-                @click="() => (isTimeBasedActivity = false)"
-              >
-                Reps
-              </button>
-            </div>
-            <div class="w-full sm:w-fit mb-3">
-              <TimeSelector
-                v-if="isTimeBasedActivity"
-                :time="(selectedActivity?.time ?? 0) / 1000"
-                @timeSelected="(value: string) => activityStore.updateActivityValue('time', value)"
-                :error="timeError"
-              />
-              <Input
-                v-else
-                :value="`${selectedActivity?.reps}`"
-                @change="
-                  (value: string) => activityStore.updateActivityValue('reps', Number(value))
-                "
-                id="activityReps"
-                name="activityRepsField"
-                :error="repsError"
-              />
+          <div class="w-full px-3 mb-6">
+            <label class="font-bold mb-2" for="activityType"> Activity based type </label>
+            <div class="flex flex-col sm:flex-row justify-around align-center my-2">
+              <div class="w-full sm:w-64 justify-between shadow rounded-full h-12 flex p-1 mb-3">
+                <button
+                  id="time-based-activity"
+                  :class="[
+                    'flex items-center w-fit rounded-full h-10 transition-all px-10',
+                    {
+                      'bg-emerald-600 text-white shadow': isTimeBasedActivity && !user.isTrainer,
+                    },
+                    {
+                      'bg-purple-600 text-white shadow': isTimeBasedActivity && user.isTrainer,
+                    },
+                  ]"
+                  @click="() => (isTimeBasedActivity = true)"
+                >
+                  Time
+                </button>
+                <button
+                  id="reps-based-activity"
+                  :class="[
+                    'flex items-center w-fit rounded-full h-10 transition-all px-10',
+                    {
+                      'bg-emerald-600 text-white shadow': !isTimeBasedActivity && !user.isTrainer,
+                    },
+                    {
+                      'bg-purple-600 text-white shadow': !isTimeBasedActivity && user.isTrainer,
+                    },
+                  ]"
+                  @click="() => (isTimeBasedActivity = false)"
+                >
+                  Reps
+                </button>
+              </div>
+              <div class="w-full sm:w-fit mb-3">
+                <TimeSelector
+                  v-if="isTimeBasedActivity"
+                  :time="selectedActivity?.time ?? 0"
+                  @timeSelected="
+                    (value: string) => activityStore.updateActivityValue('time', value)
+                  "
+                  :error="timeError"
+                />
+                <Input
+                  v-else
+                  :value="`${selectedActivity?.reps}`"
+                  @change="
+                    (value: string) => activityStore.updateActivityValue('reps', Number(value))
+                  "
+                  id="activityReps"
+                  name="activityRepsField"
+                  :error="repsError"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div class="px-3 mb-6">
-          <label class="tracking-wide" :for="`toggle-${props.activity?.id}`">
-            <span class="flex-left inline"> Is warm-up? </span>
-            <Switch
-              class="flex-left inline"
-              :id="`toggle-${props.activity?.id}`"
-              :name="`toggleWarmup-${props.activity?.id}`"
-              :checked="selectedActivity?.warmup"
-              @toggle="(isWarmup: boolean) => activityStore.updateActivityValue('warmup', isWarmup)"
-            />
-          </label>
+          <div class="px-3 mb-6">
+            <label class="tracking-wide" :for="`toggle-${props.activity?.id}`">
+              <span class="flex-left inline"> Is warm-up? </span>
+              <Switch
+                class="flex-left inline"
+                :id="`toggle-${props.activity?.id}`"
+                :name="`toggleWarmup-${props.activity?.id}`"
+                :checked="selectedActivity?.warmup"
+                @toggle="
+                  (isWarmup: boolean) => activityStore.updateActivityValue('warmup', isWarmup)
+                "
+              />
+            </label>
+          </div>
         </div>
       </div>
-      <div class="flex gap-3 float-right">
-        <BaseButton id="save-activity" color="primary" icon="save" @click="saveActivity" />
+    </template>
+    <template #actions>
+      <div class="flex gap-3">
+        <BaseButton
+          id="save-activity"
+          color="primary"
+          icon="save"
+          :full="true"
+          @click="saveActivity"
+        />
         <BaseButton
           id="remove-activity"
           color="danger"
           icon="delete"
+          :full="true"
           @click="() => activityStore.setSelectedActivity(null)"
         />
       </div>
-    </div>
-  </Card>
+    </template>
+  </BaseModal>
 </template>

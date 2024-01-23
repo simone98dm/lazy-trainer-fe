@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { type Activity } from "~/models/Activity";
   import { useActivityStore, useSettingStore, useUserStore } from "~/stores";
+  import { computed } from "vue";
 
   const settingsStore = useSettingStore();
   const userStore = useUserStore();
@@ -36,7 +37,7 @@
 </script>
 
 <template>
-  <div class="fixed top-0 w-full">
+  <div class="w-full">
     <div
       :class="[
         'flex justify-between items-center w-full rounded-b-xl p-5 text-white',

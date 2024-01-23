@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useSettingStore } from "~/stores";
+  import { computed } from "vue";
 
   const route = useRoute();
   const settingsStore = useSettingStore();
@@ -15,7 +16,7 @@
 <template>
   <div class="flex flex-col min-h-screen dark:bg-gray-900 bg-gray-100">
     <Header v-if="!hideDecoration" />
-    <main class="flex-grow p-4 w-full lg:w-2/3 md:w-5/6 mx-auto mt-16 mb-16">
+    <main class="flex-grow p-4 w-full lg:w-2/3 md:w-5/6 mx-auto">
       <slot />
     </main>
     <Footer v-if="!isLogin && !hideDecoration" />

@@ -16,12 +16,7 @@
 </script>
 
 <template>
-  <div
-    class="fixed z-10 inset-0 overflow-y-auto"
-    aria-labelledby="modal-title"
-    role="dialog"
-    aria-modal="true"
-  >
+  <div class="fixed z-10 inset-0" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="flex justify-center pt-4 px-4 text-center sm:block">
       <div
         class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
@@ -33,7 +28,7 @@
       >
 
       <div
-        class="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all my-8 align-middle sm:max-w-lg w-full"
+        class="inline-block bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all align-middle sm:max-w-lg w-full overflow-hidden"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-headline"

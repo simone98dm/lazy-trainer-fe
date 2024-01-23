@@ -8,7 +8,7 @@
   const username = ref("");
   const dirtyUsername = ref(false);
   const usernameError = computed(() =>
-    username.value === "" && dirtyUsername.value ? "Username not valid" : ""
+    username.value === "" && dirtyUsername.value ? "Username not valid" : "",
   );
   function updateUsername(u: string) {
     username.value = u;
@@ -18,7 +18,7 @@
   const password = ref("");
   const dirtyPassword = ref(false);
   const passwordError = computed(() =>
-    password.value === "" && dirtyPassword.value ? "Password not valid" : ""
+    password.value === "" && dirtyPassword.value ? "Password not valid" : "",
   );
   function updatePassword(u: string) {
     password.value = u;
@@ -53,8 +53,8 @@
 </script>
 
 <template>
-  <div class="bg-white dark:bg-gray-900 rounded-xl">
-    <div class="flex items-center w-full max-w-md px-6 mx-auto lg:w-2/6">
+  <div class="bg-white dark:bg-gray-900 rounded-xl lg:w-3/6 m-auto p-6">
+    <div class="flex items-center w-full max-w-md mx-auto">
       <div class="flex-1">
         <div class="text-center">
           <h2 class="text-4xl font-bold text-center text-gray-700 dark:text-white">Lazy Trainer</h2>
@@ -68,6 +68,7 @@
               name="usernameField"
               id="username"
               label="Username"
+              type="email"
               :value="username"
               :disabled="false"
               :error="usernameError"

@@ -20,7 +20,9 @@
     minutes: 0,
     seconds: 0,
   });
-  const convertObjectToSeconds = () => selectedTime.value.minutes * 60 + selectedTime.value.seconds;
+
+  const convertObjectToSeconds = () =>
+    (selectedTime.value.minutes * 60 + selectedTime.value.seconds) * 1000;
 
   const minutes = Math.floor(props.time / 60);
   const seconds = props.time - minutes * 60;

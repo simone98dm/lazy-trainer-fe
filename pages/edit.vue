@@ -4,6 +4,7 @@
 
   const route = useRoute();
   const activityStore = useActivityStore();
+  const { selectedSession, selectedActivity } = storeToRefs(activityStore);
 
   const sessionId = route.params.session as string;
 
@@ -33,15 +34,10 @@
   <div
     class="flex xl:flex-col flex-wrap justify-center max-w-screen-xl mx-auto dark:text-slate-200 text-slate-600"
   >
-    <SessionForm v-if="activityStore.selectedSession" :session="activityStore.selectedSession" />
+    <SessionForm v-if="selectedSession" :session="selectedSession" />
+    <ActivityForm v-if="selectedActivity" :activity="selectedActivity" />
 
-    <ActivityForm
-      class="mt-4"
-      v-if="activityStore.selectedActivity"
-      :activity="activityStore.selectedActivity"
-    />
-
-    <div v-if="activityStore.selectedSession?.id" class="w-full px-3 mb-6">
+    <div v-if="selectedSession?.id" class="w-full px-3 mb-6">
       <div class="flex flex-col justify-center">
         <div class="my-4">
           <ActivityList
