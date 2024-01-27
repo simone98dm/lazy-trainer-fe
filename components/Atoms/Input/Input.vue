@@ -31,7 +31,7 @@
 <template>
   <label
     :class="[
-      'font-bold mb-2',
+      'font-bold mb-4',
       { 'text-red-600': error },
       { 'text-gray-800 dark:text-gray-400': !error },
     ]"

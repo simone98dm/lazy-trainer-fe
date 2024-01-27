@@ -5,157 +5,135 @@ export interface Database {
     Tables: {
       activities: {
         Row: {
-          description: string;
+          description: string | null;
           id: string;
           name: string;
           order_index: number;
-          reps: string;
-          requestchange: boolean;
-          sessionid: string;
-          time: number;
-          videourl: string;
-          warmup: boolean;
+          reps: string | null;
+          requestChange: boolean;
+          sessionId: string;
+          time: number | null;
+          warmup: boolean | null;
         };
         Insert: {
-          description: string;
-          id: string;
+          description?: string | null;
+          id?: string;
           name: string;
           order_index: number;
-          reps: string;
-          requestchange: boolean;
-          sessionid: string;
-          time: number;
-          videourl: string;
-          warmup: boolean;
+          reps?: string | null;
+          requestChange: boolean;
+          sessionId: string;
+          time?: number | null;
+          warmup?: boolean | null;
         };
         Update: {
-          description?: string;
+          description?: string | null;
           id?: string;
           name?: string;
           order_index?: number;
-          reps?: string;
-          requestchange?: boolean;
-          sessionid?: string;
-          time?: number;
-          videourl?: string;
-          warmup?: boolean;
+          reps?: string | null;
+          requestChange?: boolean;
+          sessionId?: string;
+          time?: number | null;
+          warmup?: boolean | null;
         };
         Relationships: [
           {
-            foreignKeyName: "activities_sessionid_fkey";
-            columns: ["sessionid"];
+            foreignKeyName: "activities_sessionId_fkey";
+            columns: ["sessionId"];
+            isOneToOne: false;
             referencedRelation: "sessions";
             referencedColumns: ["id"];
-          }
+          },
+        ];
+      };
+      configurations: {
+        Row: {
+          configurations: Json | null;
+          id: string;
+          role: string;
+        };
+        Insert: {
+          configurations?: Json | null;
+          id: string;
+          role: string;
+        };
+        Update: {
+          configurations?: Json | null;
+          id?: string;
+          role?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "configurations_id_fkey";
+            columns: ["id"];
+            isOneToOne: true;
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
         ];
       };
       plans: {
         Row: {
           id: string;
           name: string;
-          ownerid: string;
-          trainerid: string | null;
+          ownerId: string;
+          trainerId: string | null;
         };
         Insert: {
-          id: string;
+          id?: string;
           name: string;
-          ownerid: string;
-          trainerid?: string | null;
+          ownerId: string;
+          trainerId?: string | null;
         };
         Update: {
           id?: string;
           name?: string;
-          ownerid?: string;
-          trainerid?: string | null;
+          ownerId?: string;
+          trainerId?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: "plans_ownerid_fkey";
-            columns: ["ownerid"];
+            foreignKeyName: "plans_ownerId_fkey";
+            columns: ["ownerId"];
+            isOneToOne: false;
             referencedRelation: "users";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "plans_trainerid_fkey";
-            columns: ["trainerid"];
+            foreignKeyName: "plans_trainerId_fkey";
+            columns: ["trainerId"];
+            isOneToOne: false;
             referencedRelation: "users";
             referencedColumns: ["id"];
-          }
+          },
         ];
       };
       sessions: {
         Row: {
-          dayofweek: number;
+          dayOfWeek: number;
           id: string;
-          planid: string;
+          planId: string;
         };
         Insert: {
-          dayofweek: number;
-          id: string;
-          planid: string;
+          dayOfWeek: number;
+          id?: string;
+          planId: string;
         };
         Update: {
-          dayofweek?: number;
+          dayOfWeek?: number;
           id?: string;
-          planid?: string;
+          planId?: string;
         };
         Relationships: [
           {
-            foreignKeyName: "sessions_planid_fkey";
-            columns: ["planid"];
+            foreignKeyName: "sessions_planId_fkey";
+            columns: ["planId"];
+            isOneToOne: false;
             referencedRelation: "plans";
             referencedColumns: ["id"];
-          }
+          },
         ];
-      };
-      stats: {
-        Row: {
-          id: string;
-          stats: Json | null;
-          userid: string;
-        };
-        Insert: {
-          id: string;
-          stats?: Json | null;
-          userid: string;
-        };
-        Update: {
-          id?: string;
-          stats?: Json | null;
-          userid?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "stats_userid_fkey";
-            columns: ["userid"];
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          }
-        ];
-      };
-      users: {
-        Row: {
-          configurations: Json | null;
-          hashpassword: string;
-          id: string;
-          name: string;
-          role: string;
-        };
-        Insert: {
-          configurations?: Json | null;
-          hashpassword: string;
-          id: string;
-          name: string;
-          role: string;
-        };
-        Update: {
-          configurations?: Json | null;
-          hashpassword?: string;
-          id?: string;
-          name?: string;
-          role?: string;
-        };
-        Relationships: [];
       };
     };
     Views: {
@@ -172,3 +150,77 @@ export interface Database {
     };
   };
 }
+
+export type Tables<
+  PublicTableNameOrOptions extends
+    | keyof (Database["public"]["Tables"] & Database["public"]["Views"])
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R;
+    }
+    ? R
+    : never
+  : PublicTableNameOrOptions extends keyof (Database["public"]["Tables"] &
+        Database["public"]["Views"])
+    ? (Database["public"]["Tables"] &
+        Database["public"]["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R;
+      }
+      ? R
+      : never
+    : never;
+
+export type TablesInsert<
+  PublicTableNameOrOptions extends keyof Database["public"]["Tables"] | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I;
+    }
+    ? I
+    : never
+  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
+    ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I;
+      }
+      ? I
+      : never
+    : never;
+
+export type TablesUpdate<
+  PublicTableNameOrOptions extends keyof Database["public"]["Tables"] | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U;
+    }
+    ? U
+    : never
+  : PublicTableNameOrOptions extends keyof Database["public"]["Tables"]
+    ? Database["public"]["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U;
+      }
+      ? U
+      : never
+    : never;
+
+export type Enums<
+  PublicEnumNameOrOptions extends keyof Database["public"]["Enums"] | { schema: keyof Database },
+  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = PublicEnumNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof Database["public"]["Enums"]
+    ? Database["public"]["Enums"][PublicEnumNameOrOptions]
+    : never;

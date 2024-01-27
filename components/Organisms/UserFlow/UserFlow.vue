@@ -64,14 +64,14 @@
       :to="{ name: 'details', params: { session: item.id } }"
     >
       <Card :highlight="isHighlightedCard(item)">
-        <div class="dark:text-slate-200 text-slate-600">
+        <div>
           <p v-if="isHighlightedCard(item)" class="text-sm">
             {{ !userStore.isTrainer && isToday(item.dayOfWeek) ? "Today session" : "" }}
           </p>
-          <h4 class="mb-2 font-semibold text-5xl md:text-4xl">
+          <h4 class="mb-2 font-semibold text-4xl md:text-3xl">
             {{ item.name }}
           </h4>
-          <p class="text-md md:text-lg truncate whitespace-nowrap overflow-hidden">
+          <p class="text-sm md:text-md truncate whitespace-nowrap overflow-hidden">
             {{ item.description }}
           </p>
         </div>

@@ -5,7 +5,7 @@ export const app = {
   description: "Easily track your workout activities throughout the week",
   keywords: "lifestyle, health, fitness, tracking, workout",
   app: {
-    background: "#4f46e5",
+    background: "#059668",
   },
   categories: ["lifestyle", "health", "fitness", "tracking", "workout"],
   author: "simone98dm",

@@ -5,8 +5,8 @@
 
 <template>
   <Offline />
-  <div
-    class="fixed bottom-0 w-full rounded-t-xl dark:bg-slate-800 dark:text-slate-100 text-gray-900 bg-white px-5 py-2 shadow-sm shadow-gray-300"
+  <footer
+    class="fixed bottom-0 mt-auto w-full rounded-t-xl dark:bg-slate-800 dark:text-slate-100 text-gray-900 bg-white shadow-sm shadow-gray-300"
   >
     <nav class="flex justify-around">
       <RouterLink :to="{ name: 'home', params: { plan } }" class="rounded-full p-4">
@@ -30,5 +30,5 @@
         </div>
       </RouterLink>
     </nav>
-  </div>
+  </footer>
 </template>

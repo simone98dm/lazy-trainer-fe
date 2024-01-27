@@ -58,21 +58,27 @@
   <div class="flex justify-center w-full">
     <div class="w-full">
       <div>
-        <span v-if="isNew" class="text-2xl"> Create new session </span>
-        <span v-else class="text-2xl">
-          Editing session: <strong>{{ getDayOfTheWeek(session?.dayOfWeek) }}</strong>
-        </span>
+        <div class="text-center">
+          <span v-if="isNew" class="text-2xl"> Create new session </span>
+          <span v-else class="text-2xl">
+            Editing session: <strong>{{ getDayOfTheWeek(session?.dayOfWeek) }}</strong>
+          </span>
+        </div>
 
-        <div class="flex justify-center gap-3 mb-6 mt-3">
+        <div class="flex flex-wrap justify-center gap-2 mb-6 mt-3">
           <button
             v-for="day in activityStore.missingDays"
             :key="day"
             :class="[
               {
-                'bg-gray-200 text-gray-800 dark:bg-slate-800 dark:text-slate-50':
+                'bg-slate-200 border-slate-200 text-gray-900 dark:bg-slate-700 dark:text-gray-50 dark:border-slate-700':
                   !isDaySelected(day),
               },
-              'w-full duration-200 rounded-full px-4 py-2',
+              {
+                'bg-green-200 border-green-400 text-green-900 dark:bg-slate-700 dark:text-green-50 dark:border-green-700':
+                  isDaySelected(day),
+              },
+              'duration-200 rounded-full px-2 py-1 md:px-6 md:py-4 font-bold border-solid border-2',
             ]"
             @click="() => activityStore.updateSessionValue('dayOfWeek', day)"
           >

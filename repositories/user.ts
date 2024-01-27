@@ -14,21 +14,25 @@ export interface UserRepository {
   saveConfiguration(userId: string, configuration: UserConfigurations): Promise<void>;
 }
 
-async function getUserData(userId: string): Promise<User | null> {
-  const client = useWorkoutClient();
-  const userResponse = await client
-    .from("users")
-    .select("id,name,role,configurations")
-    .eq("id", userId)
-    .single();
-
-  if (userResponse.error) {
+async function getUserData(userId?: string): Promise<User | null> {
+  if (!userId) {
     return null;
   }
 
-  const user = userResponse.data as User;
+  const client = useWorkoutClient();
+  const { data, error } = await client
+    .from("configurations")
+    .select("*")
+    .eq("id", userId)
+    .limit(1)
+    .single();
 
-  return user;
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data as User;
 }
 async function getTrainerClients(userId: string) {
   const client = useWorkoutClient();

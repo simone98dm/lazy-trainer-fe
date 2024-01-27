@@ -48,9 +48,9 @@
       return;
     }
     if (selectedActivity.value && selectedActivity.value.id) {
-      await activityStore.addActivity(selectedActivity.value);
-    } else {
       await activityStore.updateActivity(selectedActivity.value);
+    } else {
+      await activityStore.addActivity(selectedActivity.value!);
     }
     activityStore.setSelectedActivity(null);
   }
@@ -145,19 +145,17 @@
               </div>
             </div>
           </div>
-          <div class="px-3 mb-6">
-            <label class="tracking-wide" :for="`toggle-${props.activity?.id}`">
+          <div class="w-full px-3 mb-6 flex items-center justify-center gap-4">
+            <label class="tracking-wide" :for="`toggle-${props.activity?.id ?? 'new-activity'}`">
               <span class="flex-left inline"> Is warm-up? </span>
-              <Switch
-                class="flex-left inline"
-                :id="`toggle-${props.activity?.id}`"
-                :name="`toggleWarmup-${props.activity?.id}`"
-                :checked="selectedActivity?.warmup"
-                @toggle="
-                  (isWarmup: boolean) => activityStore.updateActivityValue('warmup', isWarmup)
-                "
-              />
             </label>
+            <Switch
+              class="flex-left inline"
+              :id="`toggle-${props.activity?.id ?? 'new-activity'}`"
+              :name="`toggleWarmup-${props.activity?.id ?? 'new-activity'}`"
+              :checked="selectedActivity?.warmup"
+              @toggle="(isWarmup: boolean) => activityStore.updateActivityValue('warmup', isWarmup)"
+            />
           </div>
         </div>
       </div>
@@ -165,18 +163,22 @@
     <template #actions>
       <div class="flex gap-3">
         <BaseButton
-          id="save-activity"
-          color="primary"
-          icon="save"
-          :full="true"
-          @click="saveActivity"
-        />
-        <BaseButton
           id="remove-activity"
           color="danger"
           icon="delete"
+          size="small"
+          label="Cancel"
           :full="true"
           @click="() => activityStore.setSelectedActivity(null)"
+        />
+        <BaseButton
+          id="save-activity"
+          color="primary"
+          icon="save"
+          size="small"
+          label="Save"
+          :full="true"
+          @click="() => saveActivity()"
         />
       </div>
     </template>

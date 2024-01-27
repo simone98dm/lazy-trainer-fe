@@ -37,8 +37,8 @@
 </script>
 <template>
   <div class="max-w-screen-xl mx-auto">
-    <div class="flex flex-col justify-center">
-      <Card id="warmup-activities" padding="medium">
+    <div class="flex flex-col gap-8 justify-center">
+      <div class="flex flex-col">
         <BaseButton
           v-if="warmupList.length > 0"
           id="run-timer"
@@ -46,11 +46,12 @@
           icon="play_arrow"
           :type="LinkType.BUTTON"
           label="Start"
+          class="float-right"
           @click="runWarmUp"
         />
         <ActivityList title="Warmup" :activities="warmupList" :is-warmup="true" />
-      </Card>
-      <Card id="list-activities">
+      </div>
+      <div class="flex flex-col">
         <BaseButton
           v-if="activityList.length > 0"
           id="run-timer"
@@ -58,10 +59,11 @@
           icon="play_arrow"
           :type="LinkType.BUTTON"
           label="Start"
+          class="float-right"
           @click="runActivities"
         />
         <ActivityList title="Activities" :activities="activityList" />
-      </Card>
+      </div>
     </div>
   </div>
 </template>

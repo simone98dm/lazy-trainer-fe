@@ -17,19 +17,18 @@
   );
 
   const selectedTime = ref({
-    minutes: 0,
-    seconds: 0,
+    minutes: Math.floor(props.time / 60),
+    seconds: props.time - Math.floor(props.time / 60) * 60,
   });
 
   const convertObjectToSeconds = () =>
     (selectedTime.value.minutes * 60 + selectedTime.value.seconds) * 1000;
 
-  const minutes = Math.floor(props.time / 60);
-  const seconds = props.time - minutes * 60;
-  selectedTime.value = {
-    minutes,
-    seconds,
-  };
+  const formatTime = (value: number) => `${value <= 9 ? `0${value}` : value}`;
+
+  const formattedText = computed(
+    () => `${formatTime(selectedTime.value.minutes)}:${formatTime(selectedTime.value.seconds)}`,
+  );
 
   watch(selectedTime, () => emits("timeSelected", convertObjectToSeconds()));
 </script>
@@ -38,14 +37,32 @@
   <BaseModal v-if="showModal" @close="showModal = false" title="Select time" button-text="Select">
     <template #content>
       <div class="w-full">
-        <TimePicker @select="(v: any) => (selectedTime = v)" />
+        <div class="text-center mb-6">
+          <span class="text-6xl font-bold timepicker mx-3">{{ formattedText }}</span>
+        </div>
+        <div class="flex">
+          <div class="flex flex-col gap-4 w-full p-2">
+            <span>Minutes:</span>
+            <TimePicker
+              :value="selectedTime.minutes"
+              @select="(v: number) => (selectedTime.minutes = v)"
+            />
+          </div>
+          <div class="flex flex-col gap-4 w-full p-2">
+            <span>Seconds:</span>
+            <TimePicker
+              :value="selectedTime.seconds"
+              @select="(v: number) => (selectedTime.seconds = v)"
+            />
+          </div>
+        </div>
       </div>
     </template>
     <template #actions>
-      <BaseButton label="Select" @click="showModal = false" icon="check" color="success" />
+      <BaseButton label="Select" @click="() => (showModal = false)" icon="check" color="success" />
     </template>
   </BaseModal>
-  <div class="ml-2 w-full">
+  <div class="w-full">
     <BaseButton
       color="primary"
       :full="true"

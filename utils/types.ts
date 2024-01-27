@@ -98,4 +98,6 @@ export type SvgAvailableIcons =
   | "personal_trainer_re_cnua"
   | "pilates_ftsd"
   | "runner_start_x-0-uu"
-  | "fitness_stats_sht6";
+  | "fitness_stats_sht6"
+  | "github"
+  | "linkedin";

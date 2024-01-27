@@ -31,12 +31,9 @@
   }
 </script>
 <template>
-  <div
-    class="flex xl:flex-col flex-wrap justify-center max-w-screen-xl mx-auto dark:text-slate-200 text-slate-600"
-  >
+  <div class="flex xl:flex-col flex-wrap justify-center max-w-screen-xl mx-auto">
     <SessionForm v-if="selectedSession" :session="selectedSession" />
     <ActivityForm v-if="selectedActivity" :activity="selectedActivity" />
-
     <div v-if="selectedSession?.id" class="w-full px-3 mb-6">
       <div class="flex flex-col justify-center">
         <div class="my-4">

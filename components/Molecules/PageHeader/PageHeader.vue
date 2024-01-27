@@ -37,36 +37,33 @@
 </script>
 
 <template>
-  <div class="w-full">
-    <div
-      :class="[
-        'flex justify-between items-center w-full rounded-b-xl p-5 text-white',
-        { 'bg-emerald-600': !userStore.isTrainer },
-        { 'bg-purple-600': userStore.isTrainer },
-      ]"
-    >
-      <span>
-        <BackButton v-if="!isDashboard" @click="prevPage" />
-      </span>
-      <h3 class="text-3xl font-semibold">
-        {{ settingsStore.getHeaderText }}
-      </h3>
-      <span>
-        <RouterLink
-          v-if="isDetailPage"
-          :to="{ name: 'edit', params: { session: activityStore.selectedSession?.id } }"
-        >
-          <MaterialIcon component="edit" />
-        </RouterLink>
+  <header
+    :class="[
+      'flex justify-between items-center w-full rounded-b-xl p-3 text-white',
+      { 'bg-emerald-600': !userStore.isTrainer },
+      { 'bg-purple-600': userStore.isTrainer },
+    ]"
+  >
+    <span>
+      <BackButton v-if="!isDashboard" @click="prevPage" />
+    </span>
+    <h3 class="text-3xl font-semibold">
+      {{ settingsStore.getHeaderText }}
+    </h3>
+    <span>
+      <RouterLink
+        v-if="isDetailPage"
+        :to="{ name: 'edit', params: { session: activityStore.selectedSession?.id } }"
+      >
+        <MaterialIcon component="edit" />
+      </RouterLink>
 
-        <BaseButton
-          v-if="isEditPage && activityStore.selectedSession?.id && !activityStore.selectedActivity"
-          variant="clean"
-          icon="add"
-          size="small"
-          @click="addActivity"
-        />
+      <span
+        v-if="isEditPage && activityStore.selectedSession?.id && !activityStore.selectedActivity"
+        @click="addActivity"
+      >
+        <MaterialIcon component="add" />
       </span>
-    </div>
-  </div>
+    </span>
+  </header>
 </template>

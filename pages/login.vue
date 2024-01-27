@@ -2,6 +2,10 @@
   import { ref, watch } from "vue";
   import { useUserStore } from "~/stores";
 
+  definePageMeta({
+    layout: "empty",
+  });
+
   const userStore = useUserStore();
   const router = useRouter();
 

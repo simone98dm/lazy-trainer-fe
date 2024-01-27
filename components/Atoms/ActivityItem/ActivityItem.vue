@@ -14,19 +14,17 @@
 </script>
 
 <template>
-  <div
-    class="flex justify-between border-b-2 border-dashed mt-3 dark:text-slate-200 text-slate-600"
-  >
+  <div class="flex justify-between border-b-2 border-dashed mt-3 pb-1">
     <div :class="['flex items-center justify-between w-full ', { 'pr-5': $slots.actions }]">
       <MaterialIcon v-if="icon" class="pr-2 sm:block flex-left inline" :component="icon" />
-      <h4 class="font-semibold text-3xl">
+      <h4 class="sm:text-2xl text-lg">
         {{ activity.name }}
       </h4>
 
-      <h4 v-if="activity.time" class="font-bold text-4xl">
+      <h4 v-if="activity.time" class="font-bold sm:text-2xl text-xl">
         {{ time }}
       </h4>
-      <h4 v-else class="font-bold text-4xl">{{ activity.reps }}r</h4>
+      <h4 v-else class="font-bold sm:text-2xl text-xl">{{ activity.reps }}r</h4>
 
       <p v-if="activity.requestChange" class="text-red-600">
         Client request to change this activity

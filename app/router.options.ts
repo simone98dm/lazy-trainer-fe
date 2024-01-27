@@ -1,4 +1,4 @@
-import { RouterConfig } from "nuxt/schema";
+import { type RouterConfig } from "nuxt/schema";
 
 export const routes = [
   {
@@ -49,6 +49,7 @@ export const routes = [
       title: "Login",
       requireAuth: false,
       requireAdmin: false,
+      layout: "empty",
       hideHeader: true,
       hideFooter: true,
     },
@@ -71,6 +72,7 @@ export const routes = [
       title: "Not Found",
       hideHeader: true,
       hideFooter: true,
+      layout: "empty",
       requireAuth: false,
       requireAdmin: false,
     },
@@ -80,9 +82,10 @@ export const routes = [
     component: () => import("~/pages/notfound.vue"),
     meta: {
       requireAuth: false,
+      requireAdmin: false,
+      layout: "empty",
       hideHeader: true,
       hideFooter: true,
-      requireAdmin: false,
     },
   },
   {
@@ -111,10 +114,11 @@ export const routes = [
     component: () => import("~/pages/landing.vue"),
     meta: {
       title: "Home",
-      hideHeader: true,
-      hideFooter: true,
       requireAuth: false,
       requireAdmin: false,
+      layout: "empty",
+      hideFooter: true,
+      hideHeader: true,
     },
   },
   {
@@ -136,5 +140,5 @@ export const routes = [
 // });
 
 export default {
-  routes: (_routes) => routes,
+  routes: () => routes,
 } as RouterConfig;

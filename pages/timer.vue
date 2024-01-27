@@ -152,10 +152,7 @@
 </script>
 
 <template>
-  <div
-    v-if="timerStore.currentActivity"
-    class="text-center mb-6 dark:text-slate-200 text-slate-600"
-  >
+  <div v-if="timerStore.currentActivity" class="text-center mb-6">
     Current activity:
     <h1 class="text-4xl font-bold">
       {{ timerStore.currentActivity.name }}
@@ -170,10 +167,7 @@
       size="large"
     />
   </div>
-  <h1
-    class="flex flex-col text-center my-20 text-pink-600 dark:text-slate-200 text-slate-600"
-    v-else
-  >
+  <h1 class="flex flex-col text-center my-20 text-pink-600" v-else>
     <span class="text-2xl">Total reps:</span>
     <span class="text-7xl font-bold">
       {{ timerStore.currentActivity?.reps }}

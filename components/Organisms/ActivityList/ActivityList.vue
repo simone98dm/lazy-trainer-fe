@@ -44,7 +44,7 @@
 <template>
   <div v-if="activities">
     <div class="flex items-center justify-between gap-2">
-      <h4 v-if="title" class="text-5xl font-bold mr-auto">
+      <h4 v-if="title" class="text-4xl font-bold mr-auto">
         {{ title }}
       </h4>
     </div>
@@ -63,8 +63,8 @@
               id="delete-activity"
               color="danger"
               icon="delete"
+              size="small"
               class="float-right ml-2"
-              variant="circular"
               @click.prevent="() => deleteActivity(element)"
             />
             <BaseButton
@@ -72,8 +72,8 @@
               id="edit-activity"
               color="warning"
               icon="edit"
+              size="small"
               class="float-right ml-2"
-              variant="circular"
               @click.prevent="() => editActivity(element)"
             />
           </template>
@@ -82,5 +82,5 @@
     </draggable>
     <ActivityItem v-else v-for="activity in activities" :key="activity.id" :activity="activity" />
   </div>
-  <ErrorBanner v-else text="No activities found"></ErrorBanner>
+  <ErrorBanner v-else text="No activities found" />
 </template>

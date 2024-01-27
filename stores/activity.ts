@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import { useSettingStore } from "~/stores";
+import { useWorkoutClient } from "~/composable/useWorkoutClient";
 import type { Plan } from "~/models/Plan";
 import type { Session } from "~/models/Session";
 import type { Activity } from "~/models/Activity";
 import type { OrderRequest } from "~/utils";
 import type { Completion } from "~/models/Completion";
-import { useWorkoutClient } from "~/composable/useWorkoutClient";
 
 export const useActivityStore = defineStore("activity", {
   state: () => ({
@@ -63,10 +63,16 @@ export const useActivityStore = defineStore("activity", {
       }
       const { $workout } = useNuxtApp();
       const client = useWorkoutClient();
-      const user = await client.auth.getUser();
 
-      if (user.data.user) {
-        this.plan = await $workout.getUserPlan(user.data.user.id);
+      await client.auth.refreshSession();
+
+      const { data, error } = await client.auth.getSession();
+      if (error) {
+        console.error(error.message);
+      }
+
+      if (data.session?.user) {
+        this.plan = await $workout.getUserPlan(data.session?.user.id);
       }
 
       if (!this.plan) {
@@ -247,12 +253,12 @@ export const useActivityStore = defineStore("activity", {
     setSelectedActivity(activity: Activity | null) {
       this.selectedActivity = activity;
     },
-    updateSessionValue(attribute: keyof Session, value: unknown) {
+    updateSessionValue(attribute: keyof Session, value: any) {
       if (this.selectedSession) {
         this.selectedSession[attribute] = value;
       }
     },
-    updateActivityValue(attribute: keyof Activity, value: unknown) {
+    updateActivityValue(attribute: keyof Activity, value: any) {
       if (this.selectedActivity) {
         this.selectedActivity[attribute] = value;
       }
