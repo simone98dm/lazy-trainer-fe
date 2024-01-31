@@ -168,7 +168,13 @@ export const useActivityStore = defineStore("activity", {
       const settingsStore = useSettingStore();
       const { $workout } = useNuxtApp();
       settingsStore.openLoading();
-      const data = await $workout.addSession({ ...session, planId: this.plan?.id });
+
+      if (!this.plan) {
+        console.error("Unable to create session because the plan is missing in the storage");
+        return null;
+      }
+
+      const data = await $workout.addSession({ ...session, planId: this.plan.id });
       if (data) {
         this.plan?.sessions.push(data);
       }
@@ -255,11 +261,13 @@ export const useActivityStore = defineStore("activity", {
     },
     updateSessionValue(attribute: keyof Session, value: any) {
       if (this.selectedSession) {
+        // @ts-ignore
         this.selectedSession[attribute] = value;
       }
     },
     updateActivityValue(attribute: keyof Activity, value: any) {
       if (this.selectedActivity) {
+        // @ts-ignore
         this.selectedActivity[attribute] = value;
       }
     },

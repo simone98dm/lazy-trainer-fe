@@ -9,6 +9,7 @@
   const sessionId = route.params.session as string;
 
   await activityStore.restoreSession();
+  const allowDrag = ref(false);
 
   if (sessionId) {
     const session = activityStore.getSession(sessionId);
@@ -21,6 +22,7 @@
     activityStore.setSelectedSession({
       activities: [],
       dayOfWeek: -1,
+      planId: activityStore.plan!.id,
     });
   }
 
@@ -34,6 +36,15 @@
   <div class="flex xl:flex-col flex-wrap justify-center max-w-screen-xl mx-auto">
     <SessionForm v-if="selectedSession" :session="selectedSession" />
     <ActivityForm v-if="selectedActivity" :activity="selectedActivity" />
+    <div class="float-right">
+      Allow drag:
+      <Switch
+        id="allow-drag-drop-switch"
+        name="drag-drop-switch"
+        :checked="allowDrag"
+        @toggle="(v: boolean) => (allowDrag = v)"
+      />
+    </div>
     <div v-if="selectedSession?.id" class="w-full px-3 mb-6">
       <div class="flex flex-col justify-center">
         <div class="my-4">
@@ -41,7 +52,7 @@
             title="Warmup"
             :activities="activityStore.getSelectedWarmUpActivities"
             :is-warmup="true"
-            :allow-drag="true"
+            :allow-drag="allowDrag"
             :allow-delete="true"
             :allow-edit="true"
             @move="moveActivities"
@@ -51,7 +62,7 @@
           <ActivityList
             title="Activities"
             :activities="activityStore.getSelectedActivities"
-            :allow-drag="true"
+            :allow-drag="allowDrag"
             :allow-delete="true"
             :allow-edit="true"
             @move="moveActivities"

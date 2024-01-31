@@ -1,7 +1,5 @@
 <script setup lang="ts">
   import { ref } from "vue";
-  import doubleWhistle from "~/assets/audio/double-whistle.mp3";
-  import horn from "~/assets/audio/horn.mp3";
   import { COLOR_CODES, FULL_DASH_ARRAY } from "~/utils";
   import { useTimerStore, useSettingStore } from "~/stores";
 
@@ -17,7 +15,6 @@
 
   let timerInterval: any;
   let timePassed = 0;
-  let audio = new Audio();
 
   setupTimer();
 
@@ -92,14 +89,6 @@
     strokeDasharray.value = circleDasharray;
   }
 
-  function playAudio(audioSrc: string) {
-    if (!settingsStore.audioDisabled) {
-      audio.pause();
-      audio = new Audio(audioSrc);
-      audio.play();
-    }
-  }
-
   function onTimesUp() {
     clearInterval(timerInterval);
 
@@ -111,11 +100,9 @@
 
     const nextActivity = timerStore.nextActivity;
     if (nextActivity) {
-      playAudio(doubleWhistle);
       setupTimer();
       runTimer();
     } else {
-      playAudio(horn);
       timerStore.reset();
       router.push({
         name: "home",

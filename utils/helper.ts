@@ -1,4 +1,3 @@
-import { v4 as uuid } from "uuid";
 import type { Plan } from "~/models/Plan";
 import type { CustomSession, Session } from "~/models/Session";
 
@@ -34,7 +33,7 @@ export function millisToMinutesAndSeconds(millis: number) {
 
 export function generateBlankPlan(): Plan {
   return {
-    id: uuid(),
+    id: "",
     name: "New plan",
     sessions: [],
     trainerId: "",
@@ -46,6 +45,6 @@ export function checkCompleteDate(completionDates: Date[], currentDate: Date) {
     (date) =>
       date.getDate() === currentDate.getDate() &&
       date.getMonth() === currentDate.getMonth() &&
-      date.getFullYear() === currentDate.getFullYear()
+      date.getFullYear() === currentDate.getFullYear(),
   );
 }

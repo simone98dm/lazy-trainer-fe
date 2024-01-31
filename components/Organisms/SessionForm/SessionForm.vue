@@ -91,7 +91,7 @@
           v-if="session?.dayOfWeek !== -1"
           :full="true"
           :icon="!isNew ? 'save' : 'add'"
-          :label="!isNew ? 'Save' : 'Create'"
+          :label="!isNew ? 'Save session' : 'Create session'"
           color="success"
           size="small"
           @click="saveSession"
@@ -101,7 +101,7 @@
           v-if="!isNew"
           icon="delete"
           color="danger"
-          label="Delete"
+          label="Delete session"
           size="small"
           @click="deleteSession"
         />

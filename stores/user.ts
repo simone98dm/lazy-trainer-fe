@@ -39,7 +39,7 @@ export const useUserStore = defineStore("user", {
           restoreSession.data.session?.user;
         }
 
-        const { error } = await client.auth.signInWithPassword({
+        const { data, error } = await client.auth.signInWithPassword({
           email: username,
           password: password,
         });
@@ -48,7 +48,11 @@ export const useUserStore = defineStore("user", {
           throw new Error(error.message);
         }
 
-        await this.fetchUserInfo();
+        // saveSessionToCookie(data.session);
+
+        // await client.auth.setSession(data.session);
+
+        this.fetchUserInfo();
       } catch (ex) {
         return {
           error: ex as string,
@@ -90,6 +94,10 @@ export const useUserStore = defineStore("user", {
       const router = useRouter();
 
       await client.auth.signOut();
+
+      const cookie = useCookie("user_session");
+      cookie.value = null;
+
       await clearStorage();
       await router.push({ name: "home" });
     },
@@ -99,3 +107,13 @@ export const useUserStore = defineStore("user", {
     },
   },
 });
+
+function saveSessionToCookie(data: any) {
+  const now = new Date();
+  const expires = new Date(now.setTime(now.getTime() + 1 * 60 * 60 * 1000));
+  const cookie = useCookie("user_session", {
+    expires,
+    secure: true,
+  });
+  cookie.value = data.access_token + ":" + data.refresh_token;
+}

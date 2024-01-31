@@ -15,20 +15,22 @@
 
 <template>
   <div class="flex justify-between border-b-2 border-dashed mt-3 pb-1">
-    <div :class="['flex items-center justify-between w-full ', { 'pr-5': $slots.actions }]">
-      <MaterialIcon v-if="icon" class="pr-2 sm:block flex-left inline" :component="icon" />
-      <h4 class="sm:text-2xl text-lg">
+    <div
+      :class="['w-full flex flex-row-reverse items-center justify-end', { 'pr-5': $slots.actions }]"
+    >
+      <!-- <MaterialIcon v-if="icon" class="pr-2 sm:block flex-left inline" :component="icon" /> -->
+      <h4 class="sm:text-2xl mr-4 text-xl">
         {{ activity.name }}
       </h4>
 
-      <h4 v-if="activity.time" class="font-bold sm:text-2xl text-xl">
+      <h4 v-if="activity.time" class="font-bold mr-4 sm:text-4xl text-3xl">
         {{ time }}
       </h4>
-      <h4 v-else class="font-bold sm:text-2xl text-xl">{{ activity.reps }}r</h4>
+      <h4 v-else class="font-bold mr-4 sm:text-4xl text-3xl">{{ activity.reps }}r</h4>
 
-      <p v-if="activity.requestChange" class="text-red-600">
+      <!-- <p v-if="activity.requestChange" class="text-red-600">
         Client request to change this activity
-      </p>
+      </p> -->
     </div>
     <div class="flex items-center">
       <slot name="actions" />
