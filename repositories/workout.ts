@@ -23,6 +23,7 @@ export interface WorkoutRepository {
 
 async function getUserPlan(userId: string): Promise<Plan | null> {
   const client = useWorkoutClient();
+
   const planResponse = await client.from("plans").select("id,name").eq("ownerId", userId);
 
   if (planResponse.error) {
@@ -36,7 +37,7 @@ async function getUserPlan(userId: string): Promise<Plan | null> {
     .select("*,activities(*)")
     .eq("planId", plan.id);
 
-  const orderedData = sessionsResponse.data?.map((session) => {
+  const orderedData = sessionsResponse.data?.map((session: Session) => {
     session.activities.sort(
       (a: Activity, b: Activity) => (a.order_index ?? 0) - (b.order_index ?? 0),
     );
@@ -95,13 +96,16 @@ async function addSession(session: Session): Promise<Session | null> {
 async function updateSession(session: Session): Promise<Session | null> {
   const client = useWorkoutClient();
   const { dayOfWeek, id, planId } = session;
-  const { data } = await client
-    .from("sessions")
-    .update({ dayOfWeek, planId })
-    .eq("id", id)
-    .select();
-  if (data) {
-    return data[0] as Session;
+
+  if (id) {
+    const { data } = await client
+      .from("sessions")
+      .update({ dayOfWeek, planId })
+      .eq("id", id)
+      .select();
+    if (data) {
+      return data[0] as Session;
+    }
   }
 
   return null;
@@ -112,7 +116,7 @@ async function deleteSession(sessionId: string): Promise<void> {
 }
 async function getPlan(planId: string): Promise<Plan | null> {
   const client = useWorkoutClient();
-  const { data, error } = await client.from("plan").select("ownerId").eq("id", planId);
+  const { data, error } = await client.from("plans").select("ownerId").eq("id", planId);
   if (error) {
     return null;
   }

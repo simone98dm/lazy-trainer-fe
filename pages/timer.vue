@@ -16,6 +16,14 @@
   let timerInterval: any;
   let timePassed = 0;
 
+  definePageMeta({
+    layout: "timer",
+  });
+
+  settingsStore.setHeader(
+    `${new Date().getTime() - timerStore.startTime} • ${(timerStore.listActivities.length * (timerStore.currentActivity?._index ?? 0)) / 100}%`,
+  );
+
   setupTimer();
 
   onBeforeRouteLeave(() => {

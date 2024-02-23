@@ -9,4 +9,5 @@ export interface Activity {
   videoUrl?: string;
   warmup?: boolean;
   sessionId?: string;
+  _index?: number;
 }

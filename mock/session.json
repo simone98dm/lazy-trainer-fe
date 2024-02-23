@@ -1,0 +1,328 @@
+[
+  {
+    "id": "d349b5b8-73e9-4a38-a079-1715347415d7",
+    "dayOfWeek": 0,
+    "planId": "dfa0ddce-86ac-4c73-b2eb-b78070da4784",
+    "activities": [
+      {
+        "id": "d11b87af-1f1d-4e4b-b993-332cf68c7e3a",
+        "name": "Russian twist (4kg)",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 17,
+        "requestChange": false
+      },
+      {
+        "id": "c4c82688-9f12-4c83-99af-b92ec958a949",
+        "name": "Mountain Climbing",
+        "reps": "0",
+        "time": 30000,
+        "warmup": true,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 2,
+        "requestChange": false
+      },
+      {
+        "id": "7942c4b1-9def-4034-a8e2-5d08a122bb1a",
+        "name": "Plank bacino tocco",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 13,
+        "requestChange": false
+      },
+      {
+        "id": "e9c4b7e1-9e7a-4ecc-bd35-18a1b7fcaa5e",
+        "name": "Plank laterale DX",
+        "reps": "0",
+        "time": 30000,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 9,
+        "requestChange": false
+      },
+      {
+        "id": "1fcc0fa5-3de2-42d3-877a-448f141039b5",
+        "name": "Gambe alzate",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 14,
+        "requestChange": false
+      },
+      {
+        "id": "01abe423-42b4-496d-97f0-93b89f79321b",
+        "name": "Panca inclinata (14kg)",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 22,
+        "requestChange": false
+      },
+      {
+        "id": "7840c131-e6b3-4ffc-be3d-370d88965fd9",
+        "name": "Squat",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 5,
+        "requestChange": false
+      },
+      {
+        "id": "24baa5fc-3ca5-494c-a118-80cc51ecebc6",
+        "name": "Rest",
+        "reps": "0",
+        "time": 15000,
+        "warmup": true,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 1,
+        "requestChange": false
+      },
+      {
+        "id": "7fae5cdb-77d7-4bab-8476-c115d0221f83",
+        "name": "Bicipiti (14kg)",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 25,
+        "requestChange": false
+      },
+      {
+        "id": "ba4bf9e7-a382-4b32-bbf1-cafb7d488acb",
+        "name": "Alzo pesi spalle (8kg)",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 20,
+        "requestChange": false
+      },
+      {
+        "id": "5cf60101-899b-40a7-ab69-d27e49bb6fa8",
+        "name": "French press",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 27,
+        "requestChange": false
+      },
+      {
+        "id": "2c259aa0-2385-47af-9cc7-3d9421758d96",
+        "name": "Plank laterale SX",
+        "reps": "0",
+        "time": 30000,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 11,
+        "requestChange": false
+      },
+      {
+        "id": "2e3b4d76-fdd0-4d3d-a356-14387d5f7025",
+        "name": "Culo pallavolo",
+        "reps": "50",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 16,
+        "requestChange": false
+      },
+      {
+        "id": "10611cc4-6559-41ae-bc6d-23e2e6db88e5",
+        "name": "Plank",
+        "reps": "0",
+        "time": 60000,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 7,
+        "requestChange": false
+      },
+      {
+        "id": "a1ff4c6d-612f-42dd-85b4-395fcc7c12d0",
+        "name": "Rest",
+        "reps": "0",
+        "time": 15000,
+        "warmup": true,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": null,
+        "order_index": 3,
+        "requestChange": false
+      },
+      {
+        "id": "99116406-178e-4c7a-9ff2-e701da77b294",
+        "name": "Rematore (14kg)",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 24,
+        "requestChange": false
+      },
+      {
+        "id": "41420ab3-bc34-43c1-9c7f-0c93cfb779dd",
+        "name": "Panca (14kg)",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 21,
+        "requestChange": false
+      },
+      {
+        "id": "4e7aed93-da92-4122-a5ef-3dec661276e9",
+        "name": "Elastico petto alto",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 23,
+        "requestChange": false
+      },
+      {
+        "id": "733f0a16-dea1-47ac-95af-7018d478dd50",
+        "name": "Tricipiti",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 28,
+        "requestChange": false
+      },
+      {
+        "id": "8416bc58-97db-48c3-adbd-08ebb0042431",
+        "name": "Rest",
+        "reps": "0",
+        "time": 15000,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 8,
+        "requestChange": false
+      },
+      {
+        "id": "c0274c8c-7049-423f-a70e-b016eba7c6b7",
+        "name": "Spalle per muscoli collo (14kg)",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 26,
+        "requestChange": false
+      },
+      {
+        "id": "8bc60ddb-3fe2-41d1-b2b1-199cb194ae16",
+        "name": "Flessioni",
+        "reps": "24",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 19,
+        "requestChange": false
+      },
+      {
+        "id": "702f40db-5521-4569-89e8-5db62682d605",
+        "name": "Jumping jack",
+        "reps": "0",
+        "time": 30000,
+        "warmup": true,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 0,
+        "requestChange": false
+      },
+      {
+        "id": "fd6ec2f1-5c96-4ec3-a833-1679e644efb0",
+        "name": "Addominali",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 18,
+        "requestChange": false
+      },
+      {
+        "id": "0eedc3aa-652f-4dc5-980a-f4284ded6818",
+        "name": "Tocco caviglie",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 15,
+        "requestChange": false
+      },
+      {
+        "id": "d9fad09e-6a09-45bf-803c-14624b17835a",
+        "name": "Affondi",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 6,
+        "requestChange": false
+      },
+      {
+        "id": "b83cde72-6440-4c35-8fa5-60294ee6f137",
+        "name": "Spiderman Plank",
+        "reps": "36",
+        "time": 0,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 12,
+        "requestChange": false
+      },
+      {
+        "id": "f41f975b-6d03-4823-affa-0e6582992ff8",
+        "name": "Rest",
+        "reps": "0",
+        "time": 15000,
+        "warmup": false,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": "",
+        "order_index": 10,
+        "requestChange": false
+      },
+      {
+        "id": "2ef85377-7e3d-4a2d-8dab-c1a735cb779b",
+        "name": "Burpees",
+        "reps": "0",
+        "time": 30000,
+        "warmup": true,
+        "sessionId": "d349b5b8-73e9-4a38-a079-1715347415d7",
+        "description": null,
+        "order_index": 4,
+        "requestChange": false
+      }
+    ]
+  }
+]

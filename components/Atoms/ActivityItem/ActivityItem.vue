@@ -27,10 +27,6 @@
         {{ time }}
       </h4>
       <h4 v-else class="font-bold mr-4 sm:text-4xl text-3xl">{{ activity.reps }}r</h4>
-
-      <!-- <p v-if="activity.requestChange" class="text-red-600">
-        Client request to change this activity
-      </p> -->
     </div>
     <div class="flex items-center">
       <slot name="actions" />

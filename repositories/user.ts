@@ -19,6 +19,19 @@ async function getUserData(userId?: string): Promise<User | null> {
     return null;
   }
 
+  if (process.env.VITE_DEV) {
+    return {
+      configurations: {
+        audioDisabled: false,
+        darkMode: false,
+        easyMode: false,
+      },
+      id: "000",
+      name: "DEMO USER",
+      role: "2",
+    } as User;
+  }
+
   const client = useWorkoutClient();
   const { data, error } = await client
     .from("configurations")

@@ -1,8 +1,8 @@
-import { useUserStore } from "~/stores";
+// import { useUserStore } from "~/stores";
 
 export default defineNuxtRouteMiddleware(() => {
-  const userStore = useUserStore();
-  if (!userStore.user) {
-    userStore.fetchUserInfo();
-  }
+  // const userStore = useUserStore();
+  // if (!userStore.user) {
+  //   userStore.fetchUserInfo();
+  // }
 });

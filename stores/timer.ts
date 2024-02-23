@@ -1,4 +1,3 @@
-import { useActivityStore, useSettingStore } from "~/stores";
 import { defineStore } from "pinia";
 import type { Activity } from "~/models/Activity";
 
@@ -9,6 +8,7 @@ export const useTimerStore = defineStore("timer", {
     listActivities: [] as Activity[],
     running: false,
     runningTimer: 0,
+    startTime: 0,
   }),
   getters: {
     isRunning(state) {
@@ -22,6 +22,12 @@ export const useTimerStore = defineStore("timer", {
     },
     hasNextActivity(state) {
       return state.nextActivity !== undefined;
+    },
+    elapsedTime(state) {
+      return ;
+    },
+    activityPercentage(state) {
+      return ;
     },
   },
   actions: {
@@ -53,19 +59,17 @@ export const useTimerStore = defineStore("timer", {
       this.nextActivity = null;
     },
     async requestChange() {
-      const settingsStore = useSettingStore();
-      settingsStore.openLoading();
-
-      const { $workout } = useNuxtApp();
-      await $workout.requestActivityChange(this.currentActivity?.id ?? "");
-
-      const activity = useActivityStore();
-      if (this.currentActivity) {
-        const newActivity = { ...this.currentActivity, requestChange: true };
-        activity.addActivity(newActivity);
-        this.setCurrentActivity(newActivity);
-      }
-      settingsStore.dismissLoading();
+      // const settingsStore = useSettingStore();
+      // settingsStore.openLoading();
+      // const { $workout } = useNuxtApp();
+      // await $workout.requestActivityChange(this.currentActivity?.id ?? "");
+      // const activity = useActivityStore();
+      // if (this.currentActivity) {
+      //   const newActivity = { ...this.currentActivity, requestChange: true };
+      //   activity.addActivity(newActivity);
+      //   this.setCurrentActivity(newActivity);
+      // }
+      // settingsStore.dismissLoading();
     },
   },
 });

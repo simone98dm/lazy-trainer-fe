@@ -27,11 +27,13 @@
 
   function runWarmUp() {
     timerStore.setListActivities(warmupList.value);
+    timerStore.startTime = new Date().getTime();
     router.push({ name: "timer" });
   }
 
   function runActivities() {
     timerStore.setListActivities(activityList.value);
+    timerStore.startTime = new Date().getTime();
     router.push({ name: "timer" });
   }
 </script>

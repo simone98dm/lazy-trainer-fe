@@ -34,10 +34,22 @@ export const useActivityStore = defineStore("activity", {
       return activities?.find((activity) => activity.id === activityId) ?? [];
     },
     getSelectedActivities: (state) => {
-      return state.selectedSession?.activities?.filter((item) => !item.warmup) ?? [];
+      return (
+        state.selectedSession?.activities
+          ?.map((act, i) => {
+            return { ...act, _index: i };
+          })
+          .filter((item) => !item.warmup) ?? []
+      );
     },
     getSelectedWarmUpActivities: (state) => {
-      return state.selectedSession?.activities?.filter((item) => item.warmup) ?? [];
+      return (
+        state.selectedSession?.activities
+          ?.map((act, i) => {
+            return { ...act, _index: i };
+          })
+          .filter((item) => item.warmup) ?? []
+      );
     },
     sortedWeek(state) {
       return state.plan?.sessions.sort((x, y) => (x.dayOfWeek < y.dayOfWeek ? -1 : 1));
