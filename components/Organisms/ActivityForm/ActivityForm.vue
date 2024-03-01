@@ -24,7 +24,7 @@
       : "",
   );
   const isTimeBasedActivity = ref(
-    (Boolean(props.activity?.time !== 0) && Boolean(props.activity?.reps === 0)) ?? false,
+    Boolean(props.activity?.time) && Boolean(props.activity?.time !== 0),
   );
 
   const timeError = computed(() =>
