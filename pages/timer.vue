@@ -3,6 +3,10 @@
   import { COLOR_CODES, FULL_DASH_ARRAY } from "~/utils";
   import { useTimerStore, useSettingStore } from "~/stores";
 
+  definePageMeta({
+    layout: "fulltimer",
+  });
+
   const router = useRouter();
   const settingsStore = useSettingStore();
   const timerStore = useTimerStore();
@@ -15,10 +19,6 @@
 
   let timerInterval: any;
   let timePassed = 0;
-
-  definePageMeta({
-    layout: "timer",
-  });
 
   settingsStore.setHeader(
     `${new Date().getTime() - timerStore.startTime} • ${(timerStore.listActivities.length * (timerStore.currentActivity?._index ?? 0)) / 100}%`,
