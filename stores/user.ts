@@ -107,13 +107,3 @@ export const useUserStore = defineStore("user", {
     },
   },
 });
-
-function saveSessionToCookie(data: any) {
-  const now = new Date();
-  const expires = new Date(now.setTime(now.getTime() + 1 * 60 * 60 * 1000));
-  const cookie = useCookie("user_session", {
-    expires,
-    secure: true,
-  });
-  cookie.value = data.access_token + ":" + data.refresh_token;
-}

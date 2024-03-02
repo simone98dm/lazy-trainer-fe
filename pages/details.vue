@@ -9,7 +9,9 @@
   const settingsStore = useSettingStore();
   const timerStore = useTimerStore();
 
-  await activityStore.restoreSession();
+  definePageMeta({
+    middleware: "restore",
+  });
 
   const sessionId = route.params.session as string;
   const session = activityStore.getSession(sessionId);

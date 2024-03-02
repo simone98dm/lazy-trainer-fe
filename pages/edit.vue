@@ -6,9 +6,12 @@
   const activityStore = useActivityStore();
   const { selectedSession, selectedActivity } = storeToRefs(activityStore);
 
+  definePageMeta({
+    middleware: "restore",
+  });
+
   const sessionId = route.params.session as string;
 
-  await activityStore.restoreSession();
   const allowDrag = ref(false);
 
   if (sessionId) {
