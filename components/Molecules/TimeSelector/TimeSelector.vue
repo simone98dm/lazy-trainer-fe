@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, watch } from "vue";
+  import { ref } from "vue";
   import { computed } from "@vue/reactivity";
 
   interface TimeSelectorProps {
@@ -12,17 +12,21 @@
   const emits = defineEmits(["timeSelected"]);
 
   const showModal = ref(false);
+
+  const convertedTime = props.time / 1000;
+
+  const selectedTime = ref({
+    minutes: Math.floor(convertedTime / 60),
+    seconds: convertedTime - Math.floor(convertedTime / 60) * 60,
+  });
+
   const seletedText = computed(
     () => `${selectedTime.value.minutes} min, ${selectedTime.value.seconds} sec`,
   );
 
-  const selectedTime = ref({
-    minutes: Math.floor(props.time / 60),
-    seconds: props.time - Math.floor(props.time / 60) * 60,
-  });
-
-  const convertObjectToSeconds = () =>
-    (selectedTime.value.minutes * 60 + selectedTime.value.seconds) * 1000;
+  const convertObjectToSeconds = computed(
+    () => (selectedTime.value.minutes * 60 + selectedTime.value.seconds) * 1000,
+  );
 
   const formatTime = (value: number) => `${value <= 9 ? `0${value}` : value}`;
 
@@ -30,7 +34,10 @@
     () => `${formatTime(selectedTime.value.minutes)}:${formatTime(selectedTime.value.seconds)}`,
   );
 
-  watch(selectedTime, () => emits("timeSelected", convertObjectToSeconds()));
+  function selectTime() {
+    showModal.value = false;
+    emits("timeSelected", convertObjectToSeconds.value);
+  }
 </script>
 
 <template>
@@ -59,7 +66,7 @@
       </div>
     </template>
     <template #actions>
-      <BaseButton label="Select" @click="() => (showModal = false)" icon="check" color="success" />
+      <BaseButton label="Select" @click="() => selectTime()" icon="check" color="success" />
     </template>
   </BaseModal>
   <div class="w-full">

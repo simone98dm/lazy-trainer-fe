@@ -80,7 +80,28 @@
         </ActivityItem>
       </template>
     </draggable>
-    <ActivityItem v-else v-for="activity in activities" :key="activity.id" :activity="activity" />
+    <ActivityItem v-else v-for="activity in activities" :key="activity.id" :activity="activity">
+      <template #actions>
+        <BaseButton
+          v-if="allowDelete"
+          id="delete-activity"
+          color="danger"
+          icon="delete"
+          size="small"
+          class="float-right ml-2"
+          @click.prevent="() => deleteActivity(activity)"
+        />
+        <BaseButton
+          v-if="allowEdit"
+          id="edit-activity"
+          color="warning"
+          icon="edit"
+          size="small"
+          class="float-right ml-2"
+          @click.prevent="() => editActivity(activity)"
+        />
+      </template>
+    </ActivityItem>
   </div>
   <ErrorBanner v-else text="No activities found" />
 </template>

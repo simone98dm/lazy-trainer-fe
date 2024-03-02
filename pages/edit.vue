@@ -6,9 +6,12 @@
   const activityStore = useActivityStore();
   const { selectedSession, selectedActivity } = storeToRefs(activityStore);
 
+  definePageMeta({
+    middleware: "restore",
+  });
+
   const sessionId = route.params.session as string;
 
-  await activityStore.restoreSession();
   const allowDrag = ref(false);
 
   if (sessionId) {
@@ -36,8 +39,8 @@
   <div class="flex xl:flex-col flex-wrap justify-center max-w-screen-xl mx-auto">
     <SessionForm v-if="selectedSession" :session="selectedSession" />
     <ActivityForm v-if="selectedActivity" :activity="selectedActivity" />
-    <div class="float-right">
-      Allow drag:
+    <div class="float-right flex items-center justify-between my-5 gap-2">
+      Allow drag
       <Switch
         id="allow-drag-drop-switch"
         name="drag-drop-switch"
@@ -49,6 +52,7 @@
       <div class="flex flex-col justify-center">
         <div class="my-4">
           <ActivityList
+            v-if="activityStore.getSelectedWarmUpActivities.length > 0"
             title="Warmup"
             :activities="activityStore.getSelectedWarmUpActivities"
             :is-warmup="true"
@@ -60,6 +64,7 @@
         </div>
         <div class="my-4">
           <ActivityList
+            v-if="activityStore.getSelectedActivities.length > 0"
             title="Activities"
             :activities="activityStore.getSelectedActivities"
             :allow-drag="allowDrag"
