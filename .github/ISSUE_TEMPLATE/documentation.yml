@@ -1,0 +1,99 @@
+name: 📝 Documentation Issue
+description: Report an issue with documentation
+title: '[Docs]: '
+labels: ['documentation', 'triage']
+assignees:
+  - simone98dm
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve our documentation!
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation is affected?
+      options:
+        - README
+        - Contributing Guide
+        - API Documentation
+        - Architecture Guide (CLAUDE.md)
+        - Deployment Guide
+        - Code Comments
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Documentation Location
+      description: Where is the documentation issue? (file path or URL)
+      placeholder: e.g., README.md, CONTRIBUTING.md, /docs/api
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue Type
+      description: What's wrong with the documentation?
+      options:
+        - Outdated information
+        - Missing information
+        - Incorrect information
+        - Unclear/confusing
+        - Broken links
+        - Typos/grammar
+        - Code examples not working
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Issue Description
+      description: Describe what's wrong with the current documentation
+      placeholder: The documentation says... but it should say...
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Documentation
+      description: Quote the current text (if applicable)
+      placeholder: 'The current documentation states...'
+      render: markdown
+
+  - type: textarea
+    id: suggested
+    attributes:
+      label: Suggested Improvement
+      description: How should the documentation be improved?
+      placeholder: It should instead say...
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context or screenshots
+      placeholder: Add any other information...
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission Checklist
+      options:
+        - label: I have checked that this issue doesn't already exist
+          required: true
+        - label: I have verified this against the latest version
+          required: true
+        - label: I'm willing to submit a PR to fix this (optional)
+          required: false
