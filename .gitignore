@@ -151,3 +151,7 @@ dist
 /playwright/.cache/
 
 .output
+
+supabase
+
+CLAUDE.md
